@@ -1,0 +1,11 @@
+@import 'scss/variables';
+@import 'node_modules/bootstrap/scss/bootstrap';
+
+@import 'scss/global.scss';
+
+
+:root {
+  --body-color: #{$body-color};
+  --body-bg: #{$body-bg};
+}
+

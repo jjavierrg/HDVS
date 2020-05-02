@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EAPN.HDVS.Application.Core\EAPN.HDVS.Application.Core.csproj" />
+    <ProjectReference Include="..\EAPN.HDVS.Infrastructure\EAPN.HDVS.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

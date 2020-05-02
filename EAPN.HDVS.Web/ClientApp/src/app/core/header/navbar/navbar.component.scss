@@ -1,0 +1,8 @@
+@import 'src/styles.scss';
+
+@media (min-width: map-get($grid-breakpoints, 'lg')) {
+  .nav-item.active {
+    background-color: var(--body-bg);
+    color: var(--body-color) !important;
+  }
+}

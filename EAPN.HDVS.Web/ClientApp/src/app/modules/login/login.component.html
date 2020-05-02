@@ -1,0 +1,23 @@
+<div class="container-fluid h-100 position-absolute bg-primary">
+  <div class="row h-100">
+    <div class="col-md-4 offset-md-4 my-auto">
+      <section class="shadow p-3 bg-white rounded">
+        <form id="account" method="post">
+          <h4>HDVS - EAPN Madrid</h4>
+          <hr />
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input id="email" type="email" class="form-control" required [(ngModel)]="username" name="username" />
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input id="password" type="password" class="form-control" required [(ngModel)]="password" name="password" />
+          </div>
+          <div class="form-group">
+            <button type="button" class="btn btn-primary" (click)="onLogin()">Log in</button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </div>
+</div>

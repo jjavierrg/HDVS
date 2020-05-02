@@ -1,0 +1,16 @@
+<header class="navbar navbar-expand navbar-dark bg-dark sticky-top d-flex">
+  <a class="navbar-brand text-truncate flex-grow-1" [routerLink]="['/']">
+    <img src="assets/logotrans.png" width="30" height="30" alt="">
+    Herramienta de diagnóstico de vulnerabilidad social
+  </a>
+  <ul class="navbar-nav">
+    <li class="nav-item" ngbDropdown>
+      <a class="nav-link no-arrow c-pointer" ngbDropdownToggle>
+        {{ username | async }}
+      </a>
+      <div ngbDropdownMenu class="dropdown-menu dropdown-menu-right">
+        <a  ngbDropdownItem title="Cerrar Sesión" (click)="onLogout()">Cerrar Sesión</a>
+      </div>
+    </li>
+  </ul>
+</header>
