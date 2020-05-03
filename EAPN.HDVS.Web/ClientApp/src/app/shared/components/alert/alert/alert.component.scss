@@ -1,0 +1,22 @@
+.alertContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  border-radius: 0;
+  min-width: 150px;
+}
+
+.alertBody {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+}
+
+.alertProgress ::ng-deep div.progress {
+  border-radius: 0;
+}
+
+.alertProgress ::ng-deep div.progress-bar {
+  transition: width 0.1s ease
+}

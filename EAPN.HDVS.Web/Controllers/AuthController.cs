@@ -28,6 +28,7 @@ namespace EAPN.HDVS.Web.Controllers
         [AllowAnonymous]
         [HttpPost]
         [ProducesResponseType(typeof(UserTokenDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<UserTokenDto>> AuthenticateAsync([FromBody] LoginAttempDto loginAttempDto)
         {
             var token = await _usuarioService.LoginAsync(loginAttempDto.Email, loginAttempDto.Password);

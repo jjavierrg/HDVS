@@ -14,7 +14,7 @@ export class LoadingInterceptor implements HttpInterceptor {
   /**
    * URLs for which the loading screen should not be enabled
    */
-  skippUrls = ['/authrefresh'];
+  skippUrls = ['/auth'];
 
   constructor(private loadingService: LoadingService) {}
 
@@ -22,7 +22,7 @@ export class LoadingInterceptor implements HttpInterceptor {
     let displayLoadingScreen = true;
 
     for (const skippUrl of this.skippUrls) {
-      if (new RegExp(skippUrl).test(request.url)) {
+      if (new RegExp(skippUrl.toLowerCase()).test(request.url.toLowerCase())) {
         displayLoadingScreen = false;
         break;
       }

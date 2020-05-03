@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
 @Injectable({
@@ -8,7 +8,7 @@ import { debounceTime } from 'rxjs/operators';
 export class LoadingService {
   constructor() { }
 
-  private loadingSubject = new Subject<boolean>();
+  private loadingSubject = new BehaviorSubject<boolean>(false);
   private loadingCount = 0;
 
   public getLoadingObservable(): Observable<boolean> {

@@ -6,20 +6,26 @@ import { RouterModule, Routes } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
-import { ApiClient, apiEndpoint } from './core/api/api.client';
+import { ApiClient } from './core/api/api.client';
 import { environment } from 'src/environments/environment';
 import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
 import { AuthenticatedGuard } from './core/guards/authenticate.guard';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { AuthenticationService } from './core/services/authentication.service';
+import { LoaderComponent } from './shared/components/loader/loader.component';
+import { AlertModule } from './shared/components/alert/alert.module';
 
 export function jwtOptionsFactory(authenticationService: AuthenticationService) {
   return {
     tokenGetter: () => {
-      return authenticationService.getValidToken().toPromise();
+      return authenticationService.getValidToken();
     },
   };
 }
+
+const apiClientFactory = () => {
+  return new ApiClient(environment.apiEndpoint);
+};
 
 const routes: Routes = [
   {
@@ -39,12 +45,13 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, LoaderComponent],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
     NgbModule,
+    AlertModule,
     RouterModule.forRoot(routes),
     JwtModule.forRoot({
       jwtOptionsProvider: {
@@ -53,13 +60,10 @@ const routes: Routes = [
         deps: [AuthenticationService],
       },
     }),
+    AlertModule,
   ],
   providers: [
-    ApiClient,
-    {
-      provide: apiEndpoint,
-      useValue: environment.apiEndpoint,
-    },
+    { provide: ApiClient, useFactory: apiClientFactory },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: LoadingInterceptor,

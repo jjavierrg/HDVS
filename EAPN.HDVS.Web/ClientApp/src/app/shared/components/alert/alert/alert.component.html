@@ -1,0 +1,12 @@
+<div class="alertContainer alert alert-{{ alert.type }}" role="alert" (mouseenter)="isMouseOver = true"
+  (mouseleave)="isMouseOver = false">
+  <div class="alertBody">
+    <button type="button" class="close" aria-label="Close" (click)="onClose()"><span
+        aria-hidden="true">&times;</span></button>
+    <div class="mr-3">
+      <span>{{ alert.message }}</span>
+    </div>
+  </div>
+  <ngb-progressbar *ngIf="progress >= 0" [type]="alert.type" [max]="this.alert.displayTime" [value]="progress" [animated]="false"
+    height="0.5rem" class="alertProgress"></ngb-progressbar>
+</div>
