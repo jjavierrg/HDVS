@@ -1,11 +1,36 @@
 @import 'scss/variables';
 @import 'node_modules/bootstrap/scss/bootstrap';
+@import '../node_modules/ag-grid-community/src/styles/ag-grid.scss';
+@import '../node_modules/ag-grid-community/src/styles/ag-theme-alpine/sass/ag-theme-alpine-mixin.scss';
 
 @import 'scss/global.scss';
 
+.grid {
+  @include ag-theme-alpine(
+    (
+      alpine-active-color: $blue,
+      header-background-color: $lighter,
+      odd-row-background-color: #e5eaee,
+      header-foreground-color: $dark,
+      border-radius: 0
+    )
+  );
+  padding-bottom: 1rem;
+  overflow-x: auto;
+}
 
 :root {
   --body-color: #{$body-color};
   --body-bg: #{$body-bg};
 }
 
+.toolbar {
+  padding: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  background-color: $primary;
+
+  .btn:not(:last-of-type) {
+    margin-right: 0.5rem;
+  }
+}

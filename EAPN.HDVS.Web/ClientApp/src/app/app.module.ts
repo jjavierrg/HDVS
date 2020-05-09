@@ -1,31 +1,15 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
 import { AppComponent } from './app.component';
-import { ApiClient } from './core/api/api.client';
-import { environment } from 'src/environments/environment';
-import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
+import { ApiClient, apiEndpoint } from './core/api/api.client';
 import { AuthenticatedGuard } from './core/guards/authenticate.guard';
-import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
-import { AuthenticationService } from './core/services/authentication.service';
-import { LoaderComponent } from './shared/components/loader/loader.component';
-import { AlertModule } from './shared/components/alert/alert.module';
-
-export function jwtOptionsFactory(authenticationService: AuthenticationService) {
-  return {
-    tokenGetter: () => {
-      return authenticationService.getValidToken();
-    },
-  };
-}
-
-const apiClientFactory = () => {
-  return new ApiClient(environment.apiEndpoint);
-};
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
+import { CoreModule } from './core/core.module';
+import { environment } from 'src/environments/environment';
+import { LoaderComponent } from './shared/modules/loader/loader/loader.component';
 
 const routes: Routes = [
   {
@@ -34,7 +18,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    loadChildren: () => import('./modules/home/home.module').then((m) => m.HomeModule),
+    loadChildren: () => import('./modules/dashboard/dashboard.module').then((m) => m.DashboardModule),
     canLoad: [AuthenticatedGuard],
   },
   {
@@ -46,24 +30,14 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [AppComponent, LoaderComponent],
-  imports: [
-    BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
-    HttpClientModule,
-    FormsModule,
-    NgbModule,
-    AlertModule,
-    RouterModule.forRoot(routes),
-    JwtModule.forRoot({
-      jwtOptionsProvider: {
-        provide: JWT_OPTIONS,
-        useFactory: jwtOptionsFactory,
-        deps: [AuthenticationService],
-      },
-    }),
-    AlertModule,
-  ],
+  imports: [CoreModule, BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }), HttpClientModule, RouterModule.forRoot(routes)],
   providers: [
-    { provide: ApiClient, useFactory: apiClientFactory },
+    ApiClient,
+    {
+      provide: apiEndpoint,
+      useValue: environment.apiEndpoint,
+    },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: LoadingInterceptor,

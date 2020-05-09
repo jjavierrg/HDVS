@@ -7,14 +7,65 @@
 //----------------------
 // ReSharper disable InconsistentNaming
 
-import * as jQuery from 'jquery';
+import { mergeMap as _observableMergeMap, catchError as _observableCatch } from 'rxjs/operators';
+import { Observable, throwError as _observableThrow, of as _observableOf } from 'rxjs';
+import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angular/common/http';
 
-export class ApiClient {
-    baseUrl: string;
-    beforeSend: any = undefined;
+export const apiEndpoint = new InjectionToken<string>('apiEndpoint');
+
+export interface IApiClient {
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    auth(body?: LoginAttempDto | undefined): Observable<UserTokenDto>;
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    refresh(body?: RefreshTokenAttempDto | undefined): Observable<UserTokenDto>;
+    /**
+     * @return Success
+     */
+    logout(): Observable<void>;
+    /**
+     * @return Success
+     */
+    getUsarios(): Observable<UsuarioDto[]>;
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    postUsuario(body?: UsuarioDto | undefined): Observable<UsuarioDto>;
+    /**
+     * @return Success
+     */
+    getUsario(id: number): Observable<UsuarioDto[]>;
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    putUsuario(id: number, body?: UsuarioDto | undefined): Observable<void>;
+    /**
+     * @return Success
+     */
+    deleteUsuario(id: number): Observable<void>;
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    getUsariosFiltered(body?: IQueryData | undefined): Observable<UsuarioDtoQueryResult>;
+}
+
+@Injectable()
+export class ApiClient implements IApiClient {
+    private http: HttpClient;
+    private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(baseUrl?: string) {
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(apiEndpoint) baseUrl?: string) {
+        this.http = http;
         this.baseUrl = baseUrl ? baseUrl : "";
     }
 
@@ -22,186 +73,566 @@ export class ApiClient {
      * @param body (optional) 
      * @return Success
      */
-    auth(body: LoginAttempDto | undefined) {
-        return new Promise<UserTokenDto>((resolve, reject) => {
-            this.authWithCallbacks(body, (result) => resolve(result), (exception, _reason) => reject(exception));
-        });
-    }
-
-    private authWithCallbacks(body: LoginAttempDto | undefined, onSuccess?: (result: UserTokenDto) => void, onFail?: (exception: ProblemDetails | string, reason: string) => void) {
-        let url_ = this.baseUrl + "/Auth";
+    auth(body?: LoginAttempDto | undefined): Observable<UserTokenDto> {
+        let url_ = this.baseUrl + "/api/Auth";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
 
-        jQuery.ajax({
-            url: url_,
-            beforeSend: this.beforeSend,
-            type: "post",
-            data: content_,
-            dataType: "text",
-            headers: {
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
                 "Content-Type": "application/json",
                 "Accept": "text/plain"
-            }
-        }).done((_data, _textStatus, xhr) => {
-            this.processAuthWithCallbacks(url_, xhr, onSuccess, onFail);
-        }).fail((xhr) => {
-            this.processAuthWithCallbacks(url_, xhr, onSuccess, onFail);
-        });
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAuth(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAuth(<any>response_);
+                } catch (e) {
+                    return <Observable<UserTokenDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<UserTokenDto>><any>_observableThrow(response_);
+        }));
     }
 
-    private processAuthWithCallbacks(_url: string, xhr: any, onSuccess?: any, onFail?: any): void {
-        try {
-            let result = this.processAuth(xhr);
-            if (onSuccess !== undefined)
-                onSuccess(result);
-        } catch (e) {
-            if (onFail !== undefined)
-                onFail(e, "http_service_exception");
-        }
-    }
+    protected processAuth(response: HttpResponseBase): Observable<UserTokenDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
-    protected processAuth(xhr: any): UserTokenDto | null {
-        const status = xhr.status;
-
-        let _headers: any = {};
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
-            const _responseText = xhr.responseText;
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result200 = UserTokenDto.fromJS(resultData200);
-            return result200;
+            return _observableOf(result200);
+            }));
         } else if (status === 401) {
-            const _responseText = xhr.responseText;
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result401: any = null;
             let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result401 = ProblemDetails.fromJS(resultData401);
             return throwException("Unauthorized", status, _responseText, _headers, result401);
+            }));
         } else if (status !== 200 && status !== 204) {
-            const _responseText = xhr.responseText;
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
         }
-        return null;
+        return _observableOf<UserTokenDto>(<any>null);
     }
 
     /**
      * @param body (optional) 
      * @return Success
      */
-    refresh(body: RefreshTokenAttempDto | undefined) {
-        return new Promise<UserTokenDto>((resolve, reject) => {
-            this.refreshWithCallbacks(body, (result) => resolve(result), (exception, _reason) => reject(exception));
-        });
-    }
-
-    private refreshWithCallbacks(body: RefreshTokenAttempDto | undefined, onSuccess?: (result: UserTokenDto) => void, onFail?: (exception: string, reason: string) => void) {
-        let url_ = this.baseUrl + "/Auth/refresh";
+    refresh(body?: RefreshTokenAttempDto | undefined): Observable<UserTokenDto> {
+        let url_ = this.baseUrl + "/api/Auth/refresh";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
 
-        jQuery.ajax({
-            url: url_,
-            beforeSend: this.beforeSend,
-            type: "post",
-            data: content_,
-            dataType: "text",
-            headers: {
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
                 "Content-Type": "application/json",
                 "Accept": "text/plain"
-            }
-        }).done((_data, _textStatus, xhr) => {
-            this.processRefreshWithCallbacks(url_, xhr, onSuccess, onFail);
-        }).fail((xhr) => {
-            this.processRefreshWithCallbacks(url_, xhr, onSuccess, onFail);
-        });
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRefresh(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRefresh(<any>response_);
+                } catch (e) {
+                    return <Observable<UserTokenDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<UserTokenDto>><any>_observableThrow(response_);
+        }));
     }
 
-    private processRefreshWithCallbacks(_url: string, xhr: any, onSuccess?: any, onFail?: any): void {
-        try {
-            let result = this.processRefresh(xhr);
-            if (onSuccess !== undefined)
-                onSuccess(result);
-        } catch (e) {
-            if (onFail !== undefined)
-                onFail(e, "http_service_exception");
-        }
-    }
+    protected processRefresh(response: HttpResponseBase): Observable<UserTokenDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
-    protected processRefresh(xhr: any): UserTokenDto | null {
-        const status = xhr.status;
-
-        let _headers: any = {};
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
-            const _responseText = xhr.responseText;
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result200 = UserTokenDto.fromJS(resultData200);
-            return result200;
+            return _observableOf(result200);
+            }));
         } else if (status !== 200 && status !== 204) {
-            const _responseText = xhr.responseText;
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
         }
-        return null;
+        return _observableOf<UserTokenDto>(<any>null);
     }
 
     /**
      * @return Success
      */
-    logout() {
-        return new Promise<void>((resolve, reject) => {
-            this.logoutWithCallbacks((result) => resolve(result), (exception, _reason) => reject(exception));
-        });
-    }
-
-    private logoutWithCallbacks(onSuccess?: (result: void) => void, onFail?: (exception: string, reason: string) => void) {
-        let url_ = this.baseUrl + "/Auth/logout";
+    logout(): Observable<void> {
+        let url_ = this.baseUrl + "/api/Auth/logout";
         url_ = url_.replace(/[?&]$/, "");
 
-        jQuery.ajax({
-            url: url_,
-            beforeSend: this.beforeSend,
-            type: "get",
-            dataType: "text",
-            headers: {
-            }
-        }).done((_data, _textStatus, xhr) => {
-            this.processLogoutWithCallbacks(url_, xhr, onSuccess, onFail);
-        }).fail((xhr) => {
-            this.processLogoutWithCallbacks(url_, xhr, onSuccess, onFail);
-        });
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processLogout(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processLogout(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
     }
 
-    private processLogoutWithCallbacks(_url: string, xhr: any, onSuccess?: any, onFail?: any): void {
-        try {
-            let result = this.processLogout(xhr);
-            if (onSuccess !== undefined)
-                onSuccess(result);
-        } catch (e) {
-            if (onFail !== undefined)
-                onFail(e, "http_service_exception");
-        }
-    }
+    protected processLogout(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
-    protected processLogout(xhr: any): void | null {
-        const status = xhr.status;
-
-        let _headers: any = {};
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
-            const _responseText = xhr.responseText;
-            return;
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
         } else if (status === 401) {
-            const _responseText = xhr.responseText;
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("Unauthorized", status, _responseText, _headers);
+            }));
         } else if (status === 403) {
-            const _responseText = xhr.responseText;
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("Forbidden", status, _responseText, _headers);
+            }));
         } else if (status !== 200 && status !== 204) {
-            const _responseText = xhr.responseText;
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
         }
-        return;
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getUsarios(): Observable<UsuarioDto[]> {
+        let url_ = this.baseUrl + "/api/Users";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetUsarios(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetUsarios(<any>response_);
+                } catch (e) {
+                    return <Observable<UsuarioDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<UsuarioDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetUsarios(response: HttpResponseBase): Observable<UsuarioDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(UsuarioDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Unauthorized", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Forbidden", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<UsuarioDto[]>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    postUsuario(body?: UsuarioDto | undefined): Observable<UsuarioDto> {
+        let url_ = this.baseUrl + "/api/Users";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPostUsuario(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPostUsuario(<any>response_);
+                } catch (e) {
+                    return <Observable<UsuarioDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<UsuarioDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processPostUsuario(response: HttpResponseBase): Observable<UsuarioDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 201) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result201: any = null;
+            let resultData201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result201 = UsuarioDto.fromJS(resultData201);
+            return _observableOf(result201);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Unauthorized", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Forbidden", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<UsuarioDto>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    getUsario(id: number): Observable<UsuarioDto[]> {
+        let url_ = this.baseUrl + "/api/Users/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetUsario(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetUsario(<any>response_);
+                } catch (e) {
+                    return <Observable<UsuarioDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<UsuarioDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetUsario(response: HttpResponseBase): Observable<UsuarioDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(UsuarioDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Unauthorized", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Forbidden", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<UsuarioDto[]>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    putUsuario(id: number, body?: UsuarioDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/Users/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPutUsuario(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPutUsuario(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processPutUsuario(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = ProblemDetails.fromJS(resultData400);
+            return throwException("Bad Request", status, _responseText, _headers, result400);
+            }));
+        } else if (status === 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Unauthorized", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Forbidden", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    deleteUsuario(id: number): Observable<void> {
+        let url_ = this.baseUrl + "/api/Users/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteUsuario(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteUsuario(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDeleteUsuario(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+            }));
+        } else if (status === 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Unauthorized", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Forbidden", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    getUsariosFiltered(body?: IQueryData | undefined): Observable<UsuarioDtoQueryResult> {
+        let url_ = this.baseUrl + "/api/Users/filtered";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetUsariosFiltered(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetUsariosFiltered(<any>response_);
+                } catch (e) {
+                    return <Observable<UsuarioDtoQueryResult>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<UsuarioDtoQueryResult>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetUsariosFiltered(response: HttpResponseBase): Observable<UsuarioDtoQueryResult> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = UsuarioDtoQueryResult.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Unauthorized", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Forbidden", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<UsuarioDtoQueryResult>(<any>null);
     }
 }
 
@@ -237,13 +668,6 @@ export class LoginAttempDto implements ILoginAttempDto {
         data["email"] = this.email;
         data["password"] = this.password;
         return data; 
-    }
-
-    clone(): LoginAttempDto {
-        const json = this.toJSON();
-        let result = new LoginAttempDto();
-        result.init(json);
-        return result;
     }
 }
 
@@ -287,13 +711,6 @@ export class UserTokenDto implements IUserTokenDto {
         data["expiresIn"] = this.expiresIn;
         data["refreshToken"] = this.refreshToken;
         return data; 
-    }
-
-    clone(): UserTokenDto {
-        const json = this.toJSON();
-        let result = new UserTokenDto();
-        result.init(json);
-        return result;
     }
 }
 
@@ -345,13 +762,6 @@ export class ProblemDetails implements IProblemDetails {
         data["instance"] = this.instance;
         return data; 
     }
-
-    clone(): ProblemDetails {
-        const json = this.toJSON();
-        let result = new ProblemDetails();
-        result.init(json);
-        return result;
-    }
 }
 
 export interface IProblemDetails {
@@ -395,18 +805,275 @@ export class RefreshTokenAttempDto implements IRefreshTokenAttempDto {
         data["refreshToken"] = this.refreshToken;
         return data; 
     }
-
-    clone(): RefreshTokenAttempDto {
-        const json = this.toJSON();
-        let result = new RefreshTokenAttempDto();
-        result.init(json);
-        return result;
-    }
 }
 
 export interface IRefreshTokenAttempDto {
     userId?: number;
     refreshToken?: string | undefined;
+}
+
+export class PerfilDto implements IPerfilDto {
+    id?: number;
+    descripcion?: string | undefined;
+
+    constructor(data?: IPerfilDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.descripcion = _data["descripcion"];
+        }
+    }
+
+    static fromJS(data: any): PerfilDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PerfilDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["descripcion"] = this.descripcion;
+        return data; 
+    }
+}
+
+export interface IPerfilDto {
+    id?: number;
+    descripcion?: string | undefined;
+}
+
+export class RolDto implements IRolDto {
+    id?: number;
+    descripcion?: string | undefined;
+
+    constructor(data?: IRolDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.descripcion = _data["descripcion"];
+        }
+    }
+
+    static fromJS(data: any): RolDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new RolDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["descripcion"] = this.descripcion;
+        return data; 
+    }
+}
+
+export interface IRolDto {
+    id?: number;
+    descripcion?: string | undefined;
+}
+
+export class UsuarioDto implements IUsuarioDto {
+    id?: number;
+    email?: string | undefined;
+    clave?: string | undefined;
+    activo?: boolean;
+    finBloqueo?: Date | undefined;
+    perfiles?: PerfilDto[] | undefined;
+    rolesAdicionales?: RolDto[] | undefined;
+
+    constructor(data?: IUsuarioDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.email = _data["email"];
+            this.clave = _data["clave"];
+            this.activo = _data["activo"];
+            this.finBloqueo = _data["finBloqueo"] ? new Date(_data["finBloqueo"].toString()) : <any>undefined;
+            if (Array.isArray(_data["perfiles"])) {
+                this.perfiles = [] as any;
+                for (let item of _data["perfiles"])
+                    this.perfiles!.push(PerfilDto.fromJS(item));
+            }
+            if (Array.isArray(_data["rolesAdicionales"])) {
+                this.rolesAdicionales = [] as any;
+                for (let item of _data["rolesAdicionales"])
+                    this.rolesAdicionales!.push(RolDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): UsuarioDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UsuarioDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["email"] = this.email;
+        data["clave"] = this.clave;
+        data["activo"] = this.activo;
+        data["finBloqueo"] = this.finBloqueo ? this.finBloqueo.toISOString() : <any>undefined;
+        if (Array.isArray(this.perfiles)) {
+            data["perfiles"] = [];
+            for (let item of this.perfiles)
+                data["perfiles"].push(item.toJSON());
+        }
+        if (Array.isArray(this.rolesAdicionales)) {
+            data["rolesAdicionales"] = [];
+            for (let item of this.rolesAdicionales)
+                data["rolesAdicionales"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IUsuarioDto {
+    id?: number;
+    email?: string | undefined;
+    clave?: string | undefined;
+    activo?: boolean;
+    finBloqueo?: Date | undefined;
+    perfiles?: PerfilDto[] | undefined;
+    rolesAdicionales?: RolDto[] | undefined;
+}
+
+export class IQueryData implements IIQueryData {
+    readonly filterParameters?: string | undefined;
+    readonly pageSize?: number;
+    readonly pageIndex?: number;
+    readonly orderField?: string | undefined;
+    readonly order?: string | undefined;
+
+    constructor(data?: IIQueryData) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            (<any>this).filterParameters = _data["filterParameters"];
+            (<any>this).pageSize = _data["pageSize"];
+            (<any>this).pageIndex = _data["pageIndex"];
+            (<any>this).orderField = _data["orderField"];
+            (<any>this).order = _data["order"];
+        }
+    }
+
+    static fromJS(data: any): IQueryData {
+        data = typeof data === 'object' ? data : {};
+        let result = new IQueryData();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["filterParameters"] = this.filterParameters;
+        data["pageSize"] = this.pageSize;
+        data["pageIndex"] = this.pageIndex;
+        data["orderField"] = this.orderField;
+        data["order"] = this.order;
+        return data; 
+    }
+}
+
+export interface IIQueryData {
+    filterParameters?: string | undefined;
+    pageSize?: number;
+    pageIndex?: number;
+    orderField?: string | undefined;
+    order?: string | undefined;
+}
+
+export class UsuarioDtoQueryResult implements IUsuarioDtoQueryResult {
+    total?: number;
+    orderBy?: string | undefined;
+    ascending?: boolean;
+    data?: UsuarioDto[] | undefined;
+
+    constructor(data?: IUsuarioDtoQueryResult) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.total = _data["total"];
+            this.orderBy = _data["orderBy"];
+            this.ascending = _data["ascending"];
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data!.push(UsuarioDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): UsuarioDtoQueryResult {
+        data = typeof data === 'object' ? data : {};
+        let result = new UsuarioDtoQueryResult();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["total"] = this.total;
+        data["orderBy"] = this.orderBy;
+        data["ascending"] = this.ascending;
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IUsuarioDtoQueryResult {
+    total?: number;
+    orderBy?: string | undefined;
+    ascending?: boolean;
+    data?: UsuarioDto[] | undefined;
 }
 
 export class ApiException extends Error {
@@ -433,9 +1100,22 @@ export class ApiException extends Error {
     }
 }
 
-function throwException(message: string, status: number, response: string, headers: { [key: string]: any; }, result?: any): any {
-    if (result !== null && result !== undefined)
-        throw result;
-    else
-        throw new ApiException(message, status, response, headers, null);
+function throwException(message: string, status: number, response: string, headers: { [key: string]: any; }, result?: any): Observable<any> {
+    return _observableThrow(new ApiException(message, status, response, headers, result));
+}
+
+function blobToText(blob: any): Observable<string> {
+    return new Observable<string>((observer: any) => {
+        if (!blob) {
+            observer.next("");
+            observer.complete();
+        } else {
+            let reader = new FileReader();
+            reader.onload = event => {
+                observer.next((<any>event.target).result);
+                observer.complete();
+            };
+            reader.readAsText(blob);
+        }
+    });
 }

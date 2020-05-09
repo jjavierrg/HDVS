@@ -5,10 +5,12 @@ namespace EAPN.HDVS.Web.Dto
 {
     public class UsuarioDto
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public string Email { get; set; }
         public string Clave { get; set; }
-        public IEnumerable<RolDto> Roles { get; set; }
-        public IEnumerable<PermisoDto> PermisosAdicionales { get; set; }
+        public bool Activo { get; set; }
+        public DateTime? FinBloqueo { get; set; }
+        public IEnumerable<PerfilDto> Perfiles { get; set; }
+        public IEnumerable<RolDto> RolesAdicionales { get; set; }
     }
 }

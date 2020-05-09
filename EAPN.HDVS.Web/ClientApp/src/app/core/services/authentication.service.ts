@@ -5,7 +5,6 @@ import { map, catchError, retry } from 'rxjs/operators';
 import { ApiClient, LoginAttempDto, UserTokenDto, RefreshTokenAttempDto } from '../api/api.client';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { sha3_512 } from 'js-sha3';
-import { decode } from 'punycode';
 
 const helper = new JwtHelperService();
 const validMinutesOffset = 2;
@@ -28,9 +27,9 @@ export class AuthenticationService {
     );
   }
 
-  public async login(username: string, password: string): Promise<UserTokenDto> {
+  public login(username: string, password: string): Observable<UserTokenDto> {
     const LoginAttemp: LoginAttempDto = new LoginAttempDto({ password: sha3_512(password), email: username });
-    return await this.handleTokenRequest(this.apiClient.auth(LoginAttemp));
+    return this.handleTokenRequest(this.apiClient.auth(LoginAttemp));
   }
 
   public logout(): void {
@@ -51,45 +50,59 @@ export class AuthenticationService {
     return true;
   }
 
-  public async isAuthorized(allowedRoles: string[]): Promise<boolean> {
+  public isAuthorized(allowedRoles: string[]): Observable<boolean> {
     if (!this.isAuthenticated) {
-      return false;
+      return of(false);
     }
 
-    try {
-      const user = await this.getUser();
-      const userRoles: string[] = user.roles;
+    return this.getUserRoles().pipe(
+      map((userRoles) => {
+        if (!userRoles) {
+          return false;
+        }
 
-      if (allowedRoles == null || allowedRoles.length === 0) {
-        return true;
-      }
+        // check if the list of allowed roles is empty, if empty, authorize the user to access the page
+        if (allowedRoles == null || allowedRoles.length === 0) {
+          return true;
+        }
 
-      return allowedRoles.some((x) => userRoles.some((y) => y.toLowerCase() === x.toLowerCase()));
-    } catch (error) {
-      return false;
-    }
+        return allowedRoles.some((x) => userRoles.some((y) => y.toLowerCase() === x.toLowerCase()));
+      })
+    );
   }
 
-  public async getValidToken(): Promise<string> {
-    let currenttoken = this.currentTokenSubject.getValue();
-    if (!this.isTokenValid(currenttoken)) {
-      currenttoken = await this.refreshToken(currenttoken);
+  public getValidToken(): Observable<string> {
+    const currenttoken = this.currentTokenSubject.getValue();
+    if (this.isTokenValid(currenttoken)) {
+      return of(currenttoken.accessToken);
     }
 
-    return !currenttoken ? '' : currenttoken.accessToken;
+    return this.refreshToken(currenttoken).pipe(map((token) => (token ? token.accessToken : '')));
   }
 
-  public async getUser(): Promise<any> {
-    let currenttoken = this.currentTokenSubject.getValue();
-    if (!this.isTokenValid(currenttoken)) {
-      currenttoken = await this.refreshToken(currenttoken);
-    }
+  public getUser(): Observable<any> {
+    return this.getValidToken().pipe(map((token) => (token ? helper.decodeToken(token) : {})));
+  }
 
-    try {
-      return helper.decodeToken(currenttoken.accessToken);
-    } catch (error) {
-      return null;
-    }
+  public getUserRoles(): Observable<string[]> {
+    return this.getUser().pipe(
+      map((user) => {
+        if (!user) {
+          return [];
+        }
+
+        try {
+          const roleProperty = Object.getOwnPropertyNames(user).find((x) => x.toLowerCase().endsWith('role'));
+          if (!roleProperty) {
+            return [];
+          }
+
+          return user[roleProperty];
+        } catch (error) {
+          return [];
+        }
+      })
+    );
   }
 
   private getUserIdFromToken(token: UserTokenDto): number {
@@ -120,23 +133,25 @@ export class AuthenticationService {
     }
   }
 
-  private async refreshToken(oldToken: UserTokenDto): Promise<UserTokenDto> {
+  private refreshToken(oldToken: UserTokenDto): Observable<UserTokenDto> {
     const refreshToken = oldToken ? oldToken.refreshToken : '';
     const userId = this.getUserIdFromToken(oldToken);
     const request: RefreshTokenAttempDto = new RefreshTokenAttempDto({ refreshToken, userId });
-    return await this.handleTokenRequest(this.apiClient.refresh(request));
+    return this.handleTokenRequest(this.apiClient.refresh(request));
   }
 
-  private async handleTokenRequest(request: Promise<UserTokenDto>): Promise<UserTokenDto> {
-    try {
-      const token = await request;
-      localStorage.setItem(environment.tokenLocalStorageKey, JSON.stringify(token));
-      this.currentTokenSubject.next(token);
-      return token;
-    } catch (error) {
-      localStorage.removeItem(environment.tokenLocalStorageKey);
-      this.currentTokenSubject.next(null);
-      throw error;
-    }
+  private handleTokenRequest(request: Observable<UserTokenDto>): Observable<UserTokenDto> {
+    return request.pipe(
+      catchError((err) => {
+        localStorage.removeItem(environment.tokenLocalStorageKey);
+        this.currentTokenSubject.next(null);
+        return throwError(err);
+      }),
+      map((token: UserTokenDto) => {
+        localStorage.setItem(environment.tokenLocalStorageKey, JSON.stringify(token));
+        this.currentTokenSubject.next(token);
+        return token;
+      })
+    );
   }
 }

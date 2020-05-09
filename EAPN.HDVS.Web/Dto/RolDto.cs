@@ -9,6 +9,5 @@ namespace EAPN.HDVS.Web.Dto
     {
         public int Id { get; set; }
         public string Descripcion { get; set; }
-        public IEnumerable<PermisoDto> Permisos { get; set; }
     }
 }

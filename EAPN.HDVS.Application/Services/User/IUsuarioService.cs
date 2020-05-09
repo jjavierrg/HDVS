@@ -11,7 +11,7 @@ namespace EAPN.HDVS.Application.Services.User
 
 
         /// <summary>
-        /// Find a registered user, validates password and generate a token if all information is correct
+        /// Regiter a new User in the system. Email field is mandatory
         /// </summary>
         /// <param name="username">User login</param>
         /// <param name="password">User Password</param>
@@ -19,7 +19,7 @@ namespace EAPN.HDVS.Application.Services.User
         Task<Usuario> CreateAsync(Usuario usuario, string password);
 
         /// <summary>
-        /// Regiter a new User in the system. Email field is mandatory
+        /// Find a registered user, validates password and generate a token if all information is correct
         /// </summary>
         /// <param name="username">User definition</param>
         /// <param name="password">User password</param>

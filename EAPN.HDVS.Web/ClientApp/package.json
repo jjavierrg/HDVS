@@ -1,6 +1,6 @@
 {
   "name": "eapn.hdvs.web",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -24,6 +24,8 @@
     "@auth0/angular-jwt": "^4.0.0",
     "@ng-bootstrap/ng-bootstrap": "^5.0.0",
     "@nguniversal/module-map-ngfactory-loader": "8.1.1",
+    "ag-grid-angular": "^23.1.0",
+    "ag-grid-community": "^23.1.0",
     "aspnet-prerendering": "^3.0.1",
     "bootstrap": "^4.3.1",
     "core-js": "^3.3.3",

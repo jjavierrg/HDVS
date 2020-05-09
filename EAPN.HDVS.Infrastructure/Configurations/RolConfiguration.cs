@@ -18,7 +18,8 @@ namespace EAPN.HDVS.Infrastructure.Configurations
                 new Rol { Id = 1, Descripcion = "user:login" },
                 new Rol { Id = 2, Descripcion = "usermng:read" },
                 new Rol { Id = 3, Descripcion = "usermng:write" },
-                new Rol { Id = 4, Descripcion = "usermng:delete" }
+                new Rol { Id = 4, Descripcion = "usermng:delete" },
+                new Rol { Id = 5, Descripcion = "usermng:access" }
             );
         }
     }

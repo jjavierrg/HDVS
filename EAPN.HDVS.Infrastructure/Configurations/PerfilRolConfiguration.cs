@@ -19,7 +19,8 @@ namespace EAPN.HDVS.Infrastructure.Configurations
                 new PerfilRol { PerfilId = 2, RolId = 1 },
                 new PerfilRol { PerfilId = 2, RolId = 2 },
                 new PerfilRol { PerfilId = 2, RolId = 3 },
-                new PerfilRol { PerfilId = 2, RolId = 4 }
+                new PerfilRol { PerfilId = 2, RolId = 4 },
+                new PerfilRol { PerfilId = 2, RolId = 5 }
             );
         }
     }

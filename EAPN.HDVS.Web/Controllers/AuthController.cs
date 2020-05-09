@@ -9,9 +9,8 @@ using System.Threading.Tasks;
 
 namespace EAPN.HDVS.Web.Controllers
 {
-    [Authorize]
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
         private IUsuarioService _usuarioService;
@@ -25,7 +24,6 @@ namespace EAPN.HDVS.Web.Controllers
             _mapper = mapper;
         }
 
-        [AllowAnonymous]
         [HttpPost]
         [ProducesResponseType(typeof(UserTokenDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -39,7 +37,6 @@ namespace EAPN.HDVS.Web.Controllers
             return _mapper.Map<UserTokenDto>(token);
         }
 
-        [AllowAnonymous]
         [HttpPost("refresh")]
         [ProducesResponseType(typeof(UserTokenDto), StatusCodes.Status200OK)]
         public async Task<ActionResult<UserTokenDto>> RefreshTokenAsync([FromBody]RefreshTokenAttempDto refreshTokenAttempDto)
@@ -52,6 +49,7 @@ namespace EAPN.HDVS.Web.Controllers
             return _mapper.Map<UserTokenDto>(token);
         }
 
+        [Authorize]
         [HttpGet("logout")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Logout()

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { Alert } from '../alert';
+import { Alert } from '../../../models/alert';
 import { timer, Subscription } from 'rxjs';
 
 const step = 100;

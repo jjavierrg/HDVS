@@ -1,5 +1,6 @@
 export const environment = {
   production: true,
   apiEndpoint: 'https://dev.jrgallego.com',
-  tokenLocalStorageKey: 'HDVSApiToken'
+  tokenExcludeEndpoints: ['api/auth/refresh', 'api/auth'],
+  tokenLocalStorageKey: 'HDVSApiToken',
 };

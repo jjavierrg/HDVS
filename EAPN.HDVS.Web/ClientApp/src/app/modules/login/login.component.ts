@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/core/services/authentication.service';
 import { LoadingService } from 'src/app/core/services/loading.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -20,17 +21,16 @@ export class LoginComponent implements OnInit {
     this.loadingService.getLoadingObservable().subscribe((loading) => (this.loading = loading));
   }
 
-  public async onLogin(): Promise<void> {
+  public onLogin(): void {
     this.error = '';
     this.loading = true;
 
-    try {
-      await this.authenticationService.login(this.username, this.password);
-      this.router.navigateByUrl('/');
-    } catch (error) {
-      this.error = error;
-    } finally {
-      this.loading = false;
-    }
+    this.authenticationService
+      .login(this.username, this.password)
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe(
+        (_) => this.router.navigateByUrl('/'),
+        (err) => (this.error = err)
+      );
   }
 }

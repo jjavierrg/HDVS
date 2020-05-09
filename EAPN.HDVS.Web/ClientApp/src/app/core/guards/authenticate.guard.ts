@@ -39,18 +39,20 @@ export class AuthenticatedGuard implements CanActivate, CanActivateChild, CanLoa
     return this.isAuthorized(state.url, next.data.allowedRoles);
   }
 
-  private async isAuthorized(url: string, allowedRoles: string[]): Promise<boolean> {
+  private isAuthorized(url: string, allowedRoles: string[]): Observable<boolean> {
     if (!this.auth.isAuthenticated) {
       this.router.navigateByUrl('/login');
-      return false;
+      return of(false);
     }
 
-    const isAuthorized = await this.auth.isAuthorized(allowedRoles);
-    if (!isAuthorized) {
-      this.router.navigate(['']);
-      return false;
-    }
+    return this.auth.isAuthorized(allowedRoles).pipe(map((isAuthorized) => {
+        if (!isAuthorized) {
+          this.router.navigate(['']);
+          return false;
+        }
 
-    return true;
+        return true;
+      })
+    );
   }
 }

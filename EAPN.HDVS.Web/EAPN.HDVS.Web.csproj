@@ -42,6 +42,7 @@
     <ProjectReference Include="..\EAPN.HDVS.Entities\EAPN.HDVS.Entities.csproj" />
     <ProjectReference Include="..\EAPN.HDVS.Infrastructure.Core\EAPN.HDVS.Infrastructure.Core.csproj" />
     <ProjectReference Include="..\EAPN.HDVS.Infrastructure\EAPN.HDVS.Infrastructure.csproj" />
+    <ProjectReference Include="..\EAPN.HDVS.Shared\EAPN.HDVS.Shared.csproj" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
