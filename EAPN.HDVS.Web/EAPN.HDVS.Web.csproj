@@ -38,6 +38,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200509213016_Initial migration.cs" />
+    <Compile Remove="Migrations\20200509213016_Initial migration.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\EAPN.HDVS.Application\EAPN.HDVS.Application.csproj" />
     <ProjectReference Include="..\EAPN.HDVS.Entities\EAPN.HDVS.Entities.csproj" />
     <ProjectReference Include="..\EAPN.HDVS.Infrastructure.Core\EAPN.HDVS.Infrastructure.Core.csproj" />

@@ -12,6 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\EAPN.HDVS.Entities\EAPN.HDVS.Entities.csproj" />
     <ProjectReference Include="..\EAPN.HDVS.Infrastructure.Core\EAPN.HDVS.Infrastructure.Core.csproj" />
+    <ProjectReference Include="..\EAPN.HDVS.Shared\EAPN.HDVS.Shared.csproj" />
   </ItemGroup>
 
 </Project>

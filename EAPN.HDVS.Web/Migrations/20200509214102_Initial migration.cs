@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EAPN.HDVS.Web.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class Initialmigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -45,7 +45,8 @@ namespace EAPN.HDVS.Web.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Descripcion = table.Column<string>(maxLength: 50, nullable: false)
+                    Descripcion = table.Column<string>(maxLength: 50, nullable: false),
+                    Permiso = table.Column<string>(maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -74,9 +75,12 @@ namespace EAPN.HDVS.Web.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Email = table.Column<string>(maxLength: 250, nullable: false),
+                    Nombre = table.Column<string>(maxLength: 150, nullable: true),
+                    Apellidos = table.Column<string>(maxLength: 150, nullable: true),
                     Hash = table.Column<string>(maxLength: 128, nullable: false),
                     IntentosLogin = table.Column<int>(nullable: false),
                     Activo = table.Column<bool>(nullable: false),
+                    Observaciones = table.Column<string>(nullable: true),
                     FinBloqueo = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
@@ -281,7 +285,7 @@ namespace EAPN.HDVS.Web.Migrations
                     { 100, "Lesoto" },
                     { 101, "Letonia" },
                     { 102, "Líbano" },
-                    { 104, "Libia" },
+                    { 103, "Liberia" },
                     { 105, "Liechtenstein" },
                     { 106, "Lituania" },
                     { 107, "Luxemburgo" },
@@ -350,7 +354,7 @@ namespace EAPN.HDVS.Web.Migrations
                     { 170, "Suecia" },
                     { 148, "República Dominicana" },
                     { 98, "Kuwait" },
-                    { 103, "Liberia" },
+                    { 104, "Libia" },
                     { 96, "Kirguistán" },
                     { 27, "Brunéi" },
                     { 28, "Bulgaria" },
@@ -368,8 +372,8 @@ namespace EAPN.HDVS.Web.Migrations
                     { 40, "Chipre" },
                     { 41, "Ciudad del Vaticano" },
                     { 42, "Colombia" },
-                    { 43, "Comoras" },
                     { 97, "Kiribati" },
+                    { 44, "Corea del Norte" },
                     { 45, "Corea del Sur" },
                     { 46, "Costa de Marfil" },
                     { 37, "Chad" },
@@ -399,12 +403,12 @@ namespace EAPN.HDVS.Web.Migrations
                     { 22, "Birmania" },
                     { 47, "Costa Rica" },
                     { 48, "Croacia" },
-                    { 44, "Corea del Norte" },
+                    { 43, "Comoras" },
                     { 50, "Dinamarca" },
                     { 76, "Guinea-Bisáu" },
                     { 77, "Guinea Ecuatorial" },
+                    { 78, "Haití" },
                     { 49, "Cuba" },
-                    { 79, "Honduras" },
                     { 80, "Hungría" },
                     { 81, "India" },
                     { 82, "Indonesia" },
@@ -423,30 +427,30 @@ namespace EAPN.HDVS.Web.Migrations
                     { 95, "Kenia" },
                     { 86, "Islandia" },
                     { 74, "Guyana" },
-                    { 78, "Haití" },
+                    { 79, "Honduras" },
                     { 72, "Grecia" },
                     { 51, "Dominica" },
                     { 52, "Ecuador" },
                     { 53, "Egipto" },
                     { 54, "El Salvador" },
-                    { 55, "Emiratos Árabes Unidos" },
                     { 73, "Guatemala" },
+                    { 56, "Eritrea" },
                     { 57, "Eslovaquia" },
                     { 58, "Eslovenia" },
                     { 59, "España" },
                     { 60, "Estados Unidos" },
-                    { 56, "Eritrea" },
+                    { 55, "Emiratos Árabes Unidos" },
                     { 62, "Etiopía" },
-                    { 61, "Estonia" },
-                    { 70, "Ghana" },
-                    { 69, "Georgia" },
-                    { 68, "Gambia" },
-                    { 71, "Granada" },
-                    { 66, "Francia" },
-                    { 65, "Fiyi" },
-                    { 64, "Finlandia" },
                     { 63, "Filipinas" },
-                    { 67, "Gabón" }
+                    { 64, "Finlandia" },
+                    { 65, "Fiyi" },
+                    { 66, "Francia" },
+                    { 67, "Gabón" },
+                    { 68, "Gambia" },
+                    { 69, "Georgia" },
+                    { 70, "Ghana" },
+                    { 71, "Granada" },
+                    { 61, "Estonia" }
                 });
 
             migrationBuilder.InsertData(
@@ -455,20 +459,22 @@ namespace EAPN.HDVS.Web.Migrations
                 columns: new[] { "Id", "Descripcion" },
                 values: new object[,]
                 {
-                    { 1, "Usuario" },
-                    { 2, "Administrador" }
+                    { 2, "Administrador" },
+                    { 1, "Usuario" }
                 });
 
             migrationBuilder.InsertData(
                 schema: "dbo",
                 table: "Roles",
-                columns: new[] { "Id", "Descripcion" },
+                columns: new[] { "Id", "Descripcion", "Permiso" },
                 values: new object[,]
                 {
-                    { 1, "user:login" },
-                    { 2, "usermng:read" },
-                    { 3, "usermng:write" },
-                    { 4, "usermng:delete" }
+                    { 1, "Aplicación: Acceder", "user:login" },
+                    { 2, "Usuarios: Lectura", "usermng:read" },
+                    { 3, "Usuarios: Escritura", "usermng:write" },
+                    { 4, "Usuarios: Eliminar", "usermng:delete" },
+                    { 5, "Usuarios: Acceder", "usermng:access" },
+                    { 6, "Usuarios: Superadministrador", "usermng:admin" }
                 });
 
             migrationBuilder.InsertData(
@@ -485,11 +491,11 @@ namespace EAPN.HDVS.Web.Migrations
             migrationBuilder.InsertData(
                 schema: "dbo",
                 table: "Usuarios",
-                columns: new[] { "Id", "Activo", "Email", "FinBloqueo", "Hash", "IntentosLogin" },
+                columns: new[] { "Id", "Activo", "Apellidos", "Email", "FinBloqueo", "Hash", "IntentosLogin", "Nombre", "Observaciones" },
                 values: new object[,]
                 {
-                    { 1, true, "Jjavierrg@gmail.com", null, "$2b$12$sn1hzFuoYJwKxocoCsn3me4gLtEeMG9sJrz/FQQu6XMww3bdoSgOe", 0 },
-                    { 2, true, "test@test.com", null, "$2b$12$vrDFckbZnoXbB9oFeLqqn.UQtnQ2UdYOJC/r6UqrjLfS00LagnO0q", 0 }
+                    { 1, true, "Rodríguez Gallego", "Jjavierrg@gmail.com", null, "$2b$12$sn1hzFuoYJwKxocoCsn3me4gLtEeMG9sJrz/FQQu6XMww3bdoSgOe", 0, "José Javier", null },
+                    { 2, true, "Test", "test@test.com", null, "$2b$12$vrDFckbZnoXbB9oFeLqqn.UQtnQ2UdYOJC/r6UqrjLfS00LagnO0q", 0, "Test", null }
                 });
 
             migrationBuilder.InsertData(
@@ -502,7 +508,8 @@ namespace EAPN.HDVS.Web.Migrations
                     { 2, 1 },
                     { 2, 2 },
                     { 2, 3 },
-                    { 2, 4 }
+                    { 2, 4 },
+                    { 2, 5 }
                 });
 
             migrationBuilder.InsertData(
@@ -514,6 +521,12 @@ namespace EAPN.HDVS.Web.Migrations
                     { 1, 2 },
                     { 2, 1 }
                 });
+
+            migrationBuilder.InsertData(
+                schema: "dbo",
+                table: "UsuariosRoles",
+                columns: new[] { "UsuarioId", "RolId" },
+                values: new object[] { 1, 6 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Direcciones_PersonaId",

@@ -5,6 +5,7 @@ import { Roles } from '../../../../core/enums/roles.enum';
 import { CheckboxCellComponent } from 'src/app/shared/modules/grid/checkbox-cell/checkbox-cell.component';
 import { DescriptionArrayCellComponent } from 'src/app/shared/modules/grid/array-cell/description-array-cell.component';
 import { Router, ActivatedRoute } from '@angular/router';
+import { UserManagementService } from 'src/app/core/services/user-management.service';
 
 @Component({
   selector: 'app-user-management-list',
@@ -50,13 +51,19 @@ export class UserManagementListComponent implements OnInit {
     },
   ];
 
-  constructor(private apiclient: ApiClient, private router: Router, private activatedRoute: ActivatedRoute) {}
+  constructor(private service: UserManagementService, private router: Router, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
-    this.apiclient.getUsarios().subscribe((usuarios) => (this.usuarios = usuarios));
+    this.service.getUsuarios().subscribe((usuarios) => (this.usuarios = usuarios));
   }
 
   public onNewUser(): void {
     this.router.navigate(['nuevo'], { relativeTo: this.activatedRoute });
+  }
+
+  public onEditUser(usuario: UsuarioDto): void {
+    if (!!usuario) {
+      this.router.navigate([usuario.id], { relativeTo: this.activatedRoute });
+    }
   }
 }

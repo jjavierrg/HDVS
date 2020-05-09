@@ -6,6 +6,7 @@ import { HeaderModule } from 'src/app/core/header/header.module';
 import { FooterComponent } from 'src/app/core/footer/footer/footer.component';
 import { AuthenticatedGuard } from 'src/app/core/guards/authenticate.guard';
 import { Roles } from 'src/app/core/enums/roles.enum';
+import { AlertModule } from 'src/app/shared/modules/alert/alert.module';
 
 const routes: Routes = [
   {
@@ -28,7 +29,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [DashboardComponent, FooterComponent],
-  imports: [CommonModule, HeaderModule, RouterModule.forChild(routes)],
+  imports: [CommonModule, HeaderModule, RouterModule.forChild(routes), AlertModule],
   exports: [DashboardComponent],
 })
 export class DashboardModule {}

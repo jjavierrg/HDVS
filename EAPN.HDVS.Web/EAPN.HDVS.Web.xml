@@ -4,5 +4,137 @@
         <name>EAPN.HDVS.Web</name>
     </assembly>
     <members>
+        <member name="M:EAPN.HDVS.Web.Controllers.RolesController.#ctor(EAPN.HDVS.Application.Core.Services.IReadServiceBase{EAPN.HDVS.Entities.Rol},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.RolesController},AutoMapper.IMapper)">
+            <summary>
+            </summary>
+            <param name="rolService"></param>
+            <param name="logger"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.RolesController.GetRoles">
+            <summary>
+            Obtiene los roles almacenados en la aplicación
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.RolesController.GetRol(System.Int32)">
+            <summary>
+            Obtiene un rol específico
+            </summary>
+            <param name="id">Identificador del rol a obtener</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.RolesController.GetSuperadminExclusionFilter">
+            <summary>
+            Obtiene la consulta para filtrar a los superadministradores de las consultas
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.UsuariosController.#ctor(EAPN.HDVS.Application.Services.User.IUsuarioService,Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.UsuariosController},AutoMapper.IMapper,EAPN.HDVS.Infrastructure.Core.Queries.IFilterPaginable{EAPN.HDVS.Entities.Usuario})">
+            <summary>
+            </summary>
+            <param name="usuarioService"></param>
+            <param name="logger"></param>
+            <param name="mapper"></param>
+            <param name="filterPaginator"></param>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.UsuariosController.GetUsuarios">
+            <summary>
+            Obtiene los usuarios almacenados en la aplicación
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.UsuariosController.GetUsuario(System.Int32)">
+            <summary>
+            Obtiene un usuario específico
+            </summary>
+            <param name="id">Identificador el usuario a obtener</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.UsuariosController.GetUsuariosFiltered(EAPN.HDVS.Infrastructure.Core.Queries.IQueryData)">
+            <summary>
+            Obtiene un listado de usuarios con los filtros establecidos
+            </summary>
+            <param name="query">Filtros para realizar la consulta</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.UsuariosController.PostUsuario(EAPN.HDVS.Web.Dto.UsuarioDto)">
+            <summary>
+            Registra un usuario nuevo
+            </summary>
+            <param name="usuarioDto">Datos del usuario a crear</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.UsuariosController.PutUsuario(System.Int32,EAPN.HDVS.Web.Dto.UsuarioDto)">
+            <summary>
+            Actualiza un usuario existente con los nuevos datos
+            </summary>
+            <param name="id">Identificador del usuario a actualizar</param>
+            <param name="usuarioDto">Nuevos datos del usuario</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.UsuariosController.DeleteUsuario(System.Int32)">
+            <summary>
+            Elimina un usuario
+            </summary>
+            <param name="id">Identificador del usuario a eliminar</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.UsuariosController.GetSuperadminExclusionFilter">
+            <summary>
+            Obtiene la consulta para filtrar a los superadministradores de las consultas
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Contperfillers.PerfilesController.#ctor(EAPN.HDVS.Application.Core.Services.IReadServiceBase{EAPN.HDVS.Entities.Perfil},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Contperfillers.PerfilesController},AutoMapper.IMapper)">
+            <summary>
+            </summary>
+            <param name="perfilService"></param>
+            <param name="logger"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Contperfillers.PerfilesController.GetPerfiles">
+            <summary>
+            Obtiene los perfiles almacenados en la aplicación
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Contperfillers.PerfilesController.GetPerfil(System.Int32)">
+            <summary>
+            Obtiene un perfil específico
+            </summary>
+            <param name="id">Identificador del perfil a obtener</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Contperfillers.PerfilesController.GetSuperadminExclusionFilter">
+            <summary>
+            Obtiene la consulta para filtrar perfiles de superadministrador
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Security.SymmetricTokenService.#ctor(EAPN.HDVS.Application.Models.ITokenConfiguration)">
+            <summary>
+            </summary>
+            <param name="tokenConfiguration"></param>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Security.SymmetricTokenService.GetRefreshTokenLifeMinutes">
+            <summary>
+            Obtiene los minutos de válidez de un token de refresco (por defecto 1 día)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Security.SymmetricTokenService.GenerateTokenForUser(EAPN.HDVS.Entities.Usuario)">
+            <summary>
+            Genera un token de acceso válido para un usuario
+            </summary>
+            <param name="user"></param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Security.SymmetricTokenService.GenerateRefreshToken">
+            <summary>
+            Genera una cadena aleatoria para ser utilizada como token de refresco
+            </summary>
+            <returns></returns>
+        </member>
     </members>
 </doc>

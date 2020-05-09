@@ -9,7 +9,7 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
 import { CoreModule } from './core/core.module';
 import { environment } from 'src/environments/environment';
-import { LoaderComponent } from './shared/modules/loader/loader/loader.component';
+import { LoaderModule } from './shared/modules/loader/loader.module';
 
 const routes: Routes = [
   {
@@ -29,8 +29,14 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, LoaderComponent],
-  imports: [CoreModule, BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }), HttpClientModule, RouterModule.forRoot(routes)],
+  declarations: [AppComponent],
+  imports: [
+    CoreModule,
+    BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+    HttpClientModule,
+    RouterModule.forRoot(routes),
+    LoaderModule,
+  ],
   providers: [
     ApiClient,
     {

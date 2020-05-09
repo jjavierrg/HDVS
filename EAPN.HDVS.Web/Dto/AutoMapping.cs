@@ -16,9 +16,9 @@ namespace EAPN.HDVS.Web.Dto
                 .ForMember(d => d.Perfiles, opt => opt.MapFrom((src, dest) => src.Perfiles?.Select(x => x.Perfil).Distinct()))
                 .ForMember(d => d.RolesAdicionales, opt => opt.MapFrom((src, dest) => src.RolesAdicionales?.Select(x => x.Rol).Distinct()))
                 .ReverseMap()
-                .ForMember(x => x.Hash, o => o.Ignore())
-                .ForMember(d => d.Perfiles, opt => opt.MapFrom((src, dest) => src.Perfiles?.Select(x => new UsuarioPerfil { PerfilId = x.Id, UsuarioId = src.Id, Perfil = new Perfil { Id = x.Id, Descripcion = x.Descripcion } })))
-                .ForMember(d => d.RolesAdicionales, opt => opt.MapFrom((src, dest) => src.RolesAdicionales?.Select(x => new UsuarioRol { RolId = x.Id, UsuarioId = src.Id, Rol = new Rol { Id = x.Id, Descripcion = x.Descripcion } })));
+                .ForMember(x => x.Hash, o => o.MapFrom(src => src.Clave))
+                .ForMember(d => d.Perfiles, opt => opt.MapFrom((src, dest) => src.Perfiles?.Select(x => new UsuarioPerfil { PerfilId = x.Id, UsuarioId = src.Id })))
+                .ForMember(d => d.RolesAdicionales, opt => opt.MapFrom((src, dest) => src.RolesAdicionales?.Select(x => new UsuarioRol { RolId = x.Id, UsuarioId = src.Id})));
 
             CreateMap<Rol, RolDto>().ReverseMap();
             CreateMap<Perfil, PerfilDto>().ReverseMap();

@@ -6,7 +6,7 @@ import { GridModule } from 'src/app/shared/modules/grid/grid.module';
 import { UserManagementListComponent } from './user-management-list/user-management-list.component';
 import { UserManagementFormComponent } from './user-management-form/user-management-form.component';
 import { InputModule } from 'src/app/shared/modules/input/input.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { AuthenticatedGuard } from 'src/app/core/guards/authenticate.guard';
 import { Roles } from 'src/app/core/enums/roles.enum';
 
@@ -31,6 +31,6 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [UserManagementListComponent, UserManagementFormComponent],
-  imports: [CoreModule, CommonModule, GridModule, RouterModule.forChild(routes), InputModule, ReactiveFormsModule],
+  imports: [CoreModule, CommonModule, GridModule, RouterModule.forChild(routes), InputModule, FormsModule],
 })
 export class UserManagementModule {}

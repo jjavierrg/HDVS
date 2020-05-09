@@ -1,0 +1,6 @@
+<div *ngIf="form.touched && errors?.length > 0" class="alert alert-danger" role="alert">
+  <p>Errores en el formulario:</p>
+  <ul>
+    <li *ngFor="let error of errors" [innerHTML]="error"></li>
+  </ul>
+</div>

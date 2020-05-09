@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EAPN.HDVS.Web.Migrations
 {
     [DbContext(typeof(HDVSContext))]
-    [Migration("20200429234827_Initial Migration")]
-    partial class InitialMigration
+    [Migration("20200509214102_Initial migration")]
+    partial class Initialmigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -1115,6 +1115,11 @@ namespace EAPN.HDVS.Web.Migrations
                         {
                             PerfilId = 2,
                             RolId = 4
+                        },
+                        new
+                        {
+                            PerfilId = 2,
+                            RolId = 5
                         });
                 });
 
@@ -1221,6 +1226,12 @@ namespace EAPN.HDVS.Web.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
+                    b.Property<string>("Permiso")
+                        .IsRequired()
+                        .HasColumnName("Permiso")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
                     b.HasKey("Id");
 
                     b.ToTable("Roles","dbo");
@@ -1229,22 +1240,38 @@ namespace EAPN.HDVS.Web.Migrations
                         new
                         {
                             Id = 1,
-                            Descripcion = "user:login"
+                            Descripcion = "Aplicación: Acceder",
+                            Permiso = "user:login"
                         },
                         new
                         {
                             Id = 2,
-                            Descripcion = "usermng:read"
+                            Descripcion = "Usuarios: Lectura",
+                            Permiso = "usermng:read"
                         },
                         new
                         {
                             Id = 3,
-                            Descripcion = "usermng:write"
+                            Descripcion = "Usuarios: Escritura",
+                            Permiso = "usermng:write"
                         },
                         new
                         {
                             Id = 4,
-                            Descripcion = "usermng:delete"
+                            Descripcion = "Usuarios: Eliminar",
+                            Permiso = "usermng:delete"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Descripcion = "Usuarios: Acceder",
+                            Permiso = "usermng:access"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Descripcion = "Usuarios: Superadministrador",
+                            Permiso = "usermng:admin"
                         });
                 });
 
@@ -1296,6 +1323,11 @@ namespace EAPN.HDVS.Web.Migrations
                         .HasColumnName("Activo")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Apellidos")
+                        .HasColumnName("Apellidos")
+                        .HasColumnType("nvarchar(150)")
+                        .HasMaxLength(150);
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnName("Email")
@@ -1316,6 +1348,15 @@ namespace EAPN.HDVS.Web.Migrations
                         .HasColumnName("IntentosLogin")
                         .HasColumnType("int");
 
+                    b.Property<string>("Nombre")
+                        .HasColumnName("Nombre")
+                        .HasColumnType("nvarchar(150)")
+                        .HasMaxLength(150);
+
+                    b.Property<string>("Observaciones")
+                        .HasColumnName("Observaciones")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Usuarios","dbo");
@@ -1325,17 +1366,21 @@ namespace EAPN.HDVS.Web.Migrations
                         {
                             Id = 1,
                             Activo = true,
+                            Apellidos = "Rodríguez Gallego",
                             Email = "Jjavierrg@gmail.com",
                             Hash = "$2b$12$sn1hzFuoYJwKxocoCsn3me4gLtEeMG9sJrz/FQQu6XMww3bdoSgOe",
-                            IntentosLogin = 0
+                            IntentosLogin = 0,
+                            Nombre = "José Javier"
                         },
                         new
                         {
                             Id = 2,
                             Activo = true,
+                            Apellidos = "Test",
                             Email = "test@test.com",
                             Hash = "$2b$12$vrDFckbZnoXbB9oFeLqqn.UQtnQ2UdYOJC/r6UqrjLfS00LagnO0q",
-                            IntentosLogin = 0
+                            IntentosLogin = 0,
+                            Nombre = "Test"
                         });
                 });
 
@@ -1383,6 +1428,13 @@ namespace EAPN.HDVS.Web.Migrations
                     b.HasIndex("RolId");
 
                     b.ToTable("UsuariosRoles","dbo");
+
+                    b.HasData(
+                        new
+                        {
+                            UsuarioId = 1,
+                            RolId = 6
+                        });
                 });
 
             modelBuilder.Entity("EAPN.HDVS.Entities.Direccion", b =>

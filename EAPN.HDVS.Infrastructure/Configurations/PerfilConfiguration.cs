@@ -17,8 +17,8 @@ namespace EAPN.HDVS.Infrastructure.Configurations
             builder.HasMany(x => x.Roles).WithOne(x => x.Perfil).HasForeignKey(x => x.PerfilId).OnDelete(DeleteBehavior.Cascade);
 
             builder.HasData(
-                new Rol { Id = 1, Descripcion = "Usuario" },
-                new Rol { Id = 2, Descripcion = "Administrador" }
+                new Perfil { Id = 1, Descripcion = "Usuario" },
+                new Perfil { Id = 2, Descripcion = "Administrador" }
             );
         }
     }

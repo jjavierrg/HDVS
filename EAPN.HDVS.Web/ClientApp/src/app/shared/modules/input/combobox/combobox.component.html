@@ -1,0 +1,8 @@
+<div ngbDropdown class="w-100 d-flex">
+  <button type="button" class="form-control d-flex align-items-center" ngbDropdownToggle [disabled]="disabled">
+    <span class="w-100 text-left text-truncate">{{ getControlText() }}</span>
+  </button>
+  <div ngbDropdownMenu aria-labelledby="singleDropdown" class="w-100">
+    <button ngbDropdownItem *ngFor="let item of data" (click)="onValueChanged(item)">{{ getItemText(item) }}</button>
+  </div>
+</div>

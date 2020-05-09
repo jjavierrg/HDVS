@@ -139,10 +139,10 @@ namespace EAPN.HDVS.Application.Services.User
             usuario.Id = 0;
             usuario.FinBloqueo = null;
 
-            Logger.LogInformation($"Se ha creado el usuario {usuario.Email}");
-
             Add(usuario);
             await SaveChangesAsync();
+
+            Logger.LogInformation($"Se ha creado el usuario {usuario.Email}");
 
             return usuario;
         }
