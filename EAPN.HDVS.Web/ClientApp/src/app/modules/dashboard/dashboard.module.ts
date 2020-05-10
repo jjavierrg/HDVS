@@ -21,6 +21,7 @@ const routes: Routes = [
         path: 'usuarios',
         loadChildren: () => import('./user-management/user-management.module').then((m) => m.UserManagementModule),
         canLoad: [AuthenticatedGuard],
+        canActivate: [AuthenticatedGuard],
         data: { allowedRoles: [Roles.usermanagement.access] },
       },
     ],

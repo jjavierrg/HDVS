@@ -18,14 +18,14 @@ namespace EAPN.HDVS.Application.Core.Services
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        public T Add(T item)
+        public virtual T Add(T item)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
             _repository.Add(item);
             return item;
         }
 
-        public IEnumerable<T> AddRange(IEnumerable<T> items)
+        public virtual IEnumerable<T> AddRange(IEnumerable<T> items)
         {
             if (items == null) throw new ArgumentNullException(nameof(items));
             if (!items.Any()) return items;
@@ -34,13 +34,13 @@ namespace EAPN.HDVS.Application.Core.Services
             return items;
         }
 
-        public void Remove(T item)
+        public virtual void Remove(T item)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
             _repository.Remove(item);
         }
 
-        public void RemoveRange(IEnumerable<T> items)
+        public virtual void RemoveRange(IEnumerable<T> items)
         {
             if (items == null) throw new ArgumentNullException(nameof(items));
             if (!items.Any()) return;
@@ -48,19 +48,19 @@ namespace EAPN.HDVS.Application.Core.Services
             _repository.RemoveRange(items);
         }
 
-        public void RemoveRange(Expression<Func<T, bool>> filter)
+        public virtual void RemoveRange(Expression<Func<T, bool>> filter)
         {
             if (filter == null) throw new ArgumentNullException(nameof(filter));
             _repository.RemoveRange(filter);
         }
 
-        public void Update(T item)
+        public virtual void Update(T item)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
             _repository.Update(item);
         }
 
-        public void UpdateRange(IEnumerable<T> items)
+        public virtual void UpdateRange(IEnumerable<T> items)
         {
             if (items == null) throw new ArgumentNullException(nameof(items));
             if (!items.Any()) return;

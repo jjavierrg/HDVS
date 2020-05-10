@@ -39,7 +39,7 @@ namespace EAPN.HDVS.Web.Controllers
         }
 
         /// <summary>
-        /// Obtiene los roles almacenados en la aplicación
+        /// Get all stored items
         /// </summary>
         /// <returns></returns>
         [HttpGet(Name = "GetRoles")]
@@ -52,9 +52,9 @@ namespace EAPN.HDVS.Web.Controllers
         }
 
         /// <summary>
-        /// Obtiene un rol específico
+        /// Get the item with the specified identifier
         /// </summary>
-        /// <param name="id">Identificador del rol a obtener</param>
+        /// <param name="id">Item identifier</param>
         /// <returns></returns>
         [HttpGet("{id}", Name = "GetRol")]
         [Authorize(Roles = Roles.USERMANAGEMENT_READ)]
@@ -71,7 +71,7 @@ namespace EAPN.HDVS.Web.Controllers
         }
 
         /// <summary>
-        /// Obtiene la consulta para filtrar a los superadministradores de las consultas
+        /// Role with superadmin permission exclusion filter
         /// </summary>
         /// <returns></returns>
         private Expression<Func<Rol, bool>> GetSuperadminExclusionFilter()

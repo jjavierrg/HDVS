@@ -43,7 +43,7 @@ namespace EAPN.HDVS.Web.Controllers
         }
 
         /// <summary>
-        /// Obtiene los usuarios almacenados en la aplicación
+        /// Get all stored items
         /// </summary>
         /// <returns></returns>
         [HttpGet(Name = "GetUsuarios")]
@@ -56,9 +56,9 @@ namespace EAPN.HDVS.Web.Controllers
         }
 
         /// <summary>
-        /// Obtiene un usuario específico
+        /// Get the item with the specified identifier
         /// </summary>
-        /// <param name="id">Identificador el usuario a obtener</param>
+        /// <param name="id">Item identifier</param>
         /// <returns></returns>
         [HttpGet("{id}", Name = "GetUsuario")]
         [Authorize(Roles = Roles.USERMANAGEMENT_READ)]
@@ -77,9 +77,9 @@ namespace EAPN.HDVS.Web.Controllers
         }
 
         /// <summary>
-        /// Obtiene un listado de usuarios con los filtros establecidos
+        /// Get all items with a specific criteria filter
         /// </summary>
-        /// <param name="query">Filtros para realizar la consulta</param>
+        /// <param name="query">Query criteria filter</param>
         /// <returns></returns>
         [HttpPost("filtered", Name = "GetUsuariosFiltered")]
         [Authorize(Roles = Roles.USERMANAGEMENT_READ)]
@@ -91,9 +91,9 @@ namespace EAPN.HDVS.Web.Controllers
         }
 
         /// <summary>
-        /// Registra un usuario nuevo
+        /// Add new item to collection
         /// </summary>
-        /// <param name="usuarioDto">Datos del usuario a crear</param>
+        /// <param name="usuarioDto">Item data</param>
         /// <returns></returns>
         [Authorize(Roles = Roles.USERMANAGEMENT_WRITE)]
         [ProducesResponseType(typeof(UsuarioDto), StatusCodes.Status201Created)]
@@ -107,10 +107,10 @@ namespace EAPN.HDVS.Web.Controllers
         }
 
         /// <summary>
-        /// Actualiza un usuario existente con los nuevos datos
+        /// Update an existing item
         /// </summary>
-        /// <param name="id">Identificador del usuario a actualizar</param>
-        /// <param name="usuarioDto">Nuevos datos del usuario</param>
+        /// <param name="id">Item identifier</param>
+        /// <param name="usuarioDto">Item data</param>
         /// <returns></returns>
         [Authorize(Roles = Roles.USERMANAGEMENT_WRITE)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -122,16 +122,16 @@ namespace EAPN.HDVS.Web.Controllers
                 return BadRequest();
 
             var usuario = _mapper.Map<Usuario>(usuarioDto);
-            _usuarioService.Update(usuario);
+            _usuarioService.UpdateWithtPass(usuario);
             await _usuarioService.SaveChangesAsync();
 
             return NoContent();
         }
 
         /// <summary>
-        /// Elimina un usuario
+        /// Delete existing item
         /// </summary>
-        /// <param name="id">Identificador del usuario a eliminar</param>
+        /// <param name="id">Item identifier</param>
         /// <returns></returns>
         [Authorize(Roles = Roles.USERMANAGEMENT_DELETE)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -155,7 +155,7 @@ namespace EAPN.HDVS.Web.Controllers
         }
 
         /// <summary>
-        /// Obtiene la consulta para filtrar a los superadministradores de las consultas
+        /// Users with superadmin permission exclusion filter
         /// </summary>
         /// <returns></returns>
         private Expression<Func<Usuario, bool>> GetSuperadminExclusionFilter()

@@ -53,6 +53,10 @@ export class UserManagementFormComponent implements OnInit {
     }
   }
 
+  public async onCancel(): Promise<void> {
+    await this.router.navigate(['../'], { relativeTo: this.route });
+  }
+
   private async saveUser(usuario: UsuarioDto): Promise<boolean> {
     if (!usuario) {
       this.alertService.warning('No se han podido leer los datos introducidos');

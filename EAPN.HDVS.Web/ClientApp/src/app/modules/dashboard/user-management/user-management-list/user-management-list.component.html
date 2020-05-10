@@ -1,3 +1,35 @@
-<app-grid [data]="usuarios" [columns]="columns" [rolesAddButton]="[roles.usermanagement.write]"
-  [rolesEditButton]="[roles.usermanagement.write]" [rolesDeleteButton]="[roles.usermanagement.delete]" (addItem)="onNewUser()" (editItem)="onEditUser($event)">
+<app-grid
+  [data]="usuarios"
+  [columns]="columns"
+  [rolesAddButton]="[roles.usermanagement.write]"
+  [rolesEditButton]="[roles.usermanagement.write]"
+  [rolesDeleteButton]="[roles.usermanagement.delete]"
+  (addItem)="onNewUser()"
+  (editItem)="onEditUser($event)"
+  (deleteItems)="onDeleteUsers($event, deleteModal)"
+>
 </app-grid>
+
+<!-- Delete confirmation -->
+<ng-template #deleteModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-title">Confirmar eliminación</h4>
+    <button type="button" class="close" aria-label="Close button" aria-describedby="modal-title" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>
+      <strong>¿Está seguro de querer eliminar los usuarios seleccionados?</strong>
+    </p>
+    <p>
+      Toda la información asociada a estos usuarios será eliminada por completo.
+      Tenga en cuenta que esta operación
+      <span class="text-danger">no se puede deshacer.</span>
+    </p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss()">Cancelar</button>
+    <button type="button" ngbAutofocus class="btn btn-danger" (click)="modal.close(true)">Eliminar</button>
+  </div>
+</ng-template>

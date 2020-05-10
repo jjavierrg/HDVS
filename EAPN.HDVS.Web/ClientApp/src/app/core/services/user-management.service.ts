@@ -42,4 +42,16 @@ export class UserManagementService {
     const dto = new UsuarioDto({ ...usuario, clave: usuario.clave ? sha3_512(usuario.clave) : '' });
     return this.apiClient.putUsuario(dto.id, dto);
   }
+
+  public async deleteUsuarios(usuarios: UsuarioDto[]): Promise<boolean> {
+    if (!usuarios || !usuarios.length) {
+      return;
+    }
+
+    for (const usuario of usuarios) {
+      await this.apiClient.deleteUsuario(usuario.id).toPromise();
+    }
+
+    return true;
+  }
 }

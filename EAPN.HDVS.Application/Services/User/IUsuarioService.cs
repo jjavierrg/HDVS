@@ -1,6 +1,7 @@
 ﻿using EAPN.HDVS.Application.Core.Services;
 using EAPN.HDVS.Application.Models;
 using EAPN.HDVS.Entities;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -38,5 +39,17 @@ namespace EAPN.HDVS.Application.Services.User
         /// <param name="user">User Principal</param>
         /// <returns>New extended User Token</returns>
         Task<UserToken> RefreshTokenAsync(string refreshToken, int userId);
+
+        /// <summary>
+        /// Store user changes and update password field
+        /// </summary>
+        /// <param name="usuario">User data to update</param>
+        void UpdateWithtPass(Usuario usuario);
+
+        /// <summary>
+        /// Store a range of user changes and update their password field
+        /// </summary>
+        /// <param name="usuarios">user list to update</param>
+        void UpdateRangeWithtPass(IEnumerable<Usuario> usuarios);
     }
 }

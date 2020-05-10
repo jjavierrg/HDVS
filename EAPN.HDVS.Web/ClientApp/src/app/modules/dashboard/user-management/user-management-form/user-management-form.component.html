@@ -5,7 +5,7 @@
       <form (ngSubmit)="onSaveUser()" #userForm="ngForm">
         <div class="form-row">
           <div class="form-group col-md-6">
-            <label for="inputNombre">Nombre</label>
+            <label for="inputNombre">Nombre *</label>
             <input
               id="inputNombre"
               type="text"
@@ -24,7 +24,6 @@
               type="text"
               class="form-control"
               placeholder="Apellidos"
-              required
               [(ngModel)]="usuario.apellidos"
               name="Apellidos"
               #nombreCtrl="ngModel"
@@ -33,7 +32,7 @@
         </div>
         <div class="form-row">
           <div class="form-group col-md-6">
-            <label for="inputEmail">Email</label>
+            <label for="inputEmail">Email *</label>
             <input
               id="inputEmail"
               type="email"
@@ -47,7 +46,7 @@
             />
           </div>
           <div class="form-group col-md-6">
-            <label for="inputPassword">{{ editing ? 'Nueva contraseña' : 'Contraseña' }}</label>
+            <label for="inputPassword">{{ editing ? 'Nueva contraseña' : 'Contraseña *' }}</label>
             <input
               id="inputPassword"
               type="password"
@@ -57,12 +56,13 @@
               name="Contraseña"
               #claveCtrl="ngModel"
               minlength="6"
+              [required]="!editing"
             />
           </div>
         </div>
         <div class="form-row">
           <div class="form-group col-md-6">
-            <label for="inputProfile">Perfiles</label>
+            <label for="inputProfile">Perfiles *</label>
             <app-combobox-multiple
               displayField="descripcion"
               placeholder="Perfiles"
@@ -90,7 +90,10 @@
         <div class="form-group">
           <app-checkbox label="Activo" [(ngModel)]="usuario.activo" name="activo" #activoCtrl="ngModel"></app-checkbox>
         </div>
-        <button type="submit" class="btn btn-primary" [disabled]="userForm.invalid">Guardar</button>
+        <div class="form-group float-right">
+          <button type="button" class="btn btn-light" (click)="onCancel()">Cancelar</button>
+          <button type="submit" class="btn btn-primary ml-2" [disabled]="userForm.invalid">Guardar</button>
+        </div>
       </form>
     </div>
   </div>

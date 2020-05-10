@@ -39,7 +39,7 @@ namespace EAPN.HDVS.Web.Contperfillers
         }
 
         /// <summary>
-        /// Obtiene los perfiles almacenados en la aplicación
+        /// Get all stored items
         /// </summary>
         /// <returns></returns>
         [HttpGet(Name = "GetPerfiles")]
@@ -52,9 +52,9 @@ namespace EAPN.HDVS.Web.Contperfillers
         }
 
         /// <summary>
-        /// Obtiene un perfil específico
+        /// Get the item with the specified identifier
         /// </summary>
-        /// <param name="id">Identificador del perfil a obtener</param>
+        /// <param name="id">Item identifier</param>
         /// <returns></returns>
         [HttpGet("{id}", Name = "GetPerfil")]
         [Authorize(Roles = Roles.USERMANAGEMENT_READ)]
@@ -71,7 +71,7 @@ namespace EAPN.HDVS.Web.Contperfillers
         }
 
         /// <summary>
-        /// Obtiene la consulta para filtrar perfiles de superadministrador
+        /// Profiles with superadmin permission exclusion filter
         /// </summary>
         /// <returns></returns>
         private Expression<Func<Perfil, bool>> GetSuperadminExclusionFilter()

@@ -13,20 +13,20 @@
         </member>
         <member name="M:EAPN.HDVS.Web.Controllers.RolesController.GetRoles">
             <summary>
-            Obtiene los roles almacenados en la aplicación
+            Get all stored items
             </summary>
             <returns></returns>
         </member>
         <member name="M:EAPN.HDVS.Web.Controllers.RolesController.GetRol(System.Int32)">
             <summary>
-            Obtiene un rol específico
+            Get the item with the specified identifier
             </summary>
-            <param name="id">Identificador del rol a obtener</param>
+            <param name="id">Item identifier</param>
             <returns></returns>
         </member>
         <member name="M:EAPN.HDVS.Web.Controllers.RolesController.GetSuperadminExclusionFilter">
             <summary>
-            Obtiene la consulta para filtrar a los superadministradores de las consultas
+            Role with superadmin permission exclusion filter
             </summary>
             <returns></returns>
         </member>
@@ -40,49 +40,49 @@
         </member>
         <member name="M:EAPN.HDVS.Web.Controllers.UsuariosController.GetUsuarios">
             <summary>
-            Obtiene los usuarios almacenados en la aplicación
+            Get all stored items
             </summary>
             <returns></returns>
         </member>
         <member name="M:EAPN.HDVS.Web.Controllers.UsuariosController.GetUsuario(System.Int32)">
             <summary>
-            Obtiene un usuario específico
+            Get the item with the specified identifier
             </summary>
-            <param name="id">Identificador el usuario a obtener</param>
+            <param name="id">Item identifier</param>
             <returns></returns>
         </member>
         <member name="M:EAPN.HDVS.Web.Controllers.UsuariosController.GetUsuariosFiltered(EAPN.HDVS.Infrastructure.Core.Queries.IQueryData)">
             <summary>
-            Obtiene un listado de usuarios con los filtros establecidos
+            Get all items with a specific criteria filter
             </summary>
-            <param name="query">Filtros para realizar la consulta</param>
+            <param name="query">Query criteria filter</param>
             <returns></returns>
         </member>
         <member name="M:EAPN.HDVS.Web.Controllers.UsuariosController.PostUsuario(EAPN.HDVS.Web.Dto.UsuarioDto)">
             <summary>
-            Registra un usuario nuevo
+            Add new item to collection
             </summary>
-            <param name="usuarioDto">Datos del usuario a crear</param>
+            <param name="usuarioDto">Item data</param>
             <returns></returns>
         </member>
         <member name="M:EAPN.HDVS.Web.Controllers.UsuariosController.PutUsuario(System.Int32,EAPN.HDVS.Web.Dto.UsuarioDto)">
             <summary>
-            Actualiza un usuario existente con los nuevos datos
+            Update an existing item
             </summary>
-            <param name="id">Identificador del usuario a actualizar</param>
-            <param name="usuarioDto">Nuevos datos del usuario</param>
+            <param name="id">Item identifier</param>
+            <param name="usuarioDto">Item data</param>
             <returns></returns>
         </member>
         <member name="M:EAPN.HDVS.Web.Controllers.UsuariosController.DeleteUsuario(System.Int32)">
             <summary>
-            Elimina un usuario
+            Delete existing item
             </summary>
-            <param name="id">Identificador del usuario a eliminar</param>
+            <param name="id">Item identifier</param>
             <returns></returns>
         </member>
         <member name="M:EAPN.HDVS.Web.Controllers.UsuariosController.GetSuperadminExclusionFilter">
             <summary>
-            Obtiene la consulta para filtrar a los superadministradores de las consultas
+            Users with superadmin permission exclusion filter
             </summary>
             <returns></returns>
         </member>
@@ -95,20 +95,20 @@
         </member>
         <member name="M:EAPN.HDVS.Web.Contperfillers.PerfilesController.GetPerfiles">
             <summary>
-            Obtiene los perfiles almacenados en la aplicación
+            Get all stored items
             </summary>
             <returns></returns>
         </member>
         <member name="M:EAPN.HDVS.Web.Contperfillers.PerfilesController.GetPerfil(System.Int32)">
             <summary>
-            Obtiene un perfil específico
+            Get the item with the specified identifier
             </summary>
-            <param name="id">Identificador del perfil a obtener</param>
+            <param name="id">Item identifier</param>
             <returns></returns>
         </member>
         <member name="M:EAPN.HDVS.Web.Contperfillers.PerfilesController.GetSuperadminExclusionFilter">
             <summary>
-            Obtiene la consulta para filtrar perfiles de superadministrador
+            Profiles with superadmin permission exclusion filter
             </summary>
             <returns></returns>
         </member>

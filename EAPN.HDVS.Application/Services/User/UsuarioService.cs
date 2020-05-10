@@ -8,7 +8,6 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -152,6 +151,39 @@ namespace EAPN.HDVS.Application.Services.User
             return Repository.EntitySet.Include(x => x.Perfiles).ThenInclude(x => x.Perfil).ThenInclude(x => x.Roles).ThenInclude(x => x.Rol)
                     .Include(x => x.RolesAdicionales).ThenInclude(x => x.Rol)
                     .Include(x => x.Tokens);
+        }
+
+        public void UpdateWithtPass(Usuario usuario)
+        {
+            if (!string.IsNullOrWhiteSpace(usuario.Hash))
+                usuario.Hash = _passwordService.HashPassword(usuario.Hash);
+
+            base.Update(usuario);
+        }
+
+        public override void Update(Usuario item)
+        {
+            item.Hash = string.Empty;
+            base.Update(item);
+        }
+
+        public void UpdateRangeWithtPass(IEnumerable<Usuario> usuarios)
+        {
+            foreach (var usuario in usuarios)
+            {
+                if (!string.IsNullOrWhiteSpace(usuario.Hash))
+                    usuario.Hash = _passwordService.HashPassword(usuario.Hash);
+            }
+
+            base.UpdateRange(usuarios);
+        }
+
+        public override void UpdateRange(IEnumerable<Usuario> items)
+        {
+            foreach (var item in items)
+                item.Hash = string.Empty;
+
+            base.UpdateRange(items);
         }
     }
 }

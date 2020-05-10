@@ -9,6 +9,7 @@ import { RowNode, SelectionChangedEvent } from 'ag-grid-community';
 })
 export class GridComponent<T> implements OnInit {
   @Input() public columns: Partial<AgGridColumn>[];
+  @Input() public defaultColDef: Partial<AgGridColumn>;
   @Input() public data: T[];
   @Input() public multiselect: boolean = true;
   @Input() public showToolbar: boolean = true;
@@ -25,6 +26,15 @@ export class GridComponent<T> implements OnInit {
   @Output() public deleteItems = new EventEmitter<T[]>();
 
   public selectedRows: RowNode[];
+
+  constructor() {
+    this.defaultColDef = {
+      resizable: true,
+      editable: false,
+      flex: 1,
+      sortable: true,
+    };
+  }
 
   ngOnInit(): void {
     if (this.multiselect && !!this.columns) {
