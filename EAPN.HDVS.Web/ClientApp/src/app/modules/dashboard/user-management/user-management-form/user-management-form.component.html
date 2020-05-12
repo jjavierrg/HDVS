@@ -5,12 +5,12 @@
       <form (ngSubmit)="onSaveUser()" #userForm="ngForm">
         <div class="form-row">
           <div class="form-group col-md-6">
-            <label for="inputNombre">Nombre *</label>
+            <label for="inputNombre">{{ 'comun.nombre' | translate }} *</label>
             <input
               id="inputNombre"
               type="text"
               class="form-control"
-              placeholder="Nombre"
+              [placeholder]="'comun.nombre' | translate"
               required
               [(ngModel)]="usuario.nombre"
               name="Nombre"
@@ -18,12 +18,12 @@
             />
           </div>
           <div class="form-group col-md-6">
-            <label for="inputApellidos">Apellidos</label>
+            <label for="inputApellidos">{{ 'comun.apellidos' | translate }}</label>
             <input
               id="inputApellidos"
               type="text"
               class="form-control"
-              placeholder="Apellidos"
+              [placeholder]="'comun.apellidos' | translate"
               [(ngModel)]="usuario.apellidos"
               name="Apellidos"
               #nombreCtrl="ngModel"
@@ -32,12 +32,12 @@
         </div>
         <div class="form-row">
           <div class="form-group col-md-6">
-            <label for="inputEmail">Email *</label>
+            <label for="inputEmail">{{ 'comun.email' | translate }} *</label>
             <input
               id="inputEmail"
               type="email"
               class="form-control"
-              placeholder="Email"
+              [placeholder]="'comun.email' | translate"
               required
               email
               [(ngModel)]="usuario.email"
@@ -46,12 +46,12 @@
             />
           </div>
           <div class="form-group col-md-6">
-            <label for="inputPassword">{{ editing ? 'Nueva contraseña' : 'Contraseña *' }}</label>
+            <label for="inputPassword">{{ (editing ? 'comun.nueva-clave' : 'comun.clave') | translate }}{{ editing ? '' : ' *' }}</label>
             <input
               id="inputPassword"
               type="password"
               class="form-control"
-              [placeholder]="editing ? 'Nueva contraseña' : 'Contraseña'"
+              [placeholder]="(editing ? 'comun.nueva-clave' : 'comun.clave') | translate"
               [(ngModel)]="usuario.clave"
               name="Contraseña"
               #claveCtrl="ngModel"
@@ -62,10 +62,10 @@
         </div>
         <div class="form-row">
           <div class="form-group col-md-6">
-            <label for="inputProfile">Perfiles *</label>
+            <label for="inputProfile">{{ 'comun.perfiles' | translate }} *</label>
             <app-combobox-multiple
               displayField="descripcion"
-              placeholder="Perfiles"
+              [placeholder]="'comun.perfiles' | translate"
               [data]="perfiles"
               [(ngModel)]="usuario.perfiles"
               name="Perfiles"
@@ -75,10 +75,10 @@
             </app-combobox-multiple>
           </div>
           <div class="form-group col-md-6">
-            <label for="inputProfile">Roles adicionales</label>
+            <label for="inputProfile">{{ 'formulario-usuarios.roles-adicionales' | translate }}</label>
             <app-combobox-multiple
               displayField="descripcion"
-              placeholder="Roles adicionales"
+              [placeholder]="'formulario-usuarios.roles-adicionales' | translate"
               [data]="roles"
               [(ngModel)]="usuario.rolesAdicionales"
               name="Roles"
@@ -88,11 +88,11 @@
           </div>
         </div>
         <div class="form-group">
-          <app-checkbox label="Activo" [(ngModel)]="usuario.activo" name="activo" #activoCtrl="ngModel"></app-checkbox>
+          <app-checkbox [label]="'formulario-usuarios.activo' | translate" [(ngModel)]="usuario.activo" name="activo" #activoCtrl="ngModel"></app-checkbox>
         </div>
         <div class="form-group float-right">
-          <button type="button" class="btn btn-light" (click)="onCancel()">Cancelar</button>
-          <button type="submit" class="btn btn-primary ml-2" [disabled]="userForm.invalid">Guardar</button>
+          <button type="button" class="btn btn-light" (click)="onCancel()">{{ 'core.cancelar' | translate }}</button>
+          <button type="submit" class="btn btn-primary ml-2" [disabled]="userForm.invalid">{{ 'core.aceptar' | translate }}</button>
         </div>
       </form>
     </div>

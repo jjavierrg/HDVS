@@ -4,5 +4,6 @@ export const Roles = {
     read: 'usermng:read',
     write: 'usermng:write',
     delete: 'usermng:delete',
+    admin: 'usermng:admin',
   },
 };

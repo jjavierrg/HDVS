@@ -1,8 +1,8 @@
 <div class="d-flex flex-column h-100 w-100">
   <div *ngIf="showToolbar" class="toolbar">
-    <div *ngIf="showAddButton"><button *appAllowedRoles="rolesAddButton" class="btn text-light" (click)="onAddItem()">Añadir</button></div>
-    <div *ngIf="showEditButton"><button *appAllowedRoles="rolesEditButton" class="btn text-light" [disabled]="!selectedRows || selectedRows.length !== 1" (click)="onEditItem()">Editar</button></div>
-    <div *ngIf="showDeleteButton"><button *appAllowedRoles="rolesDeleteButton" class="btn btn-danger" [disabled]="!selectedRows || selectedRows.length === 0" (click)="onDeleteItem()">Eliminar</button></div>
+    <div *ngIf="showAddButton"><button *appAllowedRoles="rolesAddButton" class="btn text-light" (click)="onAddItem()">{{ 'core.anadir' | translate }}</button></div>
+    <div *ngIf="showEditButton"><button *appAllowedRoles="rolesEditButton" class="btn text-light" [disabled]="!selectedRows || selectedRows.length !== 1" (click)="onEditItem()">{{ 'core.editar' | translate }}</button></div>
+    <div *ngIf="showDeleteButton"><button *appAllowedRoles="rolesDeleteButton" class="btn btn-danger" [disabled]="!selectedRows || selectedRows.length === 0" (click)="onDeleteItem()">{{ 'core.eliminar' | translate }}</button></div>
   </div>
   <ag-grid-angular class="grid ag-theme-alpine flex-fill" [columnDefs]="columns" [rowData]="data" [defaultColDef]="defaultColDef"
     (selectionChanged)="onSelectionChanged($event)" [rowSelection]="multiselect ? 'multiple' : 'single'" suppressCellSelection>

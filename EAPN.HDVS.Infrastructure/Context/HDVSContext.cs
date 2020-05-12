@@ -13,6 +13,7 @@ namespace EAPN.HDVS.Infrastructure.Context
         public virtual DbSet<Rol> Roles { get; set; }
         public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
 
+        public virtual DbSet<Asociacion> Asociaciones { get; set; }
         public virtual DbSet<Persona> Personas { get; set; }
         public virtual DbSet<Direccion> Direcciones { get; set; }
         public virtual DbSet<Pais> Paises { get; set; }
@@ -32,6 +33,7 @@ namespace EAPN.HDVS.Infrastructure.Context
             modelBuilder.ApplyConfiguration(new Configurations.RolConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.RefreshTokenConfiguration());
 
+            modelBuilder.ApplyConfiguration(new Configurations.AsociacionConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.DireccionConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.PaisConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.PersonaConfiguration());

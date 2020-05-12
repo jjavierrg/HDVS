@@ -48,6 +48,12 @@ namespace EAPN.HDVS.Application.Services.User
                 return token;
             }
 
+            if (!usuario.Asociacion?.Activa ?? false)
+            {
+                Logger.LogWarning($"Intento de login fallido. El usuario {username} intentó iniciar sesión pero la asociación no se encuentra activa");
+                return token;
+            }
+
             if (usuario.FinBloqueo.HasValue && usuario.FinBloqueo > DateTime.UtcNow)
             {
                 Logger.LogWarning($"Intento de login fallido. El usuario {username} intentó iniciar sesión pero no se encuentra bloqueado");
@@ -71,6 +77,7 @@ namespace EAPN.HDVS.Application.Services.User
             {
                 Logger.LogInformation($"El usuario {username} ha iniciado sesión");
                 usuario.IntentosLogin = 0;
+                usuario.UltimoAcceso = DateTime.UtcNow;
 
                 token = _tokenService.GenerateTokenForUser(usuario);
                 var lifeMinutes = _tokenService.GetRefreshTokenLifeMinutes();
@@ -107,8 +114,6 @@ namespace EAPN.HDVS.Application.Services.User
 
             return token;
         }
-
-
 
         /// <inheritdoc />
         public async Task LogoutAsync(ClaimsPrincipal user)
@@ -150,6 +155,7 @@ namespace EAPN.HDVS.Application.Services.User
         {
             return Repository.EntitySet.Include(x => x.Perfiles).ThenInclude(x => x.Perfil).ThenInclude(x => x.Roles).ThenInclude(x => x.Rol)
                     .Include(x => x.RolesAdicionales).ThenInclude(x => x.Rol)
+                    .Include(x => x.Asociacion)
                     .Include(x => x.Tokens);
         }
 

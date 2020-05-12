@@ -1,17 +1,35 @@
 <header class="navbar navbar-expand navbar-dark bg-dark sticky-top d-flex">
   <a class="navbar-brand text-truncate flex-grow-1">
-    <a  [routerLink]="['/']">
-      <img src="assets/logoEAPN_W.svg" width="30" height="30" alt="">
+    <a [routerLink]="['/']">
+      <img src="assets/logoEAPN_W.svg" width="30" height="30" alt="" />
     </a>
-    Herramienta de diagnóstico de vulnerabilidad social
+    <span class="no-select">
+      {{ 'header.titulo' | translate }}
+    </span>
   </a>
   <ul class="navbar-nav">
     <li class="nav-item" ngbDropdown>
-      <a class="nav-link no-arrow c-pointer" ngbDropdownToggle>
+      <a class="nav-link c-pointer" ngbDropdownToggle>
         {{ username | async }}
       </a>
       <div ngbDropdownMenu class="dropdown-menu dropdown-menu-right">
-        <a  ngbDropdownItem title="Cerrar Sesión" (click)="onLogout()">Cerrar Sesión</a>
+        <a ngbDropdownItem *appAllowedRoles="[roles.usermanagement.access]" routerLink="/usuarios" [title]="'header.menu.usuarios-titulo' | translate">{{
+          'header.menu.usuarios' | translate
+        }}</a>
+        <a ngbDropdownItem *appAllowedRoles="[roles.usermanagement.admin]" routerLink="/perfiles" [title]="'header.menu.perfiles-titulo' | translate">{{
+          'header.menu.perfiles' | translate
+        }}</a>
+        <a ngbDropdownItem *appAllowedRoles="[roles.usermanagement.admin]" routerLink="/asociaciones" [title]="'header.menu.asociaciones-titulo' | translate">{{
+          'header.menu.asociaciones' | translate
+        }}</a>
+        <div class="dropdown-divider"></div>
+        <a ngbDropdownItem routerLink="/perfil" [title]="'header.menu.mi-perfil-titulo' | translate" (click)="onLogout()">{{
+          'header.menu.mi-perfil' | translate
+        }}</a>
+        <div class="dropdown-divider"></div>
+        <a ngbDropdownItem [title]="'header.menu.cerrar-sesion-titulo' | translate" (click)="onLogout()">{{
+          'header.menu.cerrar-sesion' | translate
+        }}</a>
       </div>
     </li>
   </ul>

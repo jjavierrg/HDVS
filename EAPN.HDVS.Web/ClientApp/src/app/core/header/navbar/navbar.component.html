@@ -1,21 +1,30 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-3 py-lg-0">
-  <span class="navbar-brand mb-0 h1 d-block d-lg-none">Menu</span>
+  <span class="navbar-brand mb-0 h1 d-block d-lg-none">{{ 'navbar.menu' | translate }}</span>
 
   <button class="navbar-toggler ml-auto" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">
     &#9776;
   </button>
 
   <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
-    <div class="navbar-nav w-100 d-flex justify-content-between" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-      <a routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" routerLink="/" class="py-lg-3 nav-item nav-link"><i class="fas fa-home"></i> Inicio</a>
-      <a routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" routerLink="/estadisticas" class="py-lg-3 nav-item nav-link"><i class="fas fa-chart-bar"></i> Estadísticas</a>
-      <a routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" routerLink="/alta" class="py-lg-3 nav-item nav-link"><i class="fas fa-user-plus"></i> Alta Nueva</a>
-      <a routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" routerLink="/buqueda" class="py-lg-3 nav-item nav-link"><i class="fas fa-search"></i> Búsqueda Avanzada</a>
-      <a routerLinkActive="active" [routerLinkActiveOptions]="" routerLink="/usuarios" class="py-lg-3 nav-item nav-link" *appAllowedRoles="[roles.usermanagement.read]" ><i class="fas fa-users"></i> Usuarios</a>
+    <div class="navbar-nav w-100 d-flex justify-content-between" routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }">
+      <a routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" routerLink="/"
+        (click)="isMenuCollapsed = true" class="py-lg-3 nav-item nav-link"><i class="fas fa-home"></i>
+        {{ 'navbar.inicio' | translate }}
+      </a>
+      <a routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" routerLink="/estadisticas"
+        (click)="isMenuCollapsed = true" class="py-lg-3 nav-item nav-link"><i class="fas fa-chart-bar"></i>
+        {{ 'navbar.estadisticas' | translate }}</a>
+      <a routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" routerLink="/alta"
+        (click)="isMenuCollapsed = true" class="py-lg-3 nav-item nav-link"><i class="fas fa-user-plus"></i>
+        {{ 'navbar.alta-nueva' | translate }}</a>
+      <a routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" routerLink="/buqueda"
+        (click)="isMenuCollapsed = true" class="py-lg-3 nav-item nav-link"><i class="fas fa-search"></i>
+        {{ 'navbar.busqueda-avanzada' | translate }}</a>
       <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-lg-2" type="search" placeholder="Buscar por DNI/NIE"
-          aria-label="Buscar por DNI/NIE">
-        <button class="btn btn-outline-light my-2 my-lg-0" type="button">Buscar</button>
+        <input class="form-control mr-lg-2" type="search"
+          placeholder="{{ 'navbar.busqueda-placeholder' | translate }}" />
+        <button class="btn btn-outline-light my-2 my-lg-0" type="button">{{ 'core.buscar' | translate }}</button>
       </form>
     </div>
   </div>

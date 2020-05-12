@@ -1,0 +1,53 @@
+{
+  "comun": {
+    "apellidos": "Apellidos",
+    "clave": "Contraseña",
+    "email": "Email",
+    "nombre": "Nombre",
+    "nueva-clave": "Nueva contraseña",
+    "perfiles": "Perfiles"
+  },
+  "core": {
+    "aceptar": "Aceptar",
+    "buscar": "Buscar",
+    "cancelar": "Cancelar",
+    "anadir": "Añadir",
+    "editar": "Editar",
+    "eliminar": "Eliminar",
+    "no": "No",
+    "si": "Sí"
+  },
+  "formulario-usuarios": {
+    "activo": "Activo",
+    "roles-adicionales": "Roles adicionales"
+  },
+  "header": {
+    "menu": {
+      "asociaciones": "Asociaciones",
+      "asociaciones-titulo": "Asociaciones",
+      "cerrar-sesion": "Cerrar Sesión",
+      "cerrar-sesion-titulo": "Cerrar Sesión",
+      "mi-perfil": "Mi Perfil",
+      "mi-perfil-titulo": "Mi Perfil",
+      "perfiles": "Perfiles",
+      "perfiles-titulo": "Perfiles",
+      "usuarios": "Usuarios",
+      "usuarios-titulo": "Usuarios"
+    },
+    "titulo": "Herramienta de diagnóstico de vulnerabilidad social"
+  },
+  "login": {
+    "autenticando": "Autenticando...",
+    "error": "No se pudo iniciar sesión con los datos introducidos",
+    "iniciar-sesion": "Iniciar Sesión",
+    "titulo": "HDVS - EAPN Madrid"
+  },
+  "navbar": {
+    "alta-nueva": "Alta Nueva",
+    "busqueda-avanzada": "Búsqueda Avanzada",
+    "busqueda-placeholder": "Buscar por DNI/NIE",
+    "estadisticas": "Estadísticas",
+    "inicio": "Inicio",
+    "menu": "Menu"
+  }
+}

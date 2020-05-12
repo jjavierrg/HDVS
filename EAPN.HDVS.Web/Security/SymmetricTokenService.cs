@@ -53,6 +53,7 @@ namespace EAPN.HDVS.Web.Security
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.GivenName, user.Nombre ?? ""),
                 new Claim(JwtRegisteredClaimNames.FamilyName, user.Apellidos ?? ""),
+                new Claim("asociacion_id", user.AsociacionId.ToString()),
             });
 
             var secondsExpire = Math.Max(_tokenConfiguration.TokenLifeMinutes, 10) * 60;

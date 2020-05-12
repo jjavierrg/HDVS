@@ -1,14 +1,16 @@
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { environment } from 'src/environments/environment';
 import { AppComponent } from './app.component';
 import { ApiClient, apiEndpoint } from './core/api/api.client';
+import { CoreModule } from './core/core.module';
 import { AuthenticatedGuard } from './core/guards/authenticate.guard';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
-import { CoreModule } from './core/core.module';
-import { environment } from 'src/environments/environment';
 import { LoaderModule } from './shared/modules/loader/loader.module';
 
 const routes: Routes = [
@@ -37,6 +39,16 @@ const routes: Routes = [
     HttpClientModule,
     RouterModule.forRoot(routes),
     LoaderModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (http: HttpClient) => {
+          return new TranslateHttpLoader(http);
+        },
+        deps: [HttpClient],
+      },
+      isolate: false
+    }),
   ],
   providers: [
     ApiClient,

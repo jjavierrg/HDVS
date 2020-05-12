@@ -3,24 +3,24 @@
     <div class="col-md-4 offset-md-4 my-auto">
       <section class="shadow p-3 bg-white rounded">
         <form (ngSubmit)="onLogin()" #loginForm="ngForm">
-          <h4>HDVS - EAPN Madrid</h4>
+          <h4>{{ 'login.titulo' | translate }}</h4>
           <hr />
           <div class="alert alert-danger" role="alert" *ngIf="error">
-            No se pudo iniciar sesión con los datos introducidos
+            {{ 'login.error' | translate }}
           </div>
           <div class="form-group">
-            <label for="email">Email</label>
+            <label for="email">{{ 'comun.email' | translate }}</label>
             <input id="email" type="email" class="form-control" required email [(ngModel)]="username" name="username" />
           </div>
           <div class="form-group">
-            <label for="password">Contraseña</label>
+            <label for="password">{{ 'comun.clave' | translate }}</label>
             <input id="password" type="password" class="form-control" required [(ngModel)]="password" name="password" />
           </div>
           <div class="form-group">
-            <button type="submit" class="btn btn-primary" [disabled]="!loginForm.form.valid" *ngIf="!loading">Iniciar Sesión</button>
+            <button type="submit" class="btn btn-primary" [disabled]="!loginForm.form.valid" *ngIf="!loading">{{ 'login.iniciar-sesion' | translate }}</button>
             <button class="btn btn-primary" type="button" disabled *ngIf="loading">
               <span class="spinner-border spinner-border-sm"></span>
-              Autenticando...
+              {{ 'login.autenticando' | translate }}
             </button>
           </div>
         </form>

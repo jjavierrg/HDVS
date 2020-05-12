@@ -6,6 +6,10 @@
   content: none;
 }
 
+.no-select {
+  user-select: none;
+}
+
 .ng-valid[required].ng-touched, .ng-valid.required.ng-touched  {
   border-left: 5px solid #42A948; /* green */
 }

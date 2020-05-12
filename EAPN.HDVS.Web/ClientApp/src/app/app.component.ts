@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
 import { LoadingService } from './core/services/loading.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
@@ -8,11 +8,13 @@ import { LoadingService } from './core/services/loading.service';
 })
 export class AppComponent implements OnInit {
   public showLoader: boolean = false;
+  public activeLang: string = 'es';
 
-  constructor(private loadingService: LoadingService) {
+  constructor(private loadingService: LoadingService, private translate: TranslateService) {
+    this.translate.setDefaultLang(this.activeLang);
   }
 
   ngOnInit() {
-    this.loadingService.getLoadingObservable().subscribe(x => this.showLoader = x);
+    this.loadingService.getLoadingObservable().subscribe((x) => (this.showLoader = x));
   }
 }

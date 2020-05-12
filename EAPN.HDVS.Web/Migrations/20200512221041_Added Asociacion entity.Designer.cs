@@ -4,14 +4,16 @@ using EAPN.HDVS.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EAPN.HDVS.Web.Migrations
 {
     [DbContext(typeof(HDVSContext))]
-    partial class HDVSContextModelSnapshot : ModelSnapshot
+    [Migration("20200512221041_Added Asociacion entity")]
+    partial class AddedAsociacionentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
