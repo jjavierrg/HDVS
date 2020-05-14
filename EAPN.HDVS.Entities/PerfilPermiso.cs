@@ -4,11 +4,11 @@ using System.Text;
 
 namespace EAPN.HDVS.Entities
 {
-    public class PerfilRol
+    public class PerfilPermiso
     {
         public int PerfilId { get; set; }
-        public int RolId { get; set; }
+        public int PermisoId { get; set; }
         public Perfil Perfil { get; set; }
-        public Rol Rol{ get; set; }
+        public Permiso Permiso{ get; set; }
     }
 }

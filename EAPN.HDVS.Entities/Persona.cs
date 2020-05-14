@@ -31,7 +31,7 @@ namespace EAPN.HDVS.Entities
             }
         }
 
-        public virtual IEnumerable<Direccion> Direcciones { get; set; }
+        public virtual IList<Direccion> Direcciones { get; set; }
         public virtual Sexo Sexo { get; set; }
         public virtual Pais Nacionalidad { get; set; }
     }

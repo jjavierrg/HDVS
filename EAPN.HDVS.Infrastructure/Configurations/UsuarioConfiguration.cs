@@ -24,14 +24,9 @@ namespace EAPN.HDVS.Infrastructure.Configurations
             builder.Property(x => x.Observaciones).HasColumnName(nameof(Usuario.Observaciones));
 
             builder.HasMany(x => x.Perfiles).WithOne(x => x.Usuario).HasForeignKey(x => x.UsuarioId).OnDelete(DeleteBehavior.Cascade);
-            builder.HasMany(x => x.RolesAdicionales).WithOne(x => x.Usuario).HasForeignKey(x => x.UsuarioId).OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(x => x.PermisosAdicionales).WithOne(x => x.Usuario).HasForeignKey(x => x.UsuarioId).OnDelete(DeleteBehavior.Cascade);
             builder.HasMany(x => x.Tokens).WithOne(x => x.Usuario).HasForeignKey(x => x.UsuarioId).OnDelete(DeleteBehavior.Cascade);
             builder.HasOne(x => x.Asociacion).WithMany().HasForeignKey(x => x.AsociacionId).OnDelete(DeleteBehavior.Cascade);
-
-            builder.HasData(
-                new Usuario { Id = 1, Nombre="José Javier", Apellidos="Rodríguez Gallego", Email = "Jjavierrg@gmail.com", Hash = "$2b$12$sn1hzFuoYJwKxocoCsn3me4gLtEeMG9sJrz/FQQu6XMww3bdoSgOe", IntentosLogin = 0, Activo = true },
-                new Usuario { Id = 2, Nombre = "Test", Apellidos = "Test", Email = "test@test.com", Hash = "$2b$12$vrDFckbZnoXbB9oFeLqqn.UQtnQ2UdYOJC/r6UqrjLfS00LagnO0q", IntentosLogin = 0, Activo = true }
-            );
         }
     }
 }

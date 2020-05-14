@@ -24,7 +24,7 @@ namespace EAPN.HDVS.Infrastructure.Configurations
 
             builder.Ignore(x => x.Edad);
 
-            builder.HasMany(x => x.Direcciones).WithOne(x => x.Persona).HasForeignKey(x => x.PersonaId);
+            builder.HasMany(x => x.Direcciones).WithOne(x => x.Persona).HasForeignKey(x => x.PersonaId).OnDelete(DeleteBehavior.Cascade);
             builder.HasOne(x => x.Sexo).WithMany().HasForeignKey(x => x.SexoId);
             builder.HasOne(x => x.Nacionalidad).WithMany().HasForeignKey(x => x.NacionalidadId);
         }

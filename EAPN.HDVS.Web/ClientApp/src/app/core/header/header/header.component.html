@@ -13,17 +13,23 @@
         {{ username | async }}
       </a>
       <div ngbDropdownMenu class="dropdown-menu dropdown-menu-right">
-        <a ngbDropdownItem *appAllowedRoles="[roles.usermanagement.access]" routerLink="/usuarios" [title]="'header.menu.usuarios-titulo' | translate">{{
+        <a ngbDropdownItem *appAllowedPermissions="{permissions: [permissions.usermanagement.access]}" routerLink="/usuarios"
+          [title]="'header.menu.usuarios-titulo' | translate">{{
           'header.menu.usuarios' | translate
         }}</a>
-        <a ngbDropdownItem *appAllowedRoles="[roles.usermanagement.admin]" routerLink="/perfiles" [title]="'header.menu.perfiles-titulo' | translate">{{
+        <a ngbDropdownItem
+          *appAllowedPermissions="{permissions:[permissions.user.superadmin]}"
+          routerLink="/perfiles" [title]="'header.menu.perfiles-titulo' | translate">{{
           'header.menu.perfiles' | translate
         }}</a>
-        <a ngbDropdownItem *appAllowedRoles="[roles.usermanagement.admin]" routerLink="/asociaciones" [title]="'header.menu.asociaciones-titulo' | translate">{{
+        <a ngbDropdownItem
+          *appAllowedPermissions="{permissions:[permissions.user.superadmin]}"
+          routerLink="/asociaciones" [title]="'header.menu.asociaciones-titulo' | translate">{{
           'header.menu.asociaciones' | translate
         }}</a>
         <div class="dropdown-divider"></div>
-        <a ngbDropdownItem routerLink="/perfil" [title]="'header.menu.mi-perfil-titulo' | translate" (click)="onLogout()">{{
+        <a ngbDropdownItem routerLink="/perfil" [title]="'header.menu.mi-perfil-titulo' | translate"
+          (click)="onLogout()">{{
           'header.menu.mi-perfil' | translate
         }}</a>
         <div class="dropdown-divider"></div>

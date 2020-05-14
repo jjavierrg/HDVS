@@ -1,6 +1,6 @@
 import { Component, HostListener, ElementRef } from '@angular/core';
 import { AlertService } from '../../services/alert.service';
-import { Roles } from '../../enums/roles.enum';
+import { Permissions } from '../../enums/permissions.enum';
 
 @Component({
   selector: 'app-navbar',
@@ -9,7 +9,7 @@ import { Roles } from '../../enums/roles.enum';
 })
 export class NavbarComponent {
   public isMenuCollapsed = true;
-  public roles = Roles;
+  public permissions = Permissions;
 
   constructor(private alertService: AlertService, private eRef: ElementRef) {}
 

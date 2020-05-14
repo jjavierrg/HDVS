@@ -2,7 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { UserManagementService } from 'src/app/core/services/user-management.service';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { UsuarioDto, PerfilDto, RolDto } from 'src/app/core/api/api.client';
+import { UsuarioDto, PerfilDto, PermisoDto, AsociacionDto, MasterDataDto } from 'src/app/core/api/api.client';
+import { TranslateService } from '@ngx-translate/core';
+import { Permissions } from 'src/app/core/enums/permissions.enum';
+import { AuthenticationService } from 'src/app/core/services/authentication.service';
+import { MasterdataService } from 'src/app/core/services/masterdata.service';
 
 @Component({
   selector: 'app-user-management-form',
@@ -13,23 +17,39 @@ export class UserManagementFormComponent implements OnInit {
   public title: string;
   public editing: boolean = false;
   public usuario: UsuarioDto;
-  public perfiles: PerfilDto[];
-  public roles: RolDto[];
+  public perfiles: MasterDataDto[];
+  public asociaciones: MasterDataDto[];
+  public permisos: MasterDataDto[];
+  public permissions = Permissions;
 
   constructor(
     private service: UserManagementService,
+    private masterdataService: MasterdataService,
     private alertService: AlertService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private translate: TranslateService,
+    private authService: AuthenticationService
   ) {}
 
   async ngOnInit() {
     const snapshot = this.route.snapshot;
     const userId = snapshot.params['id'];
+    let partnerId = snapshot.params['partnerId'];
 
-    const [roles, perfiles] = await Promise.all([this.service.getRoles().toPromise(), this.service.getPerfiles().toPromise()]);
+    const [permisos, perfiles, asociaciones] = await Promise.all([
+      this.masterdataService.getPermisos().toPromise(),
+      this.masterdataService.getPerfiles().toPromise(),
+      this.masterdataService.getAsociaciones().toPromise(),
+    ]);
     this.perfiles = perfiles;
-    this.roles = roles;
+    this.permisos = permisos;
+    this.asociaciones = asociaciones;
+
+    // only superadmin manage other partners users
+    if (!partnerId || !this.authService.isAuthorized([Permissions.user.superadmin])) {
+      partnerId = await this.authService.getUserPartnerId().toPromise();
+    }
 
     if (!!userId) {
       this.usuario = await this.service.getUsuario(+userId).toPromise();
@@ -37,19 +57,23 @@ export class UserManagementFormComponent implements OnInit {
       this.title = this.usuario ? this.usuario.email : '';
 
       if (!this.usuario) {
-        this.router.navigate(['../'], { relativeTo: this.route }).then(() => this.alertService.error('Usuario no encontrado'));
+        this.router
+          .navigate(['../'], { relativeTo: this.route })
+          .then(() => this.alertService.error(this.translate.instant('core.registro-no-encontrado')));
       }
     } else {
-      this.usuario = new UsuarioDto({ activo: true });
+      this.usuario = new UsuarioDto({ activo: true, asociacionId: +partnerId });
       this.editing = false;
-      this.title = 'Nuevo Usuario';
+      this.title = this.translate.instant('formulario-usuarios.nuevo-usuario');
     }
   }
 
   public async onSaveUser(): Promise<void> {
     const success = await this.saveUser(this.usuario);
     if (success) {
-      this.router.navigate(['../'], { relativeTo: this.route }).then(() => this.alertService.success('Datos guardados correctamente'));
+      this.router
+        .navigate(['../'], { relativeTo: this.route })
+        .then(() => this.alertService.success(this.translate.instant('core.datos-guardados')));
     }
   }
 
@@ -59,7 +83,7 @@ export class UserManagementFormComponent implements OnInit {
 
   private async saveUser(usuario: UsuarioDto): Promise<boolean> {
     if (!usuario) {
-      this.alertService.warning('No se han podido leer los datos introducidos');
+      this.alertService.warning(this.translate.instant('core.datos-corruptos'));
       return false;
     }
 

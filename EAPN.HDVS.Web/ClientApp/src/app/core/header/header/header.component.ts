@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthenticationService } from '../../services/authentication.service';
-import { Roles } from '../../enums/roles.enum';
+import { Permissions } from '../../enums/permissions.enum';
 import { Router } from '@angular/router';
 
 @Component({
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
   public username: Observable<string>;
-  public roles = Roles;
+  public permissions = Permissions;
 
   constructor(private authService: AuthenticationService, private router: Router) {}
 

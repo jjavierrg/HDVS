@@ -32,10 +32,14 @@ namespace EAPN.HDVS.Infrastructure.Core.Queries
             var orderStatement = GetOrderStatement(queryData);
             var orderAscending = queryData.Order ?? "";
             var page = queryData.PageIndex < 1 ? 1 : queryData.PageIndex;
-            var pageSize = queryData.PageSize < 1 ? 1 : queryData.PageSize;
-
+            
             var totalResult = await queryCollection.CountAsync();
-            var dataResult = await queryCollection.OrderBy(orderStatement).Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+            queryCollection = queryCollection.OrderBy(orderStatement);
+
+            if (queryData.PageSize > 0)
+                queryCollection = queryCollection.Skip((page - 1) * queryData.PageSize).Take(queryData.PageSize);
+            
+            var dataResult = await queryCollection.OrderBy(orderStatement).ToListAsync();
 
             return new QueryResult<T>
             {

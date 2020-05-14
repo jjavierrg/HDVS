@@ -7,10 +7,10 @@ namespace EAPN.HDVS.Infrastructure.Context
     {
         public virtual DbSet<Usuario> Usuarios { get; set; }
         public virtual DbSet<UsuarioPerfil> UsuariosPerfiles{ get; set; }
-        public virtual DbSet<UsuarioRol> UsuariosRoles { get; set; }
+        public virtual DbSet<UsuarioPermiso> UsuariosPermisos{ get; set; }
         public virtual DbSet<Perfil> Perfiles { get; set; }
-        public virtual DbSet<PerfilRol> PerfilesRoles { get; set; }
-        public virtual DbSet<Rol> Roles { get; set; }
+        public virtual DbSet<PerfilPermiso> PerfilesPermisos { get; set; }
+        public virtual DbSet<Permiso> Permisos { get; set; }
         public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
 
         public virtual DbSet<Asociacion> Asociaciones { get; set; }
@@ -27,10 +27,10 @@ namespace EAPN.HDVS.Infrastructure.Context
         {
             modelBuilder.ApplyConfiguration(new Configurations.UsuarioConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.UsuarioPerfilConfiguration());
-            modelBuilder.ApplyConfiguration(new Configurations.UsuarioRolConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.UsuarioPermisoConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.PerfilConfiguration());
-            modelBuilder.ApplyConfiguration(new Configurations.PerfilRolConfiguration());
-            modelBuilder.ApplyConfiguration(new Configurations.RolConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.PerfilPermisoConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.PermisoConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.RefreshTokenConfiguration());
 
             modelBuilder.ApplyConfiguration(new Configurations.AsociacionConfiguration());

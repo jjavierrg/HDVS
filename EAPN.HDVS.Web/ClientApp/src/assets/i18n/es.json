@@ -1,25 +1,39 @@
 {
   "comun": {
+    "activo": "Activo",
     "apellidos": "Apellidos",
+    "asociacion": "Asociación",
+    "asociaciones": "Asociaciones",
     "clave": "Contraseña",
+    "descripcion": "Descripción",
     "email": "Email",
     "nombre": "Nombre",
     "nueva-clave": "Nueva contraseña",
-    "perfiles": "Perfiles"
+    "numero-usuarios": "Usuarios",
+    "observaciones": "Observaciones",
+    "perfiles": "Perfiles",
+    "permisos": "Permisos",
+    "usuarios": "Usuarios"
   },
   "core": {
     "aceptar": "Aceptar",
+    "anadir": "Añadir",
     "buscar": "Buscar",
     "cancelar": "Cancelar",
-    "anadir": "Añadir",
+    "confirmar-eliminacion": "<p><strong>¿Está seguro de querer eliminar los elementos seleccionados?</strong></p><p>Toda la información asociada será eliminada por completo. Tenga en cuenta que esta operación <span class='text-danger'>no se puede deshacer.</span></p>",
+    "confirmar-eliminacion-titulo": "Confirmar eliminación",
+    "datos-corruptos": "No se han podido leer los datos introducidos",
+    "datos-guardados": "Datos guardados correctamente",
     "editar": "Editar",
+    "elementos-eliminados": "Se han eliminado los elementos seleccionados",
     "eliminar": "Eliminar",
     "no": "No",
+    "registro-no-encontrado": "Registro no encontrado",
     "si": "Sí"
   },
   "formulario-usuarios": {
-    "activo": "Activo",
-    "roles-adicionales": "Roles adicionales"
+    "nuevo-usuario": "Nuevo Usuario",
+    "permisos-adicionales": "Permisos adicionales"
   },
   "header": {
     "menu": {

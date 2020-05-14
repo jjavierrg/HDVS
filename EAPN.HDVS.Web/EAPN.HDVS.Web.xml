@@ -4,29 +4,83 @@
         <name>EAPN.HDVS.Web</name>
     </assembly>
     <members>
-        <member name="M:EAPN.HDVS.Web.Controllers.RolesController.#ctor(EAPN.HDVS.Application.Core.Services.IReadServiceBase{EAPN.HDVS.Entities.Rol},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.RolesController},AutoMapper.IMapper)">
+        <member name="M:EAPN.HDVS.Web.Contasociacionlers.AsociacionesController.#ctor(EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Asociacion},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Contasociacionlers.AsociacionesController},AutoMapper.IMapper)">
             <summary>
             </summary>
-            <param name="rolService"></param>
+            <param name="asociacionService"></param>
             <param name="logger"></param>
             <param name="mapper"></param>
         </member>
-        <member name="M:EAPN.HDVS.Web.Controllers.RolesController.GetRoles">
+        <member name="M:EAPN.HDVS.Web.Contasociacionlers.AsociacionesController.GetAsociaciones">
             <summary>
             Get all stored items
             </summary>
             <returns></returns>
         </member>
-        <member name="M:EAPN.HDVS.Web.Controllers.RolesController.GetRol(System.Int32)">
+        <member name="M:EAPN.HDVS.Web.Contasociacionlers.AsociacionesController.GetAsociacionesAsMasterData">
+            <summary>
+            Get all stored items mapped as Masterdata
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Contasociacionlers.AsociacionesController.GetAsociacion(System.Int32)">
             <summary>
             Get the item with the specified identifier
             </summary>
             <param name="id">Item identifier</param>
             <returns></returns>
         </member>
-        <member name="M:EAPN.HDVS.Web.Controllers.RolesController.GetSuperadminExclusionFilter">
+        <member name="M:EAPN.HDVS.Web.Contasociacionlers.AsociacionesController.PostAsociacion(EAPN.HDVS.Web.Dto.AsociacionDto)">
             <summary>
-            Role with superadmin permission exclusion filter
+            Add new item to collection
+            </summary>
+            <param name="asociacionDto">Item data</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Contasociacionlers.AsociacionesController.PutAsociacion(System.Int32,EAPN.HDVS.Web.Dto.AsociacionDto)">
+            <summary>
+            Update an existing item
+            </summary>
+            <param name="id">Item identifier</param>
+            <param name="asociacionDto">Item data</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Contasociacionlers.AsociacionesController.DeleteAsociacion(System.Int32)">
+            <summary>
+            Delete existing item
+            </summary>
+            <param name="id">Item identifier</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.PermisosController.#ctor(EAPN.HDVS.Application.Core.Services.IReadServiceBase{EAPN.HDVS.Entities.Permiso},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.PermisosController},AutoMapper.IMapper)">
+            <summary>
+            </summary>
+            <param name="permisoService"></param>
+            <param name="logger"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.PermisosController.GetPermisos">
+            <summary>
+            Get all stored items
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.PermisosController.GetPermisosAsMasterdata">
+            <summary>
+            Get all stored items as masterdata
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.PermisosController.GetPermiso(System.Int32)">
+            <summary>
+            Get the item with the specified identifier
+            </summary>
+            <param name="id">Item identifier</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.PermisosController.GetSuperadminExclusionFilter">
+            <summary>
+            Permissions with superadmin permission exclusion filter
             </summary>
             <returns></returns>
         </member>
@@ -51,7 +105,7 @@
             <param name="id">Item identifier</param>
             <returns></returns>
         </member>
-        <member name="M:EAPN.HDVS.Web.Controllers.UsuariosController.GetUsuariosFiltered(EAPN.HDVS.Infrastructure.Core.Queries.IQueryData)">
+        <member name="M:EAPN.HDVS.Web.Controllers.UsuariosController.GetUsuariosFiltered(EAPN.HDVS.Infrastructure.Core.Queries.QueryData)">
             <summary>
             Get all items with a specific criteria filter
             </summary>
@@ -86,7 +140,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:EAPN.HDVS.Web.Contperfillers.PerfilesController.#ctor(EAPN.HDVS.Application.Core.Services.IReadServiceBase{EAPN.HDVS.Entities.Perfil},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Contperfillers.PerfilesController},AutoMapper.IMapper)">
+        <member name="M:EAPN.HDVS.Web.Contperfillers.PerfilesController.#ctor(EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Perfil},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Contperfillers.PerfilesController},AutoMapper.IMapper)">
             <summary>
             </summary>
             <param name="perfilService"></param>
@@ -95,6 +149,12 @@
         </member>
         <member name="M:EAPN.HDVS.Web.Contperfillers.PerfilesController.GetPerfiles">
             <summary>
+            Get all stored items with related data
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Contperfillers.PerfilesController.GetPerfilesAsMasterData">
+            <summary>
             Get all stored items
             </summary>
             <returns></returns>
@@ -102,6 +162,28 @@
         <member name="M:EAPN.HDVS.Web.Contperfillers.PerfilesController.GetPerfil(System.Int32)">
             <summary>
             Get the item with the specified identifier
+            </summary>
+            <param name="id">Item identifier</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Contperfillers.PerfilesController.PostPerfil(EAPN.HDVS.Web.Dto.PerfilDto)">
+            <summary>
+            Add new item to collection
+            </summary>
+            <param name="perfilDto">Item data</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Contperfillers.PerfilesController.PutPerfil(System.Int32,EAPN.HDVS.Web.Dto.PerfilDto)">
+            <summary>
+            Update an existing item
+            </summary>
+            <param name="id">Item identifier</param>
+            <param name="perfilDto">Item data</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Contperfillers.PerfilesController.DeletePerfil(System.Int32)">
+            <summary>
+            Delete existing item
             </summary>
             <param name="id">Item identifier</param>
             <returns></returns>

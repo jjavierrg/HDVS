@@ -16,9 +16,7 @@ namespace EAPN.HDVS.Infrastructure.Configurations
             builder.Property(x => x.Activa).HasColumnName(nameof(Asociacion.Activa)).IsRequired();
             builder.Property(x => x.Observaciones).HasColumnName(nameof(Asociacion.Observaciones));
 
-            builder.HasData(
-                new Asociacion { Id = 1, Nombre = "EAPN Madrid", Activa = true }
-            );
+            builder.HasMany(x => x.Usuarios).WithOne(x => x.Asociacion).HasForeignKey(x => x.AsociacionId).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

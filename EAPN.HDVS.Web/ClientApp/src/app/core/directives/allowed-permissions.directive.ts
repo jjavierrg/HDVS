@@ -3,22 +3,22 @@ import { AuthenticationService } from '../services/authentication.service';
 import { Subscription } from 'rxjs';
 
 @Directive({
-  selector: '[appAllowedRoles]',
+  selector: '[appAllowedPermissions]',
 })
-export class AllowedRolesDirective implements OnDestroy {
-  private currentUserRolesSubs: Subscription;
+export class AllowedPermissionsDirective implements OnDestroy {
+  private currentUserPermissionsSubs: Subscription;
 
   constructor(private templateRef: TemplateRef<any>, private viewContainer: ViewContainerRef, private authService: AuthenticationService) {}
 
   ngOnDestroy(): void {
-    if (!!this.currentUserRolesSubs) {
-      this.currentUserRolesSubs.unsubscribe();
+    if (!!this.currentUserPermissionsSubs) {
+      this.currentUserPermissionsSubs.unsubscribe();
     }
   }
 
-  @Input() set appAllowedRoles(roles: string[]) {
+  @Input() set appAllowedPermissions(data: { permissions: string[], requireAll?: boolean }) {
     this.setView(false);
-    this.currentUserRolesSubs = this.authService.isAuthorized(roles).subscribe(x => this.setView(x));
+    this.currentUserPermissionsSubs = this.authService.isAuthorized(data.permissions, !!data.requireAll).subscribe(x => this.setView(x));
   }
 
   private setView(hasAccess: boolean): void {

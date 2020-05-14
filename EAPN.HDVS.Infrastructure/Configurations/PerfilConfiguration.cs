@@ -14,12 +14,8 @@ namespace EAPN.HDVS.Infrastructure.Configurations
             builder.Property(x => x.Id).HasColumnName(nameof(Perfil.Id)).IsRequired().ValueGeneratedOnAdd();
             builder.Property(x => x.Descripcion).HasColumnName(nameof(Perfil.Descripcion)).HasMaxLength(50).IsRequired();
 
-            builder.HasMany(x => x.Roles).WithOne(x => x.Perfil).HasForeignKey(x => x.PerfilId).OnDelete(DeleteBehavior.Cascade);
-
-            builder.HasData(
-                new Perfil { Id = 1, Descripcion = "Usuario" },
-                new Perfil { Id = 2, Descripcion = "Administrador" }
-            );
+            builder.HasMany(x => x.Permisos).WithOne(x => x.Perfil).HasForeignKey(x => x.PerfilId).OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(x => x.Usuarios).WithOne(x => x.Perfil).HasForeignKey(x => x.PerfilId).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -5,7 +5,7 @@ import { DashboardComponent } from './dashboard.component';
 import { HeaderModule } from 'src/app/core/header/header.module';
 import { FooterComponent } from 'src/app/core/footer/footer/footer.component';
 import { AuthenticatedGuard } from 'src/app/core/guards/authenticate.guard';
-import { Roles } from 'src/app/core/enums/roles.enum';
+import { Permissions } from 'src/app/core/enums/permissions.enum';
 import { AlertModule } from 'src/app/shared/modules/alert/alert.module';
 
 const routes: Routes = [
@@ -22,7 +22,21 @@ const routes: Routes = [
         loadChildren: () => import('./user-management/user-management.module').then((m) => m.UserManagementModule),
         canLoad: [AuthenticatedGuard],
         canActivate: [AuthenticatedGuard],
-        data: { allowedRoles: [Roles.usermanagement.access] },
+        data: { allowedPermissions: [Permissions.usermanagement.access] },
+      },
+      {
+        path: 'perfiles',
+        loadChildren: () => import('./profles/profiles.module').then((m) => m.ProfilesModule),
+        canLoad: [AuthenticatedGuard],
+        canActivate: [AuthenticatedGuard],
+        data: { allowedPermissions: [Permissions.user.superadmin] },
+      },
+      {
+        path: 'asociaciones',
+        loadChildren: () => import('./partners/partners.module').then((m) => m.PartnersModule),
+        canLoad: [AuthenticatedGuard],
+        canActivate: [AuthenticatedGuard],
+        data: { allowedPermissions: [Permissions.user.superadmin] },
       },
     ],
   },

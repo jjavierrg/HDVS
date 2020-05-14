@@ -50,23 +50,27 @@ export class AuthenticationService {
     return true;
   }
 
-  public isAuthorized(allowedRoles: string[]): Observable<boolean> {
+  public isAuthorized(allowedPermissions: string[], requireAll: boolean = false): Observable<boolean> {
     if (!this.isAuthenticated) {
       return of(false);
     }
 
-    return this.getUserRoles().pipe(
-      map((userRoles) => {
-        if (!userRoles) {
+    return this.getUserPermissions().pipe(
+      map((userPermissions) => {
+        if (!userPermissions) {
           return false;
         }
 
-        // check if the list of allowed roles is empty, if empty, authorize the user to access the page
-        if (allowedRoles == null || allowedRoles.length === 0) {
+        // check if the list of allowed permissions is empty, if empty, authorize the user to access the page
+        if (allowedPermissions == null || allowedPermissions.length === 0) {
           return true;
         }
 
-        return allowedRoles.some((x) => userRoles.some((y) => y.toLowerCase() === x.toLowerCase()));
+        if (requireAll) {
+          return allowedPermissions.every((x) => userPermissions.some((y) => y.toLowerCase() === x.toLowerCase()));
+        } else {
+          return allowedPermissions.some((x) => userPermissions.some((y) => y.toLowerCase() === x.toLowerCase()));
+        }
       })
     );
   }
@@ -84,7 +88,11 @@ export class AuthenticationService {
     return this.getValidToken().pipe(map((token) => (token ? helper.decodeToken(token) : {})));
   }
 
-  public getUserRoles(): Observable<string[]> {
+  public getUserPartnerId(): Observable<number> {
+    return this.getUser().pipe(map(user => +user['asociacion_id']));
+  }
+
+  public getUserPermissions(): Observable<string[]> {
     return this.getUser().pipe(
       map((user) => {
         if (!user) {
@@ -92,12 +100,12 @@ export class AuthenticationService {
         }
 
         try {
-          const roleProperty = Object.getOwnPropertyNames(user).find((x) => x.toLowerCase().endsWith('role'));
-          if (!roleProperty) {
+          const permissionProperty = Object.getOwnPropertyNames(user).find((x) => x.toLowerCase().endsWith('role'));
+          if (!permissionProperty) {
             return [];
           }
 
-          return user[roleProperty];
+          return user[permissionProperty];
         } catch (error) {
           return [];
         }

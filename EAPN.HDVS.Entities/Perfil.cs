@@ -8,6 +8,7 @@ namespace EAPN.HDVS.Entities
     {
         public int Id { get; set; }
         public string Descripcion{ get; set; }
-        public IEnumerable<PerfilRol> Roles { get; set; }
+        public IList<PerfilPermiso> Permisos { get; set; }
+        public IList<UsuarioPerfil> Usuarios { get; set; }
     }
 }

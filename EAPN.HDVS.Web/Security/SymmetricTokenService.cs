@@ -43,8 +43,8 @@ namespace EAPN.HDVS.Web.Security
             if (user == null)
                 return null;
 
-            var permisos = user.Perfiles.SelectMany(x => x.Perfil?.Roles).Select(x => x.Rol)
-                            .Union(user.RolesAdicionales.Select(x => x.Rol))
+            var permisos = user.Perfiles.SelectMany(x => x.Perfil?.Permisos).Select(x => x.Permiso)
+                            .Union(user.PermisosAdicionales.Select(x => x.Permiso))
                             .Distinct();
 
             var claims = new List<Claim>(new Claim[]
@@ -59,7 +59,7 @@ namespace EAPN.HDVS.Web.Security
             var secondsExpire = Math.Max(_tokenConfiguration.TokenLifeMinutes, 10) * 60;
 
             if (permisos.Any())
-                claims.AddRange(permisos.Select(x => new Claim(ClaimTypes.Role, x.Permiso)));
+                claims.AddRange(permisos.Select(x => new Claim(ClaimTypes.Role, x.Clave)));
             else
                 claims.Add(new Claim(ClaimTypes.Role, "Anonymous"));
 

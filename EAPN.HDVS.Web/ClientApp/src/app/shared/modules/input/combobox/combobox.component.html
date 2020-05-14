@@ -3,6 +3,7 @@
     <span class="w-100 text-left text-truncate">{{ getControlText() }}</span>
   </button>
   <div ngbDropdownMenu aria-labelledby="singleDropdown" class="w-100">
-    <button ngbDropdownItem *ngFor="let item of data" (click)="onValueChanged(item)">{{ getItemText(item) }}</button>
+    <div ngbDropdownItem [ngClass]="{'bg-primary': selection === item, 'text-light': selection === item}"
+      *ngFor="let item of data" (click)="onValueChanged(item)">{{ getItemText(item) }}</div>
   </div>
 </div>

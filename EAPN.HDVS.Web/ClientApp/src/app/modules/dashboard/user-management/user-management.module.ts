@@ -8,7 +8,7 @@ import { UserManagementFormComponent } from './user-management-form/user-managem
 import { InputModule } from 'src/app/shared/modules/input/input.module';
 import { FormsModule } from '@angular/forms';
 import { AuthenticatedGuard } from 'src/app/core/guards/authenticate.guard';
-import { Roles } from 'src/app/core/enums/roles.enum';
+import { Permissions } from 'src/app/core/enums/permissions.enum';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 const routes: Routes = [
@@ -17,18 +17,39 @@ const routes: Routes = [
     component: UserManagementListComponent,
   },
   {
+    path: 'asociacion/:partnerId',
+    component: UserManagementListComponent,
+    canLoad: [AuthenticatedGuard],
+    canActivate: [AuthenticatedGuard],
+    data: { allowedPermissions: [Permissions.user.superadmin] },
+  },
+  {
+    path: 'asociacion/:partnerId/nuevo',
+    component: UserManagementFormComponent,
+    canLoad: [AuthenticatedGuard],
+    canActivate: [AuthenticatedGuard],
+    data: { allowedPermissions: [Permissions.user.superadmin] },
+  },
+  {
+    path: 'asociacion/:partnerId/:id',
+    component: UserManagementFormComponent,
+    canLoad: [AuthenticatedGuard],
+    canActivate: [AuthenticatedGuard],
+    data: { allowedPermissions: [Permissions.user.superadmin] },
+  },
+  {
     path: 'nuevo',
     component: UserManagementFormComponent,
     canLoad: [AuthenticatedGuard],
     canActivate: [AuthenticatedGuard],
-    data: { allowedRoles: [Roles.usermanagement.write] },
+    data: { allowedPermissions: [Permissions.usermanagement.write] },
   },
   {
     path: ':id',
     component: UserManagementFormComponent,
     canLoad: [AuthenticatedGuard],
     canActivate: [AuthenticatedGuard],
-    data: { allowedRoles: [Roles.usermanagement.write] },
+    data: { allowedPermissions: [Permissions.usermanagement.write] },
   },
 ];
 

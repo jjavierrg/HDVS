@@ -153,8 +153,8 @@ namespace EAPN.HDVS.Application.Services.User
 
         private IQueryable<Usuario> GetFullUsuarioQuery()
         {
-            return Repository.EntitySet.Include(x => x.Perfiles).ThenInclude(x => x.Perfil).ThenInclude(x => x.Roles).ThenInclude(x => x.Rol)
-                    .Include(x => x.RolesAdicionales).ThenInclude(x => x.Rol)
+            return Repository.EntitySet.Include(x => x.Perfiles).ThenInclude(x => x.Perfil).ThenInclude(x => x.Permisos).ThenInclude(x => x.Permiso)
+                    .Include(x => x.PermisosAdicionales).ThenInclude(x => x.Permiso)
                     .Include(x => x.Asociacion)
                     .Include(x => x.Tokens);
         }

@@ -1,0 +1,80 @@
+import { Component, OnInit } from '@angular/core';
+import { AlertService } from 'src/app/core/services/alert.service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { AsociacionDto } from 'src/app/core/api/api.client';
+import { PartnerService } from 'src/app/core/services/partner.service';
+
+@Component({
+  selector: 'app-partner-form',
+  templateUrl: './partner-form.component.html',
+  styleUrls: ['./partner-form.component.scss']
+})
+export class PartnerFormComponent implements OnInit {
+  public title: string;
+  public editing: boolean = false;
+  public partner: AsociacionDto;
+  public permisos: AsociacionDto[];
+
+  constructor(
+    private service: PartnerService,
+    private alertService: AlertService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private translate: TranslateService
+  ) {}
+
+  async ngOnInit() {
+    const snapshot = this.route.snapshot;
+    const partnerId = snapshot.params['id'];
+
+    if (!!partnerId) {
+      this.partner = await this.service.getAsociacion(+partnerId).toPromise();
+      this.editing = true;
+      this.title = this.partner ? this.partner.nombre : '';
+
+      if (!this.partner) {
+        this.router
+          .navigate(['../'], { relativeTo: this.route })
+          .then(() => this.alertService.error(this.translate.instant('core.registro-no-encontrado')));
+      }
+    } else {
+      this.partner = new AsociacionDto({ activa: true });
+      this.editing = false;
+      this.title = this.translate.instant('formulario-usuarios.nuevo-usuario');
+    }
+  }
+
+  public async onSavepartner(): Promise<void> {
+    const success = await this.savepartner(this.partner);
+    if (success) {
+      this.router
+        .navigate(['../'], { relativeTo: this.route })
+        .then(() => this.alertService.success(this.translate.instant('core.datos-guardados')));
+    }
+  }
+
+  public async onCancel(): Promise<void> {
+    await this.router.navigate(['../'], { relativeTo: this.route });
+  }
+
+  private async savepartner(partner: AsociacionDto): Promise<boolean> {
+    if (!partner) {
+      this.alertService.warning(this.translate.instant('core.datos-corruptos'));
+      return false;
+    }
+
+    try {
+      if (this.editing) {
+        await this.service.updateAsociacion(partner).toPromise();
+      } else {
+        await this.service.createAsociacion(partner).toPromise();
+      }
+
+      return true;
+    } catch (error) {
+      this.alertService.error(error);
+      return false;
+    }
+  }
+}

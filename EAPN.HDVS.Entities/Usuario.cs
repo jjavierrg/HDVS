@@ -17,9 +17,9 @@ namespace EAPN.HDVS.Entities
         public string Observaciones { get; set; }
         public DateTime? UltimoAcceso { get; set; }
         public DateTime? FinBloqueo { get; set; }
-        public IEnumerable<UsuarioRol> RolesAdicionales { get; set; }
-        public IEnumerable<UsuarioPerfil> Perfiles { get; set; }
-        public IEnumerable<RefreshToken> Tokens { get; set; }
+        public IList<UsuarioPermiso> PermisosAdicionales { get; set; }
+        public IList<UsuarioPerfil> Perfiles { get; set; }
+        public IList<RefreshToken> Tokens { get; set; }
         public Asociacion Asociacion { get; set; }
     }
 }

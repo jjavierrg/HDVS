@@ -2,9 +2,10 @@
 using EAPN.HDVS.Application.Services.User;
 using EAPN.HDVS.Entities;
 using EAPN.HDVS.Infrastructure.Core.Queries;
-using EAPN.HDVS.Shared.Roles;
+using EAPN.HDVS.Shared.Permissions;
 using EAPN.HDVS.Web.Dto;
 using EAPN.HDVS.Web.Extensions;
+using EAPN.HDVS.Web.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -47,11 +48,11 @@ namespace EAPN.HDVS.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet(Name = "GetUsuarios")]
-        [Authorize(Roles = Roles.USERMANAGEMENT_READ)]
+        [AuthorizePermission(Permissions.USERMANAGEMENT_READ)]
         [ProducesResponseType(typeof(IEnumerable<UsuarioDto>), StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<UsuarioDto>>> GetUsuarios()
         {
-            var usuarios = await _usuarioService.GetListAsync(GetSuperadminExclusionFilter(), q => q.Include(x => x.Perfiles).ThenInclude(x => x.Perfil).Include(x => x.RolesAdicionales).ThenInclude(x => x.Rol), q => q.OrderBy(x => x.Email));
+            var usuarios = await _usuarioService.GetListAsync(GetSuperadminExclusionFilter(), q => q.Include(x => x.Perfiles).ThenInclude(x => x.Perfil).Include(x => x.PermisosAdicionales).ThenInclude(x => x.Permiso).Include(x => x.Asociacion), q => q.OrderBy(x => x.Email));
             return Ok(_mapper.MapList<UsuarioDto>(usuarios));
         }
 
@@ -61,7 +62,7 @@ namespace EAPN.HDVS.Web.Controllers
         /// <param name="id">Item identifier</param>
         /// <returns></returns>
         [HttpGet("{id}", Name = "GetUsuario")]
-        [Authorize(Roles = Roles.USERMANAGEMENT_READ)]
+        [AuthorizePermission(Permissions.USERMANAGEMENT_READ)]
         [ProducesResponseType(typeof(UsuarioDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<UsuarioDto>> GetUsuario(int id)
@@ -71,7 +72,7 @@ namespace EAPN.HDVS.Web.Controllers
             if (filter != null)
                 query = query.Where(filter);
 
-            query = query.Include(x => x.Perfiles).ThenInclude(x => x.Perfil).Include(x => x.RolesAdicionales).ThenInclude(x => x.Rol);
+            query = query.Include(x => x.Perfiles).ThenInclude(x => x.Perfil).Include(x => x.PermisosAdicionales).ThenInclude(x => x.Permiso);
 
             return _mapper.Map<UsuarioDto>(await query.FirstOrDefaultAsync());
         }
@@ -82,9 +83,9 @@ namespace EAPN.HDVS.Web.Controllers
         /// <param name="query">Query criteria filter</param>
         /// <returns></returns>
         [HttpPost("filtered", Name = "GetUsuariosFiltered")]
-        [Authorize(Roles = Roles.USERMANAGEMENT_READ)]
+        [AuthorizePermission(Permissions.USERMANAGEMENT_READ)]
         [ProducesResponseType(typeof(QueryResult<UsuarioDto>), StatusCodes.Status200OK)]
-        public async Task<ActionResult<QueryResult<UsuarioDto>>> GetUsuariosFiltered([FromBody]IQueryData query)
+        public async Task<ActionResult<QueryResult<UsuarioDto>>> GetUsuariosFiltered([FromBody]QueryData query)
         {
             var result = await _filterPaginator.Execute(_usuarioService.Repository.EntitySet, query);
             return _mapper.MapQueryResult<Usuario, UsuarioDto>(result);
@@ -95,7 +96,7 @@ namespace EAPN.HDVS.Web.Controllers
         /// </summary>
         /// <param name="usuarioDto">Item data</param>
         /// <returns></returns>
-        [Authorize(Roles = Roles.USERMANAGEMENT_WRITE)]
+        [AuthorizePermission(Permissions.USERMANAGEMENT_WRITE)]
         [ProducesResponseType(typeof(UsuarioDto), StatusCodes.Status201Created)]
         [HttpPost(Name = "PostUsuario")]
         public async Task<ActionResult<UsuarioDto>> PostUsuario(UsuarioDto usuarioDto)
@@ -112,7 +113,7 @@ namespace EAPN.HDVS.Web.Controllers
         /// <param name="id">Item identifier</param>
         /// <param name="usuarioDto">Item data</param>
         /// <returns></returns>
-        [Authorize(Roles = Roles.USERMANAGEMENT_WRITE)]
+        [AuthorizePermission(Permissions.USERMANAGEMENT_WRITE)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpPut("{id}", Name = "PutUsuario")]
@@ -121,7 +122,9 @@ namespace EAPN.HDVS.Web.Controllers
             if (id != usuarioDto.Id)
                 return BadRequest();
 
-            var usuario = _mapper.Map<Usuario>(usuarioDto);
+            var usuario = await _usuarioService.GetSingleOrDefault(x => x.Id == id, q => q.Include(x => x.Perfiles).Include(x => x.PermisosAdicionales));
+            _mapper.Map(usuarioDto, usuario);
+
             _usuarioService.UpdateWithtPass(usuario);
             await _usuarioService.SaveChangesAsync();
 
@@ -133,7 +136,7 @@ namespace EAPN.HDVS.Web.Controllers
         /// </summary>
         /// <param name="id">Item identifier</param>
         /// <returns></returns>
-        [Authorize(Roles = Roles.USERMANAGEMENT_DELETE)]
+        [AuthorizePermission(Permissions.USERMANAGEMENT_DELETE)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpDelete("{id}", Name = "DeleteUsuario")]
@@ -161,8 +164,8 @@ namespace EAPN.HDVS.Web.Controllers
         private Expression<Func<Usuario, bool>> GetSuperadminExclusionFilter()
         {
             Expression<Func<Usuario, bool>> filter = null;
-            if (!User.IsInRole(Roles.USERMANAGEMENT_ADMIN))
-                filter = x => !(x.RolesAdicionales.Any(r => r.Rol.Permiso == Roles.USERMANAGEMENT_ADMIN) || x.Perfiles.Any(p => p.Perfil.Roles.Any(r => r.Rol.Permiso == Roles.USERMANAGEMENT_ADMIN)));
+            if (!User.HasSuperAdminPermission())
+                filter = x => x.AsociacionId == User.GetUserAsociacionId() && !(x.PermisosAdicionales.Any(r => r.Permiso.Clave == Permissions.APP_SUPERADMIN) || x.Perfiles.Any(p => p.Perfil.Permisos.Any(r => r.Permiso.Clave == Permissions.APP_SUPERADMIN)));
 
             return filter;
         }

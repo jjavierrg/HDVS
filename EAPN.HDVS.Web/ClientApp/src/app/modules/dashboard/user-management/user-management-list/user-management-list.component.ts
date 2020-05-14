@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { UsuarioDto, ApiClient } from 'src/app/core/api/api.client';
 import { AgGridColumn } from 'ag-grid-angular';
-import { Roles } from '../../../../core/enums/roles.enum';
+import { Permissions } from '../../../../core/enums/permissions.enum';
 import { CheckboxCellComponent } from 'src/app/shared/modules/grid/checkbox-cell/checkbox-cell.component';
 import { DescriptionArrayCellComponent } from 'src/app/shared/modules/grid/array-cell/description-array-cell.component';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserManagementService } from 'src/app/core/services/user-management.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AlertService } from 'src/app/core/services/alert.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user-management-list',
@@ -15,59 +16,64 @@ import { AlertService } from 'src/app/core/services/alert.service';
   styleUrls: ['./user-management-list.component.scss'],
 })
 export class UserManagementListComponent implements OnInit {
-  public usuarios: UsuarioDto[];
-  public roles = Roles;
+  public users: UsuarioDto[];
+  public permissions = Permissions;
+
+  private partnerId?: number;
 
   public columns: Partial<AgGridColumn>[] = [
     {
-      headerName: 'Email',
+      headerName: this.translate.instant('comun.email'),
       field: 'email',
       minWidth: 100,
       filter: 'agTextColumnFilter',
     },
     {
-      headerName: 'Apellidos',
+      headerName: this.translate.instant('comun.apellidos'),
       field: 'apellidos',
       minWidth: 100,
       filter: 'agTextColumnFilter',
     },
     {
-      headerName: 'Nombre',
+      headerName: this.translate.instant('comun.nombre'),
       field: 'nombre',
       minWidth: 100,
       filter: 'agTextColumnFilter',
     },
     {
-      headerName: 'Perfiles',
+      headerName: this.translate.instant('comun.perfiles'),
       field: 'perfiles',
       cellRendererFramework: DescriptionArrayCellComponent,
       minWidth: 100,
       sortable: false,
     },
     {
-      headerName: 'Permisos',
-      field: 'rolesAdicionales',
-      cellRendererFramework: DescriptionArrayCellComponent,
-      minWidth: 100,
-      sortable: false,
-    },
-    {
-      headerName: 'Activo',
+      headerName: this.translate.instant('comun.activo'),
       field: 'activo',
       cellRendererFramework: CheckboxCellComponent,
-      flex: null,
+      maxWidth: 100,
+    },
+    {
+      headerName: this.translate.instant('comun.asociacion'),
+      field: 'asociacion.nombre',
+      filter: 'agTextColumnFilter',
     },
   ];
 
   constructor(
     private service: UserManagementService,
     private router: Router,
+    private route: ActivatedRoute,
     private activatedRoute: ActivatedRoute,
     private modalService: NgbModal,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private translate: TranslateService
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
+    const snapshot = this.route.snapshot;
+    this.partnerId = snapshot.params['partnerId'];
+
     this.RefreshData();
   }
 
@@ -95,13 +101,17 @@ export class UserManagementListComponent implements OnInit {
     try {
       await this.service.deleteUsuarios(usuarios);
       this.RefreshData();
-      this.alertService.success('Se han eliminado los usuario seleccionados');
+      this.alertService.success(this.translate.instant('core.elementos-eliminados'));
     } catch (error) {
       this.alertService.error(error);
     }
   }
 
   private RefreshData(): void {
-    this.service.getUsuarios().subscribe((usuarios) => (this.usuarios = usuarios));
+    if (this.partnerId) {
+      this.service.getUsuariosByPartnerId(this.partnerId).subscribe((users) => (this.users = users));
+    } else {
+      this.service.getUsuarios().subscribe((users) => (this.users = users));
+    }
   }
 }

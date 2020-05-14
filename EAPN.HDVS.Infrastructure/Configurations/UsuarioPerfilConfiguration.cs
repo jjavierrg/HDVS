@@ -13,13 +13,6 @@ namespace EAPN.HDVS.Infrastructure.Configurations
 
             builder.Property(x => x.UsuarioId).HasColumnName(nameof(UsuarioPerfil.UsuarioId)).IsRequired();
             builder.Property(x => x.PerfilId).HasColumnName(nameof(UsuarioPerfil.PerfilId)).IsRequired();
-
-
-
-            builder.HasData(
-                new UsuarioPerfil { UsuarioId = 1, PerfilId = 2 },
-                new UsuarioPerfil { UsuarioId = 2, PerfilId = 1 }
-            );
         }
     }
 }

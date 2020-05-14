@@ -17,3 +17,7 @@
 .ng-invalid:not(form).ng-touched  {
   border-left: 5px solid #a94442; /* red */
 }
+
+.ql-editor {
+  height: 15vh !important;
+}

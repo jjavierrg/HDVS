@@ -1107,52 +1107,115 @@ namespace EAPN.HDVS.Web.Migrations
                         });
                 });
 
-            modelBuilder.Entity("EAPN.HDVS.Entities.PerfilRol", b =>
+            modelBuilder.Entity("EAPN.HDVS.Entities.PerfilPermiso", b =>
                 {
                     b.Property<int>("PerfilId")
                         .HasColumnName("PerfilId")
                         .HasColumnType("int");
 
-                    b.Property<int>("RolId")
-                        .HasColumnName("RolId")
+                    b.Property<int>("PermisoId")
+                        .HasColumnName("PermisoId")
                         .HasColumnType("int");
 
-                    b.HasKey("PerfilId", "RolId");
+                    b.HasKey("PerfilId", "PermisoId");
 
-                    b.HasIndex("RolId");
+                    b.HasIndex("PermisoId");
 
-                    b.ToTable("PerfilesRoles","dbo");
+                    b.ToTable("PerfilesPermisos","dbo");
 
                     b.HasData(
                         new
                         {
                             PerfilId = 1,
-                            RolId = 1
+                            PermisoId = 1
                         },
                         new
                         {
                             PerfilId = 2,
-                            RolId = 1
+                            PermisoId = 1
                         },
                         new
                         {
                             PerfilId = 2,
-                            RolId = 2
+                            PermisoId = 2
                         },
                         new
                         {
                             PerfilId = 2,
-                            RolId = 3
+                            PermisoId = 3
                         },
                         new
                         {
                             PerfilId = 2,
-                            RolId = 4
+                            PermisoId = 4
                         },
                         new
                         {
                             PerfilId = 2,
-                            RolId = 5
+                            PermisoId = 5
+                        });
+                });
+
+            modelBuilder.Entity("EAPN.HDVS.Entities.Permiso", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("Id")
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Clave")
+                        .IsRequired()
+                        .HasColumnName("Clave")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnName("Descripcion")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Permisos","dbo");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Clave = "user:login",
+                            Descripcion = "Aplicación: Acceder"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Clave = "usermng:read",
+                            Descripcion = "Usuarios: Lectura"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Clave = "usermng:write",
+                            Descripcion = "Usuarios: Escritura"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Clave = "usermng:delete",
+                            Descripcion = "Usuarios: Eliminar"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Clave = "usermng:access",
+                            Descripcion = "Usuarios: Acceder"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Clave = "usermng:admin",
+                            Descripcion = "Usuarios: Superadministrador"
                         });
                 });
 
@@ -1243,69 +1306,6 @@ namespace EAPN.HDVS.Web.Migrations
                     b.HasIndex("UsuarioId");
 
                     b.ToTable("RefreshTokens","dbo");
-                });
-
-            modelBuilder.Entity("EAPN.HDVS.Entities.Rol", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("Id")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Descripcion")
-                        .IsRequired()
-                        .HasColumnName("Descripcion")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("Permiso")
-                        .IsRequired()
-                        .HasColumnName("Permiso")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Roles","dbo");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Descripcion = "Aplicación: Acceder",
-                            Permiso = "user:login"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Descripcion = "Usuarios: Lectura",
-                            Permiso = "usermng:read"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Descripcion = "Usuarios: Escritura",
-                            Permiso = "usermng:write"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Descripcion = "Usuarios: Eliminar",
-                            Permiso = "usermng:delete"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Descripcion = "Usuarios: Acceder",
-                            Permiso = "usermng:access"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Descripcion = "Usuarios: Superadministrador",
-                            Permiso = "usermng:admin"
-                        });
                 });
 
             modelBuilder.Entity("EAPN.HDVS.Entities.Sexo", b =>
@@ -1458,27 +1458,27 @@ namespace EAPN.HDVS.Web.Migrations
                         });
                 });
 
-            modelBuilder.Entity("EAPN.HDVS.Entities.UsuarioRol", b =>
+            modelBuilder.Entity("EAPN.HDVS.Entities.UsuarioPermiso", b =>
                 {
                     b.Property<int>("UsuarioId")
                         .HasColumnName("UsuarioId")
                         .HasColumnType("int");
 
-                    b.Property<int>("RolId")
-                        .HasColumnName("RolId")
+                    b.Property<int>("PermisoId")
+                        .HasColumnName("PermisoId")
                         .HasColumnType("int");
 
-                    b.HasKey("UsuarioId", "RolId");
+                    b.HasKey("UsuarioId", "PermisoId");
 
-                    b.HasIndex("RolId");
+                    b.HasIndex("PermisoId");
 
-                    b.ToTable("UsuariosRoles","dbo");
+                    b.ToTable("UsuariosPermisos","dbo");
 
                     b.HasData(
                         new
                         {
                             UsuarioId = 1,
-                            RolId = 6
+                            PermisoId = 6
                         });
                 });
 
@@ -1491,17 +1491,17 @@ namespace EAPN.HDVS.Web.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("EAPN.HDVS.Entities.PerfilRol", b =>
+            modelBuilder.Entity("EAPN.HDVS.Entities.PerfilPermiso", b =>
                 {
                     b.HasOne("EAPN.HDVS.Entities.Perfil", "Perfil")
-                        .WithMany("Roles")
+                        .WithMany("Permisos")
                         .HasForeignKey("PerfilId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EAPN.HDVS.Entities.Rol", "Rol")
+                    b.HasOne("EAPN.HDVS.Entities.Permiso", "Permiso")
                         .WithMany()
-                        .HasForeignKey("RolId")
+                        .HasForeignKey("PermisoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -1542,7 +1542,7 @@ namespace EAPN.HDVS.Web.Migrations
             modelBuilder.Entity("EAPN.HDVS.Entities.UsuarioPerfil", b =>
                 {
                     b.HasOne("EAPN.HDVS.Entities.Perfil", "Perfil")
-                        .WithMany()
+                        .WithMany("Usuarios")
                         .HasForeignKey("PerfilId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1554,16 +1554,16 @@ namespace EAPN.HDVS.Web.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("EAPN.HDVS.Entities.UsuarioRol", b =>
+            modelBuilder.Entity("EAPN.HDVS.Entities.UsuarioPermiso", b =>
                 {
-                    b.HasOne("EAPN.HDVS.Entities.Rol", "Rol")
+                    b.HasOne("EAPN.HDVS.Entities.Permiso", "Permiso")
                         .WithMany()
-                        .HasForeignKey("RolId")
+                        .HasForeignKey("PermisoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("EAPN.HDVS.Entities.Usuario", "Usuario")
-                        .WithMany("RolesAdicionales")
+                        .WithMany("PermisosAdicionales")
                         .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

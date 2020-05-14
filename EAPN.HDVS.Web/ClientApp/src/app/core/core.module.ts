@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
-import { AllowedRolesDirective } from './directives/allowed-roles.directive';
+import { AllowedPermissionsDirective } from './directives/allowed-permissions.directive';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 @NgModule({
-  declarations: [AllowedRolesDirective],
+  declarations: [AllowedPermissionsDirective],
   imports: [
     TranslateModule.forChild({
       loader: {
@@ -18,6 +18,6 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
       isolate: false,
     }),
   ],
-  exports: [AllowedRolesDirective, TranslateModule],
+  exports: [AllowedPermissionsDirective, TranslateModule],
 })
 export class CoreModule {}

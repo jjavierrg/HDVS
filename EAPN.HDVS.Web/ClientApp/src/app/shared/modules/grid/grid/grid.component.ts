@@ -10,15 +10,16 @@ import { RowNode, SelectionChangedEvent } from 'ag-grid-community';
 export class GridComponent<T> implements OnInit {
   @Input() public columns: Partial<AgGridColumn>[];
   @Input() public defaultColDef: Partial<AgGridColumn>;
+  @Input() public title: string;
   @Input() public data: T[];
   @Input() public multiselect: boolean = true;
   @Input() public showToolbar: boolean = true;
   @Input() public showAddButton: boolean = true;
   @Input() public showEditButton: boolean = true;
   @Input() public showDeleteButton: boolean = true;
-  @Input() public rolesAddButton: string[];
-  @Input() public rolesEditButton: string[];
-  @Input() public rolesDeleteButton: string[];
+  @Input() public permissionsAddButton: string[];
+  @Input() public permissionsEditButton: string[];
+  @Input() public permissionsDeleteButton: string[];
 
   @Output() public selectionChange = new EventEmitter<T[]>();
   @Output() public addItem = new EventEmitter<void>();

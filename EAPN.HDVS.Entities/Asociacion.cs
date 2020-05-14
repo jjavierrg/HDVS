@@ -10,5 +10,6 @@ namespace EAPN.HDVS.Entities
         public string Nombre { get; set; }
         public bool Activa { get; set; }
         public string Observaciones { get; set; }
+        public IList<Usuario> Usuarios { get; set; }
     }
 }
