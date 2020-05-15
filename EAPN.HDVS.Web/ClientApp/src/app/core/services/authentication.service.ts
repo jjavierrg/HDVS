@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, ReplaySubject, throwError, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { map, catchError, retry } from 'rxjs/operators';
-import { ApiClient, LoginAttempDto, UserTokenDto, RefreshTokenAttempDto } from '../api/api.client';
+import { ApiClient, LoginAttempDto, UserTokenDto, RefreshTokenAttempDto, DatosUsuarioDto } from '../api/api.client';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { sha3_512 } from 'js-sha3';
 
@@ -17,6 +17,19 @@ export class AuthenticationService {
 
   constructor(private apiClient: ApiClient) {
     this.currentTokenSubject = new BehaviorSubject<UserTokenDto>(JSON.parse(localStorage.getItem(environment.tokenLocalStorageKey)));
+  }
+
+  public getDatosUsuario(): Observable<DatosUsuarioDto> {
+    return this.apiClient.getDatosUsuario();
+  }
+
+  public updateDatosUsuario(datos: DatosUsuarioDto): Observable<boolean> {
+    const dto = new DatosUsuarioDto({
+      ...datos,
+      claveActual: datos.claveActual ? sha3_512(datos.claveActual) : '',
+      nuevaClave: datos.nuevaClave ? sha3_512(datos.nuevaClave) : '',
+    });
+    return this.apiClient.putDatosUsuario(dto);
   }
 
   public getUserObservable(): Observable<any> {
@@ -89,7 +102,7 @@ export class AuthenticationService {
   }
 
   public getUserPartnerId(): Observable<number> {
-    return this.getUser().pipe(map(user => +user['asociacion_id']));
+    return this.getUser().pipe(map((user) => +user['asociacion_id']));
   }
 
   public getUserPermissions(): Observable<string[]> {

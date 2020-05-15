@@ -51,5 +51,6 @@ namespace EAPN.HDVS.Application.Services.User
         /// </summary>
         /// <param name="usuarios">user list to update</param>
         void UpdateRangeWithtPass(IEnumerable<Usuario> usuarios);
+        Task<bool> UpdateUserData(Usuario usuario, string currentPassword, string newPassword);
     }
 }

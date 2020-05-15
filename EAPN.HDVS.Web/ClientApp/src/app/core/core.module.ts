@@ -3,9 +3,11 @@ import { AllowedPermissionsDirective } from './directives/allowed-permissions.di
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { UniqueEmailDirective } from './directives/unique-email.directive';
+import { PasswordRestrinctionsDirective } from './directives/password-restrictions.directive';
 
 @NgModule({
-  declarations: [AllowedPermissionsDirective],
+  declarations: [AllowedPermissionsDirective, UniqueEmailDirective, PasswordRestrinctionsDirective],
   imports: [
     TranslateModule.forChild({
       loader: {
@@ -18,6 +20,6 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
       isolate: false,
     }),
   ],
-  exports: [AllowedPermissionsDirective, TranslateModule],
+  exports: [AllowedPermissionsDirective, UniqueEmailDirective, PasswordRestrinctionsDirective, TranslateModule],
 })
 export class CoreModule {}

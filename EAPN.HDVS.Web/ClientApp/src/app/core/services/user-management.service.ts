@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { ApiClient, UsuarioDto, PerfilDto, PermisoDto, QueryData, AsociacionDto } from '../api/api.client';
 import { sha3_512 } from 'js-sha3';
-import { map } from 'rxjs/operators';
+import { map, filter } from 'rxjs/operators';
 import { BaseFilter, IBaseFilter, getFilterQuery } from '../filters/basefilter';
 import { FilterComparison, FilterUnion } from '../filters/filter.enum';
 
@@ -54,5 +54,16 @@ export class UserManagementService {
     }
 
     return true;
+  }
+
+  public emailTaken(email: string, id?: number): Observable<boolean> {
+    const filters: IBaseFilter[] = [new BaseFilter('Email', email, FilterComparison.Equal, FilterUnion.And)];
+
+    if (id) {
+      filters.push(new BaseFilter('Id', id, FilterComparison.NotEqual, FilterUnion.And));
+    }
+
+    const query: QueryData = new QueryData({ filterParameters: getFilterQuery(filters), pageSize: 1 });
+    return this.apiClient.getUsuariosFiltered(query).pipe(map((result) => result.total > 0));
   }
 }

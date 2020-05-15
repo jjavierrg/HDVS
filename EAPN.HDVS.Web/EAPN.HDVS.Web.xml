@@ -52,6 +52,25 @@
             <param name="id">Item identifier</param>
             <returns></returns>
         </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.DatosUsuarioController.#ctor(EAPN.HDVS.Application.Services.User.IUsuarioService,Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.DatosUsuarioController},AutoMapper.IMapper)">
+            <summary>
+            </summary>
+            <param name="usuarioService"></param>
+            <param name="logger"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.DatosUsuarioController.GetDatosUsuario">
+            <summary>
+            Get the user data
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.DatosUsuarioController.PutDatosUsuario(EAPN.HDVS.Web.Dto.DatosUsuarioDto)">
+            <summary>
+            Get the user data
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:EAPN.HDVS.Web.Controllers.PermisosController.#ctor(EAPN.HDVS.Application.Core.Services.IReadServiceBase{EAPN.HDVS.Entities.Permiso},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.PermisosController},AutoMapper.IMapper)">
             <summary>
             </summary>

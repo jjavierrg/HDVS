@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using NLog;
 using System;
 using System.IO;
 using System.Reflection;
@@ -35,6 +36,7 @@ namespace EAPN.HDVS.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            configureLogger();
             services.AddControllersWithViews();
             ConfigureAuthentication(services);
             ConfigureDataAccess(services);
@@ -44,6 +46,7 @@ namespace EAPN.HDVS.Web
             ConfigureCors(services);
 #if (DEBUG)
             ConfigureSwagger(services);
+            LogManager.GlobalThreshold = LogLevel.Off;
 #endif
 
             // In production, the Angular files will be served from this directory
@@ -88,7 +91,6 @@ namespace EAPN.HDVS.Web
             }
 
             app.UseRouting();
-
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -111,6 +113,13 @@ namespace EAPN.HDVS.Web
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
+        }
+
+        private void configureLogger()
+        {
+            GlobalDiagnosticsContext.Set("myDataBase", Configuration.GetConnectionString("HDVSDatabase"));
+            IConfigurationRoot config = new ConfigurationBuilder().AddJsonFile(path: "AppSettings.json").Build();
+            NLog.Extensions.Logging.ConfigSettingLayoutRenderer.DefaultConfiguration = config;
         }
 
         private void ConfigureSwagger(IServiceCollection services)

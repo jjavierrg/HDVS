@@ -1,6 +1,7 @@
 ﻿using EAPN.HDVS.Shared.Permissions;
 using Microsoft.Extensions.Logging;
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security.Claims;
@@ -22,10 +23,10 @@ namespace EAPN.HDVS.Web.Extensions
         }
         public static int? GetUserId(this ClaimsPrincipal user)
         {
-            if (!user.HasClaim(x => x.Type == "sub"))
+            if (!user.HasClaim(x => x.Type == ClaimTypes.Name))
                 return null;
 
-            var claimValue = user.Claims.First(x => x.Type == "sub").Value;
+            var claimValue = user.Claims.First(x => x.Type == ClaimTypes.Name).Value;
             if (!int.TryParse(claimValue, out int result))
                 return null;
 

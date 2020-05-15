@@ -6,7 +6,6 @@ export const Permissions = {
     delete: 'usermng:delete',
   },
   user: {
-    login: 'user:login',
     superadmin: 'user:superadmin'
   },
 };

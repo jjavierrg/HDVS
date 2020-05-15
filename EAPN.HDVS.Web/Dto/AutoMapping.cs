@@ -20,6 +20,10 @@ namespace EAPN.HDVS.Web.Dto
                 .ForMember(d => d.Perfiles, opt => opt.MapFrom((src, dest) => src.Perfiles?.Select(x => new UsuarioPerfil { PerfilId = x.Id, UsuarioId = src.Id })))
                 .ForMember(d => d.PermisosAdicionales, opt => opt.MapFrom((src, dest) => src.PermisosAdicionales?.Select(x => new UsuarioPermiso { PermisoId = x.Id, UsuarioId = src.Id })));
 
+            CreateMap<Usuario, DatosUsuarioDto>()
+                .ForMember(d => d.ClaveActual, o => o.Ignore())
+                .ForMember(d => d.NuevaClave, o => o.Ignore());
+
             CreateMap<Perfil, PerfilDto>()
                 .ForMember(d => d.Permisos, opt => opt.MapFrom((src, dest) => src.Permisos.Select(x => x.Permiso)))
                 .ForMember(d => d.NumeroUsuarios, opt => opt.MapFrom((src, dest) => src.Usuarios?.Count ?? 0))

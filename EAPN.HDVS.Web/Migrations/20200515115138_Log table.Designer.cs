@@ -4,14 +4,16 @@ using EAPN.HDVS.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EAPN.HDVS.Web.Migrations
 {
     [DbContext(typeof(HDVSContext))]
-    partial class HDVSContextModelSnapshot : ModelSnapshot
+    [Migration("20200515115138_Log table")]
+    partial class Logtable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,17 +99,9 @@ namespace EAPN.HDVS.Web.Migrations
                         .HasColumnName("Exception")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Ip")
-                        .HasColumnName("Ip")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Level")
                         .HasColumnName("Level")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("LevelOrder")
-                        .HasColumnName("LevelOrder")
-                        .HasColumnType("int");
 
                     b.Property<string>("Logger")
                         .HasColumnName("Logger")
@@ -117,9 +111,9 @@ namespace EAPN.HDVS.Web.Migrations
                         .HasColumnName("Message")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnName("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("User")
+                        .HasColumnName("User")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

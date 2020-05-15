@@ -1,5 +1,5 @@
 import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -12,6 +12,7 @@ import { AuthenticatedGuard } from './core/guards/authenticate.guard';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
 import { LoaderModule } from './shared/modules/loader/loader.module';
+import { GlobalErrorHandler } from './core/handler/error-handler';
 
 const routes: Routes = [
   {
@@ -47,7 +48,7 @@ const routes: Routes = [
         },
         deps: [HttpClient],
       },
-      isolate: false
+      isolate: false,
     }),
   ],
   providers: [
@@ -57,6 +58,7 @@ const routes: Routes = [
       useValue: environment.apiEndpoint,
     },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: ErrorHandler, useClass: GlobalErrorHandler },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: LoadingInterceptor,

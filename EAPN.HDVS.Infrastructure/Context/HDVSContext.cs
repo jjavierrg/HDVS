@@ -5,6 +5,8 @@ namespace EAPN.HDVS.Infrastructure.Context
 {
     public class HDVSContext : DbContext
     {
+        public virtual DbSet<Log> Logs{ get; set; }
+
         public virtual DbSet<Usuario> Usuarios { get; set; }
         public virtual DbSet<UsuarioPerfil> UsuariosPerfiles{ get; set; }
         public virtual DbSet<UsuarioPermiso> UsuariosPermisos{ get; set; }
@@ -25,6 +27,8 @@ namespace EAPN.HDVS.Infrastructure.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new Configurations.LogConfiguration());
+
             modelBuilder.ApplyConfiguration(new Configurations.UsuarioConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.UsuarioPerfilConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.UsuarioPermisoConfiguration());

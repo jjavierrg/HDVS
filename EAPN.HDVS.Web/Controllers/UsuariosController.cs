@@ -53,6 +53,7 @@ namespace EAPN.HDVS.Web.Controllers
         public async Task<ActionResult<IEnumerable<UsuarioDto>>> GetUsuarios()
         {
             var usuarios = await _usuarioService.GetListAsync(GetSuperadminExclusionFilter(), q => q.Include(x => x.Perfiles).ThenInclude(x => x.Perfil).Include(x => x.PermisosAdicionales).ThenInclude(x => x.Permiso).Include(x => x.Asociacion), q => q.OrderBy(x => x.Email));
+            _logger.LogInformation("Obtiene el listado de usuarios");
             return Ok(_mapper.MapList<UsuarioDto>(usuarios));
         }
 
@@ -73,8 +74,12 @@ namespace EAPN.HDVS.Web.Controllers
                 query = query.Where(filter);
 
             query = query.Include(x => x.Perfiles).ThenInclude(x => x.Perfil).Include(x => x.PermisosAdicionales).ThenInclude(x => x.Permiso);
+            var usuario = await query.FirstOrDefaultAsync();
+            
+            if (usuario != null)
+                _logger.LogInformation($"Accede a la información del usuario: {usuario.Email}[Id: {usuario.Id}]");
 
-            return _mapper.Map<UsuarioDto>(await query.FirstOrDefaultAsync());
+            return _mapper.Map<UsuarioDto>(usuario);
         }
 
         /// <summary>
@@ -88,6 +93,8 @@ namespace EAPN.HDVS.Web.Controllers
         public async Task<ActionResult<QueryResult<UsuarioDto>>> GetUsuariosFiltered([FromBody]QueryData query)
         {
             var result = await _filterPaginator.Execute(_usuarioService.Repository.EntitySet, query);
+            _logger.LogInformation($"Realiza una búsqueda de usuarios con los siguientes filtros: ${query.FilterParameters}");
+
             return _mapper.MapQueryResult<Usuario, UsuarioDto>(result);
         }
 
@@ -98,11 +105,22 @@ namespace EAPN.HDVS.Web.Controllers
         /// <returns></returns>
         [AuthorizePermission(Permissions.USERMANAGEMENT_WRITE)]
         [ProducesResponseType(typeof(UsuarioDto), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(UsuarioDto), StatusCodes.Status403Forbidden)]
         [HttpPost(Name = "PostUsuario")]
         public async Task<ActionResult<UsuarioDto>> PostUsuario(UsuarioDto usuarioDto)
         {
             var usuario = _mapper.Map<Usuario>(usuarioDto);
+            var asociacionId = usuario.AsociacionId;
+
+            // If user is not superadmin, cannot create user of other partner
+            if (asociacionId != User.GetUserAsociacionId() && !User.HasSuperAdminPermission())
+            {
+                _logger.LogCritical($"Creación de usuario {usuario.Email}[Id: {usuario.Id}] no autorizada: Se ha intentado crear un usuario de otra asociación. AsociaciónID Solicitada: {usuarioDto.AsociacionId}");
+                return Forbid();
+            }
+
             var result = await _usuarioService.CreateAsync(usuario, usuarioDto.Clave);
+            _logger.LogInformation($"Crea el usuario {usuario.Email}[Id: {usuario.Id}]");
 
             return CreatedAtAction(nameof(GetUsuario), new { id = result.Id }, _mapper.Map<UsuarioDto>(result));
         }
@@ -115,6 +133,7 @@ namespace EAPN.HDVS.Web.Controllers
         /// <returns></returns>
         [AuthorizePermission(Permissions.USERMANAGEMENT_WRITE)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpPut("{id}", Name = "PutUsuario")]
         public async Task<IActionResult> PutUsuario(int id, UsuarioDto usuarioDto)
@@ -123,7 +142,22 @@ namespace EAPN.HDVS.Web.Controllers
                 return BadRequest();
 
             var usuario = await _usuarioService.GetSingleOrDefault(x => x.Id == id, q => q.Include(x => x.Perfiles).Include(x => x.PermisosAdicionales));
+            var asociacionId = usuario.AsociacionId;
+
+            // If user is not superadmin, cannot change user partner
+            if (asociacionId != usuarioDto.AsociacionId && !User.HasSuperAdminPermission())
+            {
+                _logger.LogCritical($"Cambio de asociación para el usuario {usuario.Email}[Id: {usuario.Id}] no autorizado: AsociaciónID Original:{asociacionId} -> AsociaciónID Solicitado: {usuarioDto.AsociacionId}");
+                return Forbid();
+            }
+            else if (asociacionId != User.GetUserAsociacionId() && !User.HasSuperAdminPermission())
+            {
+                _logger.LogCritical($"Actualización para el usuario {usuario.Email}[Id: {usuario.Id}] no autorizado: El usuario pertenece a otra asociación. AsociaciónID Solicitado: {usuarioDto.AsociacionId}");
+                return Forbid();
+            }
+
             _mapper.Map(usuarioDto, usuario);
+            _logger.LogInformation($"Actuliza el usuario {usuario.Email}[Id: {usuario.Id}]");
 
             _usuarioService.UpdateWithtPass(usuario);
             await _usuarioService.SaveChangesAsync();
@@ -138,6 +172,7 @@ namespace EAPN.HDVS.Web.Controllers
         /// <returns></returns>
         [AuthorizePermission(Permissions.USERMANAGEMENT_DELETE)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpDelete("{id}", Name = "DeleteUsuario")]
         public async Task<IActionResult> DeleteUsuario(int id)
@@ -151,6 +186,14 @@ namespace EAPN.HDVS.Web.Controllers
             if (usuario == null)
                 return NotFound();
 
+            // If user is not superadmin, cannot create delete of other partners
+            if (usuario.AsociacionId != User.GetUserAsociacionId() && !User.HasSuperAdminPermission())
+            {
+                _logger.LogCritical($"Eliminación del usuario {usuario.Email}[Id: {usuario.Id}] no autorizada: El usuario pertenece a otra asociación [id: {usuario.AsociacionId}].");
+                return Forbid();
+            }
+
+            _logger.LogInformation($"Elimina {usuario.Email}[Id: {usuario.Id}]");
             _usuarioService.Remove(usuario);
             await _usuarioService.SaveChangesAsync();
 

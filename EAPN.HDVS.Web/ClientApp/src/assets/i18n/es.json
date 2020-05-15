@@ -31,6 +31,10 @@
     "registro-no-encontrado": "Registro no encontrado",
     "si": "Sí"
   },
+  "formulario-perfil": {
+    "confirmar-clave": "Confirmar Contraseña",
+    "no-guardado": "No se ha podido modifcar su perfil. Revise si la contraseña actual es válida"
+  },
   "formulario-usuarios": {
     "nuevo-usuario": "Nuevo Usuario",
     "permisos-adicionales": "Permisos adicionales"
@@ -63,5 +67,13 @@
     "estadisticas": "Estadísticas",
     "inicio": "Inicio",
     "menu": "Menu"
+  },
+  "validaciones": {
+    "confirmacion-clave": "La contraseña y su confirmación no coinciden.",
+    "email-no-unico": "El email introducido ya se encuentra en uso.",
+    "email-no-valido": "El campo <strong>{{ controlName }}</strong> debe contener un correo electrónico válido.",
+    "longitud-maxima": "El campo <strong>{{ controlName }}</strong> debe contener como máximo {{ requiredLength }} caracteres.",
+    "longitud-minima": "El campo <strong>{{ controlName }}</strong> debe contener como mínimo {{ requiredLength }} caracteres.",
+    "obligatorio": "El campo <strong>{{ controlName }}</strong> es obligatorio."
   }
 }

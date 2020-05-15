@@ -7,7 +7,6 @@ namespace EAPN.HDVS.Shared.Permissions
     public static class Permissions
     {
         //App
-        public const string APP_USERLOGIN = "user:login";
         public const string APP_SUPERADMIN = "user:superadmin";
 
         // User management

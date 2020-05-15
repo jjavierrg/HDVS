@@ -134,6 +134,21 @@ namespace EAPN.HDVS.Application.Services.User
         }
 
         /// <inheritdoc />
+        public async Task<bool> UpdateUserData(Usuario usuario, string currentPassword, string newPassword)
+        {
+            if (usuario == null) throw new ArgumentNullException(nameof(usuario));
+
+            if (!string.IsNullOrWhiteSpace(newPassword) && !_passwordService.ValidatePassword(currentPassword, usuario.Hash))
+                return false;
+
+            usuario.Hash = newPassword;
+            UpdateWithtPass(usuario);
+            await SaveChangesAsync();
+
+            return true;
+        }
+
+        /// <inheritdoc />
         public async Task<Usuario> CreateAsync(Usuario usuario, string password)
         {
             if (string.IsNullOrEmpty(usuario?.Email)) throw new ArgumentNullException(nameof(usuario));

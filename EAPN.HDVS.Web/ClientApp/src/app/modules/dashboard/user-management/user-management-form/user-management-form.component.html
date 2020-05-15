@@ -25,7 +25,7 @@
           <div class="form-group col-md-4">
             <label for="inputEmail">{{ 'comun.email' | translate }} *</label>
             <input id="inputEmail" type="email" class="form-control" [placeholder]="'comun.email' | translate" required
-              email [(ngModel)]="usuario.email" name="Email" #emailCtrl="ngModel" />
+              email [(ngModel)]="usuario.email" name="Email" #emailCtrl="ngModel" appUniqueEmail [userId]="usuario.id" [ngModelOptions]="{ updateOn: 'blur' }" />
           </div>
           <div class="form-group col-md-4">
             <label

@@ -32,6 +32,12 @@ const routes: Routes = [
         data: { allowedPermissions: [Permissions.user.superadmin] },
       },
       {
+        path: 'perfil',
+        loadChildren: () => import('./profile/profile.module').then((m) => m.ProfileModule),
+        canLoad: [AuthenticatedGuard],
+        canActivate: [AuthenticatedGuard],
+      },
+      {
         path: 'asociaciones',
         loadChildren: () => import('./partners/partners.module').then((m) => m.PartnersModule),
         canLoad: [AuthenticatedGuard],
