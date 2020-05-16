@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
       .login(this.username, this.password)
       .pipe(finalize(() => (this.loading = false)))
       .subscribe(
-        (_) => this.router.navigateByUrl('/'),
+        (result) => result ? this.router.navigateByUrl('/') : this.error = 'no result' ,
         (err) => (this.error = err)
       );
   }

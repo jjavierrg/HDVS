@@ -1,6 +1,6 @@
 <div class="container" *ngIf="usuario">
   <div class="card border-0">
-    <h5 class="card-header toolbar text-light justify-content-start"></h5>
+    <h5 class="card-header toolbar text-light justify-content-start">{{ usuario.email }}</h5>
     <div class="card-body border border-top-0">
       <form (ngSubmit)="onSaveUser()" #userForm="ngForm">
         <div class="form-row">

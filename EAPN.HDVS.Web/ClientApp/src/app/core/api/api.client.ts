@@ -79,6 +79,42 @@ export interface IApiClient {
      * Get all stored items with related data
      * @return Success
      */
+    getFichas(): Observable<FichaDto[]>;
+    /**
+     * Add new item to collection
+     * @param body (optional) Item data
+     * @return Success
+     */
+    postFicha(body?: FichaDto | undefined): Observable<FichaDto>;
+    /**
+     * Get the item with the specified identifier
+     * @param id Item identifier
+     * @return Success
+     */
+    getFicha(id: number): Observable<FichaDto>;
+    /**
+     * Update an existing item
+     * @param id Item identifier
+     * @param body (optional) Item data
+     * @return Success
+     */
+    putFicha(id: number, body?: FichaDto | undefined): Observable<void>;
+    /**
+     * Delete existing item
+     * @param id Item identifier
+     * @return Success
+     */
+    deleteFicha(id: number): Observable<void>;
+    /**
+     * Get all items with a specific criteria filter
+     * @param body (optional) Query criteria filter
+     * @return Success
+     */
+    getFichasFiltered(body?: QueryData | undefined): Observable<UsuarioDtoQueryResult>;
+    /**
+     * Get all stored items with related data
+     * @return Success
+     */
     getPerfiles(): Observable<PerfilDto[]>;
     /**
      * Add new item to collection
@@ -889,6 +925,417 @@ export class ApiClient implements IApiClient {
             }));
         }
         return _observableOf<boolean>(<any>null);
+    }
+
+    /**
+     * Get all stored items with related data
+     * @return Success
+     */
+    getFichas(): Observable<FichaDto[]> {
+        let url_ = this.baseUrl + "/api/Fichas";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetFichas(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetFichas(<any>response_);
+                } catch (e) {
+                    return <Observable<FichaDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FichaDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetFichas(response: HttpResponseBase): Observable<FichaDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(FichaDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Unauthorized", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Forbidden", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FichaDto[]>(<any>null);
+    }
+
+    /**
+     * Add new item to collection
+     * @param body (optional) Item data
+     * @return Success
+     */
+    postFicha(body?: FichaDto | undefined): Observable<FichaDto> {
+        let url_ = this.baseUrl + "/api/Fichas";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPostFicha(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPostFicha(<any>response_);
+                } catch (e) {
+                    return <Observable<FichaDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FichaDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processPostFicha(response: HttpResponseBase): Observable<FichaDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 201) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result201: any = null;
+            let resultData201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result201 = FichaDto.fromJS(resultData201);
+            return _observableOf(result201);
+            }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = ProblemDetails.fromJS(resultData400);
+            return throwException("Bad Request", status, _responseText, _headers, result400);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Unauthorized", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Forbidden", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FichaDto>(<any>null);
+    }
+
+    /**
+     * Get the item with the specified identifier
+     * @param id Item identifier
+     * @return Success
+     */
+    getFicha(id: number): Observable<FichaDto> {
+        let url_ = this.baseUrl + "/api/Fichas/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetFicha(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetFicha(<any>response_);
+                } catch (e) {
+                    return <Observable<FichaDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FichaDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetFicha(response: HttpResponseBase): Observable<FichaDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = FichaDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Unauthorized", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Forbidden", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FichaDto>(<any>null);
+    }
+
+    /**
+     * Update an existing item
+     * @param id Item identifier
+     * @param body (optional) Item data
+     * @return Success
+     */
+    putFicha(id: number, body?: FichaDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/Fichas/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPutFicha(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPutFicha(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processPutFicha(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = ProblemDetails.fromJS(resultData400);
+            return throwException("Bad Request", status, _responseText, _headers, result400);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+            }));
+        } else if (status === 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Unauthorized", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Forbidden", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * Delete existing item
+     * @param id Item identifier
+     * @return Success
+     */
+    deleteFicha(id: number): Observable<void> {
+        let url_ = this.baseUrl + "/api/Fichas/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteFicha(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteFicha(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDeleteFicha(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+            }));
+        } else if (status === 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Unauthorized", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Forbidden", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * Get all items with a specific criteria filter
+     * @param body (optional) Query criteria filter
+     * @return Success
+     */
+    getFichasFiltered(body?: QueryData | undefined): Observable<UsuarioDtoQueryResult> {
+        let url_ = this.baseUrl + "/api/Fichas/filtered";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetFichasFiltered(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetFichasFiltered(<any>response_);
+                } catch (e) {
+                    return <Observable<UsuarioDtoQueryResult>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<UsuarioDtoQueryResult>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetFichasFiltered(response: HttpResponseBase): Observable<UsuarioDtoQueryResult> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = UsuarioDtoQueryResult.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Unauthorized", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Forbidden", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<UsuarioDtoQueryResult>(<any>null);
     }
 
     /**
@@ -2170,6 +2617,7 @@ export interface IRefreshTokenAttempDto {
 
 export class DatosUsuarioDto implements IDatosUsuarioDto {
     id?: number;
+    email?: string | undefined;
     nombre?: string | undefined;
     apellidos?: string | undefined;
     claveActual?: string | undefined;
@@ -2187,6 +2635,7 @@ export class DatosUsuarioDto implements IDatosUsuarioDto {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
+            this.email = _data["email"];
             this.nombre = _data["nombre"];
             this.apellidos = _data["apellidos"];
             this.claveActual = _data["claveActual"];
@@ -2204,6 +2653,7 @@ export class DatosUsuarioDto implements IDatosUsuarioDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
+        data["email"] = this.email;
         data["nombre"] = this.nombre;
         data["apellidos"] = this.apellidos;
         data["claveActual"] = this.claveActual;
@@ -2214,110 +2664,11 @@ export class DatosUsuarioDto implements IDatosUsuarioDto {
 
 export interface IDatosUsuarioDto {
     id?: number;
+    email?: string | undefined;
     nombre?: string | undefined;
     apellidos?: string | undefined;
     claveActual?: string | undefined;
     nuevaClave?: string | undefined;
-}
-
-export class PerfilDto implements IPerfilDto {
-    id?: number;
-    descripcion?: string | undefined;
-    numeroUsuarios?: number;
-    permisos?: MasterDataDto[] | undefined;
-
-    constructor(data?: IPerfilDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.descripcion = _data["descripcion"];
-            this.numeroUsuarios = _data["numeroUsuarios"];
-            if (Array.isArray(_data["permisos"])) {
-                this.permisos = [] as any;
-                for (let item of _data["permisos"])
-                    this.permisos!.push(MasterDataDto.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): PerfilDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new PerfilDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["descripcion"] = this.descripcion;
-        data["numeroUsuarios"] = this.numeroUsuarios;
-        if (Array.isArray(this.permisos)) {
-            data["permisos"] = [];
-            for (let item of this.permisos)
-                data["permisos"].push(item.toJSON());
-        }
-        return data; 
-    }
-}
-
-export interface IPerfilDto {
-    id?: number;
-    descripcion?: string | undefined;
-    numeroUsuarios?: number;
-    permisos?: MasterDataDto[] | undefined;
-}
-
-export class PermisoDto implements IPermisoDto {
-    id?: number;
-    descripcion?: string | undefined;
-    clave?: string | undefined;
-
-    constructor(data?: IPermisoDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.descripcion = _data["descripcion"];
-            this.clave = _data["clave"];
-        }
-    }
-
-    static fromJS(data: any): PermisoDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new PermisoDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["descripcion"] = this.descripcion;
-        data["clave"] = this.clave;
-        return data; 
-    }
-}
-
-export interface IPermisoDto {
-    id?: number;
-    descripcion?: string | undefined;
-    clave?: string | undefined;
 }
 
 export class UsuarioDto implements IUsuarioDto {
@@ -2414,6 +2765,362 @@ export interface IUsuarioDto {
     perfiles?: MasterDataDto[] | undefined;
     permisosAdicionales?: MasterDataDto[] | undefined;
     asociacion?: AsociacionDto;
+}
+
+export class SexoDto implements ISexoDto {
+    id?: number;
+    descripcion?: string | undefined;
+
+    constructor(data?: ISexoDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.descripcion = _data["descripcion"];
+        }
+    }
+
+    static fromJS(data: any): SexoDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new SexoDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["descripcion"] = this.descripcion;
+        return data; 
+    }
+}
+
+export interface ISexoDto {
+    id?: number;
+    descripcion?: string | undefined;
+}
+
+export class MunicipioDto implements IMunicipioDto {
+    id?: number;
+    provinciaId?: number;
+    nombre?: string | undefined;
+
+    constructor(data?: IMunicipioDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.provinciaId = _data["provinciaId"];
+            this.nombre = _data["nombre"];
+        }
+    }
+
+    static fromJS(data: any): MunicipioDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MunicipioDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["provinciaId"] = this.provinciaId;
+        data["nombre"] = this.nombre;
+        return data; 
+    }
+}
+
+export interface IMunicipioDto {
+    id?: number;
+    provinciaId?: number;
+    nombre?: string | undefined;
+}
+
+export class ProvinciaDto implements IProvinciaDto {
+    id?: number;
+    nombre?: string | undefined;
+    municipios?: MunicipioDto[] | undefined;
+
+    constructor(data?: IProvinciaDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.nombre = _data["nombre"];
+            if (Array.isArray(_data["municipios"])) {
+                this.municipios = [] as any;
+                for (let item of _data["municipios"])
+                    this.municipios!.push(MunicipioDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ProvinciaDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProvinciaDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["nombre"] = this.nombre;
+        if (Array.isArray(this.municipios)) {
+            data["municipios"] = [];
+            for (let item of this.municipios)
+                data["municipios"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IProvinciaDto {
+    id?: number;
+    nombre?: string | undefined;
+    municipios?: MunicipioDto[] | undefined;
+}
+
+export class PaisDto implements IPaisDto {
+    id?: number;
+    descripcion?: string | undefined;
+
+    constructor(data?: IPaisDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.descripcion = _data["descripcion"];
+        }
+    }
+
+    static fromJS(data: any): PaisDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaisDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["descripcion"] = this.descripcion;
+        return data; 
+    }
+}
+
+export interface IPaisDto {
+    id?: number;
+    descripcion?: string | undefined;
+}
+
+export class FichaDto implements IFichaDto {
+    id?: number;
+    asociacionId?: number;
+    usuarioId?: number;
+    codigo?: string | undefined;
+    nombre?: string | undefined;
+    apellido1?: string | undefined;
+    apellido2?: string | undefined;
+    dni?: string | undefined;
+    fotocopiaDNI?: boolean;
+    fechaNacimiento?: Date | undefined;
+    sexoId?: number | undefined;
+    generoId?: number | undefined;
+    domicilio?: string | undefined;
+    cp?: string | undefined;
+    municipioId?: number | undefined;
+    provinciaId?: number | undefined;
+    padronId?: number | undefined;
+    documentacionEmpadronamiento?: boolean;
+    nacionalidadId?: number | undefined;
+    origenId?: number | undefined;
+    situacionAdministrativaId?: number | undefined;
+    telefono?: string | undefined;
+    email?: string | undefined;
+    motivoAlta?: string | undefined;
+    observaciones?: string | undefined;
+    politicaFirmada?: boolean;
+    completa?: boolean;
+    readonly edad?: number | undefined;
+    asociacion?: AsociacionDto;
+    tecnico?: UsuarioDto;
+    sexo?: SexoDto;
+    genero?: SexoDto;
+    municipio?: MunicipioDto;
+    provincia?: ProvinciaDto;
+    padron?: MunicipioDto;
+    nacionalidad?: PaisDto;
+    origen?: PaisDto;
+
+    constructor(data?: IFichaDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.asociacionId = _data["asociacionId"];
+            this.usuarioId = _data["usuarioId"];
+            this.codigo = _data["codigo"];
+            this.nombre = _data["nombre"];
+            this.apellido1 = _data["apellido1"];
+            this.apellido2 = _data["apellido2"];
+            this.dni = _data["dni"];
+            this.fotocopiaDNI = _data["fotocopiaDNI"];
+            this.fechaNacimiento = _data["fechaNacimiento"] ? new Date(_data["fechaNacimiento"].toString()) : <any>undefined;
+            this.sexoId = _data["sexoId"];
+            this.generoId = _data["generoId"];
+            this.domicilio = _data["domicilio"];
+            this.cp = _data["cp"];
+            this.municipioId = _data["municipioId"];
+            this.provinciaId = _data["provinciaId"];
+            this.padronId = _data["padronId"];
+            this.documentacionEmpadronamiento = _data["documentacionEmpadronamiento"];
+            this.nacionalidadId = _data["nacionalidadId"];
+            this.origenId = _data["origenId"];
+            this.situacionAdministrativaId = _data["situacionAdministrativaId"];
+            this.telefono = _data["telefono"];
+            this.email = _data["email"];
+            this.motivoAlta = _data["motivoAlta"];
+            this.observaciones = _data["observaciones"];
+            this.politicaFirmada = _data["politicaFirmada"];
+            this.completa = _data["completa"];
+            (<any>this).edad = _data["edad"];
+            this.asociacion = _data["asociacion"] ? AsociacionDto.fromJS(_data["asociacion"]) : <any>undefined;
+            this.tecnico = _data["tecnico"] ? UsuarioDto.fromJS(_data["tecnico"]) : <any>undefined;
+            this.sexo = _data["sexo"] ? SexoDto.fromJS(_data["sexo"]) : <any>undefined;
+            this.genero = _data["genero"] ? SexoDto.fromJS(_data["genero"]) : <any>undefined;
+            this.municipio = _data["municipio"] ? MunicipioDto.fromJS(_data["municipio"]) : <any>undefined;
+            this.provincia = _data["provincia"] ? ProvinciaDto.fromJS(_data["provincia"]) : <any>undefined;
+            this.padron = _data["padron"] ? MunicipioDto.fromJS(_data["padron"]) : <any>undefined;
+            this.nacionalidad = _data["nacionalidad"] ? PaisDto.fromJS(_data["nacionalidad"]) : <any>undefined;
+            this.origen = _data["origen"] ? PaisDto.fromJS(_data["origen"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): FichaDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new FichaDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["asociacionId"] = this.asociacionId;
+        data["usuarioId"] = this.usuarioId;
+        data["codigo"] = this.codigo;
+        data["nombre"] = this.nombre;
+        data["apellido1"] = this.apellido1;
+        data["apellido2"] = this.apellido2;
+        data["dni"] = this.dni;
+        data["fotocopiaDNI"] = this.fotocopiaDNI;
+        data["fechaNacimiento"] = this.fechaNacimiento ? this.fechaNacimiento.toISOString() : <any>undefined;
+        data["sexoId"] = this.sexoId;
+        data["generoId"] = this.generoId;
+        data["domicilio"] = this.domicilio;
+        data["cp"] = this.cp;
+        data["municipioId"] = this.municipioId;
+        data["provinciaId"] = this.provinciaId;
+        data["padronId"] = this.padronId;
+        data["documentacionEmpadronamiento"] = this.documentacionEmpadronamiento;
+        data["nacionalidadId"] = this.nacionalidadId;
+        data["origenId"] = this.origenId;
+        data["situacionAdministrativaId"] = this.situacionAdministrativaId;
+        data["telefono"] = this.telefono;
+        data["email"] = this.email;
+        data["motivoAlta"] = this.motivoAlta;
+        data["observaciones"] = this.observaciones;
+        data["politicaFirmada"] = this.politicaFirmada;
+        data["completa"] = this.completa;
+        data["edad"] = this.edad;
+        data["asociacion"] = this.asociacion ? this.asociacion.toJSON() : <any>undefined;
+        data["tecnico"] = this.tecnico ? this.tecnico.toJSON() : <any>undefined;
+        data["sexo"] = this.sexo ? this.sexo.toJSON() : <any>undefined;
+        data["genero"] = this.genero ? this.genero.toJSON() : <any>undefined;
+        data["municipio"] = this.municipio ? this.municipio.toJSON() : <any>undefined;
+        data["provincia"] = this.provincia ? this.provincia.toJSON() : <any>undefined;
+        data["padron"] = this.padron ? this.padron.toJSON() : <any>undefined;
+        data["nacionalidad"] = this.nacionalidad ? this.nacionalidad.toJSON() : <any>undefined;
+        data["origen"] = this.origen ? this.origen.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IFichaDto {
+    id?: number;
+    asociacionId?: number;
+    usuarioId?: number;
+    codigo?: string | undefined;
+    nombre?: string | undefined;
+    apellido1?: string | undefined;
+    apellido2?: string | undefined;
+    dni?: string | undefined;
+    fotocopiaDNI?: boolean;
+    fechaNacimiento?: Date | undefined;
+    sexoId?: number | undefined;
+    generoId?: number | undefined;
+    domicilio?: string | undefined;
+    cp?: string | undefined;
+    municipioId?: number | undefined;
+    provinciaId?: number | undefined;
+    padronId?: number | undefined;
+    documentacionEmpadronamiento?: boolean;
+    nacionalidadId?: number | undefined;
+    origenId?: number | undefined;
+    situacionAdministrativaId?: number | undefined;
+    telefono?: string | undefined;
+    email?: string | undefined;
+    motivoAlta?: string | undefined;
+    observaciones?: string | undefined;
+    politicaFirmada?: boolean;
+    completa?: boolean;
+    edad?: number | undefined;
+    asociacion?: AsociacionDto;
+    tecnico?: UsuarioDto;
+    sexo?: SexoDto;
+    genero?: SexoDto;
+    municipio?: MunicipioDto;
+    provincia?: ProvinciaDto;
+    padron?: MunicipioDto;
+    nacionalidad?: PaisDto;
+    origen?: PaisDto;
 }
 
 export class QueryData implements IQueryData {
@@ -2522,6 +3229,106 @@ export interface IUsuarioDtoQueryResult {
     orderBy?: string | undefined;
     ascending?: boolean;
     data?: UsuarioDto[] | undefined;
+}
+
+export class PerfilDto implements IPerfilDto {
+    id?: number;
+    descripcion?: string | undefined;
+    numeroUsuarios?: number;
+    permisos?: MasterDataDto[] | undefined;
+
+    constructor(data?: IPerfilDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.descripcion = _data["descripcion"];
+            this.numeroUsuarios = _data["numeroUsuarios"];
+            if (Array.isArray(_data["permisos"])) {
+                this.permisos = [] as any;
+                for (let item of _data["permisos"])
+                    this.permisos!.push(MasterDataDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PerfilDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PerfilDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["descripcion"] = this.descripcion;
+        data["numeroUsuarios"] = this.numeroUsuarios;
+        if (Array.isArray(this.permisos)) {
+            data["permisos"] = [];
+            for (let item of this.permisos)
+                data["permisos"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPerfilDto {
+    id?: number;
+    descripcion?: string | undefined;
+    numeroUsuarios?: number;
+    permisos?: MasterDataDto[] | undefined;
+}
+
+export class PermisoDto implements IPermisoDto {
+    id?: number;
+    descripcion?: string | undefined;
+    clave?: string | undefined;
+
+    constructor(data?: IPermisoDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.descripcion = _data["descripcion"];
+            this.clave = _data["clave"];
+        }
+    }
+
+    static fromJS(data: any): PermisoDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PermisoDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["descripcion"] = this.descripcion;
+        data["clave"] = this.clave;
+        return data; 
+    }
+}
+
+export interface IPermisoDto {
+    id?: number;
+    descripcion?: string | undefined;
+    clave?: string | undefined;
 }
 
 export class ApiException extends Error {

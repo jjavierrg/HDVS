@@ -159,6 +159,62 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:EAPN.HDVS.Web.Contfichalers.FichasController.#ctor(EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Ficha},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Contfichalers.FichasController},AutoMapper.IMapper,EAPN.HDVS.Infrastructure.Core.Queries.IFilterPaginable{EAPN.HDVS.Entities.Ficha})">
+            <summary>
+            </summary>
+            <param name="fichaService"></param>
+            <param name="logger"></param>
+            <param name="mapper"></param>
+            <param name="filterPaginator"></param>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Contfichalers.FichasController.GetFichas">
+            <summary>
+            Get all stored items with related data
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Contfichalers.FichasController.GetFicha(System.Int32)">
+            <summary>
+            Get the item with the specified identifier
+            </summary>
+            <param name="id">Item identifier</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Contfichalers.FichasController.GetUsuariosFiltered(EAPN.HDVS.Infrastructure.Core.Queries.QueryData)">
+            <summary>
+            Get all items with a specific criteria filter
+            </summary>
+            <param name="query">Query criteria filter</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Contfichalers.FichasController.PostFicha(EAPN.HDVS.Web.Dto.FichaDto)">
+            <summary>
+            Add new item to collection
+            </summary>
+            <param name="fichaDto">Item data</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Contfichalers.FichasController.PutFicha(System.Int32,EAPN.HDVS.Web.Dto.FichaDto)">
+            <summary>
+            Update an existing item
+            </summary>
+            <param name="id">Item identifier</param>
+            <param name="fichaDto">Item data</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Contfichalers.FichasController.DeleteFicha(System.Int32)">
+            <summary>
+            Delete existing item
+            </summary>
+            <param name="id">Item identifier</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Contfichalers.FichasController.GetBaseQueryable">
+            <summary>
+            Base query. Handles security and asociacion scope
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:EAPN.HDVS.Web.Contperfillers.PerfilesController.#ctor(EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Perfil},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Contperfillers.PerfilesController},AutoMapper.IMapper)">
             <summary>
             </summary>

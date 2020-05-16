@@ -1,6 +1,8 @@
 {
   "comun": {
     "activo": "Activo",
+    "apellido1": "Apellido1",
+    "apellido2": "Apellido2",
     "apellidos": "Apellidos",
     "asociacion": "Asociación",
     "asociaciones": "Asociaciones",
@@ -19,6 +21,11 @@
     "aceptar": "Aceptar",
     "anadir": "Añadir",
     "buscar": "Buscar",
+    "calendario": {
+      "dias": "Lunes,Martes,Miércoles,Jueves,Viernes,Sábado,Domingo",
+      "hoy": "Hoy",
+      "meses": "Enero,Febrero,Marzo,Abril,Mayo,Junio,Julio,Agosto,Septiembre,Octubre,Noviembre,Diciembre"
+    },
     "cancelar": "Cancelar",
     "confirmar-eliminacion": "<p><strong>¿Está seguro de querer eliminar los elementos seleccionados?</strong></p><p>Toda la información asociada será eliminada por completo. Tenga en cuenta que esta operación <span class='text-danger'>no se puede deshacer.</span></p>",
     "confirmar-eliminacion-titulo": "Confirmar eliminación",
@@ -29,7 +36,12 @@
     "eliminar": "Eliminar",
     "no": "No",
     "registro-no-encontrado": "Registro no encontrado",
-    "si": "Sí"
+    "si": "Sí",
+    "siguiente-simbolo": "Siguiente >"
+  },
+  "fichas": {
+    "alta-titulo": "Escribe el nombre y al menos un apellido",
+    "fecha-nacimiento": "Fecha de  Nacimiento"
   },
   "formulario-perfil": {
     "confirmar-clave": "Confirmar Contraseña",

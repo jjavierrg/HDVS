@@ -2,16 +2,22 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { ComboboxComponent } from './combobox/combobox.component';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { ComboboxMultipleComponent } from './combobox-multiple/combobox-multiple.component';
 import { ValidationSummaryComponent } from './validation-summary/validation-summary.component';
 import { QuillModule } from 'ngx-quill';
+import { DatepickerComponent } from './datepicker/datepicker.component';
+import { FormsModule } from '@angular/forms';
+import { CoreModule } from 'src/app/core/core.module';
 
 @NgModule({
-  declarations: [CheckboxComponent, ComboboxComponent, ComboboxMultipleComponent, ValidationSummaryComponent],
+  declarations: [CheckboxComponent, ComboboxComponent, ComboboxMultipleComponent, ValidationSummaryComponent, DatepickerComponent],
   imports: [
     CommonModule,
+    CoreModule,
     NgbDropdownModule,
+    FormsModule,
+    NgbDatepickerModule,
     QuillModule.forRoot({
       modules: {
         toolbar: [
@@ -34,6 +40,6 @@ import { QuillModule } from 'ngx-quill';
       },
     }),
   ],
-  exports: [CheckboxComponent, ComboboxComponent, ComboboxMultipleComponent, ValidationSummaryComponent, QuillModule],
+  exports: [CheckboxComponent, ComboboxComponent, ComboboxMultipleComponent, DatepickerComponent, ValidationSummaryComponent, QuillModule],
 })
 export class InputModule {}

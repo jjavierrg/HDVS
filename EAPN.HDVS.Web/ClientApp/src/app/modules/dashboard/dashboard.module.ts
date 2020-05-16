@@ -44,6 +44,12 @@ const routes: Routes = [
         canActivate: [AuthenticatedGuard],
         data: { allowedPermissions: [Permissions.user.superadmin] },
       },
+      {
+        path: 'ficha',
+        loadChildren: () => import('./personal-card/personal-card.module').then((m) => m.PersonalCardModule),
+        canLoad: [AuthenticatedGuard],
+        canActivate: [AuthenticatedGuard],
+      },
     ],
   },
 ];

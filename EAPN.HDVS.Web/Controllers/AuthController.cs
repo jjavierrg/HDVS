@@ -33,8 +33,8 @@ namespace EAPN.HDVS.Web.Controllers
         {
             var token = await _usuarioService.LoginAsync(loginAttempDto.Email, loginAttempDto.Password);
 
-            if (token == null)
-                return Unauthorized();
+            //if (token == null)
+            //    return Unauthorized();
 
             return _mapper.Map<UserTokenDto>(token);
         }
@@ -45,8 +45,8 @@ namespace EAPN.HDVS.Web.Controllers
         {
             var token = await _usuarioService.RefreshTokenAsync(refreshTokenAttempDto.RefreshToken, refreshTokenAttempDto.UserId);
 
-            if (token == null)
-                return Unauthorized();
+            //if (token == null)
+            //    return Unauthorized();
 
             return _mapper.Map<UserTokenDto>(token);
         }

@@ -16,10 +16,11 @@ namespace EAPN.HDVS.Infrastructure.Context
         public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
 
         public virtual DbSet<Asociacion> Asociaciones { get; set; }
-        public virtual DbSet<Persona> Personas { get; set; }
-        public virtual DbSet<Direccion> Direcciones { get; set; }
-        public virtual DbSet<Pais> Paises { get; set; }
+        public virtual DbSet<Ficha> Fichas { get; set; }
         public virtual DbSet<Sexo> Sexos { get; set; }
+        public virtual DbSet<Pais> Paises { get; set; }
+        public virtual DbSet<Provincia> Provincias { get; set; }
+        public virtual DbSet<Municipio> Municipios { get; set; }
 
         public HDVSContext(DbContextOptions options) : base(options)
         {
@@ -38,9 +39,10 @@ namespace EAPN.HDVS.Infrastructure.Context
             modelBuilder.ApplyConfiguration(new Configurations.RefreshTokenConfiguration());
 
             modelBuilder.ApplyConfiguration(new Configurations.AsociacionConfiguration());
-            modelBuilder.ApplyConfiguration(new Configurations.DireccionConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.ProvinciaConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.MunicipioConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.PaisConfiguration());
-            modelBuilder.ApplyConfiguration(new Configurations.PersonaConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.FichaConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.SexoConfiguration());
 
             base.OnModelCreating(modelBuilder);
