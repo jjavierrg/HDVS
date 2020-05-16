@@ -6,6 +6,8 @@ import { InputModule } from 'src/app/shared/modules/input/input.module';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthenticatedGuard } from 'src/app/core/guards/authenticate.guard';
 import { FormsModule } from '@angular/forms';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { GridModule } from 'src/app/shared/modules/grid/grid.module';
 
 const routes: Routes = [
   {
@@ -23,6 +25,6 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [CardFinderComponent],
-  imports: [CommonModule, CoreModule, InputModule, FormsModule, RouterModule.forChild(routes)],
+  imports: [CommonModule, CoreModule, InputModule, FormsModule, NgbModalModule, GridModule, RouterModule.forChild(routes)],
 })
 export class PersonalCardModule {}

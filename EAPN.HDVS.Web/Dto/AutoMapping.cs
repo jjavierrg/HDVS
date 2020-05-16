@@ -40,6 +40,11 @@ namespace EAPN.HDVS.Web.Dto
                 .ForMember(d => d.NumeroUsuarios, opt => opt.MapFrom((src, dest) => src.Usuarios?.Count() ?? 0))
                 .ReverseMap();
 
+            CreateMap<Ficha, VistaPreviaFichaDto>()
+                .ForMember(d => d.FichaId, opt => opt.MapFrom(src => src.Id))
+                .ForMember(d => d.NombreAsociacion, opt => opt.MapFrom((src, dest) => src.Asociacion?.Nombre))
+                .ForMember(d => d.NombreTecnico, opt => opt.MapFrom((src, dest) => src.Tecnico?.Nombre));
+
             CreateMap<Permiso, PermisoDto>().ReverseMap();
             CreateMap<UserToken, UserTokenDto>();
 

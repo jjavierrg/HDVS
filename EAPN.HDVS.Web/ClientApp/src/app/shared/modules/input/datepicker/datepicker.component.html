@@ -1,5 +1,5 @@
 <div class="input-group" (blur)="onTouched()">
-  <input class="form-control" [placeholder]="placeHolder" name="dp" ngbDatepicker [footerTemplate]="footerTemplate"
+  <input class="form-control" [placeholder]="placeholder" name="dp" ngbDatepicker [footerTemplate]="footerTemplate"
     #d="ngbDatepicker" [(ngModel)]="value">
   <div class="input-group-append">
     <button class="btn btn-primary" (click)="d.toggle()" type="button"><i class="far fa-calendar"></i></button>

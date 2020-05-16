@@ -88,11 +88,11 @@ namespace EAPN.HDVS.Web.Contfichalers
         /// <returns></returns>
         [HttpPost("filtered", Name = "GetFichasFiltered")]
         [AuthorizePermission(Permissions.PESONALCARD_READ)]
-        [ProducesResponseType(typeof(QueryResult<UsuarioDto>), StatusCodes.Status200OK)]
-        public async Task<ActionResult<QueryResult<FichaDto>>> GetUsuariosFiltered([FromBody]QueryData query)
+        [ProducesResponseType(typeof(QueryResult<FichaDto>), StatusCodes.Status200OK)]
+        public async Task<ActionResult<QueryResult<FichaDto>>> GetFichasFiltered([FromBody]QueryData query)
         {
             _logger.LogInformation($"Realiza una búsqueda de fichas con los siguientes filtros: ${query.FilterParameters}");
-         
+
             var result = await _filterPaginator.Execute(GetBaseQueryable(), query);
             var fichasIds = result.Data?.Select(x => x.Id);
 
@@ -100,6 +100,27 @@ namespace EAPN.HDVS.Web.Contfichalers
                 _logger.LogInformation($"[Fichas] Se obtiene un listado mediante búsqueda filtrada con las siguientes fichas: [{string.Join(", ", fichasIds)}]");
 
             return _mapper.MapQueryResult<Ficha, FichaDto>(result);
+        }
+
+        /// <summary>
+        /// Get all items with a specific criteria filter
+        /// </summary>
+        /// <param name="query">Query criteria filter</param>
+        /// <returns></returns>
+        [HttpPost("vistaprevia/filtered", Name = "GetVistaPeviaFichas")]
+        [AuthorizePermission(Permissions.PESONALCARD_READ)]
+        [ProducesResponseType(typeof(QueryResult<VistaPreviaFichaDto>), StatusCodes.Status200OK)]
+        public async Task<ActionResult<QueryResult<VistaPreviaFichaDto>>> GetVistaPeviaFichas([FromBody]QueryData query)
+        {
+            _logger.LogInformation($"Solicita una vista previa de fichas con los siguiente parámetros: ${query.FilterParameters}");
+
+            var result = await _filterPaginator.Execute(_fichaService.Repository.EntitySet.Include(x => x.Asociacion).Include(x => x.Tecnico), query);
+            var fichasIds = result.Data?.Select(x => x.Id);
+
+            if (fichasIds.Any())
+                _logger.LogInformation($"[Fichas] Se obtiene un vista previa de las siguientes fichas: [{string.Join(", ", fichasIds)}]");
+
+            return _mapper.MapQueryResult<Ficha, VistaPreviaFichaDto>(result);
         }
 
         /// <summary>
@@ -116,7 +137,7 @@ namespace EAPN.HDVS.Web.Contfichalers
             var asociacionId = User.GetUserAsociacionId();
             if (fichaDto.AsociacionId != asociacionId)
             {
-                _logger.LogCritical($"[Fichas] Se ha intentado crear para otra asociación [Asociacion_id de destino: {fichaDto.AsociacionId}]");
+                _logger.LogCritical($"[Fichas] Se ha intentado crear una ficha para otra asociación [Asociacion_id de destino: {fichaDto.AsociacionId}]");
                 return BadRequest();
             }
 

@@ -7,6 +7,7 @@
     "asociacion": "Asociación",
     "asociaciones": "Asociaciones",
     "clave": "Contraseña",
+    "codigo": "Código",
     "descripcion": "Descripción",
     "email": "Email",
     "nombre": "Nombre",
@@ -37,11 +38,15 @@
     "no": "No",
     "registro-no-encontrado": "Registro no encontrado",
     "si": "Sí",
-    "siguiente-simbolo": "Siguiente >"
+    "siguiente": "Siguiente"
   },
   "fichas": {
     "alta-titulo": "Escribe el nombre y al menos un apellido",
-    "fecha-nacimiento": "Fecha de  Nacimiento"
+    "coincidencias-encontradas": "Coincidencias encontradas",
+    "coincidencias-mensaje": "Se han encontrado las siguientes fichas con los datos introducidos. Si no se trata de ninguna de estas fichas, pulse en Añadir.",
+    "fecha-nacimiento": "Fecha de  Nacimiento",
+    "tecnico": "Técnico",
+    "usuario-no-alta": "El usuario no está dado de alta"
   },
   "formulario-perfil": {
     "confirmar-clave": "Confirmar Contraseña",
@@ -81,6 +86,7 @@
     "menu": "Menu"
   },
   "validaciones": {
+    "al-menos": "Debe completar al menos {{ required }} de los siguientes campos <strong>{{ controlNames }}</strong>.",
     "confirmacion-clave": "La contraseña y su confirmación no coinciden.",
     "email-no-unico": "El email introducido ya se encuentra en uso.",
     "email-no-valido": "El campo <strong>{{ controlName }}</strong> debe contener un correo electrónico válido.",

@@ -180,7 +180,14 @@
             <param name="id">Item identifier</param>
             <returns></returns>
         </member>
-        <member name="M:EAPN.HDVS.Web.Contfichalers.FichasController.GetUsuariosFiltered(EAPN.HDVS.Infrastructure.Core.Queries.QueryData)">
+        <member name="M:EAPN.HDVS.Web.Contfichalers.FichasController.GetFichasFiltered(EAPN.HDVS.Infrastructure.Core.Queries.QueryData)">
+            <summary>
+            Get all items with a specific criteria filter
+            </summary>
+            <param name="query">Query criteria filter</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Contfichalers.FichasController.GetVistaPeviaFichas(EAPN.HDVS.Infrastructure.Core.Queries.QueryData)">
             <summary>
             Get all items with a specific criteria filter
             </summary>

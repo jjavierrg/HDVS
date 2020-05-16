@@ -24,7 +24,7 @@ const adapter = DateAdapter;
 })
 export class DatepickerComponent implements ControlValueAccessor {
   @Input() public disabled: boolean = false;
-  @Input() public placeHolder: string = 'dd-mm-yyyy';
+  @Input() public placeholder: string = 'dd-mm-yyyy';
 
   private _value: Date;
   public get value(): Date {
@@ -37,8 +37,6 @@ export class DatepickerComponent implements ControlValueAccessor {
 
   public onChange = (value: Date) => {};
   public onTouched = () => {};
-
-  constructor(private ngbCalendar: NgbCalendar) {}
 
   public setToday(): void {
     this.value = new Date();

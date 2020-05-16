@@ -63,6 +63,13 @@ export class ValidationSummaryComponent implements OnInit {
       if (errors.passnotvalid) {
         this.errors.push(this.translate.instant('validaciones.confirmacion-clave'));
       }
+
+      // Handle 'At least one' validation
+      if (errors.atLeatOne) {
+        this.errors.push(
+          this.translate.instant('validaciones.al-menos', { controlNames: errors.controls.join(', '), required: errors.minimunRequired })
+        );
+      }
     });
   }
 }

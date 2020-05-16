@@ -5,9 +5,10 @@ import { HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { UniqueEmailDirective } from './directives/unique-email.directive';
 import { PasswordRestrinctionsDirective } from './directives/password-restrictions.directive';
+import { AtLeastOneDirective } from './directives/at-least-one.directive';
 
 @NgModule({
-  declarations: [AllowedPermissionsDirective, UniqueEmailDirective, PasswordRestrinctionsDirective],
+  declarations: [AllowedPermissionsDirective, UniqueEmailDirective, PasswordRestrinctionsDirective, AtLeastOneDirective],
   imports: [
     TranslateModule.forChild({
       loader: {
@@ -20,6 +21,6 @@ import { PasswordRestrinctionsDirective } from './directives/password-restrictio
       isolate: false,
     }),
   ],
-  exports: [AllowedPermissionsDirective, UniqueEmailDirective, PasswordRestrinctionsDirective, TranslateModule],
+  exports: [AllowedPermissionsDirective, UniqueEmailDirective, PasswordRestrinctionsDirective, TranslateModule, AtLeastOneDirective],
 })
 export class CoreModule {}

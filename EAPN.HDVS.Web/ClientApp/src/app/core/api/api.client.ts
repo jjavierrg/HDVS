@@ -110,7 +110,13 @@ export interface IApiClient {
      * @param body (optional) Query criteria filter
      * @return Success
      */
-    getFichasFiltered(body?: QueryData | undefined): Observable<UsuarioDtoQueryResult>;
+    getFichasFiltered(body?: QueryData | undefined): Observable<FichaDtoQueryResult>;
+    /**
+     * Get all items with a specific criteria filter
+     * @param body (optional) Query criteria filter
+     * @return Success
+     */
+    getVistaPeviaFichas(body?: QueryData | undefined): Observable<VistaPreviaFichaDtoQueryResult>;
     /**
      * Get all stored items with related data
      * @return Success
@@ -1278,7 +1284,7 @@ export class ApiClient implements IApiClient {
      * @param body (optional) Query criteria filter
      * @return Success
      */
-    getFichasFiltered(body?: QueryData | undefined): Observable<UsuarioDtoQueryResult> {
+    getFichasFiltered(body?: QueryData | undefined): Observable<FichaDtoQueryResult> {
         let url_ = this.baseUrl + "/api/Fichas/filtered";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1301,14 +1307,14 @@ export class ApiClient implements IApiClient {
                 try {
                     return this.processGetFichasFiltered(<any>response_);
                 } catch (e) {
-                    return <Observable<UsuarioDtoQueryResult>><any>_observableThrow(e);
+                    return <Observable<FichaDtoQueryResult>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<UsuarioDtoQueryResult>><any>_observableThrow(response_);
+                return <Observable<FichaDtoQueryResult>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetFichasFiltered(response: HttpResponseBase): Observable<UsuarioDtoQueryResult> {
+    protected processGetFichasFiltered(response: HttpResponseBase): Observable<FichaDtoQueryResult> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1319,7 +1325,7 @@ export class ApiClient implements IApiClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = UsuarioDtoQueryResult.fromJS(resultData200);
+            result200 = FichaDtoQueryResult.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status === 401) {
@@ -1335,7 +1341,72 @@ export class ApiClient implements IApiClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<UsuarioDtoQueryResult>(<any>null);
+        return _observableOf<FichaDtoQueryResult>(<any>null);
+    }
+
+    /**
+     * Get all items with a specific criteria filter
+     * @param body (optional) Query criteria filter
+     * @return Success
+     */
+    getVistaPeviaFichas(body?: QueryData | undefined): Observable<VistaPreviaFichaDtoQueryResult> {
+        let url_ = this.baseUrl + "/api/Fichas/vistaprevia/filtered";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetVistaPeviaFichas(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetVistaPeviaFichas(<any>response_);
+                } catch (e) {
+                    return <Observable<VistaPreviaFichaDtoQueryResult>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<VistaPreviaFichaDtoQueryResult>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetVistaPeviaFichas(response: HttpResponseBase): Observable<VistaPreviaFichaDtoQueryResult> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = VistaPreviaFichaDtoQueryResult.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Unauthorized", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Forbidden", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<VistaPreviaFichaDtoQueryResult>(<any>null);
     }
 
     /**
@@ -3175,13 +3246,13 @@ export interface IQueryData {
     order?: string | undefined;
 }
 
-export class UsuarioDtoQueryResult implements IUsuarioDtoQueryResult {
+export class FichaDtoQueryResult implements IFichaDtoQueryResult {
     total?: number;
     orderBy?: string | undefined;
     ascending?: boolean;
-    data?: UsuarioDto[] | undefined;
+    data?: FichaDto[] | undefined;
 
-    constructor(data?: IUsuarioDtoQueryResult) {
+    constructor(data?: IFichaDtoQueryResult) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -3198,14 +3269,14 @@ export class UsuarioDtoQueryResult implements IUsuarioDtoQueryResult {
             if (Array.isArray(_data["data"])) {
                 this.data = [] as any;
                 for (let item of _data["data"])
-                    this.data!.push(UsuarioDto.fromJS(item));
+                    this.data!.push(FichaDto.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): UsuarioDtoQueryResult {
+    static fromJS(data: any): FichaDtoQueryResult {
         data = typeof data === 'object' ? data : {};
-        let result = new UsuarioDtoQueryResult();
+        let result = new FichaDtoQueryResult();
         result.init(data);
         return result;
     }
@@ -3224,11 +3295,135 @@ export class UsuarioDtoQueryResult implements IUsuarioDtoQueryResult {
     }
 }
 
-export interface IUsuarioDtoQueryResult {
+export interface IFichaDtoQueryResult {
     total?: number;
     orderBy?: string | undefined;
     ascending?: boolean;
-    data?: UsuarioDto[] | undefined;
+    data?: FichaDto[] | undefined;
+}
+
+export class VistaPreviaFichaDto implements IVistaPreviaFichaDto {
+    fichaId?: number | undefined;
+    asociacionId?: number | undefined;
+    nombreAsociacion?: string | undefined;
+    usuarioId?: number;
+    nombreTecnico?: string | undefined;
+    codigo?: string | undefined;
+    nombre?: string | undefined;
+    apellido1?: string | undefined;
+    apellido2?: string | undefined;
+
+    constructor(data?: IVistaPreviaFichaDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.fichaId = _data["fichaId"];
+            this.asociacionId = _data["asociacionId"];
+            this.nombreAsociacion = _data["nombreAsociacion"];
+            this.usuarioId = _data["usuarioId"];
+            this.nombreTecnico = _data["nombreTecnico"];
+            this.codigo = _data["codigo"];
+            this.nombre = _data["nombre"];
+            this.apellido1 = _data["apellido1"];
+            this.apellido2 = _data["apellido2"];
+        }
+    }
+
+    static fromJS(data: any): VistaPreviaFichaDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new VistaPreviaFichaDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["fichaId"] = this.fichaId;
+        data["asociacionId"] = this.asociacionId;
+        data["nombreAsociacion"] = this.nombreAsociacion;
+        data["usuarioId"] = this.usuarioId;
+        data["nombreTecnico"] = this.nombreTecnico;
+        data["codigo"] = this.codigo;
+        data["nombre"] = this.nombre;
+        data["apellido1"] = this.apellido1;
+        data["apellido2"] = this.apellido2;
+        return data; 
+    }
+}
+
+export interface IVistaPreviaFichaDto {
+    fichaId?: number | undefined;
+    asociacionId?: number | undefined;
+    nombreAsociacion?: string | undefined;
+    usuarioId?: number;
+    nombreTecnico?: string | undefined;
+    codigo?: string | undefined;
+    nombre?: string | undefined;
+    apellido1?: string | undefined;
+    apellido2?: string | undefined;
+}
+
+export class VistaPreviaFichaDtoQueryResult implements IVistaPreviaFichaDtoQueryResult {
+    total?: number;
+    orderBy?: string | undefined;
+    ascending?: boolean;
+    data?: VistaPreviaFichaDto[] | undefined;
+
+    constructor(data?: IVistaPreviaFichaDtoQueryResult) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.total = _data["total"];
+            this.orderBy = _data["orderBy"];
+            this.ascending = _data["ascending"];
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data!.push(VistaPreviaFichaDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): VistaPreviaFichaDtoQueryResult {
+        data = typeof data === 'object' ? data : {};
+        let result = new VistaPreviaFichaDtoQueryResult();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["total"] = this.total;
+        data["orderBy"] = this.orderBy;
+        data["ascending"] = this.ascending;
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IVistaPreviaFichaDtoQueryResult {
+    total?: number;
+    orderBy?: string | undefined;
+    ascending?: boolean;
+    data?: VistaPreviaFichaDto[] | undefined;
 }
 
 export class PerfilDto implements IPerfilDto {
@@ -3329,6 +3524,62 @@ export interface IPermisoDto {
     id?: number;
     descripcion?: string | undefined;
     clave?: string | undefined;
+}
+
+export class UsuarioDtoQueryResult implements IUsuarioDtoQueryResult {
+    total?: number;
+    orderBy?: string | undefined;
+    ascending?: boolean;
+    data?: UsuarioDto[] | undefined;
+
+    constructor(data?: IUsuarioDtoQueryResult) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.total = _data["total"];
+            this.orderBy = _data["orderBy"];
+            this.ascending = _data["ascending"];
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data!.push(UsuarioDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): UsuarioDtoQueryResult {
+        data = typeof data === 'object' ? data : {};
+        let result = new UsuarioDtoQueryResult();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["total"] = this.total;
+        data["orderBy"] = this.orderBy;
+        data["ascending"] = this.ascending;
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IUsuarioDtoQueryResult {
+    total?: number;
+    orderBy?: string | undefined;
+    ascending?: boolean;
+    data?: UsuarioDto[] | undefined;
 }
 
 export class ApiException extends Error {
