@@ -5,7 +5,7 @@ namespace EAPN.HDVS.Web.Dto
     public class FichaDto
     {
         public int Id { get; set; }
-        public int AsociacionId { get; set; }
+        public int OrganizacionId{ get; set; }
         public int UsuarioId { get; set; }
         public string Codigo { get; set; }
         public string Nombre { get; set; }
@@ -34,7 +34,7 @@ namespace EAPN.HDVS.Web.Dto
 
         public int? Edad { get; }
 
-        public AsociacionDto Asociacion { get; set; }
+        public OrganizacionDto Organizacion { get; set; }
         public UsuarioDto Tecnico { get; set; }
         public SexoDto Sexo { get; set; }
         public SexoDto Genero { get; set; }

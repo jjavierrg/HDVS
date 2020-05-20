@@ -48,9 +48,9 @@ namespace EAPN.HDVS.Application.Services.User
                 return token;
             }
 
-            if (!usuario.Asociacion?.Activa ?? false)
+            if (!usuario.Organizacion?.Activa ?? false)
             {
-                Logger.LogWarning($"Intento de login fallido. El usuario {username} intentó iniciar sesión pero la asociación no se encuentra activa");
+                Logger.LogWarning($"Intento de login fallido. El usuario {username} intentó iniciar sesión pero la organización no se encuentra activa");
                 return token;
             }
 
@@ -170,7 +170,7 @@ namespace EAPN.HDVS.Application.Services.User
         {
             return Repository.EntitySet.Include(x => x.Perfiles).ThenInclude(x => x.Perfil).ThenInclude(x => x.Permisos).ThenInclude(x => x.Permiso)
                     .Include(x => x.PermisosAdicionales).ThenInclude(x => x.Permiso)
-                    .Include(x => x.Asociacion)
+                    .Include(x => x.Organizacion)
                     .Include(x => x.Tokens);
         }
 

@@ -15,7 +15,7 @@ namespace EAPN.HDVS.Testing.Common
             _defaultHash = _defaultUserHash;
         }
 
-        private Usuario CreateUsuario(int id, int asociacionId, int perfilId, bool superadmin, bool activo)
+        private Usuario CreateUsuario(int id, int organizacionId, int perfilId, bool superadmin, bool activo)
         {
             var permisosAdicionales = new List<UsuarioPermiso>();
             if (superadmin)
@@ -25,12 +25,12 @@ namespace EAPN.HDVS.Testing.Common
             {
                 Activo = activo,
                 Apellidos = $"Apellidos",
-                AsociacionId = asociacionId,
+                OrganizacionId = organizacionId,
                 Email = $"usuario{id}@test.com",
                 Hash = _defaultHash,
                 Id = id,
                 Nombre = $"Nombre",
-                Observaciones = $"asociacion {asociacionId} - activo {activo} - perfil {perfilId} - superadmin: {superadmin}",
+                Observaciones = $"organización {organizacionId} - activo {activo} - perfil {perfilId} - superadmin: {superadmin}",
                 Perfiles = new List<UsuarioPerfil>(new[] { new UsuarioPerfil { PerfilId = perfilId, UsuarioId = id } }),
                 PermisosAdicionales = permisosAdicionales
             };
@@ -61,24 +61,24 @@ namespace EAPN.HDVS.Testing.Common
             context.PerfilesPermisos.Add(new PerfilPermiso { PerfilId = 2, PermisoId = 9 });
             context.PerfilesPermisos.Add(new PerfilPermiso { PerfilId = 2, PermisoId = 10 });
 
-            context.Asociaciones.Add(new Asociacion { Activa = true, Id = 1, Nombre = $"Asociación activa 1", Observaciones = $"Observaciones Asociación activa 1" });
-            context.Asociaciones.Add(new Asociacion { Activa = true, Id = 2, Nombre = $"Asociación activa 2", Observaciones = $"Observaciones Asociación activa 2" });
-            context.Asociaciones.Add(new Asociacion { Activa = false, Id = 3, Nombre = $"Asociación inactiva 3", Observaciones = $"Observaciones Asociación inactiva 3" });
+            context.Organizaciones.Add(new Organizacion { Activa = true, Id = 1, Nombre = $"Organización activa 1", Observaciones = $"Observaciones Organización activa 1" });
+            context.Organizaciones.Add(new Organizacion { Activa = true, Id = 2, Nombre = $"Organización activa 2", Observaciones = $"Observaciones Organización activa 2" });
+            context.Organizaciones.Add(new Organizacion { Activa = false, Id = 3, Nombre = $"Organización inactiva 3", Observaciones = $"Observaciones Organización inactiva 3" });
 
             // admins - activos
             context.Usuarios.Add(CreateUsuario(1, 1, 1, true, true));
             context.Usuarios.Add(CreateUsuario(2, 2, 1, true, true));
-            context.Usuarios.Add(CreateUsuario(3, 3, 1, true, true)); // Asociacion Inactiva
+            context.Usuarios.Add(CreateUsuario(3, 3, 1, true, true)); // Organización Inactiva
 
             // usuarios - activos
             context.Usuarios.Add(CreateUsuario(4, 1, 1, false, true));
             context.Usuarios.Add(CreateUsuario(5, 2, 1, false, true));
-            context.Usuarios.Add(CreateUsuario(6, 3, 1, false, true)); // Asociacion Inactiva
+            context.Usuarios.Add(CreateUsuario(6, 3, 1, false, true)); // Organización Inactiva
 
             // usuarios - inactivos
             context.Usuarios.Add(CreateUsuario(7, 1, 2, false, false));
             context.Usuarios.Add(CreateUsuario(8, 2, 2, false, false));
-            context.Usuarios.Add(CreateUsuario(9, 3, 2, false, false)); // Asociacion Inactiva
+            context.Usuarios.Add(CreateUsuario(9, 3, 2, false, false)); // Organización Inactiva
 
             await context.SaveChangesAsync();
         }

@@ -4,54 +4,6 @@
         <name>EAPN.HDVS.Web</name>
     </assembly>
     <members>
-        <member name="M:EAPN.HDVS.Web.Contasociacionlers.AsociacionesController.#ctor(EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Asociacion},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Contasociacionlers.AsociacionesController},AutoMapper.IMapper)">
-            <summary>
-            </summary>
-            <param name="asociacionService"></param>
-            <param name="logger"></param>
-            <param name="mapper"></param>
-        </member>
-        <member name="M:EAPN.HDVS.Web.Contasociacionlers.AsociacionesController.GetAsociaciones">
-            <summary>
-            Get all stored items
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:EAPN.HDVS.Web.Contasociacionlers.AsociacionesController.GetAsociacionesAsMasterData">
-            <summary>
-            Get all stored items mapped as Masterdata
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:EAPN.HDVS.Web.Contasociacionlers.AsociacionesController.GetAsociacion(System.Int32)">
-            <summary>
-            Get the item with the specified identifier
-            </summary>
-            <param name="id">Item identifier</param>
-            <returns></returns>
-        </member>
-        <member name="M:EAPN.HDVS.Web.Contasociacionlers.AsociacionesController.PostAsociacion(EAPN.HDVS.Web.Dto.AsociacionDto)">
-            <summary>
-            Add new item to collection
-            </summary>
-            <param name="asociacionDto">Item data</param>
-            <returns></returns>
-        </member>
-        <member name="M:EAPN.HDVS.Web.Contasociacionlers.AsociacionesController.PutAsociacion(System.Int32,EAPN.HDVS.Web.Dto.AsociacionDto)">
-            <summary>
-            Update an existing item
-            </summary>
-            <param name="id">Item identifier</param>
-            <param name="asociacionDto">Item data</param>
-            <returns></returns>
-        </member>
-        <member name="M:EAPN.HDVS.Web.Contasociacionlers.AsociacionesController.DeleteAsociacion(System.Int32)">
-            <summary>
-            Delete existing item
-            </summary>
-            <param name="id">Item identifier</param>
-            <returns></returns>
-        </member>
         <member name="M:EAPN.HDVS.Web.Controllers.DatosUsuarioController.#ctor(EAPN.HDVS.Application.Services.User.IUsuarioService,Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.DatosUsuarioController},AutoMapper.IMapper)">
             <summary>
             </summary>
@@ -218,8 +170,56 @@
         </member>
         <member name="M:EAPN.HDVS.Web.Contfichalers.FichasController.GetBaseQueryable">
             <summary>
-            Base query. Handles security and asociacion scope
+            Base query. Handles security and organizacion scope
             </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Contorganizacionlers.OrganizacionesController.#ctor(EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Organizacion},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Contorganizacionlers.OrganizacionesController},AutoMapper.IMapper)">
+            <summary>
+            </summary>
+            <param name="organizacionService"></param>
+            <param name="logger"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Contorganizacionlers.OrganizacionesController.GetOrganizaciones">
+            <summary>
+            Get all stored items
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Contorganizacionlers.OrganizacionesController.GetOrganizacionesAsMasterData">
+            <summary>
+            Get all stored items mapped as Masterdata
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Contorganizacionlers.OrganizacionesController.GetOrganizacion(System.Int32)">
+            <summary>
+            Get the item with the specified identifier
+            </summary>
+            <param name="id">Item identifier</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Contorganizacionlers.OrganizacionesController.PostOrganizacion(EAPN.HDVS.Web.Dto.OrganizacionDto)">
+            <summary>
+            Add new item to collection
+            </summary>
+            <param name="organizacionDto">Item data</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Contorganizacionlers.OrganizacionesController.PutOrganizacion(System.Int32,EAPN.HDVS.Web.Dto.OrganizacionDto)">
+            <summary>
+            Update an existing item
+            </summary>
+            <param name="id">Item identifier</param>
+            <param name="organizacionDto">Item data</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Contorganizacionlers.OrganizacionesController.DeleteOrganizacion(System.Int32)">
+            <summary>
+            Delete existing item
+            </summary>
+            <param name="id">Item identifier</param>
             <returns></returns>
         </member>
         <member name="M:EAPN.HDVS.Web.Contperfillers.PerfilesController.#ctor(EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Perfil},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Contperfillers.PerfilesController},AutoMapper.IMapper)">

@@ -52,7 +52,7 @@ namespace EAPN.HDVS.Web.Controllers
         [ProducesResponseType(typeof(IEnumerable<UsuarioDto>), StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<UsuarioDto>>> GetUsuarios()
         {
-            var usuarios = await _usuarioService.GetListAsync(GetSuperadminExclusionFilter(), q => q.Include(x => x.Perfiles).ThenInclude(x => x.Perfil).Include(x => x.PermisosAdicionales).ThenInclude(x => x.Permiso).Include(x => x.Asociacion), q => q.OrderBy(x => x.Email));
+            var usuarios = await _usuarioService.GetListAsync(GetSuperadminExclusionFilter(), q => q.Include(x => x.Perfiles).ThenInclude(x => x.Perfil).Include(x => x.PermisosAdicionales).ThenInclude(x => x.Permiso).Include(x => x.Organizacion), q => q.OrderBy(x => x.Email));
             _logger.LogInformation("Obtiene el listado de usuarios");
             return Ok(_mapper.MapList<UsuarioDto>(usuarios));
         }
@@ -110,12 +110,12 @@ namespace EAPN.HDVS.Web.Controllers
         public async Task<ActionResult<UsuarioDto>> PostUsuario(UsuarioDto usuarioDto)
         {
             var usuario = _mapper.Map<Usuario>(usuarioDto);
-            var asociacionId = usuario.AsociacionId;
+            var organizacionId = usuario.OrganizacionId;
 
             // If user is not superadmin, cannot create user of other partner
-            if (asociacionId != User.GetUserAsociacionId() && !User.HasSuperAdminPermission())
+            if (organizacionId != User.GetUserOrganizacionId() && !User.HasSuperAdminPermission())
             {
-                _logger.LogCritical($"Creación de usuario {usuario.Email}[Id: {usuario.Id}] no autorizada: Se ha intentado crear un usuario de otra asociación. AsociaciónID Solicitada: {usuarioDto.AsociacionId}");
+                _logger.LogCritical($"Creación de usuario {usuario.Email}[Id: {usuario.Id}] no autorizada: Se ha intentado crear un usuario de otra organización. Organización_id solicitada: {usuarioDto.OrganizacionId}");
                 return Forbid();
             }
 
@@ -142,17 +142,17 @@ namespace EAPN.HDVS.Web.Controllers
                 return BadRequest();
 
             var usuario = await _usuarioService.GetSingleOrDefault(x => x.Id == id, q => q.Include(x => x.Perfiles).Include(x => x.PermisosAdicionales));
-            var asociacionId = usuario.AsociacionId;
+            var organizacionId = usuario.OrganizacionId;
 
             // If user is not superadmin, cannot change user partner
-            if (asociacionId != usuarioDto.AsociacionId && !User.HasSuperAdminPermission())
+            if (organizacionId != usuarioDto.OrganizacionId && !User.HasSuperAdminPermission())
             {
-                _logger.LogCritical($"Cambio de asociación para el usuario {usuario.Email}[Id: {usuario.Id}] no autorizado: AsociaciónID Original:{asociacionId} -> AsociaciónID Solicitado: {usuarioDto.AsociacionId}");
+                _logger.LogCritical($"Cambio de organización para el usuario {usuario.Email}[Id: {usuario.Id}] no autorizado: OrganizaciónID Original:{organizacionId} -> OrganizaciónID Solicitado: {usuarioDto.OrganizacionId}");
                 return Forbid();
             }
-            else if (asociacionId != User.GetUserAsociacionId() && !User.HasSuperAdminPermission())
+            else if (organizacionId != User.GetUserOrganizacionId() && !User.HasSuperAdminPermission())
             {
-                _logger.LogCritical($"Actualización para el usuario {usuario.Email}[Id: {usuario.Id}] no autorizado: El usuario pertenece a otra asociación. AsociaciónID Solicitado: {usuarioDto.AsociacionId}");
+                _logger.LogCritical($"Actualización para el usuario {usuario.Email}[Id: {usuario.Id}] no autorizado: El usuario pertenece a otra organización. OrganizaciónID Solicitado: {usuarioDto.OrganizacionId}");
                 return Forbid();
             }
 
@@ -187,9 +187,9 @@ namespace EAPN.HDVS.Web.Controllers
                 return NotFound();
 
             // If user is not superadmin, cannot create delete of other partners
-            if (usuario.AsociacionId != User.GetUserAsociacionId() && !User.HasSuperAdminPermission())
+            if (usuario.OrganizacionId != User.GetUserOrganizacionId() && !User.HasSuperAdminPermission())
             {
-                _logger.LogCritical($"Eliminación del usuario {usuario.Email}[Id: {usuario.Id}] no autorizada: El usuario pertenece a otra asociación [id: {usuario.AsociacionId}].");
+                _logger.LogCritical($"Eliminación del usuario {usuario.Email}[Id: {usuario.Id}] no autorizada: El usuario pertenece a otra organización [id: {usuario.OrganizacionId}].");
                 return Forbid();
             }
 
@@ -208,7 +208,7 @@ namespace EAPN.HDVS.Web.Controllers
         {
             Expression<Func<Usuario, bool>> filter = null;
             if (!User.HasSuperAdminPermission())
-                filter = x => x.AsociacionId == User.GetUserAsociacionId() && !(x.PermisosAdicionales.Any(r => r.Permiso.Clave == Permissions.APP_SUPERADMIN) || x.Perfiles.Any(p => p.Perfil.Permisos.Any(r => r.Permiso.Clave == Permissions.APP_SUPERADMIN)));
+                filter = x => x.OrganizacionId == User.GetUserOrganizacionId() && !(x.PermisosAdicionales.Any(r => r.Permiso.Clave == Permissions.APP_SUPERADMIN) || x.Perfiles.Any(p => p.Perfil.Permisos.Any(r => r.Permiso.Clave == Permissions.APP_SUPERADMIN)));
 
             return filter;
         }

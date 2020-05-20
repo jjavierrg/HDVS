@@ -1,21 +1,17 @@
 ﻿using EAPN.HDVS.Shared.Permissions;
-using Microsoft.Extensions.Logging;
-using System;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Security.Claims;
 
 namespace EAPN.HDVS.Web.Extensions
 {
     public static class IdentityExtension
     {
-        public static int GetUserAsociacionId(this ClaimsPrincipal user)
+        public static int GetUserOrganizacionId(this ClaimsPrincipal user)
         {
-            if (!user.HasClaim(x => x.Type == "asociacion_id"))
+            if (!user.HasClaim(x => x.Type == "organizacion_id"))
                 return 0;
 
-            var claimValue = user.Claims.First(x => x.Type == "asociacion_id").Value;
+            var claimValue = user.Claims.First(x => x.Type == "organizacion_id").Value;
             if (!int.TryParse(claimValue, out int result))
                 return 0;
 

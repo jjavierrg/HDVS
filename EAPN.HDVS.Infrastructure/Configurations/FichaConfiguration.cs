@@ -12,7 +12,7 @@ namespace EAPN.HDVS.Infrastructure.Configurations
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Id).HasColumnName(nameof(Ficha.Id)).IsRequired().ValueGeneratedOnAdd();
-            builder.Property(x => x.AsociacionId).HasColumnName(nameof(Ficha.AsociacionId)).IsRequired();
+            builder.Property(x => x.OrganizacionId).HasColumnName(nameof(Ficha.OrganizacionId)).IsRequired();
             builder.Property(x => x.UsuarioId).HasColumnName(nameof(Ficha.UsuarioId)).IsRequired();
             builder.Property(x => x.Codigo).HasColumnName(nameof(Ficha.Codigo)).HasMaxLength(50).IsRequired();
             builder.Property(x => x.Nombre).HasColumnName(nameof(Ficha.Nombre)).HasMaxLength(150).IsRequired();
@@ -41,7 +41,7 @@ namespace EAPN.HDVS.Infrastructure.Configurations
 
             builder.Ignore(x => x.Edad);
 
-            builder.HasOne(x => x.Asociacion).WithMany().HasForeignKey(x => x.AsociacionId).OnDelete(DeleteBehavior.NoAction);
+            builder.HasOne(x => x.Organizacion).WithMany().HasForeignKey(x => x.OrganizacionId).OnDelete(DeleteBehavior.NoAction);
             builder.HasOne(x => x.Tecnico).WithMany().HasForeignKey(x => x.UsuarioId).OnDelete(DeleteBehavior.NoAction); ;
             builder.HasOne(x => x.Sexo).WithMany().HasForeignKey(x => x.SexoId).OnDelete(DeleteBehavior.NoAction); ;
             builder.HasOne(x => x.Genero).WithMany().HasForeignKey(x => x.GeneroId).OnDelete(DeleteBehavior.NoAction); ;

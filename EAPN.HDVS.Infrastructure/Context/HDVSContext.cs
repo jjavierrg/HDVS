@@ -15,7 +15,7 @@ namespace EAPN.HDVS.Infrastructure.Context
         public virtual DbSet<Permiso> Permisos { get; set; }
         public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
 
-        public virtual DbSet<Asociacion> Asociaciones { get; set; }
+        public virtual DbSet<Organizacion> Organizaciones { get; set; }
         public virtual DbSet<Ficha> Fichas { get; set; }
         public virtual DbSet<Sexo> Sexos { get; set; }
         public virtual DbSet<Pais> Paises { get; set; }
@@ -38,7 +38,7 @@ namespace EAPN.HDVS.Infrastructure.Context
             modelBuilder.ApplyConfiguration(new Configurations.PermisoConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.RefreshTokenConfiguration());
 
-            modelBuilder.ApplyConfiguration(new Configurations.AsociacionConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.OrganizacionConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.ProvinciaConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.MunicipioConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.PaisConfiguration());

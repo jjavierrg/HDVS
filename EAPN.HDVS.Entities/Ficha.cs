@@ -5,7 +5,7 @@ namespace EAPN.HDVS.Entities
     public class Ficha
     {
         public int Id { get; set; }
-        public int AsociacionId { get; set; }
+        public int OrganizacionId { get; set; }
         public int UsuarioId { get; set; }
         public string Codigo { get; set; }
         public string Nombre { get; set; }
@@ -46,7 +46,7 @@ namespace EAPN.HDVS.Entities
             }
         }
 
-        public Asociacion Asociacion { get; set; }
+        public Organizacion Organizacion { get; set; }
         public Usuario Tecnico { get; set; }
         public Sexo Sexo { get; set; }
         public Sexo Genero { get; set; }

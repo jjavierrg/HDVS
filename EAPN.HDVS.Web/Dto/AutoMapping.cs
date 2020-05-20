@@ -36,13 +36,13 @@ namespace EAPN.HDVS.Web.Dto
                 .ForMember(d => d.NumeroUsuarios, opt => opt.MapFrom(srr => 0))
                 .ForMember(d => d.Permisos, opt => opt.MapFrom(srr => new Permiso[] { }));
 
-            CreateMap<Asociacion, AsociacionDto>()
+            CreateMap<Organizacion, OrganizacionDto>()
                 .ForMember(d => d.NumeroUsuarios, opt => opt.MapFrom((src, dest) => src.Usuarios?.Count() ?? 0))
                 .ReverseMap();
 
             CreateMap<Ficha, VistaPreviaFichaDto>()
                 .ForMember(d => d.FichaId, opt => opt.MapFrom(src => src.Id))
-                .ForMember(d => d.NombreAsociacion, opt => opt.MapFrom((src, dest) => src.Asociacion?.Nombre))
+                .ForMember(d => d.NombreOrganizacion, opt => opt.MapFrom((src, dest) => src.Organizacion?.Nombre))
                 .ForMember(d => d.NombreTecnico, opt => opt.MapFrom((src, dest) => src.Tecnico?.Nombre));
 
             CreateMap<Permiso, PermisoDto>().ReverseMap();
@@ -64,7 +64,7 @@ namespace EAPN.HDVS.Web.Dto
             CreateMap<Pais, MasterDataDto>();
             CreateMap<Perfil, MasterDataDto>();
             CreateMap<Permiso, MasterDataDto>();
-            CreateMap<Asociacion, MasterDataDto>()
+            CreateMap<Organizacion, MasterDataDto>()
                 .ForMember(d => d.Descripcion, opt => opt.MapFrom(src => src.Nombre));
         }
     }

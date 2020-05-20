@@ -6,7 +6,7 @@ namespace EAPN.HDVS.Web.Dto
     public class UsuarioDto
     {
         public int Id { get; set; }
-        public int AsociacionId { get; set; }
+        public int OrganizacionId { get; set; }
         public string Email { get; set; }
         public string Nombre { get; set; }
         public string Apellidos { get; set; }
@@ -16,6 +16,6 @@ namespace EAPN.HDVS.Web.Dto
         public DateTime? FinBloqueo { get; set; }
         public IList<MasterDataDto> Perfiles { get; set; }
         public IList<MasterDataDto> PermisosAdicionales { get; set; }
-        public AsociacionDto Asociacion { get; set; }
+        public OrganizacionDto Organizacion { get; set; }
     }
 }

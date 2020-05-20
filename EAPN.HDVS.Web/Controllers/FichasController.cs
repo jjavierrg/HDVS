@@ -114,7 +114,7 @@ namespace EAPN.HDVS.Web.Contfichalers
         {
             _logger.LogInformation($"Solicita una vista previa de fichas con los siguiente parámetros: ${query.FilterParameters}");
 
-            var result = await _filterPaginator.Execute(_fichaService.Repository.EntitySet.Include(x => x.Asociacion).Include(x => x.Tecnico), query);
+            var result = await _filterPaginator.Execute(_fichaService.Repository.EntitySet.Include(x => x.Organizacion).Include(x => x.Tecnico), query);
             var fichasIds = result.Data?.Select(x => x.Id);
 
             if (fichasIds.Any())
@@ -134,10 +134,10 @@ namespace EAPN.HDVS.Web.Contfichalers
         [HttpPost(Name = "PostFicha")]
         public async Task<ActionResult<FichaDto>> PostFicha(FichaDto fichaDto)
         {
-            var asociacionId = User.GetUserAsociacionId();
-            if (fichaDto.AsociacionId != asociacionId)
+            var organizacionId = User.GetUserOrganizacionId();
+            if (fichaDto.OrganizacionId != organizacionId)
             {
-                _logger.LogCritical($"[Fichas] Se ha intentado crear una ficha para otra asociación [Asociacion_id de destino: {fichaDto.AsociacionId}]");
+                _logger.LogCritical($"[Fichas] Se ha intentado crear una ficha para otra organizacion [Organizacion_id de destino: {fichaDto.OrganizacionId}]");
                 return BadRequest();
             }
 
@@ -168,10 +168,10 @@ namespace EAPN.HDVS.Web.Contfichalers
             if (id != fichaDto.Id)
                 return BadRequest();
 
-            var asociacionId = User.GetUserAsociacionId();
-            if (fichaDto.AsociacionId != asociacionId)
+            var organizacionId= User.GetUserOrganizacionId();
+            if (fichaDto.OrganizacionId != organizacionId)
             {
-                _logger.LogCritical($"[Fichas] Se ha intentado actualizar una ficha de otra asociación [Asociacion_id de destino: {fichaDto.AsociacionId}]");
+                _logger.LogCritical($"[Fichas] Se ha intentado actualizar una ficha de otra organización [Organizacion_Id de destino: {fichaDto.OrganizacionId}]");
                 return BadRequest();
             }
 
@@ -204,12 +204,18 @@ namespace EAPN.HDVS.Web.Contfichalers
         [HttpDelete("{id}", Name = "DeleteFicha")]
         public async Task<IActionResult> DeleteFicha(int id)
         {
-            var asociacionId = User.GetUserAsociacionId();
+            var organizacionId = User.GetUserOrganizacionId();
 
             var ficha = await _fichaService.GetFirstOrDefault(x => x.Id == id);
             if (ficha == null)
             {
                 _logger.LogCritical($"[Fichas] Se ha intentado eliminar una ficha no válida [id: {id}]");
+                return NotFound();
+            }
+
+            if (ficha.Id != organizacionId && !User.HasSuperAdminPermission())
+            {
+                _logger.LogCritical($"[Fichas] Se ha intentado eliminar una ficha de usa organización a la que no se tenía acceso [id: {id}]");
                 return NotFound();
             }
 
@@ -221,14 +227,14 @@ namespace EAPN.HDVS.Web.Contfichalers
         }
 
         /// <summary>
-        /// Base query. Handles security and asociacion scope
+        /// Base query. Handles security and organizacion scope
         /// </summary>
         /// <returns></returns>
         private IQueryable<Ficha> GetBaseQueryable()
         {
-            var asociacionId = User.GetUserAsociacionId();
+            var organizacionId = User.GetUserOrganizacionId();
             var query = _fichaService.Repository.EntitySet;
-            query = query.Where(x => x.AsociacionId == asociacionId);
+            query = query.Where(x => x.OrganizacionId == organizacionId);
 
             return query;
         }
