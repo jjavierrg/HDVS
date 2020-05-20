@@ -54,8 +54,8 @@ export class UserManagementListComponent implements OnInit {
       maxWidth: 100,
     },
     {
-      headerName: this.translate.instant('comun.asociacion'),
-      field: 'asociacion.nombre',
+      headerName: this.translate.instant('comun.organizacion'),
+      field: 'organizacion.nombre',
       filter: 'agTextColumnFilter',
     },
   ];

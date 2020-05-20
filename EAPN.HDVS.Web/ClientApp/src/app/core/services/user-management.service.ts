@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { ApiClient, UsuarioDto, PerfilDto, PermisoDto, QueryData, AsociacionDto } from '../api/api.client';
+import { ApiClient, UsuarioDto, PerfilDto, PermisoDto, QueryData, OrganizacionDto } from '../api/api.client';
 import { sha3_512 } from 'js-sha3';
 import { map, filter } from 'rxjs/operators';
 import { BaseFilter, IBaseFilter, getFilterQuery } from '../filters/basefilter';
@@ -17,7 +17,7 @@ export class UserManagementService {
   }
 
   public getUsuariosByPartnerId(partnerId: number): Observable<UsuarioDto[]> {
-    const filters: IBaseFilter[] = [new BaseFilter('AsociacionId', +partnerId, FilterComparison.Equal, FilterUnion.And)];
+    const filters: IBaseFilter[] = [new BaseFilter('OrganizacionId', +partnerId, FilterComparison.Equal, FilterUnion.And)];
     const query: QueryData = new QueryData({ filterParameters: getFilterQuery(filters) });
     return this.apiClient.getUsuariosFiltered(query).pipe(map((result) => result.data));
   }

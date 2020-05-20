@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserManagementService } from 'src/app/core/services/user-management.service';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { UsuarioDto, PerfilDto, PermisoDto, AsociacionDto, MasterDataDto } from 'src/app/core/api/api.client';
+import { UsuarioDto, PerfilDto, PermisoDto, OrganizacionDto, MasterDataDto } from 'src/app/core/api/api.client';
 import { TranslateService } from '@ngx-translate/core';
 import { Permissions } from 'src/app/core/enums/permissions.enum';
 import { AuthenticationService } from 'src/app/core/services/authentication.service';
@@ -18,7 +18,7 @@ export class UserManagementFormComponent implements OnInit {
   public editing: boolean = false;
   public usuario: UsuarioDto;
   public perfiles: MasterDataDto[];
-  public asociaciones: MasterDataDto[];
+  public organizaciones: MasterDataDto[];
   public permisos: MasterDataDto[];
   public permissions = Permissions;
 
@@ -37,14 +37,14 @@ export class UserManagementFormComponent implements OnInit {
     const userId = snapshot.params['id'];
     let partnerId = snapshot.params['partnerId'];
 
-    const [permisos, perfiles, asociaciones] = await Promise.all([
+    const [permisos, perfiles, organizaciones] = await Promise.all([
       this.masterdataService.getPermisos().toPromise(),
       this.masterdataService.getPerfiles().toPromise(),
-      this.masterdataService.getAsociaciones().toPromise(),
+      this.masterdataService.getOrganizaciones().toPromise(),
     ]);
     this.perfiles = perfiles;
     this.permisos = permisos;
-    this.asociaciones = asociaciones;
+    this.organizaciones = organizaciones;
 
     // only superadmin manage other partners users
     if (!partnerId || !this.authService.isAuthorized([Permissions.user.superadmin])) {
@@ -62,7 +62,7 @@ export class UserManagementFormComponent implements OnInit {
           .then(() => this.alertService.error(this.translate.instant('core.registro-no-encontrado')));
       }
     } else {
-      this.usuario = new UsuarioDto({ activo: true, asociacionId: +partnerId });
+      this.usuario = new UsuarioDto({ activo: true, organizacionId: +partnerId });
       this.editing = false;
       this.title = this.translate.instant('formulario-usuarios.nuevo-usuario');
     }

@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { TranslateService } from '@ngx-translate/core';
-import { AsociacionDto } from 'src/app/core/api/api.client';
+import { OrganizacionDto } from 'src/app/core/api/api.client';
 import { AgGridColumn } from 'ag-grid-angular';
 import { PartnerService } from 'src/app/core/services/partner.service';
 import { Permissions } from 'src/app/core/enums/permissions.enum';
@@ -16,7 +16,7 @@ import { CheckboxCellComponent } from 'src/app/shared/modules/grid/checkbox-cell
   styleUrls: ['./partner-list.component.scss']
 })
 export class PartnerListComponent implements OnInit  {
-  public partners: AsociacionDto[];
+  public partners: OrganizacionDto[];
   public permissions = Permissions;
 
   public columns: Partial<AgGridColumn>[] = [
@@ -57,14 +57,14 @@ export class PartnerListComponent implements OnInit  {
     this.router.navigate(['nuevo'], { relativeTo: this.activatedRoute });
   }
 
-  public onEditPartner(asociacion: AsociacionDto): void {
-    if (!!asociacion) {
-      this.router.navigate([asociacion.id], { relativeTo: this.activatedRoute });
+  public onEditPartner(organizacion: OrganizacionDto): void {
+    if (!!organizacion) {
+      this.router.navigate([organizacion.id], { relativeTo: this.activatedRoute });
     }
   }
 
-  public async onDeletePartners(asociaciones: AsociacionDto[], modal: any): Promise<void> {
-    if (!asociaciones || !asociaciones.length) {
+  public async onDeletePartners(organizaciones: OrganizacionDto[], modal: any): Promise<void> {
+    if (!organizaciones || !organizaciones.length) {
       return;
     }
 
@@ -75,7 +75,7 @@ export class PartnerListComponent implements OnInit  {
     }
 
     try {
-      await this.service.deleteAsociaciones(asociaciones);
+      await this.service.deleteOrganizaciones(organizaciones);
       this.RefreshData();
       this.alertService.success(this.translate.instant('core.elementos-eliminados'));
     } catch (error) {
@@ -84,6 +84,6 @@ export class PartnerListComponent implements OnInit  {
   }
 
   private RefreshData(): void {
-    this.service.getAsociaciones().subscribe((partners) => (this.partners = partners));
+    this.service.getOrganizaciones().subscribe((partners) => (this.partners = partners));
   }
 }

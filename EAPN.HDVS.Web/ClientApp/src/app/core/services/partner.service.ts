@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ApiClient, AsociacionDto } from '../api/api.client';
+import { ApiClient, OrganizacionDto } from '../api/api.client';
 
 @Injectable({
   providedIn: 'root',
@@ -8,37 +8,37 @@ import { ApiClient, AsociacionDto } from '../api/api.client';
 export class PartnerService {
   constructor(private apiClient: ApiClient) {}
 
-  public getAsociaciones(): Observable<AsociacionDto[]> {
-    return this.apiClient.getAsociaciones();
+  public getOrganizaciones(): Observable<OrganizacionDto[]> {
+    return this.apiClient.getOrganizaciones();
   }
 
-  public getAsociacion(id: number): Observable<AsociacionDto> {
-    return this.apiClient.getAsociacion(id);
+  public getOrganizacion(id: number): Observable<OrganizacionDto> {
+    return this.apiClient.getOrganizacion(id);
   }
 
-  public createAsociacion(asociacion: AsociacionDto): Observable<AsociacionDto> {
-    if (!asociacion) {
+  public createOrganizacion(organizacion: OrganizacionDto): Observable<OrganizacionDto> {
+    if (!organizacion) {
       return;
     }
 
-    return this.apiClient.postAsociacion(asociacion);
+    return this.apiClient.postOrganizacion(organizacion);
   }
 
-  public updateAsociacion(asociacion: AsociacionDto): Observable<void> {
-    if (!asociacion) {
+  public updateOrganizacion(organizacion: OrganizacionDto): Observable<void> {
+    if (!organizacion) {
       return;
     }
 
-    return this.apiClient.putAsociacion(asociacion.id, asociacion);
+    return this.apiClient.putOrganizacion(organizacion.id, organizacion);
   }
 
-  public async deleteAsociaciones(asociaciones: AsociacionDto[]): Promise<boolean> {
-    if (!asociaciones || !asociaciones.length) {
+  public async deleteOrganizaciones(organizaciones: OrganizacionDto[]): Promise<boolean> {
+    if (!organizaciones || !organizaciones.length) {
       return;
     }
 
-    for (const asociacion of asociaciones) {
-      await this.apiClient.deleteAsociacion(asociacion.id).toPromise();
+    for (const organizacion of organizaciones) {
+      await this.apiClient.deleteOrganizacion(organizacion.id).toPromise();
     }
 
     return true;

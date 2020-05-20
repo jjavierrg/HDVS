@@ -48,8 +48,8 @@ export class CardFinderComponent implements OnInit {
       filter: 'agTextColumnFilter',
     },
     {
-      headerName: this.translate.instant('comun.asociacion'),
-      field: 'nombreAsociacion',
+      headerName: this.translate.instant('comun.organizacion'),
+      field: 'nombreOrganizacion',
       minWidth: 100,
       filter: 'agTextColumnFilter',
     },

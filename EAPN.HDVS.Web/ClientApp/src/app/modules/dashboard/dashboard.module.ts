@@ -38,7 +38,7 @@ const routes: Routes = [
         canActivate: [AuthenticatedGuard],
       },
       {
-        path: 'asociaciones',
+        path: 'organizaciones',
         loadChildren: () => import('./partners/partners.module').then((m) => m.PartnersModule),
         canLoad: [AuthenticatedGuard],
         canActivate: [AuthenticatedGuard],

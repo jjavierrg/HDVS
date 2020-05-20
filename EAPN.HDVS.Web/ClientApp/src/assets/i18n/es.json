@@ -4,8 +4,8 @@
     "apellido1": "Apellido1",
     "apellido2": "Apellido2",
     "apellidos": "Apellidos",
-    "asociacion": "Asociación",
-    "asociaciones": "Asociaciones",
+    "organizacion": "Organización",
+    "organizaciones": "Organizaciones",
     "clave": "Contraseña",
     "codigo": "Código",
     "descripcion": "Descripción",
@@ -58,8 +58,8 @@
   },
   "header": {
     "menu": {
-      "asociaciones": "Asociaciones",
-      "asociaciones-titulo": "Asociaciones",
+      "organizaciones": "Organizaciones",
+      "organizaciones-titulo": "Organizaciones",
       "cerrar-sesion": "Cerrar Sesión",
       "cerrar-sesion-titulo": "Cerrar Sesión",
       "mi-perfil": "Mi Perfil",

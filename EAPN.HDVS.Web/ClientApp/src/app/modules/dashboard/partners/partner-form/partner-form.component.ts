@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { AsociacionDto } from 'src/app/core/api/api.client';
+import { OrganizacionDto } from 'src/app/core/api/api.client';
 import { PartnerService } from 'src/app/core/services/partner.service';
 
 @Component({
@@ -13,8 +13,8 @@ import { PartnerService } from 'src/app/core/services/partner.service';
 export class PartnerFormComponent implements OnInit {
   public title: string;
   public editing: boolean = false;
-  public partner: AsociacionDto;
-  public permisos: AsociacionDto[];
+  public partner: OrganizacionDto;
+  public permisos: OrganizacionDto[];
 
   constructor(
     private service: PartnerService,
@@ -29,7 +29,7 @@ export class PartnerFormComponent implements OnInit {
     const partnerId = snapshot.params['id'];
 
     if (!!partnerId) {
-      this.partner = await this.service.getAsociacion(+partnerId).toPromise();
+      this.partner = await this.service.getOrganizacion(+partnerId).toPromise();
       this.editing = true;
       this.title = this.partner ? this.partner.nombre : '';
 
@@ -39,7 +39,7 @@ export class PartnerFormComponent implements OnInit {
           .then(() => this.alertService.error(this.translate.instant('core.registro-no-encontrado')));
       }
     } else {
-      this.partner = new AsociacionDto({ activa: true });
+      this.partner = new OrganizacionDto({ activa: true });
       this.editing = false;
       this.title = this.translate.instant('formulario-usuarios.nuevo-usuario');
     }
@@ -58,7 +58,7 @@ export class PartnerFormComponent implements OnInit {
     await this.router.navigate(['../'], { relativeTo: this.route });
   }
 
-  private async savepartner(partner: AsociacionDto): Promise<boolean> {
+  private async savepartner(partner: OrganizacionDto): Promise<boolean> {
     if (!partner) {
       this.alertService.warning(this.translate.instant('core.datos-corruptos'));
       return false;
@@ -66,9 +66,9 @@ export class PartnerFormComponent implements OnInit {
 
     try {
       if (this.editing) {
-        await this.service.updateAsociacion(partner).toPromise();
+        await this.service.updateOrganizacion(partner).toPromise();
       } else {
-        await this.service.createAsociacion(partner).toPromise();
+        await this.service.createOrganizacion(partner).toPromise();
       }
 
       return true;

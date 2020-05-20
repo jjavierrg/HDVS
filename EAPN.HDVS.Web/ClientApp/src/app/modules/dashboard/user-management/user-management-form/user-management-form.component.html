@@ -17,9 +17,9 @@
         </div>
         <div class="form-row">
           <div class="form-group col-md-4" *appAllowedPermissions="{permissions: [permissions.user.superadmin]}">
-            <label for="inputAsociacion">{{ 'comun.asociacion' | translate }} *</label>
-            <app-combobox displayField="descripcion" [placeholder]="'comun.asociacion' | translate"
-              [data]="asociaciones" valueField="id" [(ngModel)]="usuario.asociacionId" name="Asociacion" #asociacionCtrl="ngModel" required>
+            <label for="inputOrganizacion">{{ 'comun.organizacion' | translate }} *</label>
+            <app-combobox displayField="descripcion" [placeholder]="'comun.organizacion' | translate"
+              [data]="organizaciones" valueField="id" [(ngModel)]="usuario.organizacionId" name="Organizacion" #organizacionCtrl="ngModel" required>
             </app-combobox>
           </div>
           <div class="form-group col-md-4">

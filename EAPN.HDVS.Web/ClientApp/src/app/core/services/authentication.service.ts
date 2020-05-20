@@ -102,7 +102,7 @@ export class AuthenticationService {
   }
 
   public getUserPartnerId(): Observable<number> {
-    return this.getUser().pipe(map((user) => +user['asociacion_id']));
+    return this.getUser().pipe(map((user) => +user['organizacion_id']));
   }
 
   public getUserPermissions(): Observable<string[]> {

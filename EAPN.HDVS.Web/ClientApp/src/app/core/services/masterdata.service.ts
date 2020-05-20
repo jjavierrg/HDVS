@@ -16,7 +16,7 @@ export class MasterdataService {
     return this.apiClient.getPerfilesAsMasterData();
   }
 
-  public getAsociaciones(): Observable<MasterDataDto[]> {
-    return this.apiClient.getAsociacionesAsMasterData();
+  public getOrganizaciones(): Observable<MasterDataDto[]> {
+    return this.apiClient.getOrganizacionesAsMasterData();
   }
 }
