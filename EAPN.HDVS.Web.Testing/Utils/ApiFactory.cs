@@ -88,7 +88,7 @@ namespace EAPN.HDVS.Web.Testing.Utils
             return CreateClient();
         }
 
-        public async Task<HttpClient> GetAuthenticatedClientAsync(string email)
+        public HttpClient GetAuthenticatedClientAsync(string email)
         {
             var client = CreateClient();
 
@@ -96,7 +96,7 @@ namespace EAPN.HDVS.Web.Testing.Utils
             return client;
         }
 
-        public void Dispose()
+        public new void Dispose()
         {
             _connection.Close();
             base.Dispose();
