@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace EAPN.HDVS.Web.Testing.Controllers
+namespace EAPN.HDVS.Web.Testing.Controllers.AuthController
 {
     public class AuthControllerTest : IClassFixture<ApiFactory<Startup>>
     {

@@ -19,6 +19,7 @@ namespace EAPN.HDVS.Web.Testing.Utils
     {
         private readonly IList<ITestDBSeeder> _seeders;
         private readonly SqliteConnection _connection;
+        private readonly Dictionary<string, string> _tokens;
 
         public ApiFactory() : base()
         {
@@ -27,6 +28,7 @@ namespace EAPN.HDVS.Web.Testing.Utils
             _connection.Open();
 
             _seeders = new List<ITestDBSeeder>();
+            _tokens = new Dictionary<string, string>();
         }
 
         public void AddAdditionalSeeder(ITestDBSeeder seeder)
@@ -62,9 +64,20 @@ namespace EAPN.HDVS.Web.Testing.Utils
                     var passwordService = scopedServices.GetRequiredService<IPasswordService>();
                     var baseSeeder = new BaseTestDBSeeder(passwordService.HashPassword("pass"));
 
-                    await baseSeeder.Seed(context);
+                    baseSeeder.Seed(context);
                     foreach (var seeder in _seeders)
-                        await seeder.Seed(context);
+                        seeder.Seed(context);
+
+                    await context.SaveChangesAsync();
+
+                    // Generate tokens
+                    _tokens.Clear();
+                    var tokenService = scopedServices.GetRequiredService<ITokenService>();
+                    foreach (var usuario in context.Usuarios.Include(x => x.PermisosAdicionales).ThenInclude(x => x.Permiso).Include(x => x.Perfiles).ThenInclude(x => x.Perfil).ThenInclude(x => x.Permisos).ThenInclude(x => x.Permiso))
+                    {
+                        var token = tokenService.GenerateTokenForUser(usuario);
+                        _tokens.Add(usuario.Email.ToLower(), token.AccessToken);
+                    }
 
                 })
                 .UseEnvironment("Test");
@@ -78,12 +91,8 @@ namespace EAPN.HDVS.Web.Testing.Utils
         public async Task<HttpClient> GetAuthenticatedClientAsync(string email)
         {
             var client = CreateClient();
-            var attemp = new LoginAttempDto { Email = email, Password = "pass" };
-            var response = await client.PostAsync("/api/auth/", ClientUtilities.GetRequestContent(attemp));
 
-            var token = await ClientUtilities.GetResponseContent<UserTokenDto>(response);
-
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.AccessToken);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _tokens[email.ToLower()]);
             return client;
         }
 

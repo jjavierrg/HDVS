@@ -36,7 +36,7 @@ namespace EAPN.HDVS.Testing.Common
             };
         }
 
-        public async Task Seed(HDVSContext context)
+        public void Seed(HDVSContext context)
         {
             context.Permisos.Add(new Permiso { Id = 1, Clave = "--", Descripcion = "--" });
             context.Permisos.Add(new Permiso { Id = 2, Clave = Permissions.USERMANAGEMENT_READ, Descripcion = "Usuarios: Lectura" });
@@ -79,8 +79,6 @@ namespace EAPN.HDVS.Testing.Common
             context.Usuarios.Add(CreateUsuario(7, 1, 2, false, false));
             context.Usuarios.Add(CreateUsuario(8, 2, 2, false, false));
             context.Usuarios.Add(CreateUsuario(9, 3, 2, false, false)); // Organización Inactiva
-
-            await context.SaveChangesAsync();
         }
     }
 }
