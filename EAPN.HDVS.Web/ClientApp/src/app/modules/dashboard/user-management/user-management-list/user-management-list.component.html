@@ -21,7 +21,7 @@
   </div>
   <div class="modal-body" [innerHTML]="'core.confirmar-eliminacion' | translate"></div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss()">{{ 'core.cancelar' | translate }}</button>
+    <button type="button" class="btn btn-light" (click)="modal.dismiss()">{{ 'core.cancelar' | translate }}</button>
     <button type="button" ngbAutofocus class="btn btn-danger" (click)="modal.close(true)">{{ 'core.eliminar' | translate }}</button>
   </div>
 </ng-template>

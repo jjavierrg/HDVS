@@ -1,8 +1,16 @@
 @import 'src/styles.scss';
 
-@media (min-width: map-get($grid-breakpoints, 'lg')) {
+.nav-item.active {
+  background-color: var(--body-bg);
+  color: var(--secondary) !important;
+  border-bottom: 0.4rem solid var(--secondary);
+  padding-bottom: 0.6rem !important;
+}
+
+@media (max-width: map-get($grid-breakpoints, 'lg')) {
   .nav-item.active {
-    background-color: var(--body-bg);
-    color: var(--body-color) !important;
+    margin: 0 -1rem;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
   }
 }

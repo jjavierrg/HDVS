@@ -1,10 +1,11 @@
-<header class="navbar navbar-expand navbar-dark bg-dark sticky-top d-flex">
+<header class="navbar navbar-expand sticky-top d-flex p-0 navbar-light bg-light">
   <a class="navbar-brand text-truncate flex-grow-1">
     <a [routerLink]="['/']">
-      <img src="assets/logoEAPN_W.svg" width="30" height="30" alt="" />
+      <img src="assets/logoCP.svg" width="50" height="60" class="mx-3" alt="" />
     </a>
-    <span class="no-select">
-      {{ 'header.titulo' | translate }}
+    <span class="font-weight-bolder align-text-top no-select text-secondary">
+      <h3 class="d-none d-lg-inline">{{ 'header.titulo' | translate }}</h3>
+      <h3 class="d-inline d-lg-none text-uppercase">{{ 'header.titulo-abreviado' | translate }}</h3>
     </span>
   </a>
   <ul class="navbar-nav">

@@ -4,8 +4,6 @@
     "apellido1": "Apellido1",
     "apellido2": "Apellido2",
     "apellidos": "Apellidos",
-    "organizacion": "Organización",
-    "organizaciones": "Organizaciones",
     "clave": "Contraseña",
     "codigo": "Código",
     "descripcion": "Descripción",
@@ -14,6 +12,8 @@
     "nueva-clave": "Nueva contraseña",
     "numero-usuarios": "Usuarios",
     "observaciones": "Observaciones",
+    "organizacion": "Organización",
+    "organizaciones": "Organizaciones",
     "perfiles": "Perfiles",
     "permisos": "Permisos",
     "usuarios": "Usuarios"
@@ -58,18 +58,19 @@
   },
   "header": {
     "menu": {
-      "organizaciones": "Organizaciones",
-      "organizaciones-titulo": "Organizaciones",
       "cerrar-sesion": "Cerrar Sesión",
       "cerrar-sesion-titulo": "Cerrar Sesión",
       "mi-perfil": "Mi Perfil",
       "mi-perfil-titulo": "Mi Perfil",
+      "organizaciones": "Organizaciones",
+      "organizaciones-titulo": "Organizaciones",
       "perfiles": "Perfiles",
       "perfiles-titulo": "Perfiles",
       "usuarios": "Usuarios",
       "usuarios-titulo": "Usuarios"
     },
-    "titulo": "Herramienta de diagnóstico de vulnerabilidad social"
+    "titulo": "Herramienta de diagnóstico de vulnerabilidad social",
+    "titulo-abreviado": "HDVS"
   },
   "login": {
     "autenticando": "Autenticando...",
