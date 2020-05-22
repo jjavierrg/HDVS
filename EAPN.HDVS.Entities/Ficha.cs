@@ -55,5 +55,6 @@ namespace EAPN.HDVS.Entities
         public Municipio Padron { get; set; }
         public Pais Nacionalidad { get; set; }
         public Pais Origen { get; set; }
+        public DateTime FechaAlta{ get; set; }
     }
 }

@@ -8,6 +8,7 @@ namespace EAPN.HDVS.Web.Dto
         public int Id { get; set; }
         public int OrganizacionId { get; set; }
         public string Email { get; set; }
+        public string Telefono { get; set; }
         public string Nombre { get; set; }
         public string Apellidos { get; set; }
         public string Clave { get; set; }

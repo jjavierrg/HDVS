@@ -5,6 +5,8 @@
         public int? FichaId { get; set; }
         public int? OrganizacionId { get; set; }
         public string NombreOrganizacion { get; set; }
+        public string TelefonoOrganizacion { get; set; }
+        public string EmailOrganizacion { get; set; }
         public int UsuarioId { get; set; }
         public string NombreTecnico { get; set; }
         public string Codigo { get; set; }

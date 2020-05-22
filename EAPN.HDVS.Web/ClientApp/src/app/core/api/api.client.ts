@@ -2653,6 +2653,9 @@ export interface IDatosUsuarioDto {
 export class OrganizacionDto implements IOrganizacionDto {
     id?: number;
     nombre?: string | undefined;
+    email?: string | undefined;
+    telefono?: string | undefined;
+    web?: string | undefined;
     activa?: boolean;
     observaciones?: string | undefined;
     numeroUsuarios?: number;
@@ -2670,6 +2673,9 @@ export class OrganizacionDto implements IOrganizacionDto {
         if (_data) {
             this.id = _data["id"];
             this.nombre = _data["nombre"];
+            this.email = _data["email"];
+            this.telefono = _data["telefono"];
+            this.web = _data["web"];
             this.activa = _data["activa"];
             this.observaciones = _data["observaciones"];
             this.numeroUsuarios = _data["numeroUsuarios"];
@@ -2687,6 +2693,9 @@ export class OrganizacionDto implements IOrganizacionDto {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["nombre"] = this.nombre;
+        data["email"] = this.email;
+        data["telefono"] = this.telefono;
+        data["web"] = this.web;
         data["activa"] = this.activa;
         data["observaciones"] = this.observaciones;
         data["numeroUsuarios"] = this.numeroUsuarios;
@@ -2697,6 +2706,9 @@ export class OrganizacionDto implements IOrganizacionDto {
 export interface IOrganizacionDto {
     id?: number;
     nombre?: string | undefined;
+    email?: string | undefined;
+    telefono?: string | undefined;
+    web?: string | undefined;
     activa?: boolean;
     observaciones?: string | undefined;
     numeroUsuarios?: number;
@@ -2746,6 +2758,7 @@ export class UsuarioDto implements IUsuarioDto {
     id?: number;
     organizacionId?: number;
     email?: string | undefined;
+    telefono?: string | undefined;
     nombre?: string | undefined;
     apellidos?: string | undefined;
     clave?: string | undefined;
@@ -2770,6 +2783,7 @@ export class UsuarioDto implements IUsuarioDto {
             this.id = _data["id"];
             this.organizacionId = _data["organizacionId"];
             this.email = _data["email"];
+            this.telefono = _data["telefono"];
             this.nombre = _data["nombre"];
             this.apellidos = _data["apellidos"];
             this.clave = _data["clave"];
@@ -2802,6 +2816,7 @@ export class UsuarioDto implements IUsuarioDto {
         data["id"] = this.id;
         data["organizacionId"] = this.organizacionId;
         data["email"] = this.email;
+        data["telefono"] = this.telefono;
         data["nombre"] = this.nombre;
         data["apellidos"] = this.apellidos;
         data["clave"] = this.clave;
@@ -2827,6 +2842,7 @@ export interface IUsuarioDto {
     id?: number;
     organizacionId?: number;
     email?: string | undefined;
+    telefono?: string | undefined;
     nombre?: string | undefined;
     apellidos?: string | undefined;
     clave?: string | undefined;
@@ -3306,6 +3322,8 @@ export class VistaPreviaFichaDto implements IVistaPreviaFichaDto {
     fichaId?: number | undefined;
     organizacionId?: number | undefined;
     nombreOrganizacion?: string | undefined;
+    telefonoOrganizacion?: string | undefined;
+    emailOrganizacion?: string | undefined;
     usuarioId?: number;
     nombreTecnico?: string | undefined;
     codigo?: string | undefined;
@@ -3327,6 +3345,8 @@ export class VistaPreviaFichaDto implements IVistaPreviaFichaDto {
             this.fichaId = _data["fichaId"];
             this.organizacionId = _data["organizacionId"];
             this.nombreOrganizacion = _data["nombreOrganizacion"];
+            this.telefonoOrganizacion = _data["telefonoOrganizacion"];
+            this.emailOrganizacion = _data["emailOrganizacion"];
             this.usuarioId = _data["usuarioId"];
             this.nombreTecnico = _data["nombreTecnico"];
             this.codigo = _data["codigo"];
@@ -3348,6 +3368,8 @@ export class VistaPreviaFichaDto implements IVistaPreviaFichaDto {
         data["fichaId"] = this.fichaId;
         data["organizacionId"] = this.organizacionId;
         data["nombreOrganizacion"] = this.nombreOrganizacion;
+        data["telefonoOrganizacion"] = this.telefonoOrganizacion;
+        data["emailOrganizacion"] = this.emailOrganizacion;
         data["usuarioId"] = this.usuarioId;
         data["nombreTecnico"] = this.nombreTecnico;
         data["codigo"] = this.codigo;
@@ -3362,6 +3384,8 @@ export interface IVistaPreviaFichaDto {
     fichaId?: number | undefined;
     organizacionId?: number | undefined;
     nombreOrganizacion?: string | undefined;
+    telefonoOrganizacion?: string | undefined;
+    emailOrganizacion?: string | undefined;
     usuarioId?: number;
     nombreTecnico?: string | undefined;
     codigo?: string | undefined;

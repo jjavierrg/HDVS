@@ -4,60 +4,71 @@
     <div class="card-body border border-top-0">
       <form (ngSubmit)="onSaveUser()" #userForm="ngForm">
         <div class="form-row">
-          <div class="form-group col-md-6">
+          <div class="form-group col-md-4">
             <label for="inputNombre">{{ 'comun.nombre' | translate }} *</label>
             <input id="inputNombre" type="text" class="form-control" [placeholder]="'comun.nombre' | translate" required
-              [(ngModel)]="usuario.nombre" name="Nombre" #nombreCtrl="ngModel" />
+              [(ngModel)]="usuario.nombre" name="{{ 'comun.nombre' | translate }}" #nombreCtrl="ngModel" />
           </div>
-          <div class="form-group col-md-6">
+          <div class="form-group col-md-4">
             <label for="inputApellidos">{{ 'comun.apellidos' | translate }}</label>
             <input id="inputApellidos" type="text" class="form-control" [placeholder]="'comun.apellidos' | translate"
-              [(ngModel)]="usuario.apellidos" name="Apellidos" #nombreCtrl="ngModel" />
+              [(ngModel)]="usuario.apellidos" name="{{ 'comun.apellidos' | translate }}" #nombreCtrl="ngModel" />
           </div>
-        </div>
-        <div class="form-row">
           <div class="form-group col-md-4" *appAllowedPermissions="{permissions: [permissions.user.superadmin]}">
             <label for="inputOrganizacion">{{ 'comun.organizacion' | translate }} *</label>
             <app-combobox displayField="descripcion" [placeholder]="'comun.organizacion' | translate"
-              [data]="organizaciones" valueField="id" [(ngModel)]="usuario.organizacionId" name="Organizacion" #organizacionCtrl="ngModel" required>
+              [data]="organizaciones" valueField="id" [(ngModel)]="usuario.organizacionId"
+              name="{{ 'comun.organizacion' | translate }}" #organizacionCtrl="ngModel" required>
             </app-combobox>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="inputTelefono">{{ 'comun.telefono' | translate }}</label>
+            <input id="inputTelefono" type="tel" class="form-control" [placeholder]="'comun.telefono' | translate"
+              [(ngModel)]="usuario.telefono" name="{{ 'comun.telefono' | translate }}" #telefonoCtrl="ngModel" />
           </div>
           <div class="form-group col-md-4">
             <label for="inputEmail">{{ 'comun.email' | translate }} *</label>
             <input id="inputEmail" type="email" class="form-control" [placeholder]="'comun.email' | translate" required
-              email [(ngModel)]="usuario.email" name="Email" #emailCtrl="ngModel" appUniqueEmail [userId]="usuario.id" [ngModelOptions]="{ updateOn: 'blur' }" />
+              email [(ngModel)]="usuario.email" name="{{ 'comun.email' | translate }}" #emailCtrl="ngModel"
+              appUniqueEmail [userId]="usuario.id" [ngModelOptions]="{ updateOn: 'blur' }" />
           </div>
           <div class="form-group col-md-4">
             <label
               for="inputPassword">{{ (editing ? 'comun.nueva-clave' : 'comun.clave') | translate }}{{ editing ? '' : ' *' }}</label>
             <input id="inputPassword" type="password" class="form-control"
               [placeholder]="(editing ? 'comun.nueva-clave' : 'comun.clave') | translate" [(ngModel)]="usuario.clave"
-              name="Contraseña" #claveCtrl="ngModel" minlength="6" [required]="!editing" />
+              name="{{ (editing ? 'comun.nueva-clave' : 'comun.clave') | translate }}" #claveCtrl="ngModel"
+              minlength="6" [required]="!editing" />
           </div>
         </div>
         <div class="form-row">
           <div class="form-group col-md-5">
             <label for="inputProfile">{{ 'comun.perfiles' | translate }} *</label>
             <app-combobox-multiple displayField="descripcion" [placeholder]="'comun.perfiles' | translate"
-              [data]="perfiles" [(ngModel)]="usuario.perfiles" name="Perfiles" #perfilesCtrl="ngModel" required>
+              [data]="perfiles" [(ngModel)]="usuario.perfiles" name="{{ 'comun.perfiles' | translate }}"
+              #perfilesCtrl="ngModel" required>
             </app-combobox-multiple>
           </div>
           <div class="form-group col-md-6">
             <label for="inputProfile">{{ 'formulario-usuarios.permisos-adicionales' | translate }}</label>
             <app-combobox-multiple displayField="descripcion"
               [placeholder]="'formulario-usuarios.permisos-adicionales' | translate" [data]="permisos"
-              [(ngModel)]="usuario.permisosAdicionales" name="Permisos" #permisosCtrl="ngModel">
+              [(ngModel)]="usuario.permisosAdicionales"
+              name="{{ 'formulario-usuarios.permisos-adicionales' | translate }}" #permisosCtrl="ngModel">
             </app-combobox-multiple>
           </div>
           <div class="form-group col-md-1 d-md-flex align-items-end justify-content-end">
-            <app-checkbox [label]="'comun.activo' | translate" [(ngModel)]="usuario.activo" name=" activo"
-              #activoCtrl="ngModel"></app-checkbox>
+            <app-checkbox [label]="'comun.activo' | translate" [(ngModel)]="usuario.activo"
+              name="{{'comun.activo' | translate}}" #activoCtrl="ngModel"></app-checkbox>
           </div>
         </div>
         <div class="form-group">
           <label for="inputObservaciones">{{ 'comun.observaciones' | translate }}</label>
           <quill-editor id="inputObservaciones" [sanitize]="true" [(ngModel)]="usuario.observaciones"
-            name="observaciones" #obsrvacionesCtrl="ngModel" [placeholder]="'comun.observaciones' | translate">
+            name="{{ 'comun.observaciones' | translate }}" #obsrvacionesCtrl="ngModel"
+            [placeholder]="'comun.observaciones' | translate">
           </quill-editor>
         </div>
         <div class="form-group float-right">

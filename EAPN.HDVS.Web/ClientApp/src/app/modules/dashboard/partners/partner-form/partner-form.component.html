@@ -14,6 +14,24 @@
               #activoCtrl="ngModel"></app-checkbox>
           </div>
         </div>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="inputTelefono">{{ 'comun.telefono' | translate }}</label>
+            <input id="inputTelefono" type="tel" class="form-control" [placeholder]="'comun.telefono' | translate"
+              [(ngModel)]="partner.telefono" name="{{ 'comun.telefono' | translate }}" #telefonoCtrl="ngModel"
+              maxlength="20" />
+          </div>
+          <div class="form-group col-md-4">
+            <label for="inputEmail">{{ 'comun.email' | translate }}</label>
+            <input id="inputEmail" type="email" class="form-control" [placeholder]="'comun.email' | translate"
+              [(ngModel)]="partner.email" name="{{ 'comun.email' | translate }}" #emailCtrl="ngModel" maxlength="250" email />
+          </div>
+          <div class="form-group col-md-4">
+            <label for="inputWeb">{{ 'comun.web' | translate }}</label>
+            <input id="inputWeb" type="text" class="form-control" [placeholder]="'comun.web' | translate"
+              [(ngModel)]="partner.web" name="{{ 'comun.web' | translate }}" maxlength="250" />
+          </div>
+        </div>
         <div class="form-group">
           <label for="inputObservaciones">{{ 'comun.observaciones' | translate }}</label>
           <quill-editor id="inputObservaciones" [sanitize]="true" [(ngModel)]="partner.observaciones"

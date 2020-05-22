@@ -1,13 +1,15 @@
 {
   "comun": {
     "activo": "Activo",
-    "apellido1": "Apellido1",
-    "apellido2": "Apellido2",
+    "apellido1": "Apellido 1",
+    "apellido2": "Apellido 2",
     "apellidos": "Apellidos",
     "clave": "Contraseña",
     "codigo": "Código",
     "descripcion": "Descripción",
     "email": "Email",
+    "telefono": "Teléfono",
+    "web": "Web",
     "nombre": "Nombre",
     "nueva-clave": "Nueva contraseña",
     "numero-usuarios": "Usuarios",

@@ -38,6 +38,7 @@ namespace EAPN.HDVS.Infrastructure.Configurations
             builder.Property(x => x.Observaciones).HasColumnName(nameof(Ficha.Observaciones));
             builder.Property(x => x.PoliticaFirmada).HasColumnName(nameof(Ficha.PoliticaFirmada));
             builder.Property(x => x.Completa).HasColumnName(nameof(Ficha.Completa));
+            builder.Property(x => x.FechaAlta).HasColumnName(nameof(Ficha.FechaAlta));
 
             builder.Ignore(x => x.Edad);
 

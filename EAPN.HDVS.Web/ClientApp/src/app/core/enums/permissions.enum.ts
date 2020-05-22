@@ -8,4 +8,10 @@ export const Permissions = {
   user: {
     superadmin: 'user:superadmin'
   },
+  personalcard: {
+    access: 'card:access',
+    read: 'card:read',
+    write: 'card:write',
+    delete: 'card:delete',
+  },
 };

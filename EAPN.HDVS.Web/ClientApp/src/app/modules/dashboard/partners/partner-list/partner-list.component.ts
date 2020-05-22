@@ -25,6 +25,28 @@ export class PartnerListComponent implements OnInit  {
       field: 'nombre',
       minWidth: 100,
       filter: 'agTextColumnFilter',
+      flex: 2
+    },
+    {
+      headerName: this.translate.instant('comun.telefono'),
+      field: 'telefono',
+      minWidth: 100,
+      filter: 'agTextColumnFilter',
+      flex: 1
+    },
+    {
+      headerName: this.translate.instant('comun.email'),
+      field: 'email',
+      minWidth: 100,
+      filter: 'agTextColumnFilter',
+      flex: 1
+    },
+    {
+      headerName: this.translate.instant('comun.web'),
+      field: 'web',
+      minWidth: 100,
+      filter: 'agTextColumnFilter',
+      flex: 1
     },
     {
       headerName: this.translate.instant('comun.activo'),

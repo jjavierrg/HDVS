@@ -43,6 +43,8 @@ namespace EAPN.HDVS.Web.Dto
             CreateMap<Ficha, VistaPreviaFichaDto>()
                 .ForMember(d => d.FichaId, opt => opt.MapFrom(src => src.Id))
                 .ForMember(d => d.NombreOrganizacion, opt => opt.MapFrom((src, dest) => src.Organizacion?.Nombre))
+                .ForMember(d => d.EmailOrganizacion, opt => opt.MapFrom((src, dest) => src.Organizacion?.Email))
+                .ForMember(d => d.TelefonoOrganizacion, opt => opt.MapFrom((src, dest) => src.Organizacion?.Telefono))
                 .ForMember(d => d.NombreTecnico, opt => opt.MapFrom((src, dest) => src.Tecnico?.Nombre));
 
             CreateMap<Permiso, PermisoDto>().ReverseMap();
