@@ -9,6 +9,7 @@ namespace EAPN.HDVS.Entities
         public int Id { get; set; }
         public int OrganizacionId { get; set; }
         public string Email { get; set; }
+        public string Telefono { get; set; }
         public string Nombre { get; set; }
         public string Apellidos { get; set; }
         public string Hash { get; set; }
@@ -21,5 +22,6 @@ namespace EAPN.HDVS.Entities
         public IList<UsuarioPerfil> Perfiles { get; set; }
         public IList<RefreshToken> Tokens { get; set; }
         public Organizacion Organizacion { get; set; }
+        public DateTime FechaAlta { get; set; }
     }
 }

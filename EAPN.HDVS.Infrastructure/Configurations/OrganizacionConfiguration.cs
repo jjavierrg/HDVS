@@ -13,8 +13,12 @@ namespace EAPN.HDVS.Infrastructure.Configurations
 
             builder.Property(x => x.Id).HasColumnName(nameof(Organizacion.Id)).IsRequired().ValueGeneratedOnAdd();
             builder.Property(x => x.Nombre).HasColumnName(nameof(Organizacion.Nombre)).IsRequired().HasMaxLength(150);
+            builder.Property(x => x.Email).HasColumnName(nameof(Organizacion.Email)).HasMaxLength(250);
+            builder.Property(x => x.Telefono).HasColumnName(nameof(Organizacion.Telefono)).HasMaxLength(20);
+            builder.Property(x => x.Web).HasColumnName(nameof(Organizacion.Web)).HasMaxLength(250);
             builder.Property(x => x.Activa).HasColumnName(nameof(Organizacion.Activa)).IsRequired();
             builder.Property(x => x.Observaciones).HasColumnName(nameof(Organizacion.Observaciones));
+            builder.Property(x => x.FechaAlta).HasColumnName(nameof(Organizacion.FechaAlta));
 
             builder.HasMany(x => x.Usuarios).WithOne(x => x.Organizacion).HasForeignKey(x => x.OrganizacionId).OnDelete(DeleteBehavior.Cascade);
         }

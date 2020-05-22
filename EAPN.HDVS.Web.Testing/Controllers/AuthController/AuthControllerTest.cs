@@ -17,6 +17,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.AuthController
         }
 
         [Fact]
+        [Trait("Category", "AuthController")]
         public async Task ShouldActiveUserLogin()
         {
             // Arrange
@@ -35,6 +36,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.AuthController
         }
 
         [Fact]
+        [Trait("Category", "AuthController")]
         public async Task ShouldActiveUserRefreshToken()
         {
             // Arrange
@@ -65,6 +67,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.AuthController
         }
 
         [Fact]
+        [Trait("Category", "AuthController")]
         public async Task ShouldNotRefreshOldToken()
         {
             // Arrange
@@ -104,6 +107,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.AuthController
         }
 
         [Fact]
+        [Trait("Category", "AuthController")]
         public async Task ShouldInactiveUserNotLogin()
         {
             // Arrange
@@ -121,6 +125,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.AuthController
         }
 
         [Fact]
+        [Trait("Category", "AuthController")]
         public async Task ShouldActiveUserInactivePartnerNotLogin()
         {
             // Arrange
@@ -138,6 +143,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.AuthController
         }
 
         [Fact]
+        [Trait("Category", "AuthController")]
         public async Task ShouldActiveUserGetBlocked()
         {
             // Arrange

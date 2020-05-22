@@ -2,6 +2,7 @@
 using EAPN.HDVS.Infrastructure.Core.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 
 namespace EAPN.HDVS.Application.Repositories
@@ -10,6 +11,19 @@ namespace EAPN.HDVS.Application.Repositories
     {
         public UsuarioRepository(DbContext context, ILogger<Repository<Usuario>> logger = null) : base(context, logger)
         {
+        }
+
+        public override void Add(Usuario item)
+        {
+            item.FechaAlta = DateTime.Now;
+            base.Add(item);
+        }
+        public override void AddRange(IEnumerable<Usuario> items)
+        {
+            foreach (var item in items)
+                item.FechaAlta = DateTime.Now;
+
+            base.AddRange(items);
         }
 
         public override void Update(Usuario item)

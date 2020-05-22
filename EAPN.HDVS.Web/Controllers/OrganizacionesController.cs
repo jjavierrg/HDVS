@@ -90,6 +90,7 @@ namespace EAPN.HDVS.Web.Contorganizacionlers
         public async Task<ActionResult<OrganizacionDto>> PostOrganizacion(OrganizacionDto organizacionDto)
         {
             var organizacion = _mapper.Map<Organizacion>(organizacionDto);
+            organizacion.FechaAlta = DateTime.Now;
             var result = _organizacionService.Add(organizacion);
 
             await _organizacionService.SaveChangesAsync();
