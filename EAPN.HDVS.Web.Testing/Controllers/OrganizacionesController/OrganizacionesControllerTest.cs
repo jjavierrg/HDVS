@@ -47,20 +47,6 @@ namespace EAPN.HDVS.Web.Testing.Controllers.OrganizacionesController
         }
 
         [Fact]
-        public async Task ShoudNotAllowedUserddd()
-        {
-            var cadena1 = "hola caracola";
-            var cadena2 = "HólÃ CäräÇóLÃ";
-            var cadena3 = "HólÃ";
-            var cadena4 = "CäräÇóLÃ";
-
-            Assert.False(cadena1.Contains(cadena2));
-            Assert.True(cadena1.Contains(cadena2, StringComparison.InvariantCultureIgnoreCase));
-            Assert.True(cadena1.StartsWith(cadena3, StringComparison.InvariantCultureIgnoreCase));
-            Assert.True(cadena1.EndsWith(cadena4, StringComparison.InvariantCultureIgnoreCase));
-        }
-
-        [Fact]
         [Trait("Category", "OrganizacionesController")]
         public async Task AllowedUserShouldGetOrganizaciones()
         {
