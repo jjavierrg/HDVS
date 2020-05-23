@@ -36,7 +36,7 @@ namespace EAPN.HDVS.Testing.Common
             };
         }
 
-        public void Seed(HDVSContext context)
+        public async Task Seed(HDVSContext context)
         {
             context.Permisos.Add(new Permiso { Id = 1, Clave = "--", Descripcion = "--" });
             context.Permisos.Add(new Permiso { Id = 2, Clave = Permissions.USERMANAGEMENT_READ, Descripcion = "Usuarios: Lectura" });
@@ -51,6 +51,7 @@ namespace EAPN.HDVS.Testing.Common
 
             context.Perfiles.Add(new Perfil { Id = 1, Descripcion = "Usuario" });
             context.Perfiles.Add(new Perfil { Id = 2, Descripcion = "Administrador" });
+            context.Perfiles.Add(new Perfil { Id = 3, Descripcion = "UserManagement" });
 
             context.PerfilesPermisos.Add(new PerfilPermiso { PerfilId = 2, PermisoId = 2 });
             context.PerfilesPermisos.Add(new PerfilPermiso { PerfilId = 2, PermisoId = 3 });
@@ -60,12 +61,16 @@ namespace EAPN.HDVS.Testing.Common
             context.PerfilesPermisos.Add(new PerfilPermiso { PerfilId = 2, PermisoId = 8 });
             context.PerfilesPermisos.Add(new PerfilPermiso { PerfilId = 2, PermisoId = 9 });
             context.PerfilesPermisos.Add(new PerfilPermiso { PerfilId = 2, PermisoId = 10 });
+            context.PerfilesPermisos.Add(new PerfilPermiso { PerfilId = 3, PermisoId = 2 });
+            context.PerfilesPermisos.Add(new PerfilPermiso { PerfilId = 3, PermisoId = 3 });
+            context.PerfilesPermisos.Add(new PerfilPermiso { PerfilId = 3, PermisoId = 4 });
+            context.PerfilesPermisos.Add(new PerfilPermiso { PerfilId = 3, PermisoId = 5 });
 
             context.Organizaciones.Add(new Organizacion { Activa = true, Id = 1, Nombre = $"Organización activa 1", Observaciones = $"Observaciones Organización activa 1" });
             context.Organizaciones.Add(new Organizacion { Activa = true, Id = 2, Nombre = $"Organización activa 2", Observaciones = $"Observaciones Organización activa 2" });
             context.Organizaciones.Add(new Organizacion { Activa = false, Id = 3, Nombre = $"Organización inactiva 3", Observaciones = $"Observaciones Organización inactiva 3" });
 
-            // admins - activos
+            // usuarios admins - activos
             context.Usuarios.Add(CreateUsuario(1, 1, 1, true, true));
             context.Usuarios.Add(CreateUsuario(2, 2, 1, true, true));
             context.Usuarios.Add(CreateUsuario(3, 3, 1, true, true)); // Organización Inactiva
@@ -79,6 +84,12 @@ namespace EAPN.HDVS.Testing.Common
             context.Usuarios.Add(CreateUsuario(7, 1, 2, false, false));
             context.Usuarios.Add(CreateUsuario(8, 2, 2, false, false));
             context.Usuarios.Add(CreateUsuario(9, 3, 2, false, false)); // Organización Inactiva
+
+            // user management
+            context.Usuarios.Add(CreateUsuario(10, 1, 3, false, true));
+            context.Usuarios.Add(CreateUsuario(11, 1, 3, true, true));
+
+            await context.SaveChangesAsync();
         }
     }
 }

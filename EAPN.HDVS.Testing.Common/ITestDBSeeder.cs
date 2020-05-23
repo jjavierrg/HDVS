@@ -6,6 +6,6 @@ namespace EAPN.HDVS.Testing.Common
 {
     public interface ITestDBSeeder
     {
-        void Seed(HDVSContext context);
+        Task Seed(HDVSContext context);
     }
 }

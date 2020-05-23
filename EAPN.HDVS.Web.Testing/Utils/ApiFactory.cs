@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -20,6 +21,7 @@ namespace EAPN.HDVS.Web.Testing.Utils
         private readonly IList<ITestDBSeeder> _seeders;
         private readonly SqliteConnection _connection;
         private readonly Dictionary<string, string> _tokens;
+        public MockupLogger<T> Logger { get; private set; }
 
         public ApiFactory() : base()
         {
@@ -53,10 +55,15 @@ namespace EAPN.HDVS.Web.Testing.Utils
                         options.UseSqlite(_connection, x => { });
                     });
 
+                    // Add logger
+                    services.AddSingleton(typeof(ILogger<>), typeof(MockupLogger<>));
+
                     var sp = services.BuildServiceProvider();
 
                     using var scope = sp.CreateScope();
                     var scopedServices = scope.ServiceProvider;
+
+                    Logger = (MockupLogger<T>) scopedServices.GetRequiredService<ILogger<T>>();
 
                     var context = scopedServices.GetRequiredService<HDVSContext>();
                     context.Database.EnsureCreated();
@@ -66,9 +73,7 @@ namespace EAPN.HDVS.Web.Testing.Utils
 
                     baseSeeder.Seed(context);
                     foreach (var seeder in _seeders)
-                        seeder.Seed(context);
-
-                    await context.SaveChangesAsync();
+                        await seeder.Seed(context);
 
                     // Generate tokens
                     _tokens.Clear();

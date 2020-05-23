@@ -71,7 +71,7 @@ namespace EAPN.HDVS.Web.Contperfillers
         /// <param name="id">Item identifier</param>
         /// <returns></returns>
         [HttpGet("{id}", Name = "GetPerfil")]
-        [AuthorizePermission(Permissions.USERMANAGEMENT_READ)]
+        [AuthorizePermission(Permissions.APP_SUPERADMIN)]
         [ProducesResponseType(typeof(PerfilDto), StatusCodes.Status200OK)]
         public async Task<ActionResult<PerfilDto>> GetPerfil(int id)
         {

@@ -178,6 +178,15 @@ namespace EAPN.HDVS.Web.Controllers
         public async Task<IActionResult> DeleteUsuario(int id)
         {
             var query = _usuarioService.Repository.EntitySet.Where(x => x.Id == id);
+            var securityCheck = await query.FirstOrDefaultAsync();
+            
+            // If user is not superadmin, cannot create delete of other partners
+            if (securityCheck.OrganizacionId != User.GetUserOrganizacionId() && !User.HasSuperAdminPermission())
+            {
+                _logger.LogCritical($"Eliminación del usuario {securityCheck.Email}[Id: {securityCheck.Id}] no autorizada: El usuario pertenece a otra organización [id: {securityCheck.OrganizacionId}].");
+                return Forbid();
+            }
+
             var filter = GetSuperadminExclusionFilter();
             if (filter != null)
                 query = query.Where(filter);
@@ -185,13 +194,6 @@ namespace EAPN.HDVS.Web.Controllers
             var usuario = await query.FirstOrDefaultAsync();
             if (usuario == null)
                 return NotFound();
-
-            // If user is not superadmin, cannot create delete of other partners
-            if (usuario.OrganizacionId != User.GetUserOrganizacionId() && !User.HasSuperAdminPermission())
-            {
-                _logger.LogCritical($"Eliminación del usuario {usuario.Email}[Id: {usuario.Id}] no autorizada: El usuario pertenece a otra organización [id: {usuario.OrganizacionId}].");
-                return Forbid();
-            }
 
             _logger.LogInformation($"Elimina {usuario.Email}[Id: {usuario.Id}]");
             _usuarioService.Remove(usuario);
