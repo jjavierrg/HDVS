@@ -7,6 +7,14 @@ namespace EAPN.HDVS.Infrastructure.Context
     {
         public virtual DbSet<Log> Logs{ get; set; }
 
+        public virtual DbSet<TipoAdjunto> TiposAdjunto { get; set; }
+        public virtual DbSet<Adjunto> Adjuntos { get; set; }
+
+        public virtual DbSet<Area> Areas { get; set; }
+        public virtual DbSet<Dimension> Dimensiones { get; set; }
+        public virtual DbSet<Indicador> Indicadores { get; set; }
+        public virtual DbSet<IndicadorFicha> IndicadoresFicha { get; set; }
+
         public virtual DbSet<Usuario> Usuarios { get; set; }
         public virtual DbSet<UsuarioPerfil> UsuariosPerfiles{ get; set; }
         public virtual DbSet<UsuarioPermiso> UsuariosPermisos{ get; set; }
@@ -29,6 +37,14 @@ namespace EAPN.HDVS.Infrastructure.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new Configurations.LogConfiguration());
+
+            modelBuilder.ApplyConfiguration(new Configurations.AdjuntoConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.TipoAdjuntoConfiguration());
+
+            modelBuilder.ApplyConfiguration(new Configurations.AreaConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.DimensionConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.IndicadorConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.IndicadorFichaConfiguration());
 
             modelBuilder.ApplyConfiguration(new Configurations.UsuarioConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.UsuarioPerfilConfiguration());

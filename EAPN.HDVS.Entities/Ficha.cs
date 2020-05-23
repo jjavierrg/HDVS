@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace EAPN.HDVS.Entities
 {
@@ -56,5 +58,8 @@ namespace EAPN.HDVS.Entities
         public Pais Nacionalidad { get; set; }
         public Pais Origen { get; set; }
         public DateTime FechaAlta{ get; set; }
+
+        public IList<IndicadorFicha> Indicadores { get; set; }
+        public IList<Adjunto> Adjuntos { get; set; }
     }
 }

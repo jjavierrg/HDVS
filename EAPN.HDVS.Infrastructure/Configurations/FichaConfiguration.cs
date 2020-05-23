@@ -43,14 +43,16 @@ namespace EAPN.HDVS.Infrastructure.Configurations
             builder.Ignore(x => x.Edad);
 
             builder.HasOne(x => x.Organizacion).WithMany().HasForeignKey(x => x.OrganizacionId).OnDelete(DeleteBehavior.NoAction);
-            builder.HasOne(x => x.Tecnico).WithMany().HasForeignKey(x => x.UsuarioId).OnDelete(DeleteBehavior.NoAction); ;
-            builder.HasOne(x => x.Sexo).WithMany().HasForeignKey(x => x.SexoId).OnDelete(DeleteBehavior.NoAction); ;
-            builder.HasOne(x => x.Genero).WithMany().HasForeignKey(x => x.GeneroId).OnDelete(DeleteBehavior.NoAction); ;
-            builder.HasOne(x => x.Municipio).WithMany().HasForeignKey(x => x.MunicipioId).OnDelete(DeleteBehavior.NoAction); ;
-            builder.HasOne(x => x.Provincia).WithMany().HasForeignKey(x => x.ProvinciaId).OnDelete(DeleteBehavior.NoAction); ;
-            builder.HasOne(x => x.Padron).WithMany().HasForeignKey(x => x.PadronId).OnDelete(DeleteBehavior.NoAction); ;
-            builder.HasOne(x => x.Nacionalidad).WithMany().HasForeignKey(x => x.NacionalidadId).OnDelete(DeleteBehavior.NoAction); ;
-            builder.HasOne(x => x.Origen).WithMany().HasForeignKey(x => x.OrigenId).OnDelete(DeleteBehavior.NoAction); ;
+            builder.HasOne(x => x.Tecnico).WithMany().HasForeignKey(x => x.UsuarioId).OnDelete(DeleteBehavior.NoAction);
+            builder.HasOne(x => x.Sexo).WithMany().HasForeignKey(x => x.SexoId).OnDelete(DeleteBehavior.NoAction);
+            builder.HasOne(x => x.Genero).WithMany().HasForeignKey(x => x.GeneroId).OnDelete(DeleteBehavior.NoAction);
+            builder.HasOne(x => x.Municipio).WithMany().HasForeignKey(x => x.MunicipioId).OnDelete(DeleteBehavior.NoAction);
+            builder.HasOne(x => x.Provincia).WithMany().HasForeignKey(x => x.ProvinciaId).OnDelete(DeleteBehavior.NoAction);
+            builder.HasOne(x => x.Padron).WithMany().HasForeignKey(x => x.PadronId).OnDelete(DeleteBehavior.NoAction);
+            builder.HasOne(x => x.Nacionalidad).WithMany().HasForeignKey(x => x.NacionalidadId).OnDelete(DeleteBehavior.NoAction);
+            builder.HasOne(x => x.Origen).WithMany().HasForeignKey(x => x.OrigenId).OnDelete(DeleteBehavior.NoAction);
+            builder.HasMany(x => x.Indicadores).WithOne(x => x.Ficha).HasForeignKey(x => x.FichaId).OnDelete(DeleteBehavior.NoAction);
+            builder.HasMany(x => x.Adjuntos).WithOne(x => x.Ficha).HasForeignKey(x => x.FichaId).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

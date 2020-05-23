@@ -42,6 +42,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200509213016_Initial migration.cs" />
     <Compile Remove="Migrations\20200509213016_Initial migration.Designer.cs" />
+    <Compile Remove="Migrations\20200523124130_Added Adjuntos, Areas, Dimensiones and Indicadores Entities.cs" />
+    <Compile Remove="Migrations\20200523124130_Added Adjuntos, Areas, Dimensiones and Indicadores Entities.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
