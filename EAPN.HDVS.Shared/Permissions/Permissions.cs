@@ -16,9 +16,9 @@ namespace EAPN.HDVS.Shared.Permissions
         public const string USERMANAGEMENT_DELETE = "usermng:delete";
 
         // Personal Cards
-        public const string PESONALCARD_ACCESS = "card:access";
-        public const string PESONALCARD_READ = "card:read";
-        public const string PESONALCARD_WRITE = "card:write";
-        public const string PESONALCARD_DELETE = "card:delete";
+        public const string PERSONALCARD_ACCESS = "card:access";
+        public const string PERSONALCARD_READ = "card:read";
+        public const string PERSONALCARD_WRITE = "card:write";
+        public const string PERSONALCARD_DELETE = "card:delete";
     }
 }

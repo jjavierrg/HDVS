@@ -23,6 +23,184 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.DimensionesController.#ctor(EAPN.HDVS.Application.Services.Dimension.IDimenssionService,Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.DimensionesController},AutoMapper.IMapper)">
+            <summary>
+            </summary>
+            <param name="dimensionService"></param>
+            <param name="logger"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.DimensionesController.GetDimensiones">
+            <summary>
+            Get all stored items with related data
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.FichasController.#ctor(EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Ficha},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.FichasController},AutoMapper.IMapper,EAPN.HDVS.Infrastructure.Core.Queries.IFilterPaginable{EAPN.HDVS.Entities.Ficha})">
+            <summary>
+            </summary>
+            <param name="fichaService"></param>
+            <param name="logger"></param>
+            <param name="mapper"></param>
+            <param name="filterPaginator"></param>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.FichasController.GetFichas">
+            <summary>
+            Get all stored items with related data
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.FichasController.GetFicha(System.Int32)">
+            <summary>
+            Get the item with the specified identifier
+            </summary>
+            <param name="id">Item identifier</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.FichasController.GetFichasFiltered(EAPN.HDVS.Infrastructure.Core.Queries.QueryData)">
+            <summary>
+            Get all items with a specific criteria filter
+            </summary>
+            <param name="query">Query criteria filter</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.FichasController.GetVistaPeviaFichas(EAPN.HDVS.Infrastructure.Core.Queries.QueryData)">
+            <summary>
+            Get all items with a specific criteria filter
+            </summary>
+            <param name="query">Query criteria filter</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.FichasController.PostFicha(EAPN.HDVS.Web.Dto.FichaDto)">
+            <summary>
+            Add new item to collection
+            </summary>
+            <param name="fichaDto">Item data</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.FichasController.PutFicha(System.Int32,EAPN.HDVS.Web.Dto.FichaDto)">
+            <summary>
+            Update an existing item
+            </summary>
+            <param name="id">Item identifier</param>
+            <param name="fichaDto">Item data</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.FichasController.DeleteFicha(System.Int32)">
+            <summary>
+            Delete existing item
+            </summary>
+            <param name="id">Item identifier</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.FichasController.GetBaseQueryable">
+            <summary>
+            Base query. Handles security and organizacion scope
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.OrganizacionesController.#ctor(EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Organizacion},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.OrganizacionesController},AutoMapper.IMapper)">
+            <summary>
+            </summary>
+            <param name="organizacionService"></param>
+            <param name="logger"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.OrganizacionesController.GetOrganizaciones">
+            <summary>
+            Get all stored items
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.OrganizacionesController.GetOrganizacionesAsMasterData">
+            <summary>
+            Get all stored items mapped as Masterdata
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.OrganizacionesController.GetOrganizacion(System.Int32)">
+            <summary>
+            Get the item with the specified identifier
+            </summary>
+            <param name="id">Item identifier</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.OrganizacionesController.PostOrganizacion(EAPN.HDVS.Web.Dto.OrganizacionDto)">
+            <summary>
+            Add new item to collection
+            </summary>
+            <param name="organizacionDto">Item data</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.OrganizacionesController.PutOrganizacion(System.Int32,EAPN.HDVS.Web.Dto.OrganizacionDto)">
+            <summary>
+            Update an existing item
+            </summary>
+            <param name="id">Item identifier</param>
+            <param name="organizacionDto">Item data</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.OrganizacionesController.DeleteOrganizacion(System.Int32)">
+            <summary>
+            Delete existing item
+            </summary>
+            <param name="id">Item identifier</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.PerfilesController.#ctor(EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Perfil},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.PerfilesController},AutoMapper.IMapper)">
+            <summary>
+            </summary>
+            <param name="perfilService"></param>
+            <param name="logger"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.PerfilesController.GetPerfiles">
+            <summary>
+            Get all stored items with related data
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.PerfilesController.GetPerfilesAsMasterData">
+            <summary>
+            Get all stored items
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.PerfilesController.GetPerfil(System.Int32)">
+            <summary>
+            Get the item with the specified identifier
+            </summary>
+            <param name="id">Item identifier</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.PerfilesController.PostPerfil(EAPN.HDVS.Web.Dto.PerfilDto)">
+            <summary>
+            Add new item to collection
+            </summary>
+            <param name="perfilDto">Item data</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.PerfilesController.PutPerfil(System.Int32,EAPN.HDVS.Web.Dto.PerfilDto)">
+            <summary>
+            Update an existing item
+            </summary>
+            <param name="id">Item identifier</param>
+            <param name="perfilDto">Item data</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.PerfilesController.DeletePerfil(System.Int32)">
+            <summary>
+            Delete existing item
+            </summary>
+            <param name="id">Item identifier</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.PerfilesController.GetSuperadminExclusionFilter">
+            <summary>
+            Profiles with superadmin permission exclusion filter
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:EAPN.HDVS.Web.Controllers.PermisosController.#ctor(EAPN.HDVS.Application.Core.Services.IReadServiceBase{EAPN.HDVS.Entities.Permiso},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.PermisosController},AutoMapper.IMapper)">
             <summary>
             </summary>
@@ -108,171 +286,6 @@
         <member name="M:EAPN.HDVS.Web.Controllers.UsuariosController.GetSuperadminExclusionFilter">
             <summary>
             Users with superadmin permission exclusion filter
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:EAPN.HDVS.Web.Contfichalers.FichasController.#ctor(EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Ficha},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Contfichalers.FichasController},AutoMapper.IMapper,EAPN.HDVS.Infrastructure.Core.Queries.IFilterPaginable{EAPN.HDVS.Entities.Ficha})">
-            <summary>
-            </summary>
-            <param name="fichaService"></param>
-            <param name="logger"></param>
-            <param name="mapper"></param>
-            <param name="filterPaginator"></param>
-        </member>
-        <member name="M:EAPN.HDVS.Web.Contfichalers.FichasController.GetFichas">
-            <summary>
-            Get all stored items with related data
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:EAPN.HDVS.Web.Contfichalers.FichasController.GetFicha(System.Int32)">
-            <summary>
-            Get the item with the specified identifier
-            </summary>
-            <param name="id">Item identifier</param>
-            <returns></returns>
-        </member>
-        <member name="M:EAPN.HDVS.Web.Contfichalers.FichasController.GetFichasFiltered(EAPN.HDVS.Infrastructure.Core.Queries.QueryData)">
-            <summary>
-            Get all items with a specific criteria filter
-            </summary>
-            <param name="query">Query criteria filter</param>
-            <returns></returns>
-        </member>
-        <member name="M:EAPN.HDVS.Web.Contfichalers.FichasController.GetVistaPeviaFichas(EAPN.HDVS.Infrastructure.Core.Queries.QueryData)">
-            <summary>
-            Get all items with a specific criteria filter
-            </summary>
-            <param name="query">Query criteria filter</param>
-            <returns></returns>
-        </member>
-        <member name="M:EAPN.HDVS.Web.Contfichalers.FichasController.PostFicha(EAPN.HDVS.Web.Dto.FichaDto)">
-            <summary>
-            Add new item to collection
-            </summary>
-            <param name="fichaDto">Item data</param>
-            <returns></returns>
-        </member>
-        <member name="M:EAPN.HDVS.Web.Contfichalers.FichasController.PutFicha(System.Int32,EAPN.HDVS.Web.Dto.FichaDto)">
-            <summary>
-            Update an existing item
-            </summary>
-            <param name="id">Item identifier</param>
-            <param name="fichaDto">Item data</param>
-            <returns></returns>
-        </member>
-        <member name="M:EAPN.HDVS.Web.Contfichalers.FichasController.DeleteFicha(System.Int32)">
-            <summary>
-            Delete existing item
-            </summary>
-            <param name="id">Item identifier</param>
-            <returns></returns>
-        </member>
-        <member name="M:EAPN.HDVS.Web.Contfichalers.FichasController.GetBaseQueryable">
-            <summary>
-            Base query. Handles security and organizacion scope
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:EAPN.HDVS.Web.Contorganizacionlers.OrganizacionesController.#ctor(EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Organizacion},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Contorganizacionlers.OrganizacionesController},AutoMapper.IMapper)">
-            <summary>
-            </summary>
-            <param name="organizacionService"></param>
-            <param name="logger"></param>
-            <param name="mapper"></param>
-        </member>
-        <member name="M:EAPN.HDVS.Web.Contorganizacionlers.OrganizacionesController.GetOrganizaciones">
-            <summary>
-            Get all stored items
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:EAPN.HDVS.Web.Contorganizacionlers.OrganizacionesController.GetOrganizacionesAsMasterData">
-            <summary>
-            Get all stored items mapped as Masterdata
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:EAPN.HDVS.Web.Contorganizacionlers.OrganizacionesController.GetOrganizacion(System.Int32)">
-            <summary>
-            Get the item with the specified identifier
-            </summary>
-            <param name="id">Item identifier</param>
-            <returns></returns>
-        </member>
-        <member name="M:EAPN.HDVS.Web.Contorganizacionlers.OrganizacionesController.PostOrganizacion(EAPN.HDVS.Web.Dto.OrganizacionDto)">
-            <summary>
-            Add new item to collection
-            </summary>
-            <param name="organizacionDto">Item data</param>
-            <returns></returns>
-        </member>
-        <member name="M:EAPN.HDVS.Web.Contorganizacionlers.OrganizacionesController.PutOrganizacion(System.Int32,EAPN.HDVS.Web.Dto.OrganizacionDto)">
-            <summary>
-            Update an existing item
-            </summary>
-            <param name="id">Item identifier</param>
-            <param name="organizacionDto">Item data</param>
-            <returns></returns>
-        </member>
-        <member name="M:EAPN.HDVS.Web.Contorganizacionlers.OrganizacionesController.DeleteOrganizacion(System.Int32)">
-            <summary>
-            Delete existing item
-            </summary>
-            <param name="id">Item identifier</param>
-            <returns></returns>
-        </member>
-        <member name="M:EAPN.HDVS.Web.Contperfillers.PerfilesController.#ctor(EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Perfil},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Contperfillers.PerfilesController},AutoMapper.IMapper)">
-            <summary>
-            </summary>
-            <param name="perfilService"></param>
-            <param name="logger"></param>
-            <param name="mapper"></param>
-        </member>
-        <member name="M:EAPN.HDVS.Web.Contperfillers.PerfilesController.GetPerfiles">
-            <summary>
-            Get all stored items with related data
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:EAPN.HDVS.Web.Contperfillers.PerfilesController.GetPerfilesAsMasterData">
-            <summary>
-            Get all stored items
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:EAPN.HDVS.Web.Contperfillers.PerfilesController.GetPerfil(System.Int32)">
-            <summary>
-            Get the item with the specified identifier
-            </summary>
-            <param name="id">Item identifier</param>
-            <returns></returns>
-        </member>
-        <member name="M:EAPN.HDVS.Web.Contperfillers.PerfilesController.PostPerfil(EAPN.HDVS.Web.Dto.PerfilDto)">
-            <summary>
-            Add new item to collection
-            </summary>
-            <param name="perfilDto">Item data</param>
-            <returns></returns>
-        </member>
-        <member name="M:EAPN.HDVS.Web.Contperfillers.PerfilesController.PutPerfil(System.Int32,EAPN.HDVS.Web.Dto.PerfilDto)">
-            <summary>
-            Update an existing item
-            </summary>
-            <param name="id">Item identifier</param>
-            <param name="perfilDto">Item data</param>
-            <returns></returns>
-        </member>
-        <member name="M:EAPN.HDVS.Web.Contperfillers.PerfilesController.DeletePerfil(System.Int32)">
-            <summary>
-            Delete existing item
-            </summary>
-            <param name="id">Item identifier</param>
-            <returns></returns>
-        </member>
-        <member name="M:EAPN.HDVS.Web.Contperfillers.PerfilesController.GetSuperadminExclusionFilter">
-            <summary>
-            Profiles with superadmin permission exclusion filter
             </summary>
             <returns></returns>
         </member>

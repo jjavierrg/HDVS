@@ -44,6 +44,11 @@ export interface IApiClient {
      * Get all stored items with related data
      * @return Success
      */
+    getDimensiones(): Observable<DimensionDto[]>;
+    /**
+     * Get all stored items with related data
+     * @return Success
+     */
     getFichas(): Observable<FichaDto[]>;
     /**
      * Add new item to collection
@@ -528,6 +533,70 @@ export class ApiClient implements IApiClient {
             }));
         }
         return _observableOf<boolean>(<any>null);
+    }
+
+    /**
+     * Get all stored items with related data
+     * @return Success
+     */
+    getDimensiones(): Observable<DimensionDto[]> {
+        let url_ = this.baseUrl + "/api/Dimensiones";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDimensiones(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDimensiones(<any>response_);
+                } catch (e) {
+                    return <Observable<DimensionDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<DimensionDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetDimensiones(response: HttpResponseBase): Observable<DimensionDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(DimensionDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Unauthorized", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Forbidden", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<DimensionDto[]>(<any>null);
     }
 
     /**
@@ -2650,6 +2719,194 @@ export interface IDatosUsuarioDto {
     nuevaClave?: string | undefined;
 }
 
+export class IndicadorDto implements IIndicadorDto {
+    id?: number;
+    orden?: number;
+    categoriaId?: number;
+    descripcion?: string | undefined;
+    activo?: boolean;
+    puntuacion?: number;
+    sugerencias?: string | undefined;
+
+    constructor(data?: IIndicadorDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.orden = _data["orden"];
+            this.categoriaId = _data["categoriaId"];
+            this.descripcion = _data["descripcion"];
+            this.activo = _data["activo"];
+            this.puntuacion = _data["puntuacion"];
+            this.sugerencias = _data["sugerencias"];
+        }
+    }
+
+    static fromJS(data: any): IndicadorDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new IndicadorDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["orden"] = this.orden;
+        data["categoriaId"] = this.categoriaId;
+        data["descripcion"] = this.descripcion;
+        data["activo"] = this.activo;
+        data["puntuacion"] = this.puntuacion;
+        data["sugerencias"] = this.sugerencias;
+        return data; 
+    }
+}
+
+export interface IIndicadorDto {
+    id?: number;
+    orden?: number;
+    categoriaId?: number;
+    descripcion?: string | undefined;
+    activo?: boolean;
+    puntuacion?: number;
+    sugerencias?: string | undefined;
+}
+
+export class CategoriaDto implements ICategoriaDto {
+    id?: number;
+    orden?: number;
+    dimensionId?: number;
+    descripcion?: string | undefined;
+    activo?: boolean;
+    indicadores?: IndicadorDto[] | undefined;
+
+    constructor(data?: ICategoriaDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.orden = _data["orden"];
+            this.dimensionId = _data["dimensionId"];
+            this.descripcion = _data["descripcion"];
+            this.activo = _data["activo"];
+            if (Array.isArray(_data["indicadores"])) {
+                this.indicadores = [] as any;
+                for (let item of _data["indicadores"])
+                    this.indicadores!.push(IndicadorDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): CategoriaDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CategoriaDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["orden"] = this.orden;
+        data["dimensionId"] = this.dimensionId;
+        data["descripcion"] = this.descripcion;
+        data["activo"] = this.activo;
+        if (Array.isArray(this.indicadores)) {
+            data["indicadores"] = [];
+            for (let item of this.indicadores)
+                data["indicadores"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface ICategoriaDto {
+    id?: number;
+    orden?: number;
+    dimensionId?: number;
+    descripcion?: string | undefined;
+    activo?: boolean;
+    indicadores?: IndicadorDto[] | undefined;
+}
+
+export class DimensionDto implements IDimensionDto {
+    id?: number;
+    orden?: number;
+    iconoId?: number | undefined;
+    descripcion?: string | undefined;
+    activo?: boolean;
+    categorias?: CategoriaDto[] | undefined;
+
+    constructor(data?: IDimensionDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.orden = _data["orden"];
+            this.iconoId = _data["iconoId"];
+            this.descripcion = _data["descripcion"];
+            this.activo = _data["activo"];
+            if (Array.isArray(_data["categorias"])) {
+                this.categorias = [] as any;
+                for (let item of _data["categorias"])
+                    this.categorias!.push(CategoriaDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): DimensionDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new DimensionDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["orden"] = this.orden;
+        data["iconoId"] = this.iconoId;
+        data["descripcion"] = this.descripcion;
+        data["activo"] = this.activo;
+        if (Array.isArray(this.categorias)) {
+            data["categorias"] = [];
+            for (let item of this.categorias)
+                data["categorias"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IDimensionDto {
+    id?: number;
+    orden?: number;
+    iconoId?: number | undefined;
+    descripcion?: string | undefined;
+    activo?: boolean;
+    categorias?: CategoriaDto[] | undefined;
+}
+
 export class OrganizacionDto implements IOrganizacionDto {
     id?: number;
     nombre?: string | undefined;
@@ -3030,6 +3287,122 @@ export interface IPaisDto {
     descripcion?: string | undefined;
 }
 
+export class IndicadorFichaDto implements IIndicadorFichaDto {
+    indicadorId?: number;
+    fichaId?: number;
+    observaciones?: string | undefined;
+
+    constructor(data?: IIndicadorFichaDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.indicadorId = _data["indicadorId"];
+            this.fichaId = _data["fichaId"];
+            this.observaciones = _data["observaciones"];
+        }
+    }
+
+    static fromJS(data: any): IndicadorFichaDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new IndicadorFichaDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["indicadorId"] = this.indicadorId;
+        data["fichaId"] = this.fichaId;
+        data["observaciones"] = this.observaciones;
+        return data; 
+    }
+}
+
+export interface IIndicadorFichaDto {
+    indicadorId?: number;
+    fichaId?: number;
+    observaciones?: string | undefined;
+}
+
+export class AdjuntoDto implements IAdjuntoDto {
+    id?: number;
+    tipoId?: number;
+    usuarioId?: number | undefined;
+    fichaId?: number | undefined;
+    organizacionId?: number | undefined;
+    alias?: string | undefined;
+    nombreOriginal?: string | undefined;
+    tamano?: number;
+    fechaAlta?: Date;
+    fullPath?: string | undefined;
+
+    constructor(data?: IAdjuntoDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.tipoId = _data["tipoId"];
+            this.usuarioId = _data["usuarioId"];
+            this.fichaId = _data["fichaId"];
+            this.organizacionId = _data["organizacionId"];
+            this.alias = _data["alias"];
+            this.nombreOriginal = _data["nombreOriginal"];
+            this.tamano = _data["tamano"];
+            this.fechaAlta = _data["fechaAlta"] ? new Date(_data["fechaAlta"].toString()) : <any>undefined;
+            this.fullPath = _data["fullPath"];
+        }
+    }
+
+    static fromJS(data: any): AdjuntoDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AdjuntoDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["tipoId"] = this.tipoId;
+        data["usuarioId"] = this.usuarioId;
+        data["fichaId"] = this.fichaId;
+        data["organizacionId"] = this.organizacionId;
+        data["alias"] = this.alias;
+        data["nombreOriginal"] = this.nombreOriginal;
+        data["tamano"] = this.tamano;
+        data["fechaAlta"] = this.fechaAlta ? this.fechaAlta.toISOString() : <any>undefined;
+        data["fullPath"] = this.fullPath;
+        return data; 
+    }
+}
+
+export interface IAdjuntoDto {
+    id?: number;
+    tipoId?: number;
+    usuarioId?: number | undefined;
+    fichaId?: number | undefined;
+    organizacionId?: number | undefined;
+    alias?: string | undefined;
+    nombreOriginal?: string | undefined;
+    tamano?: number;
+    fechaAlta?: Date;
+    fullPath?: string | undefined;
+}
+
 export class FichaDto implements IFichaDto {
     id?: number;
     organizacionId?: number;
@@ -3068,6 +3441,8 @@ export class FichaDto implements IFichaDto {
     padron?: MunicipioDto;
     nacionalidad?: PaisDto;
     origen?: PaisDto;
+    indicadores?: IndicadorFichaDto[] | undefined;
+    adjuntos?: AdjuntoDto[] | undefined;
 
     constructor(data?: IFichaDto) {
         if (data) {
@@ -3117,6 +3492,16 @@ export class FichaDto implements IFichaDto {
             this.padron = _data["padron"] ? MunicipioDto.fromJS(_data["padron"]) : <any>undefined;
             this.nacionalidad = _data["nacionalidad"] ? PaisDto.fromJS(_data["nacionalidad"]) : <any>undefined;
             this.origen = _data["origen"] ? PaisDto.fromJS(_data["origen"]) : <any>undefined;
+            if (Array.isArray(_data["indicadores"])) {
+                this.indicadores = [] as any;
+                for (let item of _data["indicadores"])
+                    this.indicadores!.push(IndicadorFichaDto.fromJS(item));
+            }
+            if (Array.isArray(_data["adjuntos"])) {
+                this.adjuntos = [] as any;
+                for (let item of _data["adjuntos"])
+                    this.adjuntos!.push(AdjuntoDto.fromJS(item));
+            }
         }
     }
 
@@ -3166,6 +3551,16 @@ export class FichaDto implements IFichaDto {
         data["padron"] = this.padron ? this.padron.toJSON() : <any>undefined;
         data["nacionalidad"] = this.nacionalidad ? this.nacionalidad.toJSON() : <any>undefined;
         data["origen"] = this.origen ? this.origen.toJSON() : <any>undefined;
+        if (Array.isArray(this.indicadores)) {
+            data["indicadores"] = [];
+            for (let item of this.indicadores)
+                data["indicadores"].push(item.toJSON());
+        }
+        if (Array.isArray(this.adjuntos)) {
+            data["adjuntos"] = [];
+            for (let item of this.adjuntos)
+                data["adjuntos"].push(item.toJSON());
+        }
         return data; 
     }
 }
@@ -3208,6 +3603,8 @@ export interface IFichaDto {
     padron?: MunicipioDto;
     nacionalidad?: PaisDto;
     origen?: PaisDto;
+    indicadores?: IndicadorFichaDto[] | undefined;
+    adjuntos?: AdjuntoDto[] | undefined;
 }
 
 export class QueryData implements IQueryData {

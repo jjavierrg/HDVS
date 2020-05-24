@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EAPN.HDVS.Entities
+﻿namespace EAPN.HDVS.Web.Dto
 {
-    public class Indicador
+    public class IndicadorDto
     {
+
         public int Id { get; set; }
         public int Orden { get; set; }
         public int CategoriaId { get; set; }
@@ -13,8 +10,5 @@ namespace EAPN.HDVS.Entities
         public bool Activo { get; set; }
         public int Puntuacion { get; set; }
         public string Sugerencias { get; set; }
-
-        public Categoria Categoria { get; set; }
-        public IList<IndicadorFicha> Fichas { get; set; }
     }
 }

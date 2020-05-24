@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DimensionDto } from 'src/app/core/api/api.client';
 
 @Component({
   selector: 'app-home',
@@ -7,9 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  constructor() {
+  }
 
-  ngOnInit() {
+  async ngOnInit() {
   }
 
 }

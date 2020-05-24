@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EAPN.HDVS.Web.Migrations
 {
     [DbContext(typeof(HDVSContext))]
-    [Migration("20200523143000_Added Adjuntos, Areas, Dimensiones and Indicadores Entities")]
-    partial class AddedAdjuntosAreasDimensionesandIndicadoresEntities
+    [Migration("20200523155930_Added Adjuntos, Categorias, Dimensiones and Indicadores Entities")]
+    partial class AddedAdjuntosCategoriasDimensionesandIndicadoresEntities
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -74,7 +74,39 @@ namespace EAPN.HDVS.Web.Migrations
                     b.ToTable("Adjuntos","dbo");
                 });
 
-            modelBuilder.Entity("EAPN.HDVS.Entities.Area", b =>
+            modelBuilder.Entity("EAPN.HDVS.Entities.Categoria", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("Id")
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Activo")
+                        .HasColumnName("Activo")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnName("Descripcion")
+                        .HasColumnType("nvarchar(150)")
+                        .HasMaxLength(150);
+
+                    b.Property<int>("DimensionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Orden")
+                        .HasColumnName("Orden")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DimensionId");
+
+                    b.ToTable("Categorias","dbo");
+                });
+
+            modelBuilder.Entity("EAPN.HDVS.Entities.Dimension", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -96,37 +128,13 @@ namespace EAPN.HDVS.Web.Migrations
                         .HasColumnName("IconoId")
                         .HasColumnType("int");
 
+                    b.Property<int>("Orden")
+                        .HasColumnName("Orden")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("IconoId");
-
-                    b.ToTable("Areas","dbo");
-                });
-
-            modelBuilder.Entity("EAPN.HDVS.Entities.Dimension", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("Id")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Activo")
-                        .HasColumnName("Activo")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("AreaId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Descripcion")
-                        .IsRequired()
-                        .HasColumnName("Descripcion")
-                        .HasColumnType("nvarchar(150)")
-                        .HasMaxLength(150);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AreaId");
 
                     b.ToTable("Dimensiones","dbo");
                 });
@@ -293,13 +301,17 @@ namespace EAPN.HDVS.Web.Migrations
                         .HasColumnName("Activo")
                         .HasColumnType("bit");
 
+                    b.Property<int>("CategoriaId")
+                        .HasColumnName("CategoriaId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasColumnName("Descripcion")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("DimensionId")
-                        .HasColumnName("DimensionId")
+                    b.Property<int>("Orden")
+                        .HasColumnName("Orden")
                         .HasColumnType("int");
 
                     b.Property<int>("Puntuacion")
@@ -312,7 +324,7 @@ namespace EAPN.HDVS.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DimensionId");
+                    b.HasIndex("CategoriaId");
 
                     b.ToTable("Indicadores","dbo");
                 });
@@ -748,20 +760,20 @@ namespace EAPN.HDVS.Web.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("EAPN.HDVS.Entities.Area", b =>
+            modelBuilder.Entity("EAPN.HDVS.Entities.Categoria", b =>
                 {
-                    b.HasOne("EAPN.HDVS.Entities.Adjunto", "Icono")
-                        .WithMany()
-                        .HasForeignKey("IconoId");
+                    b.HasOne("EAPN.HDVS.Entities.Dimension", "Dimension")
+                        .WithMany("Categorias")
+                        .HasForeignKey("DimensionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("EAPN.HDVS.Entities.Dimension", b =>
                 {
-                    b.HasOne("EAPN.HDVS.Entities.Area", "Area")
-                        .WithMany("Dimensiones")
-                        .HasForeignKey("AreaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("EAPN.HDVS.Entities.Adjunto", "Icono")
+                        .WithMany()
+                        .HasForeignKey("IconoId");
                 });
 
             modelBuilder.Entity("EAPN.HDVS.Entities.Ficha", b =>
@@ -816,9 +828,9 @@ namespace EAPN.HDVS.Web.Migrations
 
             modelBuilder.Entity("EAPN.HDVS.Entities.Indicador", b =>
                 {
-                    b.HasOne("EAPN.HDVS.Entities.Dimension", "Dimension")
+                    b.HasOne("EAPN.HDVS.Entities.Categoria", "Categoria")
                         .WithMany("Indicadores")
-                        .HasForeignKey("DimensionId")
+                        .HasForeignKey("CategoriaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

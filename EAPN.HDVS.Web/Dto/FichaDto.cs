@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace EAPN.HDVS.Web.Dto
 {
@@ -43,5 +44,8 @@ namespace EAPN.HDVS.Web.Dto
         public MunicipioDto Padron { get; set; }
         public PaisDto Nacionalidad { get; set; }
         public PaisDto Origen { get; set; }
+
+        public IList<IndicadorFichaDto> Indicadores { get; set; }
+        public IList<AdjuntoDto> Adjuntos { get; set; }
     }
 }

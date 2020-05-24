@@ -44,10 +44,10 @@ namespace EAPN.HDVS.Testing.Common
             context.Permisos.Add(new Permiso { Id = 4, Clave = Permissions.USERMANAGEMENT_DELETE, Descripcion = "Usuarios: Eliminar" });
             context.Permisos.Add(new Permiso { Id = 5, Clave = Permissions.USERMANAGEMENT_ACCESS, Descripcion = "Usuarios: Acceder" });
             context.Permisos.Add(new Permiso { Id = 6, Clave = Permissions.APP_SUPERADMIN, Descripcion = "Aplicación: Superadministrador" });
-            context.Permisos.Add(new Permiso { Id = 7, Clave = Permissions.PESONALCARD_READ, Descripcion = "Fichas: Lectura" });
-            context.Permisos.Add(new Permiso { Id = 8, Clave = Permissions.PESONALCARD_WRITE, Descripcion = "Fichas: Escritura" });
-            context.Permisos.Add(new Permiso { Id = 9, Clave = Permissions.PESONALCARD_DELETE, Descripcion = "Fichas: Eliminar" });
-            context.Permisos.Add(new Permiso { Id = 10, Clave = Permissions.PESONALCARD_ACCESS, Descripcion = "Fichas: Acceder" });
+            context.Permisos.Add(new Permiso { Id = 7, Clave = Permissions.PERSONALCARD_READ, Descripcion = "Fichas: Lectura" });
+            context.Permisos.Add(new Permiso { Id = 8, Clave = Permissions.PERSONALCARD_WRITE, Descripcion = "Fichas: Escritura" });
+            context.Permisos.Add(new Permiso { Id = 9, Clave = Permissions.PERSONALCARD_DELETE, Descripcion = "Fichas: Eliminar" });
+            context.Permisos.Add(new Permiso { Id = 10, Clave = Permissions.PERSONALCARD_ACCESS, Descripcion = "Fichas: Acceder" });
 
             context.Perfiles.Add(new Perfil { Id = 1, Descripcion = "Usuario" });
             context.Perfiles.Add(new Perfil { Id = 2, Descripcion = "Administrador" });
@@ -71,7 +71,7 @@ namespace EAPN.HDVS.Testing.Common
             context.Organizaciones.Add(new Organizacion { Activa = false, Id = 3, Nombre = $"Organización inactiva 3", Observaciones = $"Observaciones Organización inactiva 3" });
 
             // usuarios admins - activos
-            context.Usuarios.Add(CreateUsuario(1, 1, 1, true, true));
+            context.Usuarios.Add(CreateUsuario(1, 1, 2, true, true));
             context.Usuarios.Add(CreateUsuario(2, 2, 1, true, true));
             context.Usuarios.Add(CreateUsuario(3, 3, 1, true, true)); // Organización Inactiva
 
@@ -88,6 +88,30 @@ namespace EAPN.HDVS.Testing.Common
             // user management
             context.Usuarios.Add(CreateUsuario(10, 1, 3, false, true));
             context.Usuarios.Add(CreateUsuario(11, 1, 3, true, true));
+
+            context.TiposAdjunto.Add(new TipoAdjunto { Id = 1, Carpeta = "Imagenes", Descripcion = "images" });
+            context.TiposAdjunto.Add(new TipoAdjunto { Id = 2, Carpeta = "Adjuntos", Descripcion = "attachments" });
+            context.TiposAdjunto.Add(new TipoAdjunto { Id = 3, Carpeta = "Documentacion", Descripcion = "docs" });
+            context.TiposAdjunto.Add(new TipoAdjunto { Id = 4, Carpeta = "Personales Ficha", Descripcion = "personal" });
+
+            for (int i = 1; i < 11; i++)
+            {
+                // Dimension 5 y 10 no están activas
+                context.Dimensiones.Add(new Dimension { Id = i, Activo = i % 5 > 0, Descripcion = $"Dimensión {i}", Orden = i });
+
+                for (int j = 1; j < 11; j++)
+                {
+                    // Categorias 3, 6, 9 no están activas
+                    context.Categorias.Add(new Categoria { Id = ((i - 1) * 10) + j, Activo = j % 3 > 0, Descripcion = $"Categoria {j}", Orden = j, DimensionId = i });
+
+                    for (int k = 11; k < 11; k++)
+                    {
+                        // Indicadores 4 y 8 no están activos
+                        context.Indicadores.Add(new Indicador { Id = ((i - 1) * 10) + ((j - 1) * 10) + k , Activo = k % 4 > 0, Descripcion = $"Indicador {k}", Orden = k, CategoriaId = j, Puntuacion = k });
+                    }
+                }
+            }
+
 
             await context.SaveChangesAsync();
         }

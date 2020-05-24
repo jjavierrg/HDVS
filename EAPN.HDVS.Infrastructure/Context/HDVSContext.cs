@@ -10,8 +10,8 @@ namespace EAPN.HDVS.Infrastructure.Context
         public virtual DbSet<TipoAdjunto> TiposAdjunto { get; set; }
         public virtual DbSet<Adjunto> Adjuntos { get; set; }
 
-        public virtual DbSet<Area> Areas { get; set; }
         public virtual DbSet<Dimension> Dimensiones { get; set; }
+        public virtual DbSet<Categoria> Categorias { get; set; }
         public virtual DbSet<Indicador> Indicadores { get; set; }
         public virtual DbSet<IndicadorFicha> IndicadoresFicha { get; set; }
 
@@ -41,8 +41,8 @@ namespace EAPN.HDVS.Infrastructure.Context
             modelBuilder.ApplyConfiguration(new Configurations.AdjuntoConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.TipoAdjuntoConfiguration());
 
-            modelBuilder.ApplyConfiguration(new Configurations.AreaConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.DimensionConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.CategoriaConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.IndicadorConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.IndicadorFichaConfiguration());
 

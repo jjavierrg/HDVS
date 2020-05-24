@@ -7,9 +7,8 @@
     "clave": "Contraseña",
     "codigo": "Código",
     "descripcion": "Descripción",
+    "dimensiones": "Dimensiones",
     "email": "Email",
-    "telefono": "Teléfono",
-    "web": "Web",
     "nombre": "Nombre",
     "nueva-clave": "Nueva contraseña",
     "numero-usuarios": "Usuarios",
@@ -18,9 +17,12 @@
     "organizaciones": "Organizaciones",
     "perfiles": "Perfiles",
     "permisos": "Permisos",
-    "usuarios": "Usuarios"
+    "telefono": "Teléfono",
+    "usuarios": "Usuarios",
+    "web": "Web"
   },
   "core": {
+    "abrir-todo": "Abrir Todo",
     "aceptar": "Aceptar",
     "anadir": "Añadir",
     "buscar": "Buscar",
@@ -30,6 +32,7 @@
       "meses": "Enero,Febrero,Marzo,Abril,Mayo,Junio,Julio,Agosto,Septiembre,Octubre,Noviembre,Diciembre"
     },
     "cancelar": "Cancelar",
+    "cerrar-todo": "Cerrar Todo",
     "confirmar-eliminacion": "<p><strong>¿Está seguro de querer eliminar los elementos seleccionados?</strong></p><p>Toda la información asociada será eliminada por completo. Tenga en cuenta que esta operación <span class='text-danger'>no se puede deshacer.</span></p>",
     "confirmar-eliminacion-titulo": "Confirmar eliminación",
     "datos-corruptos": "No se han podido leer los datos introducidos",

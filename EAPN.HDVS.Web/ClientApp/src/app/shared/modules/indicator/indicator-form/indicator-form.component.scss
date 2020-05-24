@@ -1,0 +1,12 @@
+@import 'src/styles.scss';
+
+.force-column {
+  flex-direction: column;
+}
+
+@media (min-width: map-get($grid-breakpoints, 'lg')) {
+  .image-nav-link {
+    font-size: small;
+    max-width: 140px;
+  }
+}

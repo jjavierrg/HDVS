@@ -16,7 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EAPN.HDVS.Web.Contfichalers
+namespace EAPN.HDVS.Web.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]
@@ -47,7 +47,7 @@ namespace EAPN.HDVS.Web.Contfichalers
         /// </summary>
         /// <returns></returns>
         [HttpGet(Name = "GetFichas")]
-        [AuthorizePermission(Permissions.PESONALCARD_READ)]
+        [AuthorizePermission(Permissions.PERSONALCARD_READ)]
         [ProducesResponseType(typeof(IEnumerable<FichaDto>), StatusCodes.Status200OK)]
         public async Task<ActionResult<FichaDto>> GetFichas()
         {
@@ -66,7 +66,7 @@ namespace EAPN.HDVS.Web.Contfichalers
         /// <param name="id">Item identifier</param>
         /// <returns></returns>
         [HttpGet("{id}", Name = "GetFicha")]
-        [AuthorizePermission(Permissions.PESONALCARD_READ)]
+        [AuthorizePermission(Permissions.PERSONALCARD_READ)]
         [ProducesResponseType(typeof(FichaDto), StatusCodes.Status200OK)]
         public async Task<ActionResult<FichaDto>> GetFicha(int id)
         {
@@ -87,7 +87,7 @@ namespace EAPN.HDVS.Web.Contfichalers
         /// <param name="query">Query criteria filter</param>
         /// <returns></returns>
         [HttpPost("filtered", Name = "GetFichasFiltered")]
-        [AuthorizePermission(Permissions.PESONALCARD_READ)]
+        [AuthorizePermission(Permissions.PERSONALCARD_READ)]
         [ProducesResponseType(typeof(QueryResult<FichaDto>), StatusCodes.Status200OK)]
         public async Task<ActionResult<QueryResult<FichaDto>>> GetFichasFiltered([FromBody]QueryData query)
         {
@@ -108,7 +108,7 @@ namespace EAPN.HDVS.Web.Contfichalers
         /// <param name="query">Query criteria filter</param>
         /// <returns></returns>
         [HttpPost("vistaprevia/filtered", Name = "GetVistaPeviaFichas")]
-        [AuthorizePermission(Permissions.PESONALCARD_READ)]
+        [AuthorizePermission(Permissions.PERSONALCARD_READ)]
         [ProducesResponseType(typeof(QueryResult<VistaPreviaFichaDto>), StatusCodes.Status200OK)]
         public async Task<ActionResult<QueryResult<VistaPreviaFichaDto>>> GetVistaPeviaFichas([FromBody]QueryData query)
         {
@@ -128,7 +128,7 @@ namespace EAPN.HDVS.Web.Contfichalers
         /// </summary>
         /// <param name="fichaDto">Item data</param>
         /// <returns></returns>
-        [AuthorizePermission(Permissions.PESONALCARD_WRITE)]
+        [AuthorizePermission(Permissions.PERSONALCARD_WRITE)]
         [ProducesResponseType(typeof(FichaDto), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost(Name = "PostFicha")]
@@ -158,7 +158,7 @@ namespace EAPN.HDVS.Web.Contfichalers
         /// <param name="id">Item identifier</param>
         /// <param name="fichaDto">Item data</param>
         /// <returns></returns>
-        [AuthorizePermission(Permissions.PESONALCARD_WRITE)]
+        [AuthorizePermission(Permissions.PERSONALCARD_WRITE)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

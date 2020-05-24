@@ -50,6 +50,13 @@ namespace EAPN.HDVS.Web.Dto
             CreateMap<Permiso, PermisoDto>().ReverseMap();
             CreateMap<UserToken, UserTokenDto>();
 
+            CreateMap<Adjunto, Adjunto>().ReverseMap().ForMember(d => d.FullPath, o => o.Ignore());
+
+            CreateMap<Dimension, DimensionDto>().ReverseMap();
+            CreateMap<Categoria, CategoriaDto>().ReverseMap();
+            CreateMap<Indicador, IndicadorDto>().ReverseMap();
+            CreateMap<IndicadorFicha, IndicadorFichaDto>().ReverseMap();
+
             CreateMap<Ficha, FichaDto>().ReverseMap();
             CreateMap<Municipio, MunicipioDto>().ReverseMap();
             CreateMap<Provincia, ProvinciaDto>().ReverseMap();

@@ -211,10 +211,10 @@ namespace EAPN.HDVS.Web.Migrations
                 columns: new[] { "Id", "Descripcion", "Clave" },
                 values: new object[,]
                 {
-                    { 7, "Fichas: Lectura", Permissions.PESONALCARD_READ},
-                    { 8, "Fichas: Escritura", Permissions.PESONALCARD_WRITE },
-                    { 9, "Fichas: Eliminar", Permissions.PESONALCARD_DELETE },
-                    { 10, "Fichas: Acceder", Permissions.PESONALCARD_ACCESS }
+                    { 7, "Fichas: Lectura", Permissions.PERSONALCARD_READ},
+                    { 8, "Fichas: Escritura", Permissions.PERSONALCARD_WRITE },
+                    { 9, "Fichas: Eliminar", Permissions.PERSONALCARD_DELETE },
+                    { 10, "Fichas: Acceder", Permissions.PERSONALCARD_ACCESS }
                 });
 
             migrationBuilder.InsertData(

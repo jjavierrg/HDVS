@@ -9,8 +9,6 @@ namespace EAPN.HDVS.Application.Services.User
 {
     public interface IUsuarioService : ICrudServiceBase<Usuario>
     {
-
-
         /// <summary>
         /// Regiter a new User in the system. Email field is mandatory
         /// </summary>

@@ -1,0 +1,29 @@
+<div class="d-flex w-100 h-100 flex-column p-relative pb-3">
+  <nav class="navbar navbar-expand-lg d-lg-block">
+    <span class="navbar-brand mb-0 h1 d-block no-select text-lg-center">
+      <i class="fas fa-layer-group mr-3"></i>
+      {{ 'comun.dimensiones' | translate }}
+    </span>
+
+    <button class="navbar-toggler ml-auto" type="button" (click)="isCollapsed = !isCollapsed">
+      &#9776;
+    </button>
+
+    <div [ngbCollapse]="isCollapsed" class="collapse navbar-collapse">
+      <div ngbNav #nav="ngbNav" [(activeId)]="activeTab" class="nav-pills w-100 d-flex force-column flex-lg-row justify-content-lg-between">
+        <div *ngFor="let item of dimensions | async; let i=index" [ngbNavItem]="i">
+          <a ngbNavLink (click)="isCollapsed = true"
+            class="flex-sm-grow-1 text-center d-flex flex-column image-nav-link align-items-center">
+            <img src="assets/icons/{{i+1}}.svg" width="70px" class="d-none d-lg-block">
+            {{ item.descripcion }}
+          </a>
+          <ng-template ngbNavContent>
+            <app-indicator-category-form [categories]="item.categorias" [(selection)]="this.test"></app-indicator-category-form>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div [ngbNavOutlet]="nav" class="mt-2 w-100 border shadow flex-grow-1"></div>
+</div>

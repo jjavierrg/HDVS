@@ -16,7 +16,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace EAPN.HDVS.Web.Contperfillers
+namespace EAPN.HDVS.Web.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]
