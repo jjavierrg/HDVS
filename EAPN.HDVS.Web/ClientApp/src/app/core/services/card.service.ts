@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ApiClient, VistaPreviaFichaDto, QueryData } from '../api/api.client';
-import { Observable } from 'rxjs';
+import { ApiClient, VistaPreviaFichaDto, QueryData, FichaDto, SexoDto, MasterDataDto } from '../api/api.client';
+import { Observable, of } from 'rxjs';
 import { IBaseFilter, BaseFilter, getFilterQuery } from '../filters/basefilter';
 import { FilterComparison, FilterUnion } from '../filters/filter.enum';
 import { map, filter } from 'rxjs/operators';
@@ -33,5 +33,21 @@ export class CardService {
 
     const query: QueryData = new QueryData({ filterParameters: getFilterQuery(filters) });
     return this.apiClient.getVistaPeviaFichas(query).pipe(map((data) => data.data));
+  }
+
+  public getCard(cardId: number): Observable<FichaDto> {
+    return this.apiClient.getFicha(cardId);
+  }
+
+  public saveCard(card: FichaDto): Observable<FichaDto> {
+    if (!card) {
+      return of(null);
+    }
+
+    if (card.id) {
+      return this.apiClient.putFicha(card.id, card).pipe(map((_) => card));
+    } else {
+      return this.apiClient.postFicha(card);
+    }
   }
 }

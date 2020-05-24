@@ -104,12 +104,27 @@ namespace EAPN.HDVS.Testing.Common
                     // Categorias 3, 6, 9 no están activas
                     context.Categorias.Add(new Categoria { Id = ((i - 1) * 10) + j, Activo = j % 3 > 0, Descripcion = $"Categoria {j}", Orden = j, DimensionId = i });
 
-                    for (int k = 11; k < 11; k++)
+                    for (int k = 1; k < 11; k++)
                     {
                         // Indicadores 4 y 8 no están activos
-                        context.Indicadores.Add(new Indicador { Id = ((i - 1) * 10) + ((j - 1) * 10) + k , Activo = k % 4 > 0, Descripcion = $"Indicador {k}", Orden = k, CategoriaId = j, Puntuacion = k });
+                        context.Indicadores.Add(new Indicador { Id = (((i - 1) * 10) + j - 1) * 10 + k, Activo = k % 4 > 0, Descripcion = $"Indicador {k}", Orden = k, CategoriaId = j, Puntuacion = k });
                     }
                 }
+            }
+
+            context.Sexos.Add(new Sexo { Id = 1, Descripcion = "Hombre" });
+            context.Sexos.Add(new Sexo { Id = 2, Descripcion = "Mujer" });
+            context.Sexos.Add(new Sexo { Id = 3, Descripcion = "Otros" });
+
+            for (int i = 1; i < 11; i++)
+                context.Paises.Add(new Pais { Id = i, Descripcion = $"Pais {i}" });
+
+            for (int i = 1; i < 11; i++)
+            {
+                context.Provincias.Add(new Provincia { Id = i, Nombre = $"Provincia {i}" });
+
+                for (int j = 1; j < 11; j++)
+                    context.Municipios.Add(new Municipio { Id = ((i - 1) * 10) + j, Nombre = $"Municipio {j}", ProvinciaId = i });
             }
 
 

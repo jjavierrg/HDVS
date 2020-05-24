@@ -5,7 +5,7 @@
       <form #searchForm="ngForm" (ngSubmit)="onSubmitQuery()">
         <div class="form-row">
           <div class="form-group col">
-            <h4>{{ 'fichas.alta-titulo' | translate }}</h4>
+            <h4>{{ 'ficha.alta-titulo' | translate }}</h4>
           </div>
         </div>
         <div class="form-row">
@@ -29,9 +29,9 @@
         </div>
         <div class="form-row">
           <div class="form-group col-md-2">
-            <label for="inputFechaNacimiento">{{ 'fichas.fecha-nacimiento' | translate }}</label>
+            <label for="inputFechaNacimiento">{{ 'ficha.fecha-nacimiento' | translate }}</label>
             <app-datepicker id="inputFechaNacimiento" #nacimientoInput="ngModel" [(ngModel)]="birth"
-              name="{{ 'fichas.fecha-nacimiento' | translate }}"></app-datepicker>
+              name="{{ 'ficha.fecha-nacimiento' | translate }}"></app-datepicker>
           </div>
         </div>
         <div class="form-group float-right">
@@ -58,7 +58,7 @@
     </button>
   </div>
   <div class="modal-body text-center"><i
-      class="fas fa-check fa-2x text-success mr-3"></i>{{ 'fichas.usuario-no-alta' | translate }}</div>
+      class="fas fa-check fa-2x text-success mr-3"></i>{{ 'ficha.usuario-no-alta' | translate }}</div>
   <div class="modal-footer">
     <button type="button" class="btn btn-light"
       (click)="modal.dismiss()">{{ 'core.cancelar' | translate }}</button>
@@ -70,7 +70,7 @@
 <!-- match found -->
 <ng-template #matchModal let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-title">{{ 'fichas.coincidencias-encontradas' | translate }}</h4>
+    <h4 class="modal-title" id="modal-title">{{ 'ficha.coincidencias-encontradas' | translate }}</h4>
     <button type="button" class="close" aria-label="Close button" aria-describedby="modal-title"
       (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
@@ -78,7 +78,7 @@
   </div>
   <div class="modal-body d-flex flex-column" [ngStyle]="{'min-height': '60vh'}">
     <span>
-      {{ 'fichas.coincidencias-mensaje' | translate }}
+      {{ 'ficha.coincidencias-mensaje' | translate }}
     </span>
     <div class="position-relative flex-grow-1">
       <div class="position-absolute h-100 w-100">

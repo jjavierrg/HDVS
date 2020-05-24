@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EAPN.HDVS.Web.Testing.Controllers.PerfilesController
+namespace EAPN.HDVS.Web.Testing.Controllers.UsuariosController
 {
     internal class UsuariosControllerDBSeeder : ITestDBSeeder
     {

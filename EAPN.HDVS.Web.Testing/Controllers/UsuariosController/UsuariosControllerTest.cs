@@ -1,7 +1,6 @@
 ﻿using EAPN.HDVS.Entities;
 using EAPN.HDVS.Web.Dto;
 using EAPN.HDVS.Web.Dto.Auth;
-using EAPN.HDVS.Web.Testing.Controllers.PerfilesController;
 using EAPN.HDVS.Web.Testing.Utils;
 using System;
 using System.Collections.Generic;

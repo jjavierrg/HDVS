@@ -8,6 +8,8 @@ import { AuthenticatedGuard } from 'src/app/core/guards/authenticate.guard';
 import { FormsModule } from '@angular/forms';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { GridModule } from 'src/app/shared/modules/grid/grid.module';
+import { CardFormComponent } from './card-form/card-form.component';
+import { Permissions } from 'src/app/core/enums/permissions.enum';
 
 const routes: Routes = [
   {
@@ -15,6 +17,21 @@ const routes: Routes = [
     component: CardFinderComponent,
     canLoad: [AuthenticatedGuard],
     canActivate: [AuthenticatedGuard],
+    data: { allowedPermissions: [Permissions.personalcard.write] },
+  },
+  {
+    path: '',
+    component: CardFormComponent,
+    canLoad: [AuthenticatedGuard],
+    canActivate: [AuthenticatedGuard],
+    data: { allowedPermissions: [Permissions.personalcard.write] },
+  },
+  {
+    path: ':id',
+    component: CardFormComponent,
+    canLoad: [AuthenticatedGuard],
+    canActivate: [AuthenticatedGuard],
+    data: { allowedPermissions: [Permissions.personalcard.write] },
   },
   {
     path: '**',
@@ -24,7 +41,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [CardFinderComponent],
+  declarations: [CardFinderComponent, CardFormComponent],
   imports: [CommonModule, CoreModule, InputModule, FormsModule, NgbModalModule, GridModule, RouterModule.forChild(routes)],
 })
 export class PersonalCardModule {}

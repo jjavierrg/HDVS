@@ -105,6 +105,10 @@ export class AuthenticationService {
     return this.getUser().pipe(map((user) => +user['organizacion_id']));
   }
 
+  public getUserId(): Observable<number> {
+    return this.getUser().pipe(map((user) => +user['sub']));
+  }
+
   public getUserPermissions(): Observable<string[]> {
     return this.getUser().pipe(
       map((user) => {

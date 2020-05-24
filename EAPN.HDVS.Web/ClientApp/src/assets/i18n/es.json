@@ -45,11 +45,26 @@
     "si": "Sí",
     "siguiente": "Siguiente"
   },
-  "fichas": {
+  "ficha": {
+    "acepta-politica": "Acepta y firma la política de privacidad",
     "alta-titulo": "Escribe el nombre y al menos un apellido",
+    "codigo-postal": "Código Postal",
     "coincidencias-encontradas": "Coincidencias encontradas",
     "coincidencias-mensaje": "Se han encontrado las siguientes fichas con los datos introducidos. Si no se trata de ninguna de estas fichas, pulse en Añadir.",
-    "fecha-nacimiento": "Fecha de  Nacimiento",
+    "dni": "DNI/NIE/Pasaporte",
+    "domicilio": "Domicilio",
+    "empadronamiento": "Empadronamiento",
+    "fecha-nacimiento": "Fecha de Nacimiento",
+    "fotocopia-dni": "Fotocopia DNI",
+    "genero": "Género",
+    "municipio": "Municipio",
+    "nacionalidad": "Nacionalidad",
+    "pais-origen": "País de origen",
+    "provincia": "Provincia",
+    "rad": "Código RAD",
+    "sexo": "Sexo",
+    "situacion-administrativa": "Situación Administrativa",
+    "subir-politica": "Subir Política",
     "tecnico": "Técnico",
     "usuario-no-alta": "El usuario no está dado de alta"
   },

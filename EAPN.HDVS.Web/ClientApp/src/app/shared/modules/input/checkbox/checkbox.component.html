@@ -1,4 +1,7 @@
-<div class="custom-control custom-checkbox" (click)="changeValue()" (blur)="onTouched()" [ngStyle]="{'user-select': 'none'}">
-  <input type="checkbox" class="custom-control-input" [disabled]="disabled" [checked]="checked">
-  <label class="custom-control-label" for="customCheck1">{{label}}</label>
+<div class="h-100 position-relative d-flex align-items-end">
+  <div class="custom-control custom-checkbox" (click)="changeValue()" (blur)="onTouched()"
+    [ngStyle]="{'user-select': 'none'}">
+    <input type="checkbox" class="custom-control-input" [disabled]="disabled" [checked]="checked">
+    <label class="custom-control-label" for="customCheck1">{{label}}</label>
+  </div>
 </div>

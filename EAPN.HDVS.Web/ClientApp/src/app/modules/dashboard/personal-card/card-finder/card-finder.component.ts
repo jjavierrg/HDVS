@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { CardService } from 'src/app/core/services/card.service';
-import { AlertService } from 'src/app/core/services/alert.service';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { VistaPreviaFichaDto } from 'src/app/core/api/api.client';
 import { TranslateService } from '@ngx-translate/core';
 import { AgGridColumn } from 'ag-grid-angular';
+import { FichaDto, VistaPreviaFichaDto } from 'src/app/core/api/api.client';
+import { AlertService } from 'src/app/core/services/alert.service';
+import { CardService } from 'src/app/core/services/card.service';
 
 @Component({
   selector: 'app-card-finder',
@@ -66,7 +67,7 @@ export class CardFinderComponent implements OnInit {
       filter: 'agTextColumnFilter',
     },
     {
-      headerName: this.translate.instant('fichas.tecnico'),
+      headerName: this.translate.instant('ficha.tecnico'),
       field: 'nombreTecnico',
       minWidth: 100,
       filter: 'agTextColumnFilter',
@@ -77,11 +78,12 @@ export class CardFinderComponent implements OnInit {
     private service: CardService,
     private alertService: AlertService,
     private modalService: NgbModal,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
-  async ngOnInit() {
-  }
+  async ngOnInit() {}
 
   public async onSubmitQuery(): Promise<boolean> {
     this.matching = [];
@@ -98,10 +100,26 @@ export class CardFinderComponent implements OnInit {
       element.blur();
     }
 
+    let result: boolean;
     if (this.matching && this.matching.length) {
-      await this.modalService.open(this.matchModal, { centered: true, backdrop: 'static', size: 'xl' }).result.catch(() => {});
+      result = await this.modalService.open(this.matchModal, { centered: true, backdrop: 'static', size: 'xl' }).result.catch(() => {});
     } else {
-      await this.modalService.open(this.noMatchModal, { centered: true, backdrop: 'static' }).result.catch(() => {});
+      result = await this.modalService.open(this.noMatchModal, { centered: true, backdrop: 'static' }).result.catch(() => {});
     }
+
+    if (result) {
+      await this.onContinue();
+    }
+  }
+
+  public async onContinue(): Promise<void> {
+    const ficha: FichaDto = new FichaDto({
+      nombre: this.name,
+      apellido1: this.surname1,
+      apellido2: this.surname2,
+      fechaNacimiento: this.birth,
+    });
+
+    await this.router.navigate(['../'], { relativeTo: this.route, state: ficha });
   }
 }

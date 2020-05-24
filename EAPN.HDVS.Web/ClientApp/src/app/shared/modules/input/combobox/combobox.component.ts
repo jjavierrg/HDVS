@@ -1,5 +1,6 @@
 import { Component, EventEmitter, forwardRef, Input, Output } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { MasterDataDto } from 'src/app/core/api/api.client';
 
 @Component({
   selector: 'app-combobox',
@@ -13,66 +14,27 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
     },
   ],
 })
-export class ComboboxComponent<T> implements ControlValueAccessor {
+export class ComboboxComponent implements ControlValueAccessor {
   @Input() public placeholder: string;
-  @Input() public valueField: string;
-  @Input() public displayField: string;
-  @Input() public data: Array<T>;
+  @Input() public data: Array<MasterDataDto>;
   @Input() public disabled: boolean = false;
+  @Output() valueChange = new EventEmitter<number>();
 
-  @Output() selectionChange = new EventEmitter<T>();
-  @Output() valueChange = new EventEmitter<any>();
-
-  public selection: T;
-  public onChange = (fn: any) => {};
+  public selection: number;
+  public onChange = (fn: number) => {};
   public onTouched = () => {};
 
-  public getControlText(): string {
-    if (!this.selection) {
-      return this.placeholder;
-    } else if (!this.displayField) {
-      return `${this.selection}`;
-    } else {
-      return `${this.selection[this.displayField]}`;
-    }
-  }
-
-  public getItemText(item: T): string {
-    if (!item) {
-      return '';
-    } else if (!this.displayField) {
-      return `${item}`;
-    } else {
-      return `${item[this.displayField]}`;
-    }
-  }
-
-  public onValueChanged(item: T) {
+  public notifyChange(): void {
     if (this.disabled) {
       return;
     }
 
-    this.selection = item;
-    let value: any;
-    if (!this.valueField) {
-      value = this.selection;
-    } else {
-      value = this.selection[this.valueField];
-    }
-
-    this.onChange(value);
-    this.selectionChange.emit(item);
-    this.valueChange.emit(value);
+    this.valueChange.emit(+this.selection);
+    this.onChange(+this.selection);
   }
 
   writeValue(value: any): void {
-    if (!this.valueField) {
-      this.selection = value;
-    } else if (this.data && this.data.length) {
-      this.selection = this.data.find((x) => x[this.valueField] === value);
-    } else {
-      this.selection = null;
-    }
+    this.selection = value;
   }
 
   registerOnChange(fn: any): void {

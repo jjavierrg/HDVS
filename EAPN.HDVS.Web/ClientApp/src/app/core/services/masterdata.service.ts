@@ -19,4 +19,25 @@ export class MasterdataService {
   public getOrganizaciones(): Observable<MasterDataDto[]> {
     return this.apiClient.getOrganizacionesAsMasterData();
   }
+
+  public getGenders(): Observable<MasterDataDto[]> {
+    return this.apiClient.getSexosAsMasterData();
+  }
+
+  public getCountries(): Observable<MasterDataDto[]> {
+    return this.apiClient.getPaisesAsMasterData();
+  }
+
+  public getProvincias(): Observable<MasterDataDto[]> {
+    return this.apiClient.getProvinciasAsMasterData();
+  }
+
+  public getMunicipios(): Observable<MasterDataDto[]> {
+    return this.apiClient.getMunicipiosAsMasterData();
+  }
+
+
+  public getMunicipiosByProvincia(provinciaId: number): Observable<MasterDataDto[]> {
+    return this.apiClient.getMunicipiosByProvinciaIdAsMasterData(provinciaId);
+  }
 }

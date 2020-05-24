@@ -99,6 +99,61 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.MunicipiosController.#ctor(EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Municipio},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.MunicipiosController},AutoMapper.IMapper)">
+            <summary>
+            </summary>
+            <param name="municipioService"></param>
+            <param name="logger"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.MunicipiosController.GetMunicipios">
+            <summary>
+            Get all stored items
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.MunicipiosController.GetMunicipiosByProvinciaIdAsMasterData(System.Int32)">
+            <summary>
+            Get all stored items filtered by provincia Id mapped as Masterdata
+            </summary>
+            <param name="provinciaId">Provincia identifier</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.MunicipiosController.GetMunicipiosAsMasterData">
+            <summary>
+            Get all stored items mapped as Masterdata
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.MunicipiosController.GetMunicipio(System.Int32)">
+            <summary>
+            Get the item with the specified identifier
+            </summary>
+            <param name="id">Item identifier</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.MunicipiosController.PostMunicipio(EAPN.HDVS.Web.Dto.MunicipioDto)">
+            <summary>
+            Add new item to collection
+            </summary>
+            <param name="municipioDto">Item data</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.MunicipiosController.PutMunicipio(System.Int32,EAPN.HDVS.Web.Dto.MunicipioDto)">
+            <summary>
+            Update an existing item
+            </summary>
+            <param name="id">Item identifier</param>
+            <param name="municipioDto">Item data</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.MunicipiosController.DeleteMunicipio(System.Int32)">
+            <summary>
+            Delete existing item
+            </summary>
+            <param name="id">Item identifier</param>
+            <returns></returns>
+        </member>
         <member name="M:EAPN.HDVS.Web.Controllers.OrganizacionesController.#ctor(EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Organizacion},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.OrganizacionesController},AutoMapper.IMapper)">
             <summary>
             </summary>
@@ -141,6 +196,54 @@
             <returns></returns>
         </member>
         <member name="M:EAPN.HDVS.Web.Controllers.OrganizacionesController.DeleteOrganizacion(System.Int32)">
+            <summary>
+            Delete existing item
+            </summary>
+            <param name="id">Item identifier</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.PaisesController.#ctor(EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Pais},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.PaisesController},AutoMapper.IMapper)">
+            <summary>
+            </summary>
+            <param name="paisService"></param>
+            <param name="logger"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.PaisesController.GetPaises">
+            <summary>
+            Get all stored items
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.PaisesController.GetPaisesAsMasterData">
+            <summary>
+            Get all stored items mapped as Masterdata
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.PaisesController.GetPais(System.Int32)">
+            <summary>
+            Get the item with the specified identifier
+            </summary>
+            <param name="id">Item identifier</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.PaisesController.PostPais(EAPN.HDVS.Web.Dto.PaisDto)">
+            <summary>
+            Add new item to collection
+            </summary>
+            <param name="paisDto">Item data</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.PaisesController.PutPais(System.Int32,EAPN.HDVS.Web.Dto.PaisDto)">
+            <summary>
+            Update an existing item
+            </summary>
+            <param name="id">Item identifier</param>
+            <param name="paisDto">Item data</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.PaisesController.DeletePais(System.Int32)">
             <summary>
             Delete existing item
             </summary>
@@ -231,6 +334,102 @@
             <summary>
             Permissions with superadmin permission exclusion filter
             </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.ProvinciasController.#ctor(EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Provincia},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.ProvinciasController},AutoMapper.IMapper)">
+            <summary>
+            </summary>
+            <param name="provinciaService"></param>
+            <param name="logger"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.ProvinciasController.GetProvincias">
+            <summary>
+            Get all stored items
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.ProvinciasController.GetProvinciasAsMasterData">
+            <summary>
+            Get all stored items mapped as Masterdata
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.ProvinciasController.GetProvincia(System.Int32)">
+            <summary>
+            Get the item with the specified identifier
+            </summary>
+            <param name="id">Item identifier</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.ProvinciasController.PostProvincia(EAPN.HDVS.Web.Dto.ProvinciaDto)">
+            <summary>
+            Add new item to collection
+            </summary>
+            <param name="provinciaDto">Item data</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.ProvinciasController.PutProvincia(System.Int32,EAPN.HDVS.Web.Dto.ProvinciaDto)">
+            <summary>
+            Update an existing item
+            </summary>
+            <param name="id">Item identifier</param>
+            <param name="provinciaDto">Item data</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.ProvinciasController.DeleteProvincia(System.Int32)">
+            <summary>
+            Delete existing item
+            </summary>
+            <param name="id">Item identifier</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.SexosController.#ctor(EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Sexo},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.SexosController},AutoMapper.IMapper)">
+            <summary>
+            </summary>
+            <param name="sexoService"></param>
+            <param name="logger"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.SexosController.GetSexos">
+            <summary>
+            Get all stored items
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.SexosController.GetSexosAsMasterData">
+            <summary>
+            Get all stored items mapped as Masterdata
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.SexosController.GetSexo(System.Int32)">
+            <summary>
+            Get the item with the specified identifier
+            </summary>
+            <param name="id">Item identifier</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.SexosController.PostSexo(EAPN.HDVS.Web.Dto.SexoDto)">
+            <summary>
+            Add new item to collection
+            </summary>
+            <param name="sexoDto">Item data</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.SexosController.PutSexo(System.Int32,EAPN.HDVS.Web.Dto.SexoDto)">
+            <summary>
+            Update an existing item
+            </summary>
+            <param name="id">Item identifier</param>
+            <param name="sexoDto">Item data</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.SexosController.DeleteSexo(System.Int32)">
+            <summary>
+            Delete existing item
+            </summary>
+            <param name="id">Item identifier</param>
             <returns></returns>
         </member>
         <member name="M:EAPN.HDVS.Web.Controllers.UsuariosController.#ctor(EAPN.HDVS.Application.Services.User.IUsuarioService,Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.UsuariosController},AutoMapper.IMapper,EAPN.HDVS.Infrastructure.Core.Queries.IFilterPaginable{EAPN.HDVS.Entities.Usuario})">

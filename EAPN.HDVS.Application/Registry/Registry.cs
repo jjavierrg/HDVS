@@ -13,6 +13,8 @@ namespace EAPN.HDVS.Application.Registry
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddScoped<IRepository<Usuario>, UsuarioRepository>();
+            services.AddScoped<IRepository<Organizacion>, OrganizacionRepository>();
+            services.AddScoped<IRepository<Ficha>, FichaRepository>();
 
             services.AddScoped(typeof(ICrudServiceBase<>), typeof(CrudServiceBase<>));
             services.AddScoped(typeof(IReadServiceBase<>), typeof(ReadServiceBase<>));
