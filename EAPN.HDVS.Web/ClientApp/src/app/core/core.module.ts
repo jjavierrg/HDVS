@@ -6,9 +6,16 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { UniqueEmailDirective } from './directives/unique-email.directive';
 import { PasswordRestrinctionsDirective } from './directives/password-restrictions.directive';
 import { AtLeastOneDirective } from './directives/at-least-one.directive';
+import { FileDropperDirective } from './directives/file-dropper.directive';
 
 @NgModule({
-  declarations: [AllowedPermissionsDirective, UniqueEmailDirective, PasswordRestrinctionsDirective, AtLeastOneDirective],
+  declarations: [
+    AllowedPermissionsDirective,
+    UniqueEmailDirective,
+    PasswordRestrinctionsDirective,
+    AtLeastOneDirective,
+    FileDropperDirective,
+  ],
   imports: [
     TranslateModule.forChild({
       loader: {
@@ -21,6 +28,13 @@ import { AtLeastOneDirective } from './directives/at-least-one.directive';
       isolate: false,
     }),
   ],
-  exports: [AllowedPermissionsDirective, UniqueEmailDirective, PasswordRestrinctionsDirective, TranslateModule, AtLeastOneDirective],
+  exports: [
+    AllowedPermissionsDirective,
+    UniqueEmailDirective,
+    PasswordRestrinctionsDirective,
+    TranslateModule,
+    AtLeastOneDirective,
+    FileDropperDirective,
+  ],
 })
 export class CoreModule {}

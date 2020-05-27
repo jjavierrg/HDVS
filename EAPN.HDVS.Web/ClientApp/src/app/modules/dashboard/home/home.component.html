@@ -1,1 +1,3 @@
-<app-indicator-form></app-indicator-form>
+<div class="w-100 h-100 test position-relative">
+  <app-file-uploader (upload)="onUpload($event)" (filesAdded)="onFileAdded($event)" [files]="files" (fileCancel)="onFileCancel($event)" [showUploadButton]="false"></app-file-uploader>
+</div>

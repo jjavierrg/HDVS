@@ -16,6 +16,24 @@ export const apiEndpoint = new InjectionToken<string>('apiEndpoint');
 
 export interface IApiClient {
     /**
+     * Get the item with the specified identifier
+     * @param id Item identifier
+     * @return Success
+     */
+    getAdjunto(id: number): Observable<AdjuntoDto>;
+    /**
+     * Delete existing item
+     * @param id Item identifier
+     * @return Success
+     */
+    deleteAdjunto(id: number): Observable<void>;
+    /**
+     * Add new item to collection
+     * @param body (optional) 
+     * @return Success
+     */
+    postAdjunto(body?: Blob | undefined): Observable<AdjuntoDto>;
+    /**
      * @param body (optional) 
      * @return Success
      */
@@ -366,6 +384,202 @@ export class ApiClient implements IApiClient {
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(apiEndpoint) baseUrl?: string) {
         this.http = http;
         this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * Get the item with the specified identifier
+     * @param id Item identifier
+     * @return Success
+     */
+    getAdjunto(id: number): Observable<AdjuntoDto> {
+        let url_ = this.baseUrl + "/api/Adjuntos/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAdjunto(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAdjunto(<any>response_);
+                } catch (e) {
+                    return <Observable<AdjuntoDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<AdjuntoDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAdjunto(response: HttpResponseBase): Observable<AdjuntoDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = AdjuntoDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Unauthorized", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Forbidden", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<AdjuntoDto>(<any>null);
+    }
+
+    /**
+     * Delete existing item
+     * @param id Item identifier
+     * @return Success
+     */
+    deleteAdjunto(id: number): Observable<void> {
+        let url_ = this.baseUrl + "/api/Adjuntos/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteAdjunto(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteAdjunto(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDeleteAdjunto(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+            }));
+        } else if (status === 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Unauthorized", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Forbidden", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * Add new item to collection
+     * @param body (optional) 
+     * @return Success
+     */
+    postAdjunto(body?: Blob | undefined): Observable<AdjuntoDto> {
+        let url_ = this.baseUrl + "/api/Adjuntos";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = body;
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "multipart/form-data",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPostAdjunto(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPostAdjunto(<any>response_);
+                } catch (e) {
+                    return <Observable<AdjuntoDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<AdjuntoDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processPostAdjunto(response: HttpResponseBase): Observable<AdjuntoDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 201) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result201: any = null;
+            let resultData201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result201 = AdjuntoDto.fromJS(resultData201);
+            return _observableOf(result201);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Unauthorized", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Forbidden", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<AdjuntoDto>(<any>null);
     }
 
     /**
@@ -4313,6 +4527,130 @@ export class ApiClient implements IApiClient {
     }
 }
 
+export class AdjuntoDto implements IAdjuntoDto {
+    id?: number;
+    tipoId?: number;
+    usuarioId?: number | undefined;
+    fichaId?: number | undefined;
+    organizacionId?: number | undefined;
+    alias?: string | undefined;
+    nombreOriginal?: string | undefined;
+    tamano?: number;
+    fechaAlta?: Date;
+    fullPath?: string | undefined;
+
+    constructor(data?: IAdjuntoDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.tipoId = _data["tipoId"];
+            this.usuarioId = _data["usuarioId"];
+            this.fichaId = _data["fichaId"];
+            this.organizacionId = _data["organizacionId"];
+            this.alias = _data["alias"];
+            this.nombreOriginal = _data["nombreOriginal"];
+            this.tamano = _data["tamano"];
+            this.fechaAlta = _data["fechaAlta"] ? new Date(_data["fechaAlta"].toString()) : <any>undefined;
+            this.fullPath = _data["fullPath"];
+        }
+    }
+
+    static fromJS(data: any): AdjuntoDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AdjuntoDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["tipoId"] = this.tipoId;
+        data["usuarioId"] = this.usuarioId;
+        data["fichaId"] = this.fichaId;
+        data["organizacionId"] = this.organizacionId;
+        data["alias"] = this.alias;
+        data["nombreOriginal"] = this.nombreOriginal;
+        data["tamano"] = this.tamano;
+        data["fechaAlta"] = this.fechaAlta ? this.fechaAlta.toISOString() : <any>undefined;
+        data["fullPath"] = this.fullPath;
+        return data; 
+    }
+}
+
+export interface IAdjuntoDto {
+    id?: number;
+    tipoId?: number;
+    usuarioId?: number | undefined;
+    fichaId?: number | undefined;
+    organizacionId?: number | undefined;
+    alias?: string | undefined;
+    nombreOriginal?: string | undefined;
+    tamano?: number;
+    fechaAlta?: Date;
+    fullPath?: string | undefined;
+}
+
+export class ProblemDetails implements IProblemDetails {
+    type?: string | undefined;
+    title?: string | undefined;
+    status?: number | undefined;
+    detail?: string | undefined;
+    instance?: string | undefined;
+
+    constructor(data?: IProblemDetails) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.type = _data["type"];
+            this.title = _data["title"];
+            this.status = _data["status"];
+            this.detail = _data["detail"];
+            this.instance = _data["instance"];
+        }
+    }
+
+    static fromJS(data: any): ProblemDetails {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProblemDetails();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["type"] = this.type;
+        data["title"] = this.title;
+        data["status"] = this.status;
+        data["detail"] = this.detail;
+        data["instance"] = this.instance;
+        return data; 
+    }
+}
+
+export interface IProblemDetails {
+    type?: string | undefined;
+    title?: string | undefined;
+    status?: number | undefined;
+    detail?: string | undefined;
+    instance?: string | undefined;
+}
+
 export class LoginAttempDto implements ILoginAttempDto {
     email?: string | undefined;
     password?: string | undefined;
@@ -4395,58 +4733,6 @@ export interface IUserTokenDto {
     accessToken?: string | undefined;
     expiresIn?: number;
     refreshToken?: string | undefined;
-}
-
-export class ProblemDetails implements IProblemDetails {
-    type?: string | undefined;
-    title?: string | undefined;
-    status?: number | undefined;
-    detail?: string | undefined;
-    instance?: string | undefined;
-
-    constructor(data?: IProblemDetails) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.type = _data["type"];
-            this.title = _data["title"];
-            this.status = _data["status"];
-            this.detail = _data["detail"];
-            this.instance = _data["instance"];
-        }
-    }
-
-    static fromJS(data: any): ProblemDetails {
-        data = typeof data === 'object' ? data : {};
-        let result = new ProblemDetails();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["type"] = this.type;
-        data["title"] = this.title;
-        data["status"] = this.status;
-        data["detail"] = this.detail;
-        data["instance"] = this.instance;
-        return data; 
-    }
-}
-
-export interface IProblemDetails {
-    type?: string | undefined;
-    title?: string | undefined;
-    status?: number | undefined;
-    detail?: string | undefined;
-    instance?: string | undefined;
 }
 
 export class RefreshTokenAttempDto implements IRefreshTokenAttempDto {
@@ -5155,78 +5441,6 @@ export interface IIndicadorFichaDto {
     indicadorId?: number;
     fichaId?: number;
     observaciones?: string | undefined;
-}
-
-export class AdjuntoDto implements IAdjuntoDto {
-    id?: number;
-    tipoId?: number;
-    usuarioId?: number | undefined;
-    fichaId?: number | undefined;
-    organizacionId?: number | undefined;
-    alias?: string | undefined;
-    nombreOriginal?: string | undefined;
-    tamano?: number;
-    fechaAlta?: Date;
-    fullPath?: string | undefined;
-
-    constructor(data?: IAdjuntoDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.tipoId = _data["tipoId"];
-            this.usuarioId = _data["usuarioId"];
-            this.fichaId = _data["fichaId"];
-            this.organizacionId = _data["organizacionId"];
-            this.alias = _data["alias"];
-            this.nombreOriginal = _data["nombreOriginal"];
-            this.tamano = _data["tamano"];
-            this.fechaAlta = _data["fechaAlta"] ? new Date(_data["fechaAlta"].toString()) : <any>undefined;
-            this.fullPath = _data["fullPath"];
-        }
-    }
-
-    static fromJS(data: any): AdjuntoDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new AdjuntoDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["tipoId"] = this.tipoId;
-        data["usuarioId"] = this.usuarioId;
-        data["fichaId"] = this.fichaId;
-        data["organizacionId"] = this.organizacionId;
-        data["alias"] = this.alias;
-        data["nombreOriginal"] = this.nombreOriginal;
-        data["tamano"] = this.tamano;
-        data["fechaAlta"] = this.fechaAlta ? this.fechaAlta.toISOString() : <any>undefined;
-        data["fullPath"] = this.fullPath;
-        return data; 
-    }
-}
-
-export interface IAdjuntoDto {
-    id?: number;
-    tipoId?: number;
-    usuarioId?: number | undefined;
-    fichaId?: number | undefined;
-    organizacionId?: number | undefined;
-    alias?: string | undefined;
-    nombreOriginal?: string | undefined;
-    tamano?: number;
-    fechaAlta?: Date;
-    fullPath?: string | undefined;
 }
 
 export class FichaDto implements IFichaDto {

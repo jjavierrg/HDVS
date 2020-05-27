@@ -4,6 +4,35 @@
         <name>EAPN.HDVS.Web</name>
     </assembly>
     <members>
+        <member name="M:EAPN.HDVS.Web.Controllers.AdjuntosController.#ctor(Microsoft.AspNetCore.Hosting.IHostingEnvironment,EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Adjunto},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.AdjuntosController},AutoMapper.IMapper,EAPN.HDVS.Infrastructure.Core.Repository.IReadRepository{EAPN.HDVS.Entities.TipoAdjunto})">
+            <summary>
+            </summary>
+            <param name="adjuntoService"></param>
+            <param name="logger"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.AdjuntosController.GetAdjunto(System.Int32)">
+            <summary>
+            Get the item with the specified identifier
+            </summary>
+            <param name="id">Item identifier</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.AdjuntosController.PostAdjunto(EAPN.HDVS.Web.Dto.SubidaAdjuntoDto)">
+            <summary>
+            Add new item to collection
+            </summary>
+            <param name="subidaAdjuntoDto">Item data</param>
+            <param name="file">File content to store</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.AdjuntosController.DeleteAdjunto(System.Int32)">
+            <summary>
+            Delete existing item
+            </summary>
+            <param name="id">Item identifier</param>
+            <returns></returns>
+        </member>
         <member name="M:EAPN.HDVS.Web.Controllers.DatosUsuarioController.#ctor(EAPN.HDVS.Application.Services.User.IUsuarioService,Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.DatosUsuarioController},AutoMapper.IMapper)">
             <summary>
             </summary>

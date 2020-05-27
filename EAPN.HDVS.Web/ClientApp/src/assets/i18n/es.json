@@ -33,6 +33,8 @@
     },
     "cancelar": "Cancelar",
     "cerrar-todo": "Cerrar Todo",
+    "limpiar-subidas": "Limpiar completados",
+    "completado": "Completado",
     "confirmar-eliminacion": "<p><strong>¿Está seguro de querer eliminar los elementos seleccionados?</strong></p><p>Toda la información asociada será eliminada por completo. Tenga en cuenta que esta operación <span class='text-danger'>no se puede deshacer.</span></p>",
     "confirmar-eliminacion-titulo": "Confirmar eliminación",
     "datos-corruptos": "No se han podido leer los datos introducidos",
@@ -40,10 +42,14 @@
     "editar": "Editar",
     "elementos-eliminados": "Se han eliminado los elementos seleccionados",
     "eliminar": "Eliminar",
+    "error": "Error",
     "no": "No",
     "registro-no-encontrado": "Registro no encontrado",
     "si": "Sí",
-    "siguiente": "Siguiente"
+    "siguiente": "Siguiente",
+    "subiendo": "Subiendo",
+    "subir-ficheros": "Subir Ficheros",
+    "subir-ficheros-o-arrastrar": "Arrastre los ficheros o haga click aquí"
   },
   "ficha": {
     "acepta-politica": "Acepta y firma la política de privacidad",

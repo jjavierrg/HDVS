@@ -50,7 +50,7 @@ namespace EAPN.HDVS.Web.Dto
             CreateMap<Permiso, PermisoDto>().ReverseMap();
             CreateMap<UserToken, UserTokenDto>();
 
-            CreateMap<Adjunto, Adjunto>().ReverseMap().ForMember(d => d.FullPath, o => o.Ignore());
+            CreateMap<Adjunto, AdjuntoDto>().ReverseMap().ForMember(d => d.FullPath, o => o.Ignore());
 
             CreateMap<Dimension, DimensionDto>().ReverseMap();
             CreateMap<Categoria, CategoriaDto>().ReverseMap();

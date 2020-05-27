@@ -1,16 +1,3 @@
-<!-- <div ngbDropdown class="w-100 d-flex">
-  <button type="button" class="form-control d-flex align-items-center" ngbDropdownToggle [disabled]="disabled">
-    <span class="w-100 text-left text-truncate">{{ getControlText() }}</span>
-  </button>
-  <div ngbDropdownMenu aria-labelledby="singleDropdown" class="w-100">
-    <div ngbDropdownItem [ngClass]="{'bg-primary': selection === item, 'text-light': selection === item}"
-      *ngFor="let item of data" (click)="onValueChanged(item)">{{ getItemText(item) }}</div>
-  </div>
-</div> -->
-
-
-
-
 <select class="custom-select" (change)="notifyChange()" [(ngModel)]="selection">
   <option *ngFor="let item of data" [value]="item.id">{{item.descripcion}}</option>
 </select>
