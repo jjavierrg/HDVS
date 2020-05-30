@@ -1,10 +1,12 @@
 <div class="container" *ngIf="card">
   <div class="card border-0">
     <div class="card-header toolbar align-items-end justify-content-start">
-      <img src="https://widgetwhats.com/app/uploads/2019/11/free-profile-photo-whatsapp-4.png" height="40" class="rounded-circle">
+      <app-secure-profile-image [photoId]="card.fotoId" class="profile-picture" [fichaId]="card.id"
+        [organizacionId]="card.organizacionId" (imageChange)="onProfilePictureChanged($event)">
+      </app-secure-profile-image>
       <h5 class="ml-3 text-light">{{fullName}}</h5>
     </div>
-        <div class="card-body border border-top-0">
+    <div class="card-body border border-top-0">
       <form (ngSubmit)="onSaveCard()" #cardForm="ngForm">
         <div class="form-row">
           <div class="form-group col-md-4">
@@ -110,7 +112,7 @@
             <label for="inputSituacionAdministrativa">{{ 'ficha.situacion-administrativa' | translate }}</label>
             <app-combobox id="inputSituacionAdministrativa" [placeholder]="'ficha.situacion-administrativa' | translate"
               [(ngModel)]="card.situacionAdministrativaId" name="{{ 'ficha.situacion-administrativa' | translate }}"
-              [data]="countries">
+              [data]="situacAdminis">
             </app-combobox>
           </div>
         </div>
@@ -136,8 +138,8 @@
         </div>
         <div class="form-group">
           <label for="inputObservaciones">{{ 'comun.observaciones' | translate }}</label>
-          <quill-editor id="inputObservaciones" [sanitize]="true" [(ngModel)]="card.observaciones"
-            name="observaciones" [placeholder]="'comun.observaciones' | translate">
+          <quill-editor id="inputObservaciones" [sanitize]="true" [(ngModel)]="card.observaciones" name="observaciones"
+            [placeholder]="'comun.observaciones' | translate">
           </quill-editor>
         </div>
 

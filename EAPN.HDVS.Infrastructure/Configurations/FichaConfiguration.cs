@@ -12,6 +12,7 @@ namespace EAPN.HDVS.Infrastructure.Configurations
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Id).HasColumnName(nameof(Ficha.Id)).IsRequired().ValueGeneratedOnAdd();
+            builder.Property(x => x.FotoId).HasColumnName(nameof(Ficha.FotoId));
             builder.Property(x => x.OrganizacionId).HasColumnName(nameof(Ficha.OrganizacionId)).IsRequired();
             builder.Property(x => x.UsuarioId).HasColumnName(nameof(Ficha.UsuarioId)).IsRequired();
             builder.Property(x => x.Codigo).HasColumnName(nameof(Ficha.Codigo)).HasMaxLength(50).IsRequired();
@@ -42,6 +43,7 @@ namespace EAPN.HDVS.Infrastructure.Configurations
 
             builder.Ignore(x => x.Edad);
 
+            builder.HasOne(x => x.Foto).WithMany().HasForeignKey(x => x.FotoId).OnDelete(DeleteBehavior.ClientCascade);
             builder.HasOne(x => x.Organizacion).WithMany().HasForeignKey(x => x.OrganizacionId).OnDelete(DeleteBehavior.NoAction);
             builder.HasOne(x => x.Tecnico).WithMany().HasForeignKey(x => x.UsuarioId).OnDelete(DeleteBehavior.NoAction);
             builder.HasOne(x => x.Sexo).WithMany().HasForeignKey(x => x.SexoId).OnDelete(DeleteBehavior.NoAction);
@@ -51,7 +53,8 @@ namespace EAPN.HDVS.Infrastructure.Configurations
             builder.HasOne(x => x.Padron).WithMany().HasForeignKey(x => x.PadronId).OnDelete(DeleteBehavior.NoAction);
             builder.HasOne(x => x.Nacionalidad).WithMany().HasForeignKey(x => x.NacionalidadId).OnDelete(DeleteBehavior.NoAction);
             builder.HasOne(x => x.Origen).WithMany().HasForeignKey(x => x.OrigenId).OnDelete(DeleteBehavior.NoAction);
-            builder.HasMany(x => x.Indicadores).WithOne(x => x.Ficha).HasForeignKey(x => x.FichaId).OnDelete(DeleteBehavior.NoAction);
+            builder.HasOne(x => x.SituacionAdministrativa).WithMany().HasForeignKey(x => x.SituacionAdministrativaId).OnDelete(DeleteBehavior.NoAction);
+            builder.HasMany(x => x.Seguimientos).WithOne(x => x.Ficha).HasForeignKey(x => x.FichaId).OnDelete(DeleteBehavior.NoAction);
             builder.HasMany(x => x.Adjuntos).WithOne(x => x.Ficha).HasForeignKey(x => x.FichaId).OnDelete(DeleteBehavior.Cascade);
         }
     }

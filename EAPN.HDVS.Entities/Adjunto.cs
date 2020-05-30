@@ -18,7 +18,5 @@ namespace EAPN.HDVS.Entities
 
         public Ficha Ficha { get; set; }
         public TipoAdjunto Tipo { get; set; }
-
-        public string FullPath => $"{Tipo.Carpeta}{(OrganizacionId.HasValue ? $"/{OrganizacionId}" : "")}{(FichaId.HasValue ? $"/{FichaId}" : "")}";
     }
 }

@@ -36,8 +36,11 @@ export class MasterdataService {
     return this.apiClient.getMunicipiosAsMasterData();
   }
 
-
   public getMunicipiosByProvincia(provinciaId: number): Observable<MasterDataDto[]> {
     return this.apiClient.getMunicipiosByProvinciaIdAsMasterData(provinciaId);
+  }
+
+  public getSituacionesAdministrativas(): Observable<MasterDataDto[]> {
+    return this.apiClient.getSituacionesAdministrativasAsMasterData();
   }
 }

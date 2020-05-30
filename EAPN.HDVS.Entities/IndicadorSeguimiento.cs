@@ -4,13 +4,13 @@ using System.Text;
 
 namespace EAPN.HDVS.Entities
 {
-    public class IndicadorFicha
+    public class IndicadorSeguimiento
     {
         public int IndicadorId { get; set; }
-        public int FichaId { get; set; }
+        public int SeguimientoId { get; set; }
         public string Observaciones{ get; set; }
 
         public Indicador Indicador { get; set; }
-        public Ficha Ficha { get; set; }
+        public Seguimiento Seguimiento{ get; set; }
     }
 }

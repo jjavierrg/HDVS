@@ -74,10 +74,11 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:EAPN.HDVS.Web.Controllers.FichasController.#ctor(EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Ficha},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.FichasController},AutoMapper.IMapper,EAPN.HDVS.Infrastructure.Core.Queries.IFilterPaginable{EAPN.HDVS.Entities.Ficha})">
+        <member name="M:EAPN.HDVS.Web.Controllers.FichasController.#ctor(EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Ficha},EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Adjunto},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.FichasController},AutoMapper.IMapper,EAPN.HDVS.Infrastructure.Core.Queries.IFilterPaginable{EAPN.HDVS.Entities.Ficha})">
             <summary>
             </summary>
             <param name="fichaService"></param>
+            <param name="adjuntoService"></param>
             <param name="logger"></param>
             <param name="mapper"></param>
             <param name="filterPaginator"></param>
@@ -464,6 +465,54 @@
             <returns></returns>
         </member>
         <member name="M:EAPN.HDVS.Web.Controllers.SexosController.DeleteSexo(System.Int32)">
+            <summary>
+            Delete existing item
+            </summary>
+            <param name="id">Item identifier</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.SituacionesAdministrativasController.#ctor(EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.SituacionAdministrativa},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.SituacionesAdministrativasController},AutoMapper.IMapper)">
+            <summary>
+            </summary>
+            <param name="situacionesAdministrativaservice"></param>
+            <param name="logger"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.SituacionesAdministrativasController.GetSituacionesAdministrativas">
+            <summary>
+            Get all stored items
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.SituacionesAdministrativasController.GetSituacionesAdministrativasAsMasterData">
+            <summary>
+            Get all stored items mapped as Masterdata
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.SituacionesAdministrativasController.GetSituacionAdministrativa(System.Int32)">
+            <summary>
+            Get the item with the specified identifier
+            </summary>
+            <param name="id">Item identifier</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.SituacionesAdministrativasController.PostSituacionAdministrativa(EAPN.HDVS.Web.Dto.SituacionAdministrativaDto)">
+            <summary>
+            Add new item to collection
+            </summary>
+            <param name="situacionAdministrativaDto">Item data</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.SituacionesAdministrativasController.PutSituacionAdministrativa(System.Int32,EAPN.HDVS.Web.Dto.SituacionAdministrativaDto)">
+            <summary>
+            Update an existing item
+            </summary>
+            <param name="id">Item identifier</param>
+            <param name="situacionAdministrativaDto">Item data</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.SituacionesAdministrativasController.DeleteSituacionAdministrativa(System.Int32)">
             <summary>
             Delete existing item
             </summary>

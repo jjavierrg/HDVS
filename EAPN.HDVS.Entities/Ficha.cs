@@ -7,6 +7,7 @@ namespace EAPN.HDVS.Entities
     public class Ficha
     {
         public int Id { get; set; }
+        public int? FotoId { get; set; }
         public int OrganizacionId { get; set; }
         public int UsuarioId { get; set; }
         public string Codigo { get; set; }
@@ -33,6 +34,7 @@ namespace EAPN.HDVS.Entities
         public string Observaciones { get; set; }
         public bool PoliticaFirmada { get; set; }
         public bool Completa { get; set; }
+        public DateTime FechaAlta { get; set; }
 
         public int? Edad
         {
@@ -57,9 +59,10 @@ namespace EAPN.HDVS.Entities
         public Municipio Padron { get; set; }
         public Pais Nacionalidad { get; set; }
         public Pais Origen { get; set; }
-        public DateTime FechaAlta{ get; set; }
+        public SituacionAdministrativa SituacionAdministrativa { get; set; }
 
-        public IList<IndicadorFicha> Indicadores { get; set; }
+        public IList<Seguimiento> Seguimientos { get; set; }
         public IList<Adjunto> Adjuntos { get; set; }
+        public Adjunto Foto { get; set; }
     }
 }

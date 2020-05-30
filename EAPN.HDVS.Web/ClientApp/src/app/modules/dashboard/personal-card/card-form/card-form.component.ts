@@ -15,6 +15,7 @@ import { AuthenticationService } from 'src/app/core/services/authentication.serv
 export class CardFormComponent implements OnInit {
   public card: FichaDto;
   public genders: MasterDataDto[];
+  public situacAdminis: MasterDataDto[];
   public countries: MasterDataDto[];
   public provincias: MasterDataDto[];
   public municipios: MasterDataDto[] = [];
@@ -66,15 +67,17 @@ export class CardFormComponent implements OnInit {
     }
 
     // Load Data
-    const [genders, countries, provincias] = await Promise.all([
+    const [genders, countries, provincias, situacAdminis] = await Promise.all([
       this.masterdataService.getGenders().toPromise(),
       this.masterdataService.getCountries().toPromise(),
       this.masterdataService.getProvincias().toPromise(),
+      this.masterdataService.getSituacionesAdministrativas().toPromise(),
     ]);
 
     this.genders = genders;
     this.countries = countries;
     this.provincias = provincias;
+    this.situacAdminis = situacAdminis;
 
     if (card.provinciaId) {
       this.municipios = await this.masterdataService.getMunicipiosByProvincia(card.provinciaId).toPromise();
@@ -97,8 +100,14 @@ export class CardFormComponent implements OnInit {
     await this.router.navigate(['/']);
   }
 
-  public async onProvinciaChange(provinciaId: number) {
+  public async onProvinciaChange(provinciaId: number): Promise<void> {
     this.municipios = await this.masterdataService.getMunicipiosByProvincia(provinciaId).toPromise();
+  }
+
+  public onProfilePictureChanged(foto: FichaDto): void {
+    if (foto) {
+      this.card.fotoId = foto.id;
+    }
   }
 
   private async ensureRequiredCardFields(card: FichaDto) {

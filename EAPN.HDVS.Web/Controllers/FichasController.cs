@@ -2,6 +2,7 @@
 using EAPN.HDVS.Application.Core.Services;
 using EAPN.HDVS.Entities;
 using EAPN.HDVS.Infrastructure.Core.Queries;
+using EAPN.HDVS.Infrastructure.Core.Repository;
 using EAPN.HDVS.Shared.Permissions;
 using EAPN.HDVS.Web.Dto;
 using EAPN.HDVS.Web.Extensions;
@@ -24,6 +25,7 @@ namespace EAPN.HDVS.Web.Controllers
     public class FichasController : ControllerBase
     {
         private readonly ICrudServiceBase<Ficha> _fichaService;
+        private readonly ICrudServiceBase<Adjunto> _adjuntoService;
         private readonly ILogger<FichasController> _logger;
         private readonly IMapper _mapper;
         private readonly IFilterPaginable<Ficha> _filterPaginator;
@@ -31,12 +33,14 @@ namespace EAPN.HDVS.Web.Controllers
         /// <summary>
         /// </summary>
         /// <param name="fichaService"></param>
+        /// <param name="adjuntoService"></param>
         /// <param name="logger"></param>
         /// <param name="mapper"></param>
         /// <param name="filterPaginator"></param>
-        public FichasController(ICrudServiceBase<Ficha> fichaService, ILogger<FichasController> logger, IMapper mapper, IFilterPaginable<Ficha> filterPaginator)
+        public FichasController(ICrudServiceBase<Ficha> fichaService, ICrudServiceBase<Adjunto> adjuntoService, ILogger<FichasController> logger, IMapper mapper, IFilterPaginable<Ficha> filterPaginator)
         {
             _fichaService = fichaService ?? throw new ArgumentNullException(nameof(fichaService));
+            _adjuntoService = adjuntoService ?? throw new ArgumentNullException(nameof(adjuntoService));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _filterPaginator = filterPaginator ?? throw new ArgumentNullException(nameof(filterPaginator));
@@ -145,6 +149,19 @@ namespace EAPN.HDVS.Web.Controllers
             var result = _fichaService.Add(ficha);            
 
             await _fichaService.SaveChangesAsync();
+
+            // update foto information
+            if (ficha.FotoId.HasValue)
+            {
+                var foto = await _adjuntoService.GetFirstOrDefault(x => x.Id == ficha.FotoId.Value);
+                if (foto != null)
+                {
+                    foto.FichaId = ficha.Id;
+                    foto.OrganizacionId = ficha.OrganizacionId;
+                    _adjuntoService.Update(foto);
+                    await _adjuntoService.SaveChangesAsync();
+                }
+            }
 
             if (ficha != null)
                 _logger.LogInformation($"[Fichas] Se ha creado la ficha [id: {ficha.Id}]");

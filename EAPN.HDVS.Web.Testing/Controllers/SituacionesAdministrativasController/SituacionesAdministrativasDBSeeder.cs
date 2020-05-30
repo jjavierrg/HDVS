@@ -5,16 +5,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EAPN.HDVS.Web.Testing.Controllers.PaisesController
+namespace EAPN.HDVS.Web.Testing.Controllers.SituacionesAdministrativasController
 {
-    internal class PaisesControllerDBSeeder : ITestDBSeeder
+    internal class SituacionesAdministrativasDBSeeder : ITestDBSeeder
     {
         public async Task Seed(HDVSContext context)
         {
-            var lastId = context.Paises.Max(x => x.Id) + 1;
+            var lastId = context.SituacionesAdministrativas.Max(x => x.Id) + 1;
             for (int i = lastId; i <= 30; i++)
             {
-                context.Paises.Add(new Pais { Id = i, Descripcion = $"Test {i}" });
+                context.SituacionesAdministrativas.Add(new SituacionAdministrativa { Id = i, Descripcion = $"SituacionAdministrativa {i}" });
             }
 
             await context.SaveChangesAsync();

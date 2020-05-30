@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
-import { CategoriaDto, IndicadorDto, IndicadorFichaDto } from 'src/app/core/api/api.client';
+import { CategoriaDto, IndicadorDto, IndicadorSeguimientoDto } from 'src/app/core/api/api.client';
 
 interface IIndicatorItem {
   category: CategoriaDto;
-  indicator: IndicadorFichaDto;
+  indicator: IndicadorSeguimientoDto;
 }
 
 @Component({
@@ -13,8 +13,8 @@ interface IIndicatorItem {
 })
 export class IndicatorCategoryFormComponent implements OnInit {
   @Input() categories: CategoriaDto[];
-  @Input() cardId: number;
-  @Input() selection: IndicadorFichaDto[];
+  @Input() seguimientoId: number;
+  @Input() selection: IndicadorSeguimientoDto[];
   @Input() enabled: boolean = true;
   @Output() selectionChange = new EventEmitter<IndicadorDto[]>();
 
@@ -29,19 +29,19 @@ export class IndicatorCategoryFormComponent implements OnInit {
 
   public onChange(): void {
     const values = (this.internalItems || []).filter(x => !!x.indicator.indicadorId);
-    values.forEach(x => x.indicator.fichaId ? x.indicator.fichaId : this.cardId);
+    values.forEach(x => x.indicator.seguimientoId ? x.indicator.seguimientoId : this.seguimientoId);
 
     this.selectionChange.emit(values.map(x => x.indicator));
   }
 
-  private getCategorySelection(category: CategoriaDto): IndicadorFichaDto {
+  private getCategorySelection(category: CategoriaDto): IndicadorSeguimientoDto {
     const catIndicators = (category.indicadores || []).map((x) => x.id);
 
     if (!(catIndicators || []).length) {
-      return new IndicadorFichaDto({ fichaId: this.cardId, indicadorId: null, observaciones: null });
+      return new IndicadorSeguimientoDto({ seguimientoId: this.seguimientoId, indicadorId: null, observaciones: null });
     }
 
-    const selected: IndicadorFichaDto = (this.selection || []).find((x) => catIndicators.some((c) => c === x.indicadorId));
-    return selected ? selected : new IndicadorFichaDto({ fichaId: this.cardId, indicadorId: null, observaciones: null });
+    const selected: IndicadorSeguimientoDto = (this.selection || []).find((x) => catIndicators.some((c) => c === x.indicadorId));
+    return selected ? selected : new IndicadorSeguimientoDto({ seguimientoId: this.seguimientoId, indicadorId: null, observaciones: null });
   }
 }

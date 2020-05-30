@@ -89,6 +89,9 @@ namespace EAPN.HDVS.Testing.Common
             context.Usuarios.Add(CreateUsuario(10, 1, 3, false, true));
             context.Usuarios.Add(CreateUsuario(11, 1, 3, true, true));
 
+            // usuarios fichas
+            context.Usuarios.Add(CreateUsuario(12, 1, 2, false, true));
+
             context.TiposAdjunto.Add(new TipoAdjunto { Id = 1, Carpeta = "Imagenes", Descripcion = "images" });
             context.TiposAdjunto.Add(new TipoAdjunto { Id = 2, Carpeta = "Adjuntos", Descripcion = "attachments" });
             context.TiposAdjunto.Add(new TipoAdjunto { Id = 3, Carpeta = "Documentacion", Descripcion = "docs" });
@@ -115,6 +118,14 @@ namespace EAPN.HDVS.Testing.Common
             context.Sexos.Add(new Sexo { Id = 1, Descripcion = "Hombre" });
             context.Sexos.Add(new Sexo { Id = 2, Descripcion = "Mujer" });
             context.Sexos.Add(new Sexo { Id = 3, Descripcion = "Otros" });
+
+            context.SituacionesAdministrativas.Add(new SituacionAdministrativa { Id = 1, Descripcion = "Empresario con asalariadas/os" });
+            context.SituacionesAdministrativas.Add(new SituacionAdministrativa { Id = 2, Descripcion = "Autónomo" });
+            context.SituacionesAdministrativas.Add(new SituacionAdministrativa { Id = 3, Descripcion = "Cooperativista" });
+            context.SituacionesAdministrativas.Add(new SituacionAdministrativa { Id = 4, Descripcion = "Asalariado" });
+            context.SituacionesAdministrativas.Add(new SituacionAdministrativa { Id = 5, Descripcion = "En paro" });
+            context.SituacionesAdministrativas.Add(new SituacionAdministrativa { Id = 6, Descripcion = "Trabajo a tiempo total" });
+            context.SituacionesAdministrativas.Add(new SituacionAdministrativa { Id = 7, Descripcion = "Trabajo a tiempo parcial" });
 
             for (int i = 1; i < 11; i++)
                 context.Paises.Add(new Pais { Id = i, Descripcion = $"Pais {i}" });

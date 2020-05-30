@@ -11,8 +11,8 @@ namespace EAPN.HDVS.Web.Testing.Controllers.SexosController
     {
         public async Task Seed(HDVSContext context)
         {
-            var lastUserId = context.Sexos.Max(x => x.Id) + 1;
-            for (int i = lastUserId; i <= 30; i++)
+            var lastId = context.Sexos.Max(x => x.Id) + 1;
+            for (int i = lastId; i <= 30; i++)
             {
                 context.Sexos.Add(new Sexo { Id = i, Descripcion = $"Test {i}" });
             }

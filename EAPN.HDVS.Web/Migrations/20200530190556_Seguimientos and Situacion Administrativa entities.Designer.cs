@@ -4,14 +4,16 @@ using EAPN.HDVS.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EAPN.HDVS.Web.Migrations
 {
     [DbContext(typeof(HDVSContext))]
-    partial class HDVSContextModelSnapshot : ModelSnapshot
+    [Migration("20200530190556_Seguimientos and Situacion Administrativa entities")]
+    partial class SeguimientosandSituacionAdministrativaentities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -197,10 +199,6 @@ namespace EAPN.HDVS.Web.Migrations
                         .HasColumnName("FechaNacimiento")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("FotoId")
-                        .HasColumnName("FotoId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("FotocopiaDNI")
                         .HasColumnName("FotocopiaDNI")
                         .HasColumnType("bit");
@@ -269,8 +267,6 @@ namespace EAPN.HDVS.Web.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("FotoId");
 
                     b.HasIndex("GeneroId");
 
@@ -834,11 +830,6 @@ namespace EAPN.HDVS.Web.Migrations
 
             modelBuilder.Entity("EAPN.HDVS.Entities.Ficha", b =>
                 {
-                    b.HasOne("EAPN.HDVS.Entities.Adjunto", "Foto")
-                        .WithMany()
-                        .HasForeignKey("FotoId")
-                        .OnDelete(DeleteBehavior.ClientCascade);
-
                     b.HasOne("EAPN.HDVS.Entities.Sexo", "Genero")
                         .WithMany()
                         .HasForeignKey("GeneroId")

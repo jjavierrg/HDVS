@@ -13,7 +13,5 @@ namespace EAPN.HDVS.Web.Dto
         public string NombreOriginal { get; set; }
         public long Tamano { get; set; }
         public DateTime FechaAlta { get; set; }
-
-        public string FullPath { get; set; }
     }
 }

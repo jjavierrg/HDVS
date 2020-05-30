@@ -11,8 +11,8 @@ namespace EAPN.HDVS.Web.Testing.Controllers.MunicipiosController
     {
         public async Task Seed(HDVSContext context)
         {
-            var lastUserId = context.Municipios.Max(x => x.Id) + 1;
-            for (int i = lastUserId; i <= 250; i++)
+            var lastId = context.Municipios.Max(x => x.Id) + 1;
+            for (int i = lastId; i <= 250; i++)
             {
                 context.Municipios.Add(new Municipio { Id = i, Nombre = $"Test {i}", ProvinciaId = (i % 10) + 1 });
             }

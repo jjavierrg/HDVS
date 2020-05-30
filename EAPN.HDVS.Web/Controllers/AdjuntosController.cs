@@ -85,11 +85,14 @@ namespace EAPN.HDVS.Web.Controllers
         {
             var adjunto = await _adjuntoService.GetFirstOrDefault(x => x.Id == id, q => q.Include(x => x.Tipo));
 
+            if (adjunto == null)
+                return null;
+
             // Verificamos restricciones
             if (adjunto.OrganizacionId.HasValue && adjunto.OrganizacionId.Value != User.GetUserOrganizacionId())
                 return null;
 
-            var filePath = Path.Combine(_hostingEnvironment.ContentRootPath, _attachmentsFolder, adjunto.FullPath, adjunto.Alias);
+            var filePath = Path.Combine(_hostingEnvironment.ContentRootPath, _attachmentsFolder, adjunto.Tipo?.Carpeta, adjunto.Alias);
             var fileStream = System.IO.File.OpenRead(filePath);
             
             var pvd = new FileExtensionContentTypeProvider();
@@ -124,12 +127,11 @@ namespace EAPN.HDVS.Web.Controllers
                 Alias = $"{Guid.NewGuid()}{extension}",
                 TipoId = subidaAdjuntoDto.TipoId,
                 FichaId = subidaAdjuntoDto.FichaId,
-                Tipo = tipo
             };
 
             try
             {
-                var filePath = Path.Combine(_hostingEnvironment.ContentRootPath, _attachmentsFolder, adjunto.FullPath);
+                var filePath = Path.Combine(_hostingEnvironment.ContentRootPath, _attachmentsFolder, tipo?.Carpeta);
                 var di = Directory.CreateDirectory(filePath);
                 filePath = Path.Combine(filePath, adjunto.Alias);
 
@@ -142,13 +144,9 @@ namespace EAPN.HDVS.Web.Controllers
                 throw ex;
             }
 
-            // remove for avoid EF exception
-            adjunto.Tipo = null;
-
             _adjuntoService.Add(adjunto);
             await _adjuntoService.SaveChangesAsync();
 
-            adjunto.Tipo = tipo;
             return CreatedAtAction(nameof(GetAdjunto), new { id = adjunto.Id }, _mapper.Map<AdjuntoDto>(adjunto));
         }
 
@@ -162,13 +160,13 @@ namespace EAPN.HDVS.Web.Controllers
         [HttpDelete("{id}", Name = "DeleteAdjunto")]
         public async Task<IActionResult> DeleteAdjunto(int id)
         {
-            var adjunto = await _adjuntoService.GetFirstOrDefault(x => x.Id == id);
+            var adjunto = await _adjuntoService.GetFirstOrDefault(x => x.Id == id, q => q.Include(x => x.Tipo));
             if (adjunto == null)
                 return NotFound();
 
             _logger.LogWarning($"Se elimina el adjunto {adjunto.NombreOriginal}");
 
-            var filePath = Path.Combine(_attachmentsFolder, adjunto.FullPath, adjunto.Alias);
+            var filePath = Path.Combine(_attachmentsFolder, adjunto.Tipo?.Carpeta, adjunto.Alias);
             if (System.IO.File.Exists(filePath))
                 System.IO.File.Delete(filePath);
 

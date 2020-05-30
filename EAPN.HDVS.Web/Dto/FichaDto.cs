@@ -6,6 +6,7 @@ namespace EAPN.HDVS.Web.Dto
     public class FichaDto
     {
         public int Id { get; set; }
+        public int? FotoId { get; set; }
         public int OrganizacionId{ get; set; }
         public int UsuarioId { get; set; }
         public string Codigo { get; set; }
@@ -45,7 +46,7 @@ namespace EAPN.HDVS.Web.Dto
         public PaisDto Nacionalidad { get; set; }
         public PaisDto Origen { get; set; }
 
-        public IList<IndicadorFichaDto> Indicadores { get; set; }
+        public IList<SeguimientoDto> Seguimientos { get; set; }
         public IList<AdjuntoDto> Adjuntos { get; set; }
     }
 }

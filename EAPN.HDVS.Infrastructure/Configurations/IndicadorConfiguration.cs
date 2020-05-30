@@ -20,7 +20,7 @@ namespace EAPN.HDVS.Infrastructure.Configurations
             builder.Property(x => x.Sugerencias).HasColumnName(nameof(Indicador.Sugerencias));
 
             builder.HasOne(x => x.Categoria).WithMany(x => x.Indicadores).HasForeignKey(x => x.CategoriaId).OnDelete(DeleteBehavior.Cascade);
-            builder.HasMany(x => x.Fichas).WithOne(x => x.Indicador).HasForeignKey(x => x.IndicadorId).OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(x => x.Seguimientos).WithOne(x => x.Indicador).HasForeignKey(x => x.IndicadorId).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

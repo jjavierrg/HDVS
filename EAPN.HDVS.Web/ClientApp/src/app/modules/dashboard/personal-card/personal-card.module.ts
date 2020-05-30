@@ -10,6 +10,7 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { GridModule } from 'src/app/shared/modules/grid/grid.module';
 import { CardFormComponent } from './card-form/card-form.component';
 import { Permissions } from 'src/app/core/enums/permissions.enum';
+import { ImageModule } from 'src/app/shared/modules/image/image.module';
 
 const routes: Routes = [
   {
@@ -42,6 +43,6 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [CardFinderComponent, CardFormComponent],
-  imports: [CommonModule, CoreModule, InputModule, FormsModule, NgbModalModule, GridModule, RouterModule.forChild(routes)],
+  imports: [CommonModule, CoreModule, InputModule, FormsModule, NgbModalModule, GridModule, RouterModule.forChild(routes), ImageModule],
 })
 export class PersonalCardModule {}

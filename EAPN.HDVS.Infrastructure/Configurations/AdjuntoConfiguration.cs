@@ -21,8 +21,6 @@ namespace EAPN.HDVS.Infrastructure.Configurations
             builder.Property(x => x.Tamano).HasColumnName(nameof(Adjunto.Tamano));
             builder.Property(x => x.FechaAlta).HasColumnName(nameof(Adjunto.FechaAlta)).IsRequired();
 
-            builder.Ignore(x => x.FullPath);
-
             builder.HasOne(x => x.Tipo).WithMany().HasForeignKey(x => x.TipoId).OnDelete(DeleteBehavior.Cascade);
             builder.HasOne(x => x.Ficha).WithMany(x => x.Adjuntos).HasForeignKey(x => x.FichaId).OnDelete(DeleteBehavior.Cascade);
         }

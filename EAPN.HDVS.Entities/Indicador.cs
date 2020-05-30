@@ -15,6 +15,6 @@ namespace EAPN.HDVS.Entities
         public string Sugerencias { get; set; }
 
         public Categoria Categoria { get; set; }
-        public IList<IndicadorFicha> Fichas { get; set; }
+        public IList<IndicadorSeguimiento> Seguimientos { get; set; }
     }
 }

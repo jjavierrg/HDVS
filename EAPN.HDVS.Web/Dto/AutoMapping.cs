@@ -50,18 +50,20 @@ namespace EAPN.HDVS.Web.Dto
             CreateMap<Permiso, PermisoDto>().ReverseMap();
             CreateMap<UserToken, UserTokenDto>();
 
-            CreateMap<Adjunto, AdjuntoDto>().ReverseMap().ForMember(d => d.FullPath, o => o.Ignore());
+            CreateMap<Adjunto, AdjuntoDto>().ReverseMap();
 
             CreateMap<Dimension, DimensionDto>().ReverseMap();
             CreateMap<Categoria, CategoriaDto>().ReverseMap();
             CreateMap<Indicador, IndicadorDto>().ReverseMap();
-            CreateMap<IndicadorFicha, IndicadorFichaDto>().ReverseMap();
+            CreateMap<Seguimiento, SeguimientoDto>().ReverseMap();
+            CreateMap<IndicadorSeguimiento, IndicadorSeguimientoDto>().ReverseMap();
 
             CreateMap<Ficha, FichaDto>().ReverseMap();
             CreateMap<Municipio, MunicipioDto>().ReverseMap();
             CreateMap<Provincia, ProvinciaDto>().ReverseMap();
             CreateMap<Pais, PaisDto>().ReverseMap();
             CreateMap<Sexo, SexoDto>().ReverseMap();
+            CreateMap<SituacionAdministrativa, SituacionAdministrativaDto>().ReverseMap();
 
             CreateMap<Municipio, MasterDataDto>()
                 .ForMember(d => d.Descripcion, opt => opt.MapFrom(src => src.Nombre));
@@ -73,6 +75,7 @@ namespace EAPN.HDVS.Web.Dto
             CreateMap<Pais, MasterDataDto>();
             CreateMap<Perfil, MasterDataDto>();
             CreateMap<Permiso, MasterDataDto>();
+            CreateMap<SituacionAdministrativa, MasterDataDto>();
             CreateMap<Organizacion, MasterDataDto>()
                 .ForMember(d => d.Descripcion, opt => opt.MapFrom(src => src.Nombre));
         }

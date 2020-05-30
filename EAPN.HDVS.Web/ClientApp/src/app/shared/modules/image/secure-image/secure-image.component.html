@@ -1,2 +1,3 @@
-<img class="img-fluid {{ imageClasses }}" [src]="dataUrl | async" *ngIf="!showPlaceholder" />
+<img class="img-fluid {{ imageClasses }}" [src]="dataUrl | async" *ngIf="!showPlaceholder && !showFallbackImage" />
+<img class="img-fluid {{ imageClasses }}" [src]="fallbackImagePath" *ngIf="showFallbackImage && fallbackImagePath" />
 <div class="h-100 w-100 placeholder {{ imageClasses }}" *ngIf="showPlaceholder"></div>
