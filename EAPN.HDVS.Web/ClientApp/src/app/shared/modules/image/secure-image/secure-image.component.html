@@ -1,0 +1,2 @@
+<img class="img-fluid {{ imageClasses }}" [src]="dataUrl | async" *ngIf="!showPlaceholder" />
+<div class="h-100 w-100 placeholder {{ imageClasses }}" *ngIf="showPlaceholder"></div>

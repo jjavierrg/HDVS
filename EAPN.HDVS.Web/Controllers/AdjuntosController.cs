@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
@@ -20,24 +23,36 @@ namespace EAPN.HDVS.Web.Controllers
     [ApiController]
     public class AdjuntosController : ControllerBase
     {
-        private IHostingEnvironment _hostingEnvironment;
+        private IWebHostEnvironment _hostingEnvironment;
         private readonly ICrudServiceBase<Adjunto> _adjuntoService;
         private readonly IReadRepository<TipoAdjunto> _adjuntoRepository;
         private readonly ILogger<AdjuntosController> _logger;
         private readonly IMapper _mapper;
+        private readonly IConfiguration _configuration;
+        private readonly string _attachmentsFolder;
 
         /// <summary>
         /// </summary>
+        /// <param name="hostingEnvironment"></param>
         /// <param name="adjuntoService"></param>
         /// <param name="logger"></param>
         /// <param name="mapper"></param>
-        public AdjuntosController(IHostingEnvironment hostingEnvironment, ICrudServiceBase<Adjunto> adjuntoService, ILogger<AdjuntosController> logger, IMapper mapper, IReadRepository<TipoAdjunto> adjuntoRepository)
+        /// <param name="adjuntoRepository"></param>
+        /// <param name="configuration"></param>
+        public AdjuntosController(IWebHostEnvironment hostingEnvironment,
+                                  ICrudServiceBase<Adjunto> adjuntoService,
+                                  ILogger<AdjuntosController> logger,
+                                  IMapper mapper,
+                                  IReadRepository<TipoAdjunto> adjuntoRepository,
+                                  IConfiguration configuration)
         {
-            _hostingEnvironment = hostingEnvironment;
+            _hostingEnvironment = hostingEnvironment ?? throw new ArgumentNullException(nameof(hostingEnvironment));
             _adjuntoService = adjuntoService ?? throw new ArgumentNullException(nameof(adjuntoService));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _adjuntoRepository = adjuntoRepository ?? throw new ArgumentNullException(nameof(adjuntoRepository));
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            _attachmentsFolder = _configuration.GetValue<string>("AttachmentsFolder");
         }
 
         /// <summary>
@@ -59,10 +74,34 @@ namespace EAPN.HDVS.Web.Controllers
         }
 
         /// <summary>
+        /// Get the item with the specified identifier
+        /// </summary>
+        /// <param name="id">Item identifier</param>
+        /// <returns></returns>
+        [HttpGet("display/{id}", Name = "DisplayAdjunto")]
+        [Produces("application/octet-stream")]
+        [ProducesResponseType(typeof(FileStreamResult), StatusCodes.Status200OK)]
+        public async Task<FileStreamResult> DisplayAdjunto(int id)
+        {
+            var adjunto = await _adjuntoService.GetFirstOrDefault(x => x.Id == id, q => q.Include(x => x.Tipo));
+
+            // Verificamos restricciones
+            if (adjunto.OrganizacionId.HasValue && adjunto.OrganizacionId.Value != User.GetUserOrganizacionId())
+                return null;
+
+            var filePath = Path.Combine(_hostingEnvironment.ContentRootPath, _attachmentsFolder, adjunto.FullPath, adjunto.Alias);
+            var fileStream = System.IO.File.OpenRead(filePath);
+            
+            var pvd = new FileExtensionContentTypeProvider();
+            bool isKnownType = pvd.TryGetContentType(adjunto.Alias, out string mimeType);
+
+            return File(fileStream, isKnownType ? mimeType : "application/octet-stream");
+        }
+
+        /// <summary>
         /// Add new item to collection
         /// </summary>
         /// <param name="subidaAdjuntoDto">Item data</param>
-        /// <param name="file">File content to store</param>
         /// <returns></returns>
         [ProducesResponseType(typeof(AdjuntoDto), StatusCodes.Status201Created)]
         [HttpPost(Name = "PostAdjunto")]
@@ -90,7 +129,7 @@ namespace EAPN.HDVS.Web.Controllers
 
             try
             {
-                var filePath = Path.Combine(_hostingEnvironment.ContentRootPath, "attachments", adjunto.FullPath);
+                var filePath = Path.Combine(_hostingEnvironment.ContentRootPath, _attachmentsFolder, adjunto.FullPath);
                 var di = Directory.CreateDirectory(filePath);
                 filePath = Path.Combine(filePath, adjunto.Alias);
 
@@ -129,7 +168,7 @@ namespace EAPN.HDVS.Web.Controllers
 
             _logger.LogWarning($"Se elimina el adjunto {adjunto.NombreOriginal}");
 
-            var filePath = Path.Combine("attachments", adjunto.FullPath, adjunto.Alias);
+            var filePath = Path.Combine(_attachmentsFolder, adjunto.FullPath, adjunto.Alias);
             if (System.IO.File.Exists(filePath))
                 System.IO.File.Delete(filePath);
 

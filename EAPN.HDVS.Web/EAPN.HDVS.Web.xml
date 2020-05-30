@@ -4,14 +4,24 @@
         <name>EAPN.HDVS.Web</name>
     </assembly>
     <members>
-        <member name="M:EAPN.HDVS.Web.Controllers.AdjuntosController.#ctor(Microsoft.AspNetCore.Hosting.IHostingEnvironment,EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Adjunto},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.AdjuntosController},AutoMapper.IMapper,EAPN.HDVS.Infrastructure.Core.Repository.IReadRepository{EAPN.HDVS.Entities.TipoAdjunto})">
+        <member name="M:EAPN.HDVS.Web.Controllers.AdjuntosController.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Adjunto},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.AdjuntosController},AutoMapper.IMapper,EAPN.HDVS.Infrastructure.Core.Repository.IReadRepository{EAPN.HDVS.Entities.TipoAdjunto},Microsoft.Extensions.Configuration.IConfiguration)">
             <summary>
             </summary>
+            <param name="hostingEnvironment"></param>
             <param name="adjuntoService"></param>
             <param name="logger"></param>
             <param name="mapper"></param>
+            <param name="adjuntoRepository"></param>
+            <param name="configuration"></param>
         </member>
         <member name="M:EAPN.HDVS.Web.Controllers.AdjuntosController.GetAdjunto(System.Int32)">
+            <summary>
+            Get the item with the specified identifier
+            </summary>
+            <param name="id">Item identifier</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.AdjuntosController.DisplayAdjunto(System.Int32)">
             <summary>
             Get the item with the specified identifier
             </summary>
@@ -23,7 +33,6 @@
             Add new item to collection
             </summary>
             <param name="subidaAdjuntoDto">Item data</param>
-            <param name="file">File content to store</param>
             <returns></returns>
         </member>
         <member name="M:EAPN.HDVS.Web.Controllers.AdjuntosController.DeleteAdjunto(System.Int32)">

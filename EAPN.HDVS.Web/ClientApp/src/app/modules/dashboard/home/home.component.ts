@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FileUpload, UploadType } from 'src/app/core/http/file-upload';
 import { UploadService } from 'src/app/core/services/upload.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -10,8 +11,10 @@ import { UploadService } from 'src/app/core/services/upload.service';
 export class HomeComponent implements OnInit {
 
   public files: FileUpload[] = [];
+  public path: string;
 
   constructor(private uploadService: UploadService) {
+    this.path = `${environment.apiEndpoint}\\api\\adjuntos\\display\\96`;
   }
 
   async ngOnInit() {
