@@ -1,0 +1,16 @@
+<app-secure-image class="thumbnail" [adjuntoId]="photoId" imageClasses="profile-picture rounded-circle"
+  [ngbPopover]="popContent" placement="right"></app-secure-image>
+
+<ng-template #popContent>
+  <app-secure-image class="position-relative full-image" [adjuntoId]="photoId"></app-secure-image>
+  <div class="info" (click)="onFullImageClick(uploadModal)">
+    <div class="info-text">{{ 'core.cambiar-imagen' | translate }}</div>
+  </div>
+</ng-template>
+
+<!-- Upload Modal -->
+<ng-template #uploadModal let-modal>
+  <div class="modal-body modal-upload-body">
+    <app-file-uploader [showUploadButton]="false" (filesAdded)="onFileAdded($event)"></app-file-uploader>
+  </div>
+</ng-template>

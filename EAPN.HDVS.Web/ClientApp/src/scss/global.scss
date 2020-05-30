@@ -25,3 +25,10 @@
 .ql-editor {
   height: 15vh !important;
 }
+
+.profile-picture {
+    object-fit: cover;
+    object-position: center center;
+    width: 40px;
+    height: 40px;
+}

@@ -7,7 +7,6 @@ import { UniqueEmailDirective } from './directives/unique-email.directive';
 import { PasswordRestrinctionsDirective } from './directives/password-restrictions.directive';
 import { AtLeastOneDirective } from './directives/at-least-one.directive';
 import { FileDropperDirective } from './directives/file-dropper.directive';
-import { ImageModule } from '../shared/modules/image/image.module';
 
 @NgModule({
   declarations: [
@@ -18,7 +17,6 @@ import { ImageModule } from '../shared/modules/image/image.module';
     FileDropperDirective,
   ],
   imports: [
-    ImageModule,
     TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,
@@ -37,7 +35,6 @@ import { ImageModule } from '../shared/modules/image/image.module';
     TranslateModule,
     AtLeastOneDirective,
     FileDropperDirective,
-    ImageModule
   ],
 })
 export class CoreModule {}

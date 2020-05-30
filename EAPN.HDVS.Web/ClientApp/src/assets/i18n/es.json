@@ -31,9 +31,9 @@
       "hoy": "Hoy",
       "meses": "Enero,Febrero,Marzo,Abril,Mayo,Junio,Julio,Agosto,Septiembre,Octubre,Noviembre,Diciembre"
     },
+    "cambiar-imagen": "Pulse para cambiar la imagen",
     "cancelar": "Cancelar",
     "cerrar-todo": "Cerrar Todo",
-    "limpiar-subidas": "Limpiar completados",
     "completado": "Completado",
     "confirmar-eliminacion": "<p><strong>¿Está seguro de querer eliminar los elementos seleccionados?</strong></p><p>Toda la información asociada será eliminada por completo. Tenga en cuenta que esta operación <span class='text-danger'>no se puede deshacer.</span></p>",
     "confirmar-eliminacion-titulo": "Confirmar eliminación",
@@ -43,6 +43,7 @@
     "elementos-eliminados": "Se han eliminado los elementos seleccionados",
     "eliminar": "Eliminar",
     "error": "Error",
+    "limpiar-subidas": "Limpiar completados",
     "no": "No",
     "registro-no-encontrado": "Registro no encontrado",
     "si": "Sí",

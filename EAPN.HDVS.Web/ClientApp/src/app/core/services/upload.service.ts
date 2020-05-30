@@ -94,14 +94,14 @@ export class UploadService {
   private createRequest(queuedUploadFile: FileUpload) {
     const formData = new FormData();
     const dto = {
-      tipoId: 1,
-      fichaId: 1,
-      organizacionId: 2,
+      tipoId: queuedUploadFile.metadata.TipoId,
+      fichaId: queuedUploadFile.metadata.FichaId,
+      organizacionId: queuedUploadFile.metadata.OrganizacionId,
       file: queuedUploadFile.file,
     };
 
     for (const prop in dto) {
-      if (!dto.hasOwnProperty(prop)) {
+      if (!dto.hasOwnProperty(prop) || !dto[prop]) {
         continue;
       }
       formData.append(prop, dto[prop]);

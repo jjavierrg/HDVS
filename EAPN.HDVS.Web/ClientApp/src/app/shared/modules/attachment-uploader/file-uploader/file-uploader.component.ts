@@ -10,6 +10,7 @@ export class FileUploaderComponent {
   @Input() files: FileUpload[] = [];
   @Input() showUploadButton: boolean;
   @Input() showClearButton: boolean;
+  @Input() multiple: boolean;
 
   @Output() filesAdded = new EventEmitter<File[]>();
   @Output() fileCancel = new EventEmitter<FileUpload>();
@@ -23,6 +24,9 @@ export class FileUploaderComponent {
     for (let i = 0; i < fileList.length; i++) {
       if (fileList[i].size > 0) {
         files.push(fileList[i]);
+        if (!this.multiple) {
+          break;
+        }
       }
     }
 

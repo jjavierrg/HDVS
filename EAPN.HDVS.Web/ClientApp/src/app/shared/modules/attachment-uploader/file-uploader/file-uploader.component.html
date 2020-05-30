@@ -1,4 +1,4 @@
-<input hidden type="file" #inputFile multiple (change)="uploadFile($event.target.files)">
+<input hidden type="file" #inputFile [multiple]="multiple" (change)="uploadFile($event.target.files)">
 <div class="file-uploader-container" appFileDropper (filesDropped)="uploadFile($event)">
   <div class="file-uploader d-none d-lg-flex" (click)="inputFile.click()">
     <img src="assets/upload.svg" height="128" width="128">
