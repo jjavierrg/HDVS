@@ -12,7 +12,7 @@
           (click)="onDeleteItem()">{{ 'core.eliminar' | translate }}</button></div>
     </div>
   </div>
-  <ag-grid-angular class="grid ag-theme-alpine flex-fill" [columnDefs]="columns" [rowData]="data"
+  <ag-grid-angular class="grid ag-theme-alpine flex-grow-1" [columnDefs]="columns" [rowData]="data"
     [defaultColDef]="defaultColDef" (selectionChanged)="onSelectionChanged($event)"
     [rowSelection]="multiselect ? 'multiple' : 'single'" suppressCellSelection>
   </ag-grid-angular>

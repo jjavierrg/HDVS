@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FileUpload, FileUploadStatus } from 'src/app/core/http/file-upload';
+import { UploadService } from 'src/app/core/services/upload.service';
 
 @Component({
   selector: 'app-file-uploader',
@@ -8,15 +9,22 @@ import { FileUpload, FileUploadStatus } from 'src/app/core/http/file-upload';
 })
 export class FileUploaderComponent {
   @Input() files: FileUpload[] = [];
-  @Input() showUploadButton: boolean;
-  @Input() showClearButton: boolean;
   @Input() multiple: boolean;
 
   @Output() filesAdded = new EventEmitter<File[]>();
-  @Output() fileCancel = new EventEmitter<FileUpload>();
-  @Output() upload = new EventEmitter<FileUpload[]>();
+  @Output() uploadFinished = new EventEmitter<void>();
 
-  constructor() {}
+  constructor(private uploadService: UploadService) {
+    this.uploadService.queue.subscribe((x) => {
+      if (!this.files.length) {
+        return;
+      }
+
+      if (this.files.every((file) => file.isSuccess() || file.isError())) {
+        this.uploadFinished.emit();
+      }
+    });
+  }
 
   public uploadFile(fileList: FileList): void {
     const files: File[] = [];
@@ -31,18 +39,5 @@ export class FileUploaderComponent {
     }
 
     this.filesAdded.emit(files);
-  }
-
-  public onCancelAttachment(file: FileUpload): void {
-    this.fileCancel.emit(file);
-  }
-
-  public onUploadFilesClick(): void {
-    const files = this.files.filter((x) => x.status === FileUploadStatus.Pending);
-    this.upload.emit(files);
-  }
-
-  public onClearFiles(): void {
-    this.files = this.files.filter(x => x.status !== FileUploadStatus.Error && x.status !== FileUploadStatus.Success);
   }
 }

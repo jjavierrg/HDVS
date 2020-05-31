@@ -1,0 +1,137 @@
+<form #cardForm="ngForm">
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="inputNombre">{{ 'comun.nombre' | translate }} *</label>
+      <input id="inputNombre" type="text" class="form-control" [placeholder]="'comun.nombre' | translate" required
+        [(ngModel)]="card.nombre" name="{{ 'comun.nombre' | translate }}" #nombreCtrl="ngModel" maxlength="150" />
+    </div>
+    <div class="form-group col-md-3">
+      <label for="inputApellido1">{{ 'comun.apellido1' | translate }}</label>
+      <input id="inputApellido1" type="text" class="form-control" [placeholder]="'comun.apellido1' | translate"
+        [(ngModel)]="card.apellido1" name="{{ 'comun.apellido1' | translate }}" #apellido1Ctrl="ngModel"
+        maxlength="250" />
+    </div>
+    <div class="form-group col-md-3">
+      <label for="inputApellido2">{{ 'comun.apellido2' | translate }}</label>
+      <input id="inputApellido2" type="text" class="form-control" [placeholder]="'comun.apellido2' | translate"
+        [(ngModel)]="card.apellido2" name="{{ 'comun.apellido2' | translate }}" #apellido2Ctrl="ngModel"
+        maxlength="250" />
+    </div>
+    <div class="form-group col-md-2">
+      <label for="inputCodigoRad">{{ 'ficha.rad' | translate }}</label>
+      <input id="inputCodigoRad" type="text" class="form-control" [placeholder]="'ficha.rad' | translate"
+        [(ngModel)]="card.rad" name="{{ 'ficha.rad' | translate }}" #codigoRADCtrl="ngModel" readonly />
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-2">
+      <label for="inputDni">{{ 'ficha.dni' | translate }}</label>
+      <input id="inputDni" type="text" class="form-control" [placeholder]="'ficha.dni' | translate"
+        [(ngModel)]="card.dni" name="{{ 'ficha.dni' | translate }}" #dniCtrl="ngModel" maxlength="12" />
+    </div>
+    <div class="form-group col-md-2">
+      <app-checkbox id="chkFotocopiaDNI" [(ngModel)]="card.fotocopiaDNI" name="{{ 'ficha.fotocopia-dni' | translate }}"
+        [label]="'ficha.fotocopia-dni' | translate">
+      </app-checkbox>
+    </div>
+    <div class="form-group col-md-2">
+      <label for="inputfechNac">{{ 'ficha.fecha-nacimiento' | translate }}</label>
+      <app-datepicker id="inputfechNac" #fechNacCtrl="ngModel" [(ngModel)]="card.fechaNacimiento"
+        name="{{ 'fichas.fecha-nacimiento' | translate }}"></app-datepicker>
+    </div>
+    <div class="form-group col-md-1">
+      <label for="inputEdad">{{ 'ficha.edad' | translate }}</label>
+      <input id="inputEdad" type="text" class="form-control" [placeholder]="'ficha.edad' | translate"
+        [value]="card.edadCalculada | number" readonly />
+    </div>
+    <div class="form-group col-md-2 offset-md-1">
+      <label for="inputSexo">{{ 'ficha.sexo' | translate }}</label>
+      <app-combobox id="inputSexo" [placeholder]="'ficha.sexo' | translate" [(ngModel)]="card.sexoId"
+        name="{{ 'ficha.sexo' | translate }}" #sexoCtrl="ngModel" [data]="genders">
+      </app-combobox>
+    </div>
+    <div class="form-group col-md-2">
+      <label for="inputGenero">{{ 'ficha.genero' | translate }}</label>
+      <app-combobox id="inputGenero" [placeholder]="'ficha.genero' | translate" [(ngModel)]="card.generoId"
+        name="{{ 'ficha.genero' | translate }}" #sexoCtrl="ngModel" [data]="genders">
+      </app-combobox>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="inputDomicilio">{{ 'ficha.domicilio' | translate }}</label>
+      <input id="inputDomicilio" type="text" class="form-control" [placeholder]="'ficha.domicilio' | translate"
+        [(ngModel)]="card.domicilio" name="{{ 'ficha.domicilio' | translate }}" maxlength="250" />
+    </div>
+    <div class="form-group col-md-2">
+      <label for="inputCP">{{ 'ficha.codigo-postal' | translate }}</label>
+      <input id="inputCP" type="text" class="form-control" [placeholder]="'ficha.codigo-postal' | translate"
+        [(ngModel)]="card.cp" name="{{ 'ficha.codigo-postal' | translate }}" maxlength="10" />
+    </div>
+    <div class="form-group col-md-3">
+      <label for="inputProvincia">{{ 'ficha.provincia' | translate }}</label>
+      <app-combobox id="inputProvincia" [placeholder]="'ficha.provincia' | translate" [(ngModel)]="card.provinciaId"
+        name="{{ 'ficha.provincia' | translate }}" [data]="provincias" (valueChange)="onProvinciaChange($event)">
+      </app-combobox>
+    </div>
+    <div class="form-group col-md-3">
+      <label for="inputMunicipio">{{ 'ficha.municipio' | translate }}</label>
+      <app-combobox id="inputMunicipio" [placeholder]="'ficha.municipio' | translate" [(ngModel)]="card.municipioId"
+        name="{{ 'ficha.municipio' | translate }}" [data]="municipios">
+      </app-combobox>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-3">
+      <label for="inputEmpadronamiento">{{ 'ficha.empadronamiento' | translate }}</label>
+      <app-combobox id="inputEmpadronamiento" [placeholder]="'ficha.empadronamiento' | translate"
+        [(ngModel)]="card.padronId" name="{{ 'ficha.empadronamiento' | translate }}" [data]="provincias">
+      </app-combobox>
+    </div>
+    <div class="form-group col-md-3">
+      <label for="inputNacionalidad">{{ 'ficha.nacionalidad' | translate }}</label>
+      <app-combobox id="inputNacionalidad" [placeholder]="'ficha.nacionalidad' | translate"
+        [(ngModel)]="card.nacionalidadId" name="{{ 'ficha.nacionalidad' | translate }}" [data]="countries">
+      </app-combobox>
+    </div>
+    <div class="form-group col-md-3">
+      <label for="inputPaisOrigen">{{ 'ficha.pais-origen' | translate }}</label>
+      <app-combobox id="inputPaisOrigen" [placeholder]="'ficha.pais-origen' | translate" [(ngModel)]="card.origenId"
+        name="{{ 'ficha.pais-origen' | translate }}" [data]="countries">
+      </app-combobox>
+    </div>
+    <div class="form-group col-md-3">
+      <label for="inputSituacionAdministrativa">{{ 'ficha.situacion-administrativa' | translate }}</label>
+      <app-combobox id="inputSituacionAdministrativa" [placeholder]="'ficha.situacion-administrativa' | translate"
+        [(ngModel)]="card.situacionAdministrativaId" name="{{ 'ficha.situacion-administrativa' | translate }}"
+        [data]="situacAdminis">
+      </app-combobox>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-2">
+      <label for="inputTelefono">{{ 'comun.telefono' | translate }}</label>
+      <input id="inputTelefono" type="tel" class="form-control" [placeholder]="'comun.telefono' | translate"
+        [(ngModel)]="card.telefono" name="{{ 'comun.telefono' | translate }}" #telefonoCtrl="ngModel" />
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputEmail">{{ 'comun.email' | translate }}</label>
+      <input id="inputEmail" type="email" class="form-control" [placeholder]="'comun.email' | translate" email
+        [(ngModel)]="card.email" name="{{ 'comun.email' | translate }}" />
+    </div>
+    <div class="form-group col-md-4">
+      <app-checkbox id="chkPolitica" [(ngModel)]="card.politicaFirmada" name="{{ 'ficha.acepta-politica' | translate }}"
+        [label]="'ficha.acepta-politica' | translate">
+      </app-checkbox>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputObservaciones">{{ 'comun.observaciones' | translate }}</label>
+    <quill-editor id="inputObservaciones" [(ngModel)]="card.observaciones" name="observaciones"
+      [placeholder]="'comun.observaciones' | translate">
+    </quill-editor>
+  </div>
+</form>
+<div class="mt-3">
+  <app-validation-summary [form]="cardForm"></app-validation-summary>
+</div>

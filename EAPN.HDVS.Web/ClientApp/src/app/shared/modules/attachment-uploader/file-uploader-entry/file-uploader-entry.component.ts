@@ -8,7 +8,6 @@ import { FileUpload } from 'src/app/core/http/file-upload';
 })
 export class FileUploaderEntryComponent {
   @Input() file: FileUpload;
-  @Output() cancelFile = new EventEmitter<FileUpload>();
 
   constructor() {}
 
@@ -22,9 +21,5 @@ export class FileUploaderEntryComponent {
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-  }
-
-  public onCancel(): void {
-    this.cancelFile.emit(this.file);
   }
 }

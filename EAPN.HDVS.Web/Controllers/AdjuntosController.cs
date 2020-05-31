@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EAPN.HDVS.Application.Core.Services;
 using EAPN.HDVS.Entities;
+using EAPN.HDVS.Infrastructure.Core.Queries;
 using EAPN.HDVS.Infrastructure.Core.Repository;
 using EAPN.HDVS.Web.Dto;
 using EAPN.HDVS.Web.Extensions;
@@ -14,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace EAPN.HDVS.Web.Controllers
@@ -30,6 +32,7 @@ namespace EAPN.HDVS.Web.Controllers
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
         private readonly string _attachmentsFolder;
+        private readonly IFilterPaginable<Adjunto> _filterPaginator;
 
         /// <summary>
         /// </summary>
@@ -44,7 +47,8 @@ namespace EAPN.HDVS.Web.Controllers
                                   ILogger<AdjuntosController> logger,
                                   IMapper mapper,
                                   IReadRepository<TipoAdjunto> adjuntoRepository,
-                                  IConfiguration configuration)
+                                  IConfiguration configuration,
+                                  IFilterPaginable<Adjunto> filterPaginator)
         {
             _hostingEnvironment = hostingEnvironment ?? throw new ArgumentNullException(nameof(hostingEnvironment));
             _adjuntoService = adjuntoService ?? throw new ArgumentNullException(nameof(adjuntoService));
@@ -52,6 +56,8 @@ namespace EAPN.HDVS.Web.Controllers
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _adjuntoRepository = adjuntoRepository ?? throw new ArgumentNullException(nameof(adjuntoRepository));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            _filterPaginator = filterPaginator ?? throw new ArgumentNullException(nameof(filterPaginator));
+
             _attachmentsFolder = _configuration.GetValue<string>("AttachmentsFolder");
         }
 
@@ -74,14 +80,29 @@ namespace EAPN.HDVS.Web.Controllers
         }
 
         /// <summary>
+        /// Get all items with a specific criteria filter
+        /// </summary>
+        /// <param name="query">Query criteria filter</param>
+        /// <returns></returns>
+        [HttpPost("filtered", Name = "GetAdjuntosFiltered")]
+        [ProducesResponseType(typeof(QueryResult<AdjuntoDto>), StatusCodes.Status200OK)]
+        public async Task<ActionResult<QueryResult<AdjuntoDto>>> GetAdjuntosFiltered([FromBody]QueryData query)
+        {
+            var queryCollection = _adjuntoService.Repository.EntitySet.Where(x => !x.OrganizacionId.HasValue || x.OrganizacionId.Value == User.GetUserOrganizacionId());
+            var result = await _filterPaginator.Execute(queryCollection, query);
+
+            return _mapper.MapQueryResult<Adjunto, AdjuntoDto>(result);
+        }
+
+        /// <summary>
         /// Get the item with the specified identifier
         /// </summary>
         /// <param name="id">Item identifier</param>
         /// <returns></returns>
-        [HttpGet("display/{id}", Name = "DisplayAdjunto")]
+        [HttpGet("file/{id}", Name = "GetFile")]
         [Produces("application/octet-stream")]
         [ProducesResponseType(typeof(FileStreamResult), StatusCodes.Status200OK)]
-        public async Task<FileStreamResult> DisplayAdjunto(int id)
+        public async Task<FileStreamResult> GetFile(int id)
         {
             var adjunto = await _adjuntoService.GetFirstOrDefault(x => x.Id == id, q => q.Include(x => x.Tipo));
 
@@ -94,7 +115,7 @@ namespace EAPN.HDVS.Web.Controllers
 
             var filePath = Path.Combine(_hostingEnvironment.ContentRootPath, _attachmentsFolder, adjunto.Tipo?.Carpeta, adjunto.Alias);
             var fileStream = System.IO.File.OpenRead(filePath);
-            
+
             var pvd = new FileExtensionContentTypeProvider();
             bool isKnownType = pvd.TryGetContentType(adjunto.Alias, out string mimeType);
 
@@ -118,7 +139,8 @@ namespace EAPN.HDVS.Web.Controllers
 
             var tipo = await _adjuntoRepository.GetFirstOrDefault(x => x.Id == subidaAdjuntoDto.TipoId);
             var extension = Path.GetExtension(subidaAdjuntoDto.File.FileName);
-            var adjunto = new Adjunto {
+            var adjunto = new Adjunto
+            {
                 FechaAlta = DateTime.Now,
                 NombreOriginal = subidaAdjuntoDto.File.FileName,
                 Tamano = subidaAdjuntoDto.File.Length,
@@ -166,12 +188,12 @@ namespace EAPN.HDVS.Web.Controllers
 
             _logger.LogWarning($"Se elimina el adjunto {adjunto.NombreOriginal}");
 
+            _adjuntoService.Remove(adjunto);
+            await _adjuntoService.SaveChangesAsync();
+
             var filePath = Path.Combine(_attachmentsFolder, adjunto.Tipo?.Carpeta, adjunto.Alias);
             if (System.IO.File.Exists(filePath))
                 System.IO.File.Delete(filePath);
-
-            _adjuntoService.Remove(adjunto);
-            await _adjuntoService.SaveChangesAsync();
 
             return NoContent();
         }

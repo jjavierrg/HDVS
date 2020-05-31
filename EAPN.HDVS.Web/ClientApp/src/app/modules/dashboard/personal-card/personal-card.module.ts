@@ -6,11 +6,14 @@ import { InputModule } from 'src/app/shared/modules/input/input.module';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthenticatedGuard } from 'src/app/core/guards/authenticate.guard';
 import { FormsModule } from '@angular/forms';
-import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModalModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { GridModule } from 'src/app/shared/modules/grid/grid.module';
 import { CardFormComponent } from './card-form/card-form.component';
 import { Permissions } from 'src/app/core/enums/permissions.enum';
 import { ImageModule } from 'src/app/shared/modules/image/image.module';
+import { CardPersonalDataComponent } from './card-personal-data/card-personal-data.component';
+import { CardAttachmentsComponent } from './card-attachments/card-attachments.component';
+import { AttachmentUploaderModule } from 'src/app/shared/modules/attachment-uploader/attachment-uploader.module';
 
 const routes: Routes = [
   {
@@ -42,7 +45,18 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [CardFinderComponent, CardFormComponent],
-  imports: [CommonModule, CoreModule, InputModule, FormsModule, NgbModalModule, GridModule, RouterModule.forChild(routes), ImageModule],
+  declarations: [CardFinderComponent, CardFormComponent, CardPersonalDataComponent, CardAttachmentsComponent],
+  imports: [
+    CommonModule,
+    CoreModule,
+    InputModule,
+    FormsModule,
+    NgbModalModule,
+    GridModule,
+    RouterModule.forChild(routes),
+    ImageModule,
+    NgbNavModule,
+    AttachmentUploaderModule
+  ],
 })
 export class PersonalCardModule {}

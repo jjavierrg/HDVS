@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ApiClient, VistaPreviaFichaDto, QueryData, FichaDto, SexoDto, MasterDataDto } from '../api/api.client';
+import { ApiClient, VistaPreviaFichaDto, QueryData, FichaDto, SexoDto, MasterDataDto, AdjuntoDto } from '../api/api.client';
 import { Observable, of } from 'rxjs';
 import { IBaseFilter, BaseFilter, getFilterQuery } from '../filters/basefilter';
 import { FilterComparison, FilterUnion } from '../filters/filter.enum';

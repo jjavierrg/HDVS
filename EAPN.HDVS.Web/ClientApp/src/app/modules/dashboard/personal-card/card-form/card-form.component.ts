@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { FichaDto, MasterDataDto } from 'src/app/core/api/api.client';
+import { FichaDto } from 'src/app/core/api/api.client';
 import { AlertService } from 'src/app/core/services/alert.service';
-import { CardService } from 'src/app/core/services/card.service';
-import { MasterdataService } from 'src/app/core/services/masterdata.service';
 import { AuthenticationService } from 'src/app/core/services/authentication.service';
+import { CardService } from 'src/app/core/services/card.service';
+import { Card } from 'src/app/shared/models/card';
 
 @Component({
   selector: 'app-card-form',
@@ -13,12 +13,8 @@ import { AuthenticationService } from 'src/app/core/services/authentication.serv
   styleUrls: ['./card-form.component.scss'],
 })
 export class CardFormComponent implements OnInit {
-  public card: FichaDto;
-  public genders: MasterDataDto[];
-  public situacAdminis: MasterDataDto[];
-  public countries: MasterDataDto[];
-  public provincias: MasterDataDto[];
-  public municipios: MasterDataDto[] = [];
+  public card: Card;
+  public cardValid: boolean;
 
   public get fullName(): string {
     if (!this.card) {
@@ -37,7 +33,6 @@ export class CardFormComponent implements OnInit {
     private route: ActivatedRoute,
     private service: CardService,
     private authService: AuthenticationService,
-    private masterdataService: MasterdataService,
     private alertService: AlertService,
     private translate: TranslateService
   ) {}
@@ -66,42 +61,19 @@ export class CardFormComponent implements OnInit {
       return;
     }
 
-    // Load Data
-    const [genders, countries, provincias, situacAdminis] = await Promise.all([
-      this.masterdataService.getGenders().toPromise(),
-      this.masterdataService.getCountries().toPromise(),
-      this.masterdataService.getProvincias().toPromise(),
-      this.masterdataService.getSituacionesAdministrativas().toPromise(),
-    ]);
-
-    this.genders = genders;
-    this.countries = countries;
-    this.provincias = provincias;
-    this.situacAdminis = situacAdminis;
-
-    if (card.provinciaId) {
-      this.municipios = await this.masterdataService.getMunicipiosByProvincia(card.provinciaId).toPromise();
-    }
-
     await this.ensureRequiredCardFields(card);
-    this.card = card;
+    this.card = new Card(card);
   }
 
   public async onSaveCard(): Promise<void> {
     const success = await this.service.saveCard(this.card).toPromise();
     if (success) {
-      this.router
-        .navigate(['/'])
-        .then(() => this.alertService.success(this.translate.instant('core.datos-guardados')));
+      this.router.navigate(['/']).then(() => this.alertService.success(this.translate.instant('core.datos-guardados')));
     }
   }
 
   public async onCancel(): Promise<void> {
     await this.router.navigate(['/']);
-  }
-
-  public async onProvinciaChange(provinciaId: number): Promise<void> {
-    this.municipios = await this.masterdataService.getMunicipiosByProvincia(provinciaId).toPromise();
   }
 
   public onProfilePictureChanged(foto: FichaDto): void {

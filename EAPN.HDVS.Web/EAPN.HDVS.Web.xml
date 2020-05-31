@@ -4,7 +4,7 @@
         <name>EAPN.HDVS.Web</name>
     </assembly>
     <members>
-        <member name="M:EAPN.HDVS.Web.Controllers.AdjuntosController.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Adjunto},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.AdjuntosController},AutoMapper.IMapper,EAPN.HDVS.Infrastructure.Core.Repository.IReadRepository{EAPN.HDVS.Entities.TipoAdjunto},Microsoft.Extensions.Configuration.IConfiguration)">
+        <member name="M:EAPN.HDVS.Web.Controllers.AdjuntosController.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Adjunto},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.AdjuntosController},AutoMapper.IMapper,EAPN.HDVS.Infrastructure.Core.Repository.IReadRepository{EAPN.HDVS.Entities.TipoAdjunto},Microsoft.Extensions.Configuration.IConfiguration,EAPN.HDVS.Infrastructure.Core.Queries.IFilterPaginable{EAPN.HDVS.Entities.Adjunto})">
             <summary>
             </summary>
             <param name="hostingEnvironment"></param>
@@ -21,7 +21,14 @@
             <param name="id">Item identifier</param>
             <returns></returns>
         </member>
-        <member name="M:EAPN.HDVS.Web.Controllers.AdjuntosController.DisplayAdjunto(System.Int32)">
+        <member name="M:EAPN.HDVS.Web.Controllers.AdjuntosController.GetAdjuntosFiltered(EAPN.HDVS.Infrastructure.Core.Queries.QueryData)">
+            <summary>
+            Get all items with a specific criteria filter
+            </summary>
+            <param name="query">Query criteria filter</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.AdjuntosController.GetFile(System.Int32)">
             <summary>
             Get the item with the specified identifier
             </summary>

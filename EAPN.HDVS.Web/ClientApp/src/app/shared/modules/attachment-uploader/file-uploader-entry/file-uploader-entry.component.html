@@ -8,7 +8,6 @@
         [striped]="true"></ngb-progressbar>
     </p>
   </div>
-  <i *ngIf="file.status === 0" class="file-icon text-danger far fa-trash-alt" (click)="onCancel()"></i>
   <span *ngIf="file.isSuccess()" class="align-self-center badge badge-success">{{ 'core.completado' | translate }}</span>
   <span *ngIf="file.inProgress()" class="align-self-center badge badge-info">{{ 'core.subiendo' | translate }}</span>
   <span *ngIf="file.isError()" class="align-self-center badge badge-danger">{{ 'core.error' | translate }}</span>

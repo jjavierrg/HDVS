@@ -75,7 +75,7 @@ namespace EAPN.HDVS.Web.Controllers
         public async Task<ActionResult<FichaDto>> GetFicha(int id)
         {
             var query = GetBaseQueryable();
-            var ficha = await query.FirstOrDefaultAsync(x => x.Id == id);
+            var ficha = await query.Include(x => x.Adjuntos).Include(x => x.Seguimientos).FirstOrDefaultAsync(x => x.Id == id);
 
             if (ficha != null)
                 _logger.LogInformation($"[Fichas] Se accede a la ficha [{ficha.Id}]");

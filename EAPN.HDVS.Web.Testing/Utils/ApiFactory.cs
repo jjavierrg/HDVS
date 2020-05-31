@@ -71,7 +71,7 @@ namespace EAPN.HDVS.Web.Testing.Utils
                     var passwordService = scopedServices.GetRequiredService<IPasswordService>();
                     var baseSeeder = new BaseTestDBSeeder(passwordService.HashPassword("pass"));
 
-                    baseSeeder.Seed(context);
+                    await baseSeeder.Seed(context);
                     foreach (var seeder in _seeders)
                         await seeder.Seed(context);
 

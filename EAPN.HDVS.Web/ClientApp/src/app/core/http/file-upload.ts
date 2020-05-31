@@ -1,4 +1,4 @@
-import { AdjuntoDto } from "../api/api.client";
+import { AdjuntoDto } from '../api/api.client';
 
 export enum FileUploadStatus {
   Pending,

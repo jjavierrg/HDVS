@@ -66,7 +66,7 @@
         </div>
         <div class="form-group">
           <label for="inputObservaciones">{{ 'comun.observaciones' | translate }}</label>
-          <quill-editor id="inputObservaciones" [sanitize]="true" [(ngModel)]="usuario.observaciones"
+          <quill-editor id="inputObservaciones" [(ngModel)]="usuario.observaciones"
             name="{{ 'comun.observaciones' | translate }}" #obsrvacionesCtrl="ngModel"
             [placeholder]="'comun.observaciones' | translate">
           </quill-editor>

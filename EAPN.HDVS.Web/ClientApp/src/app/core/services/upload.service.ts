@@ -1,10 +1,10 @@
+import { HttpClient, HttpErrorResponse, HttpEventType, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ApiClient, AdjuntoDto } from '../api/api.client';
-import { BehaviorSubject } from 'rxjs';
-import { FileUpload, FileUploadStatus } from '../http/file-upload';
-import { HttpClient, HttpEventType, HttpResponse, HttpErrorResponse, HttpRequest, HttpHeaders } from '@angular/common/http';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { AdjuntoDto } from '../api/api.client';
+import { FileUpload, FileUploadStatus } from '../http/file-upload';
 
 @Injectable({
   providedIn: 'root',
@@ -21,11 +21,11 @@ export class UploadService {
     this._uploadQueue = new BehaviorSubject([]);
   }
 
-  public get queue() {
+  public get queue(): Observable<FileUpload[]> {
     return this._uploadQueue.asObservable();
   }
 
-  public addToQueue(file: FileUpload) {
+  public addToQueue(file: FileUpload): void {
     if (file.status !== FileUploadStatus.Pending) {
       return;
     }

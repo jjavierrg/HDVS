@@ -35,7 +35,7 @@ import { CoreModule } from 'src/app/core/core.module';
 
           ['clean'], // remove formatting button
 
-          ['link', 'image', 'video'], // link and image, video
+          ['link'], // link
         ],
       },
     }),

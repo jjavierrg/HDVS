@@ -13,15 +13,18 @@
         </ng-template>
         <ng-template ngbPanelContent>
           <div class="custom-control custom-radio" *ngFor="let opt of item.category.indicadores; let i=index">
-            <input [disabled]="!enabled" type="radio" id="cat{{item.category.id}}ind{{opt.id}}" [name]="item.category.id" [value]="opt.id"
-              [(ngModel)]="item.indicator.indicadorId" class="custom-control-input" (change)="this.onChange()">
+            <input [disabled]="!enabled" type="radio" id="cat{{item.category.id}}ind{{opt.id}}"
+              [name]="item.category.id" [value]="opt.id" [(ngModel)]="item.indicator.indicadorId"
+              class="custom-control-input" (change)="this.onChange()">
             <label class="custom-control-label" for="cat{{item.category.id}}ind{{opt.id}}">{{opt.descripcion}}</label>
-            <i class="ml-1 fas fa-info-circle text-muted" *ngIf="opt.sugerencias" ngbTooltip="{{opt.sugerencias}}" #t="ngbTooltip" (click)="t.open()"></i>
+            <i class="ml-1 fas fa-info-circle text-muted" *ngIf="opt.sugerencias" ngbTooltip="{{opt.sugerencias}}"
+              #t="ngbTooltip" (click)="t.open()"></i>
           </div>
           <div class="form-group mt-3">
             <label for="inputObservaciones">{{ 'comun.observaciones' | translate }}</label>
-            <quill-editor [disabled]="!enabled" id="inputObservaciones" [(ngModel)]="item.indicator.observaciones" [sanitize]="true"
-              name="observaciones" [placeholder]="'comun.observaciones' | translate" (onContentChanged)="this.onChange()">
+            <quill-editor [disabled]="!enabled" id="inputObservaciones" [(ngModel)]="item.indicator.observaciones"
+              name="observaciones" [placeholder]="'comun.observaciones' | translate"
+              (onContentChanged)="this.onChange()">
             </quill-editor>
           </div>
         </ng-template>

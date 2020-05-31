@@ -28,11 +28,17 @@ export interface IApiClient {
      */
     deleteAdjunto(id: number): Observable<void>;
     /**
+     * Get all items with a specific criteria filter
+     * @param body (optional) Query criteria filter
+     * @return Success
+     */
+    getAdjuntosFiltered(body?: QueryData | undefined): Observable<AdjuntoDtoQueryResult>;
+    /**
      * Get the item with the specified identifier
      * @param id Item identifier
      * @return Success
      */
-    displayAdjunto(id: number): Observable<FileResponse>;
+    getFile(id: number): Observable<FileResponse>;
     /**
      * Add new item to collection
      * @param tipoId (optional) 
@@ -562,12 +568,77 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Get all items with a specific criteria filter
+     * @param body (optional) Query criteria filter
+     * @return Success
+     */
+    getAdjuntosFiltered(body?: QueryData | undefined): Observable<AdjuntoDtoQueryResult> {
+        let url_ = this.baseUrl + "/api/Adjuntos/filtered";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAdjuntosFiltered(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAdjuntosFiltered(<any>response_);
+                } catch (e) {
+                    return <Observable<AdjuntoDtoQueryResult>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<AdjuntoDtoQueryResult>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAdjuntosFiltered(response: HttpResponseBase): Observable<AdjuntoDtoQueryResult> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = AdjuntoDtoQueryResult.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Unauthorized", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Forbidden", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<AdjuntoDtoQueryResult>(<any>null);
+    }
+
+    /**
      * Get the item with the specified identifier
      * @param id Item identifier
      * @return Success
      */
-    displayAdjunto(id: number): Observable<FileResponse> {
-        let url_ = this.baseUrl + "/api/Adjuntos/display/{id}";
+    getFile(id: number): Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Adjuntos/file/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -582,11 +653,11 @@ export class ApiClient implements IApiClient {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processDisplayAdjunto(response_);
+            return this.processGetFile(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processDisplayAdjunto(<any>response_);
+                    return this.processGetFile(<any>response_);
                 } catch (e) {
                     return <Observable<FileResponse>><any>_observableThrow(e);
                 }
@@ -595,7 +666,7 @@ export class ApiClient implements IApiClient {
         }));
     }
 
-    protected processDisplayAdjunto(response: HttpResponseBase): Observable<FileResponse> {
+    protected processGetFile(response: HttpResponseBase): Observable<FileResponse> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -5168,6 +5239,114 @@ export interface IProblemDetails {
     instance?: string | undefined;
 }
 
+export class QueryData implements IQueryData {
+    filterParameters?: string | undefined;
+    pageSize?: number;
+    pageIndex?: number;
+    orderField?: string | undefined;
+    order?: string | undefined;
+
+    constructor(data?: IQueryData) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.filterParameters = _data["filterParameters"];
+            this.pageSize = _data["pageSize"];
+            this.pageIndex = _data["pageIndex"];
+            this.orderField = _data["orderField"];
+            this.order = _data["order"];
+        }
+    }
+
+    static fromJS(data: any): QueryData {
+        data = typeof data === 'object' ? data : {};
+        let result = new QueryData();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["filterParameters"] = this.filterParameters;
+        data["pageSize"] = this.pageSize;
+        data["pageIndex"] = this.pageIndex;
+        data["orderField"] = this.orderField;
+        data["order"] = this.order;
+        return data; 
+    }
+}
+
+export interface IQueryData {
+    filterParameters?: string | undefined;
+    pageSize?: number;
+    pageIndex?: number;
+    orderField?: string | undefined;
+    order?: string | undefined;
+}
+
+export class AdjuntoDtoQueryResult implements IAdjuntoDtoQueryResult {
+    total?: number;
+    orderBy?: string | undefined;
+    ascending?: boolean;
+    data?: AdjuntoDto[] | undefined;
+
+    constructor(data?: IAdjuntoDtoQueryResult) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.total = _data["total"];
+            this.orderBy = _data["orderBy"];
+            this.ascending = _data["ascending"];
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data!.push(AdjuntoDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): AdjuntoDtoQueryResult {
+        data = typeof data === 'object' ? data : {};
+        let result = new AdjuntoDtoQueryResult();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["total"] = this.total;
+        data["orderBy"] = this.orderBy;
+        data["ascending"] = this.ascending;
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IAdjuntoDtoQueryResult {
+    total?: number;
+    orderBy?: string | undefined;
+    ascending?: boolean;
+    data?: AdjuntoDto[] | undefined;
+}
+
 export class LoginAttempDto implements ILoginAttempDto {
     email?: string | undefined;
     password?: string | undefined;
@@ -6234,58 +6413,6 @@ export interface IFichaDto {
     origen?: PaisDto;
     seguimientos?: SeguimientoDto[] | undefined;
     adjuntos?: AdjuntoDto[] | undefined;
-}
-
-export class QueryData implements IQueryData {
-    filterParameters?: string | undefined;
-    pageSize?: number;
-    pageIndex?: number;
-    orderField?: string | undefined;
-    order?: string | undefined;
-
-    constructor(data?: IQueryData) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.filterParameters = _data["filterParameters"];
-            this.pageSize = _data["pageSize"];
-            this.pageIndex = _data["pageIndex"];
-            this.orderField = _data["orderField"];
-            this.order = _data["order"];
-        }
-    }
-
-    static fromJS(data: any): QueryData {
-        data = typeof data === 'object' ? data : {};
-        let result = new QueryData();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["filterParameters"] = this.filterParameters;
-        data["pageSize"] = this.pageSize;
-        data["pageIndex"] = this.pageIndex;
-        data["orderField"] = this.orderField;
-        data["order"] = this.order;
-        return data; 
-    }
-}
-
-export interface IQueryData {
-    filterParameters?: string | undefined;
-    pageSize?: number;
-    pageIndex?: number;
-    orderField?: string | undefined;
-    order?: string | undefined;
 }
 
 export class FichaDtoQueryResult implements IFichaDtoQueryResult {

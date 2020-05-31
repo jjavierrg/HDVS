@@ -1,6 +1,10 @@
 {
+  "adjuntos": {
+    "fichero": "Fichero"
+  },
   "comun": {
     "activo": "Activo",
+    "adjuntos": "Adjuntos",
     "apellido1": "Apellido 1",
     "apellido2": "Apellido 2",
     "apellidos": "Apellidos",
@@ -17,6 +21,7 @@
     "organizaciones": "Organizaciones",
     "perfiles": "Perfiles",
     "permisos": "Permisos",
+    "seguimientos": "Seguimientos",
     "telefono": "Teléfono",
     "usuarios": "Usuarios",
     "web": "Web"
@@ -39,6 +44,7 @@
     "confirmar-eliminacion-titulo": "Confirmar eliminación",
     "datos-corruptos": "No se han podido leer los datos introducidos",
     "datos-guardados": "Datos guardados correctamente",
+    "descargar": "Descargar",
     "editar": "Editar",
     "elementos-eliminados": "Se han eliminado los elementos seleccionados",
     "eliminar": "Eliminar",
@@ -50,19 +56,22 @@
     "siguiente": "Siguiente",
     "subiendo": "Subiendo",
     "subir-ficheros": "Subir Ficheros",
-    "subir-ficheros-o-arrastrar": "Arrastre los ficheros o haga click aquí"
+    "subir-ficheros-o-arrastrar": "Arrastre los ficheros o haga click aquí",
+    "tamano": "Tamaño"
   },
   "ficha": {
-    "acepta-politica": "Acepta y firma la política de privacidad",
+    "acepta-politica": "Acepta y firma política privacidad",
     "alta-titulo": "Escribe el nombre y al menos un apellido",
     "codigo-postal": "Código Postal",
     "coincidencias-encontradas": "Coincidencias encontradas",
     "coincidencias-mensaje": "Se han encontrado las siguientes fichas con los datos introducidos. Si no se trata de ninguna de estas fichas, pulse en Añadir.",
+    "datos": "Datos",
     "dni": "DNI/NIE/Pasaporte",
     "domicilio": "Domicilio",
+    "edad": "Edad",
     "empadronamiento": "Empadronamiento",
     "fecha-nacimiento": "Fecha de Nacimiento",
-    "fotocopia-dni": "Fotocopia DNI",
+    "fotocopia-dni": "Fotocopia Ident.",
     "genero": "Género",
     "municipio": "Municipio",
     "nacionalidad": "Nacionalidad",
