@@ -6,6 +6,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { CoreModule } from 'src/app/core/core.module';
 import { FormsModule } from '@angular/forms';
 import { InputModule } from 'src/app/shared/modules/input/input.module';
+import { ImageModule } from 'src/app/shared/modules/image/image.module';
 
 const routes: Routes = [
   {
@@ -18,6 +19,6 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [ProfileComponent],
-  imports: [CommonModule, CoreModule, FormsModule, InputModule, RouterModule.forChild(routes)],
+  imports: [CommonModule, CoreModule, FormsModule, InputModule, RouterModule.forChild(routes), ImageModule],
 })
 export class ProfileModule {}

@@ -4,14 +4,13 @@
         <name>EAPN.HDVS.Web</name>
     </assembly>
     <members>
-        <member name="M:EAPN.HDVS.Web.Controllers.AdjuntosController.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Adjunto},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.AdjuntosController},AutoMapper.IMapper,EAPN.HDVS.Infrastructure.Core.Repository.IReadRepository{EAPN.HDVS.Entities.TipoAdjunto},Microsoft.Extensions.Configuration.IConfiguration,EAPN.HDVS.Infrastructure.Core.Queries.IFilterPaginable{EAPN.HDVS.Entities.Adjunto})">
+        <member name="M:EAPN.HDVS.Web.Controllers.AdjuntosController.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Adjunto},EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.TipoAdjunto},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.AdjuntosController},AutoMapper.IMapper,Microsoft.Extensions.Configuration.IConfiguration,EAPN.HDVS.Infrastructure.Core.Queries.IFilterPaginable{EAPN.HDVS.Entities.Adjunto})">
             <summary>
             </summary>
             <param name="hostingEnvironment"></param>
             <param name="adjuntoService"></param>
             <param name="logger"></param>
             <param name="mapper"></param>
-            <param name="adjuntoRepository"></param>
             <param name="configuration"></param>
         </member>
         <member name="M:EAPN.HDVS.Web.Controllers.AdjuntosController.GetAdjunto(System.Int32)">
@@ -31,6 +30,13 @@
         <member name="M:EAPN.HDVS.Web.Controllers.AdjuntosController.GetFile(System.Int32)">
             <summary>
             Get the item with the specified identifier
+            </summary>
+            <param name="id">Item identifier</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.AdjuntosController.ViewImage(System.Int32)">
+            <summary>
+            Endpoint to view public images or profile images
             </summary>
             <param name="id">Item identifier</param>
             <returns></returns>
@@ -79,6 +85,54 @@
             <summary>
             Get all stored items with related data
             </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.EmpadronamientosController.#ctor(EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Empadronamiento},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.EmpadronamientosController},AutoMapper.IMapper)">
+            <summary>
+            </summary>
+            <param name="empadronamientoService"></param>
+            <param name="logger"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.EmpadronamientosController.GetEmpadronamientos">
+            <summary>
+            Get all stored items
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.EmpadronamientosController.GetEmpadronamientosAsMasterData">
+            <summary>
+            Get all stored items mapped as Masterdata
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.EmpadronamientosController.GetEmpadronamiento(System.Int32)">
+            <summary>
+            Get the item with the specified identifier
+            </summary>
+            <param name="id">Item identifier</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.EmpadronamientosController.PostEmpadronamiento(EAPN.HDVS.Web.Dto.EmpadronamientoDto)">
+            <summary>
+            Add new item to collection
+            </summary>
+            <param name="empadronamientoDto">Item data</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.EmpadronamientosController.PutEmpadronamiento(System.Int32,EAPN.HDVS.Web.Dto.EmpadronamientoDto)">
+            <summary>
+            Update an existing item
+            </summary>
+            <param name="id">Item identifier</param>
+            <param name="empadronamientoDto">Item data</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.EmpadronamientosController.DeleteEmpadronamiento(System.Int32)">
+            <summary>
+            Delete existing item
+            </summary>
+            <param name="id">Item identifier</param>
             <returns></returns>
         </member>
         <member name="M:EAPN.HDVS.Web.Controllers.FichasController.#ctor(EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Ficha},EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Adjunto},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.FichasController},AutoMapper.IMapper,EAPN.HDVS.Infrastructure.Core.Queries.IFilterPaginable{EAPN.HDVS.Entities.Ficha})">

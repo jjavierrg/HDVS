@@ -37,7 +37,7 @@ export class SecureImageComponent implements OnInit, OnChanges {
       this.showFallbackImage = false;
       this.showPlaceholder = true;
     try {
-      const file = await this.apiClient.getFile(adjuntoId).toPromise();
+      const file = await this.apiClient.viewFile(adjuntoId).toPromise();
       return this.domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(file.data));
     } catch (error) {
       this.showFallbackImage = true;

@@ -99,7 +99,7 @@ export class CardFormComponent implements OnInit {
     await this.router.navigate(['/']);
   }
 
-  public onProfilePictureChanged(foto: FichaDto): void {
+  public onProfilePictureChanged(foto: AdjuntoDto): void {
     if (foto) {
       this.card.fotoId = foto.id;
     }

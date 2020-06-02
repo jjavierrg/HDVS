@@ -48,23 +48,24 @@ namespace EAPN.HDVS.Testing.Common
             context.Permisos.Add(new Permiso { Id = 8, Clave = Permissions.PERSONALCARD_WRITE, Descripcion = "Fichas: Escritura" });
             context.Permisos.Add(new Permiso { Id = 9, Clave = Permissions.PERSONALCARD_DELETE, Descripcion = "Fichas: Eliminar" });
             context.Permisos.Add(new Permiso { Id = 10, Clave = Permissions.PERSONALCARD_ACCESS, Descripcion = "Fichas: Acceder" });
+            context.Permisos.Add(new Permiso { Id = 11, Clave = Permissions.PERSONALATTACHMENTS_READ, Descripcion = "Adjuntos: Lectura" });
+            context.Permisos.Add(new Permiso { Id = 12, Clave = Permissions.PERSONALATTACHMENTS_WRITE, Descripcion = "Adjuntos: Escritura" });
+            context.Permisos.Add(new Permiso { Id = 13, Clave = Permissions.PERSONALATTACHMENTS_DELETE, Descripcion = "Adjuntos: Eliminar" });
+            context.Permisos.Add(new Permiso { Id = 14, Clave = Permissions.PERSONALATTACHMENTS_ACCESS, Descripcion = "Adjuntos: Acceder" });
+            context.Permisos.Add(new Permiso { Id = 15, Clave = Permissions.PERSONALINDICATORS_ACCESS, Descripcion = "Indicadores: Lectura" });
+            context.Permisos.Add(new Permiso { Id = 16, Clave = Permissions.PERSONALINDICATORS_WRITE, Descripcion = "Indicadores: Escritura" });
+            context.Permisos.Add(new Permiso { Id = 17, Clave = Permissions.PERSONALINDICATORS_DELETE, Descripcion = "Indicadores: Eliminar" });
+            context.Permisos.Add(new Permiso { Id = 18, Clave = Permissions.PERSONALINDICATORS_ACCESS, Descripcion = "Indicadores: Acceder" });
 
             context.Perfiles.Add(new Perfil { Id = 1, Descripcion = "Usuario" });
             context.Perfiles.Add(new Perfil { Id = 2, Descripcion = "Administrador" });
             context.Perfiles.Add(new Perfil { Id = 3, Descripcion = "UserManagement" });
 
-            context.PerfilesPermisos.Add(new PerfilPermiso { PerfilId = 2, PermisoId = 2 });
-            context.PerfilesPermisos.Add(new PerfilPermiso { PerfilId = 2, PermisoId = 3 });
-            context.PerfilesPermisos.Add(new PerfilPermiso { PerfilId = 2, PermisoId = 4 });
-            context.PerfilesPermisos.Add(new PerfilPermiso { PerfilId = 2, PermisoId = 5 });
-            context.PerfilesPermisos.Add(new PerfilPermiso { PerfilId = 2, PermisoId = 7 });
-            context.PerfilesPermisos.Add(new PerfilPermiso { PerfilId = 2, PermisoId = 8 });
-            context.PerfilesPermisos.Add(new PerfilPermiso { PerfilId = 2, PermisoId = 9 });
-            context.PerfilesPermisos.Add(new PerfilPermiso { PerfilId = 2, PermisoId = 10 });
-            context.PerfilesPermisos.Add(new PerfilPermiso { PerfilId = 3, PermisoId = 2 });
-            context.PerfilesPermisos.Add(new PerfilPermiso { PerfilId = 3, PermisoId = 3 });
-            context.PerfilesPermisos.Add(new PerfilPermiso { PerfilId = 3, PermisoId = 4 });
-            context.PerfilesPermisos.Add(new PerfilPermiso { PerfilId = 3, PermisoId = 5 });
+            for (int i = 2; i <= 18; i++)
+                context.PerfilesPermisos.Add(new PerfilPermiso { PerfilId = 2, PermisoId = i });
+
+            for (int i = 2; i <= 5; i++)
+                context.PerfilesPermisos.Add(new PerfilPermiso { PerfilId = 3, PermisoId = i });
 
             context.Organizaciones.Add(new Organizacion { Activa = true, Id = 1, Nombre = $"Organización activa 1", Observaciones = $"Observaciones Organización activa 1" });
             context.Organizaciones.Add(new Organizacion { Activa = true, Id = 2, Nombre = $"Organización activa 2", Observaciones = $"Observaciones Organización activa 2" });
@@ -115,17 +116,21 @@ namespace EAPN.HDVS.Testing.Common
                 }
             }
 
+            context.Empadronamientos.Add(new Empadronamiento { Id = 1, Descripcion = "Si" });
+            context.Empadronamientos.Add(new Empadronamiento { Id = 2, Descripcion = "No" });
+            context.Empadronamientos.Add(new Empadronamiento { Id = 3, Descripcion = "En Trámite" });
+
             context.Sexos.Add(new Sexo { Id = 1, Descripcion = "Hombre" });
             context.Sexos.Add(new Sexo { Id = 2, Descripcion = "Mujer" });
             context.Sexos.Add(new Sexo { Id = 3, Descripcion = "Otros" });
 
-            context.SituacionesAdministrativas.Add(new SituacionAdministrativa { Id = 1, Descripcion = "Empresario con asalariadas/os" });
-            context.SituacionesAdministrativas.Add(new SituacionAdministrativa { Id = 2, Descripcion = "Autónomo" });
-            context.SituacionesAdministrativas.Add(new SituacionAdministrativa { Id = 3, Descripcion = "Cooperativista" });
-            context.SituacionesAdministrativas.Add(new SituacionAdministrativa { Id = 4, Descripcion = "Asalariado" });
-            context.SituacionesAdministrativas.Add(new SituacionAdministrativa { Id = 5, Descripcion = "En paro" });
-            context.SituacionesAdministrativas.Add(new SituacionAdministrativa { Id = 6, Descripcion = "Trabajo a tiempo total" });
-            context.SituacionesAdministrativas.Add(new SituacionAdministrativa { Id = 7, Descripcion = "Trabajo a tiempo parcial" });
+            context.SituacionesAdministrativas.Add(new SituacionAdministrativa { Id = 1, Descripcion = "Permiso de trabajo y residencia" });
+            context.SituacionesAdministrativas.Add(new SituacionAdministrativa { Id = 2, Descripcion = "Permiso de residencia" });
+            context.SituacionesAdministrativas.Add(new SituacionAdministrativa { Id = 3, Descripcion = "Situación irregular" });
+            context.SituacionesAdministrativas.Add(new SituacionAdministrativa { Id = 4, Descripcion = "Protección internacional" });
+            context.SituacionesAdministrativas.Add(new SituacionAdministrativa { Id = 5, Descripcion = "Solicitante de Protección internacional" });
+            context.SituacionesAdministrativas.Add(new SituacionAdministrativa { Id = 6, Descripcion = "NIE ciudadanos comunitarios" });
+            context.SituacionesAdministrativas.Add(new SituacionAdministrativa { Id = 7, Descripcion = "DNI" });
 
             for (int i = 1; i < 11; i++)
                 context.Paises.Add(new Pais { Id = i, Descripcion = $"Pais {i}" });

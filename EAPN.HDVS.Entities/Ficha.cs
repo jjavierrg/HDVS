@@ -56,7 +56,7 @@ namespace EAPN.HDVS.Entities
         public Sexo Genero { get; set; }
         public Municipio Municipio { get; set; }
         public Provincia Provincia { get; set; }
-        public Municipio Padron { get; set; }
+        public Empadronamiento Padron { get; set; }
         public Pais Nacionalidad { get; set; }
         public Pais Origen { get; set; }
         public SituacionAdministrativa SituacionAdministrativa { get; set; }

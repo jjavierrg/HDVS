@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { AuthenticatedGuard } from 'src/app/core/guards/authenticate.guard';
 import { Permissions } from 'src/app/core/enums/permissions.enum';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { ImageModule } from 'src/app/shared/modules/image/image.module';
 
 const routes: Routes = [
   {
@@ -55,6 +56,6 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [UserManagementListComponent, UserManagementFormComponent],
-  imports: [CoreModule, CommonModule, GridModule, RouterModule.forChild(routes), InputModule, FormsModule, NgbModalModule],
+  imports: [CoreModule, CommonModule, GridModule, RouterModule.forChild(routes), ImageModule, InputModule, FormsModule, NgbModalModule],
 })
 export class UserManagementModule {}

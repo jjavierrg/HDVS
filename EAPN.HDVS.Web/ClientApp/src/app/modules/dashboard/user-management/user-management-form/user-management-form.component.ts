@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserManagementService } from 'src/app/core/services/user-management.service';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { UsuarioDto, PerfilDto, PermisoDto, OrganizacionDto, MasterDataDto } from 'src/app/core/api/api.client';
+import { UsuarioDto, PerfilDto, PermisoDto, OrganizacionDto, MasterDataDto, AdjuntoDto } from 'src/app/core/api/api.client';
 import { TranslateService } from '@ngx-translate/core';
 import { Permissions } from 'src/app/core/enums/permissions.enum';
 import { AuthenticationService } from 'src/app/core/services/authentication.service';
@@ -79,6 +79,15 @@ export class UserManagementFormComponent implements OnInit {
 
   public async onCancel(): Promise<void> {
     await this.router.navigate(['../'], { relativeTo: this.route });
+  }
+
+  public async onProfilePictureChanged(foto: AdjuntoDto): Promise<void> {
+    if (!foto) {
+      return;
+    }
+
+    this.usuario.fotoId = foto.id;
+    this.saveUser(this.usuario);
   }
 
   private async saveUser(usuario: UsuarioDto): Promise<boolean> {

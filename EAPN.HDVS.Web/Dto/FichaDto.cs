@@ -42,7 +42,7 @@ namespace EAPN.HDVS.Web.Dto
         public SexoDto Genero { get; set; }
         public MunicipioDto Municipio { get; set; }
         public ProvinciaDto Provincia { get; set; }
-        public MunicipioDto Padron { get; set; }
+        public EmpadronamientoDto Padron { get; set; }
         public PaisDto Nacionalidad { get; set; }
         public PaisDto Origen { get; set; }
 

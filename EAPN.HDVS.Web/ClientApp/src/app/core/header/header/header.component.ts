@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { AuthenticationService } from '../../services/authentication.service';
-import { Permissions } from '../../enums/permissions.enum';
 import { Router } from '@angular/router';
+import { DatosUsuarioDto } from '../../api/api.client';
+import { Permissions } from '../../enums/permissions.enum';
+import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
   selector: 'app-header',
@@ -11,13 +10,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  public username: Observable<string>;
+  public usuario: DatosUsuarioDto;
   public permissions = Permissions;
 
   constructor(private authService: AuthenticationService, private router: Router) {}
 
   ngOnInit() {
-    this.username = this.authService.getUserObservable().pipe(map((user) => (!!user ? user.email : '')));
+    this.authService.getDatosUsuario().subscribe((x) => (this.usuario = x));
   }
 
   public onLogout(): void {

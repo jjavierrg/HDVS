@@ -3,8 +3,10 @@ using EAPN.HDVS.Application.Core.Services;
 using EAPN.HDVS.Entities;
 using EAPN.HDVS.Infrastructure.Core.Queries;
 using EAPN.HDVS.Infrastructure.Core.Repository;
+using EAPN.HDVS.Shared.Permissions;
 using EAPN.HDVS.Web.Dto;
 using EAPN.HDVS.Web.Extensions;
+using EAPN.HDVS.Web.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -27,7 +29,7 @@ namespace EAPN.HDVS.Web.Controllers
     {
         private IWebHostEnvironment _hostingEnvironment;
         private readonly ICrudServiceBase<Adjunto> _adjuntoService;
-        private readonly IReadRepository<TipoAdjunto> _adjuntoRepository;
+        private readonly ICrudServiceBase<TipoAdjunto> _adjuntoTipoService;
         private readonly ILogger<AdjuntosController> _logger;
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
@@ -40,21 +42,20 @@ namespace EAPN.HDVS.Web.Controllers
         /// <param name="adjuntoService"></param>
         /// <param name="logger"></param>
         /// <param name="mapper"></param>
-        /// <param name="adjuntoRepository"></param>
         /// <param name="configuration"></param>
         public AdjuntosController(IWebHostEnvironment hostingEnvironment,
                                   ICrudServiceBase<Adjunto> adjuntoService,
+                                  ICrudServiceBase<TipoAdjunto> adjuntoTipoService,
                                   ILogger<AdjuntosController> logger,
                                   IMapper mapper,
-                                  IReadRepository<TipoAdjunto> adjuntoRepository,
                                   IConfiguration configuration,
                                   IFilterPaginable<Adjunto> filterPaginator)
         {
             _hostingEnvironment = hostingEnvironment ?? throw new ArgumentNullException(nameof(hostingEnvironment));
             _adjuntoService = adjuntoService ?? throw new ArgumentNullException(nameof(adjuntoService));
+            _adjuntoTipoService = adjuntoTipoService ?? throw new ArgumentNullException(nameof(adjuntoTipoService));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            _adjuntoRepository = adjuntoRepository ?? throw new ArgumentNullException(nameof(adjuntoRepository));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _filterPaginator = filterPaginator ?? throw new ArgumentNullException(nameof(filterPaginator));
 
@@ -67,6 +68,7 @@ namespace EAPN.HDVS.Web.Controllers
         /// <param name="id">Item identifier</param>
         /// <returns></returns>
         [HttpGet("{id}", Name = "GetAdjunto")]
+        [AuthorizePermission(Permissions.PERSONALATTACHMENTS_READ)]
         [ProducesResponseType(typeof(AdjuntoDto), StatusCodes.Status200OK)]
         public async Task<ActionResult<AdjuntoDto>> GetAdjunto(int id)
         {
@@ -85,6 +87,7 @@ namespace EAPN.HDVS.Web.Controllers
         /// <param name="query">Query criteria filter</param>
         /// <returns></returns>
         [HttpPost("filtered", Name = "GetAdjuntosFiltered")]
+        [AuthorizePermission(Permissions.PERSONALATTACHMENTS_READ)]
         [ProducesResponseType(typeof(QueryResult<AdjuntoDto>), StatusCodes.Status200OK)]
         public async Task<ActionResult<QueryResult<AdjuntoDto>>> GetAdjuntosFiltered([FromBody]QueryData query)
         {
@@ -101,6 +104,7 @@ namespace EAPN.HDVS.Web.Controllers
         /// <returns></returns>
         [HttpGet("file/{id}", Name = "GetFile")]
         [Produces("application/octet-stream")]
+        [AuthorizePermission(Permissions.PERSONALATTACHMENTS_READ)]
         [ProducesResponseType(typeof(FileStreamResult), StatusCodes.Status200OK)]
         public async Task<FileStreamResult> GetFile(int id)
         {
@@ -123,6 +127,37 @@ namespace EAPN.HDVS.Web.Controllers
         }
 
         /// <summary>
+        /// Endpoint to view public images or profile images
+        /// </summary>
+        /// <param name="id">Item identifier</param>
+        /// <returns></returns>
+        [HttpGet("view/{id}", Name = "ViewFile")]
+        [Produces("application/octet-stream")]
+        [ProducesResponseType(typeof(FileStreamResult), StatusCodes.Status200OK)]
+        public async Task<FileStreamResult> ViewImage(int id)
+        {
+            var adjunto = await _adjuntoService.GetFirstOrDefault(x => x.Id == id, q => q.Include(x => x.Tipo).Include(x => x.FotoUsuario).Include(x => x.FotoFicha));
+
+            if (adjunto == null)
+                return null;
+
+            // Verificamos restricciones
+            if (adjunto.OrganizacionId.HasValue && adjunto.OrganizacionId.Value != User.GetUserOrganizacionId() && !User.HasSuperAdminPermission())
+                return null;
+
+            if (adjunto.OrganizacionId.HasValue && adjunto.FotoFicha == null && adjunto.FotoUsuario == null)
+                return null;
+
+            var filePath = Path.Combine(_hostingEnvironment.ContentRootPath, _attachmentsFolder, adjunto.Tipo?.Carpeta, adjunto.Alias);
+            var fileStream = System.IO.File.OpenRead(filePath);
+
+            var pvd = new FileExtensionContentTypeProvider();
+            bool isKnownType = pvd.TryGetContentType(adjunto.Alias, out string mimeType);
+
+            return File(fileStream, isKnownType ? mimeType : "application/octet-stream"); 
+        }
+
+        /// <summary>
         /// Add new item to collection
         /// </summary>
         /// <param name="subidaAdjuntoDto">Item data</param>
@@ -137,7 +172,14 @@ namespace EAPN.HDVS.Web.Controllers
             if (subidaAdjuntoDto.File.Length == 0)
                 return NoContent();
 
-            var tipo = await _adjuntoRepository.GetFirstOrDefault(x => x.Id == subidaAdjuntoDto.TipoId);
+            // user with no specific permission, only can update their user image
+            if (!User.HasPermission(Permissions.PERSONALATTACHMENTS_WRITE) &&
+                (subidaAdjuntoDto.FichaId.HasValue 
+                || !subidaAdjuntoDto.OrganizacionId.HasValue 
+                || subidaAdjuntoDto.OrganizacionId != User.GetUserOrganizacionId()))
+                return BadRequest();
+
+            var tipo = await _adjuntoTipoService.GetFirstOrDefault(x => x.Id == subidaAdjuntoDto.TipoId);
             var extension = Path.GetExtension(subidaAdjuntoDto.File.FileName);
             var adjunto = new Adjunto
             {
@@ -179,6 +221,7 @@ namespace EAPN.HDVS.Web.Controllers
         /// <returns></returns>
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [AuthorizePermission(Permissions.PERSONALATTACHMENTS_DELETE)]
         [HttpDelete("{id}", Name = "DeleteAdjunto")]
         public async Task<IActionResult> DeleteAdjunto(int id)
         {

@@ -12,6 +12,7 @@ namespace EAPN.HDVS.Infrastructure.Configurations
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Id).HasColumnName(nameof(Usuario.Id)).IsRequired().ValueGeneratedOnAdd();
+            builder.Property(x => x.FotoId).HasColumnName(nameof(Ficha.FotoId));
             builder.Property(x => x.OrganizacionId).HasColumnName(nameof(Usuario.OrganizacionId)).IsRequired();
             builder.Property(x => x.Nombre).HasColumnName(nameof(Usuario.Nombre)).HasMaxLength(150);
             builder.Property(x => x.Apellidos).HasColumnName(nameof(Usuario.Apellidos)).HasMaxLength(150);
@@ -27,6 +28,7 @@ namespace EAPN.HDVS.Infrastructure.Configurations
 
             builder.Ignore(x => x.NombreCompleto);
 
+            builder.HasOne(x => x.Foto).WithOne(x => x.FotoUsuario).HasForeignKey<Usuario>(x => x.FotoId).OnDelete(DeleteBehavior.Restrict);
             builder.HasMany(x => x.Perfiles).WithOne(x => x.Usuario).HasForeignKey(x => x.UsuarioId).OnDelete(DeleteBehavior.Cascade);
             builder.HasMany(x => x.PermisosAdicionales).WithOne(x => x.Usuario).HasForeignKey(x => x.UsuarioId).OnDelete(DeleteBehavior.Cascade);
             builder.HasMany(x => x.Tokens).WithOne(x => x.Usuario).HasForeignKey(x => x.UsuarioId).OnDelete(DeleteBehavior.Cascade);

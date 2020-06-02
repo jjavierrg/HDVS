@@ -21,6 +21,7 @@ export class CardPersonalDataComponent implements OnInit, AfterViewInit {
   public countries: MasterDataDto[];
   public provincias: MasterDataDto[];
   public municipios: MasterDataDto[] = [];
+  public empadronamientos: MasterDataDto[] = [];
   public users: MasterDataDto[] = [];
 
   constructor(private masterdataService: MasterdataService, private authService: AuthenticationService) {}
@@ -29,12 +30,13 @@ export class CardPersonalDataComponent implements OnInit, AfterViewInit {
     const partnerId: number = await this.authService.getUserPartnerId().toPromise();
 
     // Load Data
-    const [genders, countries, provincias, situacAdminis, users] = await Promise.all([
+    const [genders, countries, provincias, situacAdminis, users, empadronamientos] = await Promise.all([
       this.masterdataService.getGenders().toPromise(),
       this.masterdataService.getCountries().toPromise(),
       this.masterdataService.getProvincias().toPromise(),
       this.masterdataService.getSituacionesAdministrativas().toPromise(),
       this.masterdataService.getUsuariosByPartnerId(partnerId).toPromise(),
+      this.masterdataService.getEmpadronamientos().toPromise(),
     ]);
 
     this.genders = genders;
@@ -42,6 +44,7 @@ export class CardPersonalDataComponent implements OnInit, AfterViewInit {
     this.provincias = provincias;
     this.situacAdminis = situacAdminis;
     this.users = users;
+    this.empadronamientos = empadronamientos;
 
     if (this.card.provinciaId) {
       this.municipios = await this.masterdataService.getMunicipiosByProvincia(this.card.provinciaId).toPromise();

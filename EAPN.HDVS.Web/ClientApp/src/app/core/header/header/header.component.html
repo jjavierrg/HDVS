@@ -8,10 +8,15 @@
       <h3 class="d-inline d-lg-none text-uppercase">{{ 'header.titulo-abreviado' | translate }}</h3>
     </span>
   </a>
-  <ul class="navbar-nav">
+  <ul class="navbar-nav" *ngIf="usuario">
     <li class="nav-item" ngbDropdown>
-      <a class="nav-link c-pointer" ngbDropdownToggle>
-        {{ username | async }}
+      <div class="nav-link c-pointer header-photo" ngbDropdownToggle *ngIf="usuario.fotoId">
+        <app-secure-image [adjuntoId]="usuario.fotoId" fallbackImagePath="assets/user.svg"
+          imageClasses="profile-picture rounded-circle">
+        </app-secure-image>
+      </div>
+      <a class="nav-link c-pointer" ngbDropdownToggle *ngIf="!usuario.fotoId">
+        {{ usuario.email }}
       </a>
       <div ngbDropdownMenu class="dropdown-menu dropdown-menu-right">
         <a ngbDropdownItem *appAllowedPermissions="{permissions: [permissions.usermanagement.access]}"

@@ -40,6 +40,12 @@ export interface IApiClient {
      */
     getFile(id: number): Observable<FileResponse>;
     /**
+     * Endpoint to view public images or profile images
+     * @param id Item identifier
+     * @return Success
+     */
+    viewFile(id: number): Observable<FileResponse>;
+    /**
      * Add new item to collection
      * @param tipoId (optional) 
      * @param fichaId (optional) 
@@ -78,6 +84,41 @@ export interface IApiClient {
      * @return Success
      */
     getDimensiones(): Observable<DimensionDto[]>;
+    /**
+     * Get all stored items
+     * @return Success
+     */
+    getEmpadronamientos(): Observable<EmpadronamientoDto[]>;
+    /**
+     * Add new item to collection
+     * @param body (optional) Item data
+     * @return Success
+     */
+    postEmpadronamiento(body?: EmpadronamientoDto | undefined): Observable<EmpadronamientoDto>;
+    /**
+     * Get all stored items mapped as Masterdata
+     * @return Success
+     */
+    getEmpadronamientosAsMasterData(): Observable<MasterDataDto[]>;
+    /**
+     * Get the item with the specified identifier
+     * @param id Item identifier
+     * @return Success
+     */
+    getEmpadronamiento(id: number): Observable<EmpadronamientoDto>;
+    /**
+     * Update an existing item
+     * @param id Item identifier
+     * @param body (optional) Item data
+     * @return Success
+     */
+    putEmpadronamiento(id: number, body?: EmpadronamientoDto | undefined): Observable<void>;
+    /**
+     * Delete existing item
+     * @param id Item identifier
+     * @return Success
+     */
+    deleteEmpadronamiento(id: number): Observable<void>;
     /**
      * Get all stored items with related data
      * @return Success
@@ -731,6 +772,68 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Endpoint to view public images or profile images
+     * @param id Item identifier
+     * @return Success
+     */
+    viewFile(id: number): Observable<FileResponse> {
+        let url_ = this.baseUrl + "/api/Adjuntos/view/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/octet-stream"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processViewFile(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processViewFile(<any>response_);
+                } catch (e) {
+                    return <Observable<FileResponse>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<FileResponse>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processViewFile(response: HttpResponseBase): Observable<FileResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return _observableOf({ fileName: fileName, data: <any>responseBlob, status: status, headers: _headers });
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Unauthorized", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Forbidden", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<FileResponse>(<any>null);
+    }
+
+    /**
      * Add new item to collection
      * @param tipoId (optional) 
      * @param fichaId (optional) 
@@ -1182,6 +1285,409 @@ export class ApiClient implements IApiClient {
             }));
         }
         return _observableOf<DimensionDto[]>(<any>null);
+    }
+
+    /**
+     * Get all stored items
+     * @return Success
+     */
+    getEmpadronamientos(): Observable<EmpadronamientoDto[]> {
+        let url_ = this.baseUrl + "/api/Empadronamientos";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetEmpadronamientos(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetEmpadronamientos(<any>response_);
+                } catch (e) {
+                    return <Observable<EmpadronamientoDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<EmpadronamientoDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetEmpadronamientos(response: HttpResponseBase): Observable<EmpadronamientoDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(EmpadronamientoDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Unauthorized", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Forbidden", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<EmpadronamientoDto[]>(<any>null);
+    }
+
+    /**
+     * Add new item to collection
+     * @param body (optional) Item data
+     * @return Success
+     */
+    postEmpadronamiento(body?: EmpadronamientoDto | undefined): Observable<EmpadronamientoDto> {
+        let url_ = this.baseUrl + "/api/Empadronamientos";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPostEmpadronamiento(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPostEmpadronamiento(<any>response_);
+                } catch (e) {
+                    return <Observable<EmpadronamientoDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<EmpadronamientoDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processPostEmpadronamiento(response: HttpResponseBase): Observable<EmpadronamientoDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 201) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result201: any = null;
+            let resultData201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result201 = EmpadronamientoDto.fromJS(resultData201);
+            return _observableOf(result201);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Unauthorized", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Forbidden", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<EmpadronamientoDto>(<any>null);
+    }
+
+    /**
+     * Get all stored items mapped as Masterdata
+     * @return Success
+     */
+    getEmpadronamientosAsMasterData(): Observable<MasterDataDto[]> {
+        let url_ = this.baseUrl + "/api/Empadronamientos/masterdata";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetEmpadronamientosAsMasterData(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetEmpadronamientosAsMasterData(<any>response_);
+                } catch (e) {
+                    return <Observable<MasterDataDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<MasterDataDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetEmpadronamientosAsMasterData(response: HttpResponseBase): Observable<MasterDataDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(MasterDataDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Unauthorized", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Forbidden", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<MasterDataDto[]>(<any>null);
+    }
+
+    /**
+     * Get the item with the specified identifier
+     * @param id Item identifier
+     * @return Success
+     */
+    getEmpadronamiento(id: number): Observable<EmpadronamientoDto> {
+        let url_ = this.baseUrl + "/api/Empadronamientos/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetEmpadronamiento(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetEmpadronamiento(<any>response_);
+                } catch (e) {
+                    return <Observable<EmpadronamientoDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<EmpadronamientoDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetEmpadronamiento(response: HttpResponseBase): Observable<EmpadronamientoDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = EmpadronamientoDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Unauthorized", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Forbidden", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<EmpadronamientoDto>(<any>null);
+    }
+
+    /**
+     * Update an existing item
+     * @param id Item identifier
+     * @param body (optional) Item data
+     * @return Success
+     */
+    putEmpadronamiento(id: number, body?: EmpadronamientoDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/Empadronamientos/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPutEmpadronamiento(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPutEmpadronamiento(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processPutEmpadronamiento(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = ProblemDetails.fromJS(resultData400);
+            return throwException("Bad Request", status, _responseText, _headers, result400);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+            }));
+        } else if (status === 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Unauthorized", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Forbidden", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * Delete existing item
+     * @param id Item identifier
+     * @return Success
+     */
+    deleteEmpadronamiento(id: number): Observable<void> {
+        let url_ = this.baseUrl + "/api/Empadronamientos/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteEmpadronamiento(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteEmpadronamiento(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDeleteEmpadronamiento(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+            }));
+        } else if (status === 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Unauthorized", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Forbidden", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
     }
 
     /**
@@ -5920,6 +6426,7 @@ export interface IRefreshTokenAttempDto {
 
 export class DatosUsuarioDto implements IDatosUsuarioDto {
     id?: number;
+    fotoId?: number | undefined;
     email?: string | undefined;
     nombre?: string | undefined;
     apellidos?: string | undefined;
@@ -5938,6 +6445,7 @@ export class DatosUsuarioDto implements IDatosUsuarioDto {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
+            this.fotoId = _data["fotoId"];
             this.email = _data["email"];
             this.nombre = _data["nombre"];
             this.apellidos = _data["apellidos"];
@@ -5956,6 +6464,7 @@ export class DatosUsuarioDto implements IDatosUsuarioDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
+        data["fotoId"] = this.fotoId;
         data["email"] = this.email;
         data["nombre"] = this.nombre;
         data["apellidos"] = this.apellidos;
@@ -5967,6 +6476,7 @@ export class DatosUsuarioDto implements IDatosUsuarioDto {
 
 export interface IDatosUsuarioDto {
     id?: number;
+    fotoId?: number | undefined;
     email?: string | undefined;
     nombre?: string | undefined;
     apellidos?: string | undefined;
@@ -6162,6 +6672,86 @@ export interface IDimensionDto {
     categorias?: CategoriaDto[] | undefined;
 }
 
+export class EmpadronamientoDto implements IEmpadronamientoDto {
+    id?: number;
+    descripcion?: string | undefined;
+
+    constructor(data?: IEmpadronamientoDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.descripcion = _data["descripcion"];
+        }
+    }
+
+    static fromJS(data: any): EmpadronamientoDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new EmpadronamientoDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["descripcion"] = this.descripcion;
+        return data; 
+    }
+}
+
+export interface IEmpadronamientoDto {
+    id?: number;
+    descripcion?: string | undefined;
+}
+
+export class MasterDataDto implements IMasterDataDto {
+    id?: number;
+    descripcion?: string | undefined;
+
+    constructor(data?: IMasterDataDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.descripcion = _data["descripcion"];
+        }
+    }
+
+    static fromJS(data: any): MasterDataDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new MasterDataDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["descripcion"] = this.descripcion;
+        return data; 
+    }
+}
+
+export interface IMasterDataDto {
+    id?: number;
+    descripcion?: string | undefined;
+}
+
 export class OrganizacionDto implements IOrganizacionDto {
     id?: number;
     nombre?: string | undefined;
@@ -6226,48 +6816,9 @@ export interface IOrganizacionDto {
     numeroUsuarios?: number;
 }
 
-export class MasterDataDto implements IMasterDataDto {
-    id?: number;
-    descripcion?: string | undefined;
-
-    constructor(data?: IMasterDataDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.descripcion = _data["descripcion"];
-        }
-    }
-
-    static fromJS(data: any): MasterDataDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new MasterDataDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["descripcion"] = this.descripcion;
-        return data; 
-    }
-}
-
-export interface IMasterDataDto {
-    id?: number;
-    descripcion?: string | undefined;
-}
-
 export class UsuarioDto implements IUsuarioDto {
     id?: number;
+    fotoId?: number | undefined;
     organizacionId?: number;
     email?: string | undefined;
     telefono?: string | undefined;
@@ -6293,6 +6844,7 @@ export class UsuarioDto implements IUsuarioDto {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
+            this.fotoId = _data["fotoId"];
             this.organizacionId = _data["organizacionId"];
             this.email = _data["email"];
             this.telefono = _data["telefono"];
@@ -6326,6 +6878,7 @@ export class UsuarioDto implements IUsuarioDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
+        data["fotoId"] = this.fotoId;
         data["organizacionId"] = this.organizacionId;
         data["email"] = this.email;
         data["telefono"] = this.telefono;
@@ -6352,6 +6905,7 @@ export class UsuarioDto implements IUsuarioDto {
 
 export interface IUsuarioDto {
     id?: number;
+    fotoId?: number | undefined;
     organizacionId?: number;
     email?: string | undefined;
     telefono?: string | undefined;
@@ -6626,7 +7180,7 @@ export class FichaDto implements IFichaDto {
     genero?: SexoDto;
     municipio?: MunicipioDto;
     provincia?: ProvinciaDto;
-    padron?: MunicipioDto;
+    padron?: EmpadronamientoDto;
     nacionalidad?: PaisDto;
     origen?: PaisDto;
     seguimientos?: SeguimientoViewDto[] | undefined;
@@ -6678,7 +7232,7 @@ export class FichaDto implements IFichaDto {
             this.genero = _data["genero"] ? SexoDto.fromJS(_data["genero"]) : <any>undefined;
             this.municipio = _data["municipio"] ? MunicipioDto.fromJS(_data["municipio"]) : <any>undefined;
             this.provincia = _data["provincia"] ? ProvinciaDto.fromJS(_data["provincia"]) : <any>undefined;
-            this.padron = _data["padron"] ? MunicipioDto.fromJS(_data["padron"]) : <any>undefined;
+            this.padron = _data["padron"] ? EmpadronamientoDto.fromJS(_data["padron"]) : <any>undefined;
             this.nacionalidad = _data["nacionalidad"] ? PaisDto.fromJS(_data["nacionalidad"]) : <any>undefined;
             this.origen = _data["origen"] ? PaisDto.fromJS(_data["origen"]) : <any>undefined;
             if (Array.isArray(_data["seguimientos"])) {
@@ -6791,7 +7345,7 @@ export interface IFichaDto {
     genero?: SexoDto;
     municipio?: MunicipioDto;
     provincia?: ProvinciaDto;
-    padron?: MunicipioDto;
+    padron?: EmpadronamientoDto;
     nacionalidad?: PaisDto;
     origen?: PaisDto;
     seguimientos?: SeguimientoViewDto[] | undefined;

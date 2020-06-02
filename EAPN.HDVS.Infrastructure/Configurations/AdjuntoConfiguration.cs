@@ -23,6 +23,8 @@ namespace EAPN.HDVS.Infrastructure.Configurations
 
             builder.HasOne(x => x.Tipo).WithMany().HasForeignKey(x => x.TipoId).OnDelete(DeleteBehavior.Cascade);
             builder.HasOne(x => x.Ficha).WithMany(x => x.Adjuntos).HasForeignKey(x => x.FichaId).OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(x => x.FotoFicha).WithOne(x => x.Foto).HasForeignKey<Ficha>(x => x.FotoId).OnDelete(DeleteBehavior.SetNull);
+            builder.HasOne(x => x.FotoUsuario).WithOne(x => x.Foto).HasForeignKey<Usuario>(x => x.FotoId).OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

@@ -7,6 +7,7 @@ namespace EAPN.HDVS.Entities
     public class Usuario
     {
         public int Id { get; set; }
+        public int? FotoId { get; set; }
         public int OrganizacionId { get; set; }
         public string Email { get; set; }
         public string Telefono { get; set; }
@@ -24,5 +25,6 @@ namespace EAPN.HDVS.Entities
         public IList<RefreshToken> Tokens { get; set; }
         public Organizacion Organizacion { get; set; }
         public DateTime FechaAlta { get; set; }
+        public Adjunto Foto { get; set; }
     }
 }

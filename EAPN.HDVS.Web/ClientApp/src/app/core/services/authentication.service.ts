@@ -70,7 +70,7 @@ export class AuthenticationService {
 
     return this.getUserPermissions().pipe(
       map((userPermissions) => {
-        if (!userPermissions) {
+        if (!userPermissions || !userPermissions.length) {
           return false;
         }
 

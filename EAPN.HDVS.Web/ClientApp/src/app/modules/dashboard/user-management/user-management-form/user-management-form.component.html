@@ -1,6 +1,11 @@
 <div class="container" *ngIf="usuario">
   <div class="card border-0">
-    <h5 class="card-header toolbar text-light justify-content-start">{{ title }}</h5>
+    <div class="card-header toolbar align-items-end justify-content-start border-bottom-0 flex-column flex-lg-row">
+      <app-secure-profile-image [photoId]="usuario.fotoId" class="profile-picture align-self-center"
+        [organizacionId]="usuario.organizacionId" (imageChange)="onProfilePictureChanged($event)">
+      </app-secure-profile-image>
+      <h5 class="ml-3 flex-grow-1 text-light align-self-center">{{title}}</h5>
+    </div>
     <div class="card-body border border-top-0">
       <form (ngSubmit)="onSaveUser()" #userForm="ngForm">
         <div class="form-row">

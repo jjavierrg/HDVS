@@ -6,6 +6,7 @@ namespace EAPN.HDVS.Web.Dto
     public class UsuarioDto
     {
         public int Id { get; set; }
+        public int? FotoId { get; set; }
         public int OrganizacionId { get; set; }
         public string Email { get; set; }
         public string Telefono { get; set; }

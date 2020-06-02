@@ -27,6 +27,7 @@ namespace EAPN.HDVS.Infrastructure.Context
         public virtual DbSet<Organizacion> Organizaciones { get; set; }
         public virtual DbSet<Ficha> Fichas { get; set; }
         public virtual DbSet<SituacionAdministrativa> SituacionesAdministrativas { get; set; }
+        public virtual DbSet<Empadronamiento> Empadronamientos { get; set; }
         public virtual DbSet<Sexo> Sexos { get; set; }
         public virtual DbSet<Pais> Paises { get; set; }
         public virtual DbSet<Provincia> Provincias { get; set; }
@@ -56,6 +57,7 @@ namespace EAPN.HDVS.Infrastructure.Context
             modelBuilder.ApplyConfiguration(new Configurations.RefreshTokenConfiguration());
 
             modelBuilder.ApplyConfiguration(new Configurations.OrganizacionConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.EmpadronamientoConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.ProvinciaConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.MunicipioConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.PaisConfiguration());

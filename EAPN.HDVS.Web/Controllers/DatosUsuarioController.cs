@@ -69,6 +69,7 @@ namespace EAPN.HDVS.Web.Controllers
             }
 
             usuario.Nombre = datosUsuarioDto.Nombre;
+            usuario.FotoId = datosUsuarioDto.FotoId;
             usuario.Apellidos = datosUsuarioDto.Apellidos;
             var result = await _usuarioService.UpdateUserData(usuario, datosUsuarioDto.ClaveActual, datosUsuarioDto.NuevaClave);
 
