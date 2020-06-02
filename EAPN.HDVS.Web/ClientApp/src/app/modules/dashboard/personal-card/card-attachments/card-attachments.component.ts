@@ -1,13 +1,14 @@
-import { Component, Input, OnInit, ApplicationRef } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { AgGridColumn } from 'ag-grid-angular';
+import { AdjuntoDto } from 'src/app/core/api/api.client';
+import { Permissions } from 'src/app/core/enums/permissions.enum';
+import { FileUpload, UploadType } from 'src/app/core/http/file-upload';
+import { AlertService } from 'src/app/core/services/alert.service';
+import { AttachmentService } from 'src/app/core/services/attachments.service';
 import { UploadService } from 'src/app/core/services/upload.service';
 import { Card } from 'src/app/shared/models/card';
-import { AdjuntoDto } from 'src/app/core/api/api.client';
-import { FileUpload, UploadType } from 'src/app/core/http/file-upload';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { AttachmentService } from 'src/app/core/services/attachments.service';
-import { AlertService } from 'src/app/core/services/alert.service';
 
 @Component({
   selector: 'app-card-attachments',

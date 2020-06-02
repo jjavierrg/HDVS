@@ -6,12 +6,24 @@ export const Permissions = {
     delete: 'usermng:delete',
   },
   user: {
-    superadmin: 'user:superadmin'
+    superadmin: 'user:superadmin',
   },
   personalcard: {
     access: 'card:access',
     read: 'card:read',
     write: 'card:write',
     delete: 'card:delete',
+  },
+  personalindicators: {
+    access: 'indicators:access',
+    read: 'indicators:read',
+    write: 'indicators:write',
+    delete: 'indicators:delete',
+  },
+  attachments: {
+    access: 'attachments:access',
+    read: 'attachments:read',
+    write: 'attachments:write',
+    delete: 'attachments:delete',
   },
 };

@@ -1,4 +1,4 @@
-import { Directive, TemplateRef, ViewContainerRef, Input, OnInit, OnDestroy } from '@angular/core';
+import { Directive, TemplateRef, ViewContainerRef, Input, OnDestroy } from '@angular/core';
 import { AuthenticationService } from '../services/authentication.service';
 import { Subscription } from 'rxjs';
 

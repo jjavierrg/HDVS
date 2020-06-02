@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
-import { ApiClient, MasterDataDto } from '../api/api.client';
+import { ApiClient, MasterDataDto, QueryData } from '../api/api.client';
 import { Observable } from 'rxjs';
+import { IBaseFilter, BaseFilter, getFilterQuery } from '../filters/basefilter';
+import { FilterComparison, FilterUnion } from '../filters/filter.enum';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -42,5 +45,14 @@ export class MasterdataService {
 
   public getSituacionesAdministrativas(): Observable<MasterDataDto[]> {
     return this.apiClient.getSituacionesAdministrativasAsMasterData();
+  }
+
+  public getUsuariosByPartnerId(partnerId: number): Observable<MasterDataDto[]> {
+    const filters: IBaseFilter[] = [new BaseFilter('OrganizacionId', +partnerId, FilterComparison.Equal, FilterUnion.And)];
+    const query: QueryData = new QueryData({ filterParameters: getFilterQuery(filters) });
+    return this.apiClient.getUsuariosFiltered(query).pipe(map((result) => result.data.map((x) => new MasterDataDto({
+      id: x.id,
+      descripcion: `${x.nombre} ${x.apellidos}`.trim()
+    }))));
   }
 }

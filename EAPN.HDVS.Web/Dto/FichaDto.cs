@@ -46,7 +46,7 @@ namespace EAPN.HDVS.Web.Dto
         public PaisDto Nacionalidad { get; set; }
         public PaisDto Origen { get; set; }
 
-        public IList<SeguimientoDto> Seguimientos { get; set; }
+        public IList<SeguimientoViewDto> Seguimientos { get; set; }
         public IList<AdjuntoDto> Adjuntos { get; set; }
     }
 }

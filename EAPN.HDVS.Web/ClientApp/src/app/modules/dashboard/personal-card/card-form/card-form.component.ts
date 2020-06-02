@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { FichaDto } from 'src/app/core/api/api.client';
+import { FichaDto, AdjuntoDto, SeguimientoViewDto, SeguimientoDto } from 'src/app/core/api/api.client';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { AuthenticationService } from 'src/app/core/services/authentication.service';
 import { CardService } from 'src/app/core/services/card.service';
 import { Card } from 'src/app/shared/models/card';
+import { Permissions } from 'src/app/core/enums/permissions.enum';
 
 @Component({
   selector: 'app-card-form',
@@ -15,6 +16,7 @@ import { Card } from 'src/app/shared/models/card';
 export class CardFormComponent implements OnInit {
   public card: Card;
   public cardValid: boolean;
+  public permissions = Permissions;
 
   public get fullName(): string {
     if (!this.card) {
@@ -66,9 +68,30 @@ export class CardFormComponent implements OnInit {
   }
 
   public async onSaveCard(): Promise<void> {
-    const success = await this.service.saveCard(this.card).toPromise();
-    if (success) {
-      this.router.navigate(['/']).then(() => this.alertService.success(this.translate.instant('core.datos-guardados')));
+    try {
+      const success = await this.service.saveCard(this.card).toPromise();
+      if (success) {
+        this.router.navigate(['/']).then(() => this.alertService.success(this.translate.instant('core.datos-guardados')));
+      }
+    } catch (error) {
+      this.alertService.error(error);
+    }
+  }
+
+  public async onReviewRequired(reviewId: number): Promise<void> {
+    try {
+      const success = await this.service.saveCard(this.card).toPromise();
+      if (success) {
+        const review: SeguimientoDto = new SeguimientoDto({
+          fichaId: this.card.id,
+          organizacionId: this.card.organizacionId,
+          id: reviewId,
+          usuarioId: this.card.usuarioId
+        });
+        await this.router.navigate(['/seguimientos'], { state: review });
+      }
+    } catch (error) {
+      this.alertService.error(error);
     }
   }
 
@@ -96,5 +119,7 @@ export class CardFormComponent implements OnInit {
     card.apellido2 = card.apellido2 || '';
     card.organizacionId = card.organizacionId || partnerId;
     card.usuarioId = card.usuarioId || userId;
+    card.adjuntos = card.adjuntos || new Array<AdjuntoDto>();
+    card.seguimientos = card.seguimientos || new Array<SeguimientoViewDto>();
   }
 }

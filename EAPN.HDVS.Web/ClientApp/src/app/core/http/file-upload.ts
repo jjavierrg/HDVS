@@ -42,9 +42,12 @@ export class FileUpload {
     this.onComplete = fn;
   }
 
-  public completed(adjunto: AdjuntoDto) {
+  public completed(response: any) {
     this.progress = 100;
     this.status = FileUploadStatus.Success;
+
+    const adjunto: AdjuntoDto =  new AdjuntoDto();
+    adjunto.init(response);
     this.onComplete(adjunto);
   }
 

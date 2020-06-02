@@ -16,6 +16,7 @@ namespace EAPN.HDVS.Entities
         public int IntentosLogin { get; set; }
         public bool Activo { get; set; }
         public string Observaciones { get; set; }
+        public string NombreCompleto => $"{Nombre} {Apellidos}".Trim();
         public DateTime? UltimoAcceso { get; set; }
         public DateTime? FinBloqueo { get; set; }
         public IList<UsuarioPermiso> PermisosAdicionales { get; set; }

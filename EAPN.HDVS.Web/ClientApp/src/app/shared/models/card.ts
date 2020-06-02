@@ -16,10 +16,16 @@ export class Card extends FichaDto {
 
     try {
       const now: Date = new Date();
-      const minutesOffset: number = now.getTimezoneOffset();
-      const diff: number = now.getUTCMilliseconds() - this.fechaNacimiento.getTime() + (minutesOffset * 60 * 1000);
-      const age: Date = new Date(diff);
-      return Math.abs(age.getUTCFullYear() - 1970);
+      const age: number = now.getFullYear() - this.fechaNacimiento.getFullYear();
+      if (now.getMonth() > this.fechaNacimiento.getMonth()) {
+        return age;
+      } else if (now.getMonth() < this.fechaNacimiento.getMonth()) {
+        return age - 1;
+      } else if (now.getDay() > this.fechaNacimiento.getDay()) {
+        return age - 1;
+      } else {
+        return age;
+      }
     } catch (error) {
       return;
     }

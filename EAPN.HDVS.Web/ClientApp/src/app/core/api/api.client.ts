@@ -318,6 +318,42 @@ export interface IApiClient {
      */
     deleteProvincia(id: number): Observable<void>;
     /**
+     * Get all stored items with related data
+     * @return Success
+     */
+    getSeguimientos(): Observable<SeguimientoDto[]>;
+    /**
+     * Add new item to collection
+     * @param body (optional) Item data
+     * @return Success
+     */
+    postSeguimiento(body?: SeguimientoDto | undefined): Observable<SeguimientoDto>;
+    /**
+     * Get the item with the specified identifier
+     * @param id Item identifier
+     * @return Success
+     */
+    getSeguimiento(id: number): Observable<SeguimientoDto>;
+    /**
+     * Update an existing item
+     * @param id Item identifier
+     * @param body (optional) Item data
+     * @return Success
+     */
+    putSeguimiento(id: number, body?: SeguimientoDto | undefined): Observable<void>;
+    /**
+     * Delete existing item
+     * @param id Item identifier
+     * @return Success
+     */
+    deleteSeguimiento(id: number): Observable<void>;
+    /**
+     * Get all items with a specific criteria filter
+     * @param body (optional) Query criteria filter
+     * @return Success
+     */
+    getSeguimientosFiltered(body?: QueryData | undefined): Observable<SeguimientoDtoQueryResult>;
+    /**
      * Get all stored items
      * @return Success
      */
@@ -3900,6 +3936,417 @@ export class ApiClient implements IApiClient {
     }
 
     /**
+     * Get all stored items with related data
+     * @return Success
+     */
+    getSeguimientos(): Observable<SeguimientoDto[]> {
+        let url_ = this.baseUrl + "/api/Seguimientos";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetSeguimientos(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetSeguimientos(<any>response_);
+                } catch (e) {
+                    return <Observable<SeguimientoDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<SeguimientoDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetSeguimientos(response: HttpResponseBase): Observable<SeguimientoDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(SeguimientoDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Unauthorized", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Forbidden", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<SeguimientoDto[]>(<any>null);
+    }
+
+    /**
+     * Add new item to collection
+     * @param body (optional) Item data
+     * @return Success
+     */
+    postSeguimiento(body?: SeguimientoDto | undefined): Observable<SeguimientoDto> {
+        let url_ = this.baseUrl + "/api/Seguimientos";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPostSeguimiento(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPostSeguimiento(<any>response_);
+                } catch (e) {
+                    return <Observable<SeguimientoDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<SeguimientoDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processPostSeguimiento(response: HttpResponseBase): Observable<SeguimientoDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 201) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result201: any = null;
+            let resultData201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result201 = SeguimientoDto.fromJS(resultData201);
+            return _observableOf(result201);
+            }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = ProblemDetails.fromJS(resultData400);
+            return throwException("Bad Request", status, _responseText, _headers, result400);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Unauthorized", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Forbidden", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<SeguimientoDto>(<any>null);
+    }
+
+    /**
+     * Get the item with the specified identifier
+     * @param id Item identifier
+     * @return Success
+     */
+    getSeguimiento(id: number): Observable<SeguimientoDto> {
+        let url_ = this.baseUrl + "/api/Seguimientos/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetSeguimiento(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetSeguimiento(<any>response_);
+                } catch (e) {
+                    return <Observable<SeguimientoDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<SeguimientoDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetSeguimiento(response: HttpResponseBase): Observable<SeguimientoDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = SeguimientoDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Unauthorized", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Forbidden", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<SeguimientoDto>(<any>null);
+    }
+
+    /**
+     * Update an existing item
+     * @param id Item identifier
+     * @param body (optional) Item data
+     * @return Success
+     */
+    putSeguimiento(id: number, body?: SeguimientoDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/Seguimientos/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPutSeguimiento(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPutSeguimiento(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processPutSeguimiento(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = ProblemDetails.fromJS(resultData400);
+            return throwException("Bad Request", status, _responseText, _headers, result400);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+            }));
+        } else if (status === 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Unauthorized", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Forbidden", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * Delete existing item
+     * @param id Item identifier
+     * @return Success
+     */
+    deleteSeguimiento(id: number): Observable<void> {
+        let url_ = this.baseUrl + "/api/Seguimientos/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteSeguimiento(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteSeguimiento(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDeleteSeguimiento(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ProblemDetails.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+            }));
+        } else if (status === 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Unauthorized", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Forbidden", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * Get all items with a specific criteria filter
+     * @param body (optional) Query criteria filter
+     * @return Success
+     */
+    getSeguimientosFiltered(body?: QueryData | undefined): Observable<SeguimientoDtoQueryResult> {
+        let url_ = this.baseUrl + "/api/Seguimientos/filtered";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetSeguimientosFiltered(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetSeguimientosFiltered(<any>response_);
+                } catch (e) {
+                    return <Observable<SeguimientoDtoQueryResult>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<SeguimientoDtoQueryResult>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetSeguimientosFiltered(response: HttpResponseBase): Observable<SeguimientoDtoQueryResult> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = SeguimientoDtoQueryResult.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Unauthorized", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Forbidden", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<SeguimientoDtoQueryResult>(<any>null);
+    }
+
+    /**
      * Get all stored items
      * @return Success
      */
@@ -6095,63 +6542,13 @@ export interface IPaisDto {
     descripcion?: string | undefined;
 }
 
-export class IndicadorSeguimientoDto implements IIndicadorSeguimientoDto {
-    indicadorId?: number;
-    seguimientoId?: number;
-    observaciones?: string | undefined;
-    indicador?: IndicadorDto;
-
-    constructor(data?: IIndicadorSeguimientoDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.indicadorId = _data["indicadorId"];
-            this.seguimientoId = _data["seguimientoId"];
-            this.observaciones = _data["observaciones"];
-            this.indicador = _data["indicador"] ? IndicadorDto.fromJS(_data["indicador"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): IndicadorSeguimientoDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new IndicadorSeguimientoDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["indicadorId"] = this.indicadorId;
-        data["seguimientoId"] = this.seguimientoId;
-        data["observaciones"] = this.observaciones;
-        data["indicador"] = this.indicador ? this.indicador.toJSON() : <any>undefined;
-        return data; 
-    }
-}
-
-export interface IIndicadorSeguimientoDto {
-    indicadorId?: number;
-    seguimientoId?: number;
-    observaciones?: string | undefined;
-    indicador?: IndicadorDto;
-}
-
-export class SeguimientoDto implements ISeguimientoDto {
+export class SeguimientoViewDto implements ISeguimientoViewDto {
     id?: number;
-    usuarioId?: number;
-    fichaId?: number;
+    nombreTecnico?: string | undefined;
     fecha?: Date;
-    observaciones?: string | undefined;
-    indicadores?: IndicadorSeguimientoDto[] | undefined;
+    puntuacion?: number;
 
-    constructor(data?: ISeguimientoDto) {
+    constructor(data?: ISeguimientoViewDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -6163,21 +6560,15 @@ export class SeguimientoDto implements ISeguimientoDto {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
-            this.usuarioId = _data["usuarioId"];
-            this.fichaId = _data["fichaId"];
+            this.nombreTecnico = _data["nombreTecnico"];
             this.fecha = _data["fecha"] ? new Date(_data["fecha"].toString()) : <any>undefined;
-            this.observaciones = _data["observaciones"];
-            if (Array.isArray(_data["indicadores"])) {
-                this.indicadores = [] as any;
-                for (let item of _data["indicadores"])
-                    this.indicadores!.push(IndicadorSeguimientoDto.fromJS(item));
-            }
+            this.puntuacion = _data["puntuacion"];
         }
     }
 
-    static fromJS(data: any): SeguimientoDto {
+    static fromJS(data: any): SeguimientoViewDto {
         data = typeof data === 'object' ? data : {};
-        let result = new SeguimientoDto();
+        let result = new SeguimientoViewDto();
         result.init(data);
         return result;
     }
@@ -6185,26 +6576,18 @@ export class SeguimientoDto implements ISeguimientoDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
-        data["usuarioId"] = this.usuarioId;
-        data["fichaId"] = this.fichaId;
+        data["nombreTecnico"] = this.nombreTecnico;
         data["fecha"] = this.fecha ? this.fecha.toISOString() : <any>undefined;
-        data["observaciones"] = this.observaciones;
-        if (Array.isArray(this.indicadores)) {
-            data["indicadores"] = [];
-            for (let item of this.indicadores)
-                data["indicadores"].push(item.toJSON());
-        }
+        data["puntuacion"] = this.puntuacion;
         return data; 
     }
 }
 
-export interface ISeguimientoDto {
+export interface ISeguimientoViewDto {
     id?: number;
-    usuarioId?: number;
-    fichaId?: number;
+    nombreTecnico?: string | undefined;
     fecha?: Date;
-    observaciones?: string | undefined;
-    indicadores?: IndicadorSeguimientoDto[] | undefined;
+    puntuacion?: number;
 }
 
 export class FichaDto implements IFichaDto {
@@ -6246,7 +6629,7 @@ export class FichaDto implements IFichaDto {
     padron?: MunicipioDto;
     nacionalidad?: PaisDto;
     origen?: PaisDto;
-    seguimientos?: SeguimientoDto[] | undefined;
+    seguimientos?: SeguimientoViewDto[] | undefined;
     adjuntos?: AdjuntoDto[] | undefined;
 
     constructor(data?: IFichaDto) {
@@ -6301,7 +6684,7 @@ export class FichaDto implements IFichaDto {
             if (Array.isArray(_data["seguimientos"])) {
                 this.seguimientos = [] as any;
                 for (let item of _data["seguimientos"])
-                    this.seguimientos!.push(SeguimientoDto.fromJS(item));
+                    this.seguimientos!.push(SeguimientoViewDto.fromJS(item));
             }
             if (Array.isArray(_data["adjuntos"])) {
                 this.adjuntos = [] as any;
@@ -6411,7 +6794,7 @@ export interface IFichaDto {
     padron?: MunicipioDto;
     nacionalidad?: PaisDto;
     origen?: PaisDto;
-    seguimientos?: SeguimientoDto[] | undefined;
+    seguimientos?: SeguimientoViewDto[] | undefined;
     adjuntos?: AdjuntoDto[] | undefined;
 }
 
@@ -6701,6 +7084,178 @@ export interface IPermisoDto {
     id?: number;
     descripcion?: string | undefined;
     clave?: string | undefined;
+}
+
+export class IndicadorSeguimientoDto implements IIndicadorSeguimientoDto {
+    indicadorId?: number;
+    seguimientoId?: number;
+    observaciones?: string | undefined;
+    indicador?: IndicadorDto;
+
+    constructor(data?: IIndicadorSeguimientoDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.indicadorId = _data["indicadorId"];
+            this.seguimientoId = _data["seguimientoId"];
+            this.observaciones = _data["observaciones"];
+            this.indicador = _data["indicador"] ? IndicadorDto.fromJS(_data["indicador"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): IndicadorSeguimientoDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new IndicadorSeguimientoDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["indicadorId"] = this.indicadorId;
+        data["seguimientoId"] = this.seguimientoId;
+        data["observaciones"] = this.observaciones;
+        data["indicador"] = this.indicador ? this.indicador.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IIndicadorSeguimientoDto {
+    indicadorId?: number;
+    seguimientoId?: number;
+    observaciones?: string | undefined;
+    indicador?: IndicadorDto;
+}
+
+export class SeguimientoDto implements ISeguimientoDto {
+    id?: number;
+    organizacionId?: number;
+    usuarioId?: number;
+    fichaId?: number;
+    fecha?: Date;
+    observaciones?: string | undefined;
+    indicadores?: IndicadorSeguimientoDto[] | undefined;
+
+    constructor(data?: ISeguimientoDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.organizacionId = _data["organizacionId"];
+            this.usuarioId = _data["usuarioId"];
+            this.fichaId = _data["fichaId"];
+            this.fecha = _data["fecha"] ? new Date(_data["fecha"].toString()) : <any>undefined;
+            this.observaciones = _data["observaciones"];
+            if (Array.isArray(_data["indicadores"])) {
+                this.indicadores = [] as any;
+                for (let item of _data["indicadores"])
+                    this.indicadores!.push(IndicadorSeguimientoDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): SeguimientoDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new SeguimientoDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["organizacionId"] = this.organizacionId;
+        data["usuarioId"] = this.usuarioId;
+        data["fichaId"] = this.fichaId;
+        data["fecha"] = this.fecha ? this.fecha.toISOString() : <any>undefined;
+        data["observaciones"] = this.observaciones;
+        if (Array.isArray(this.indicadores)) {
+            data["indicadores"] = [];
+            for (let item of this.indicadores)
+                data["indicadores"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface ISeguimientoDto {
+    id?: number;
+    organizacionId?: number;
+    usuarioId?: number;
+    fichaId?: number;
+    fecha?: Date;
+    observaciones?: string | undefined;
+    indicadores?: IndicadorSeguimientoDto[] | undefined;
+}
+
+export class SeguimientoDtoQueryResult implements ISeguimientoDtoQueryResult {
+    total?: number;
+    orderBy?: string | undefined;
+    ascending?: boolean;
+    data?: SeguimientoDto[] | undefined;
+
+    constructor(data?: ISeguimientoDtoQueryResult) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.total = _data["total"];
+            this.orderBy = _data["orderBy"];
+            this.ascending = _data["ascending"];
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data!.push(SeguimientoDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): SeguimientoDtoQueryResult {
+        data = typeof data === 'object' ? data : {};
+        let result = new SeguimientoDtoQueryResult();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["total"] = this.total;
+        data["orderBy"] = this.orderBy;
+        data["ascending"] = this.ascending;
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface ISeguimientoDtoQueryResult {
+    total?: number;
+    orderBy?: string | undefined;
+    ascending?: boolean;
+    data?: SeguimientoDto[] | undefined;
 }
 
 export class SituacionAdministrativaDto implements ISituacionAdministrativaDto {

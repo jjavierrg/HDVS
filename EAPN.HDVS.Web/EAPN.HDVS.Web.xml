@@ -430,6 +430,64 @@
             <param name="id">Item identifier</param>
             <returns></returns>
         </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.SeguimientosController.#ctor(EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Seguimiento},EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Ficha},EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Adjunto},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.SeguimientosController},AutoMapper.IMapper,EAPN.HDVS.Infrastructure.Core.Queries.IFilterPaginable{EAPN.HDVS.Entities.Seguimiento})">
+            <summary>
+            </summary>
+            <param name="seguimientoService"></param>
+            <param name="fichaService"></param>
+            <param name="adjuntoService"></param>
+            <param name="logger"></param>
+            <param name="mapper"></param>
+            <param name="filterPaginator"></param>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.SeguimientosController.GetSeguimientos">
+            <summary>
+            Get all stored items with related data
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.SeguimientosController.GetSeguimiento(System.Int32)">
+            <summary>
+            Get the item with the specified identifier
+            </summary>
+            <param name="id">Item identifier</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.SeguimientosController.GetSeguimientosFiltered(EAPN.HDVS.Infrastructure.Core.Queries.QueryData)">
+            <summary>
+            Get all items with a specific criteria filter
+            </summary>
+            <param name="query">Query criteria filter</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.SeguimientosController.PostSeguimiento(EAPN.HDVS.Web.Dto.SeguimientoDto)">
+            <summary>
+            Add new item to collection
+            </summary>
+            <param name="seguimientoDto">Item data</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.SeguimientosController.PutSeguimiento(System.Int32,EAPN.HDVS.Web.Dto.SeguimientoDto)">
+            <summary>
+            Update an existing item
+            </summary>
+            <param name="id">Item identifier</param>
+            <param name="seguimientoDto">Item data</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.SeguimientosController.DeleteSeguimiento(System.Int32)">
+            <summary>
+            Delete existing item
+            </summary>
+            <param name="id">Item identifier</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.SeguimientosController.GetBaseQueryable">
+            <summary>
+            Base query. Handles security and organizacion scope
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:EAPN.HDVS.Web.Controllers.SexosController.#ctor(EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Sexo},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.SexosController},AutoMapper.IMapper)">
             <summary>
             </summary>

@@ -1,8 +1,8 @@
 <div class="position-absolute w-100 h-100 d-flex flex-column" *ngIf="!forceRefresh">
   <div class="d-flex flex-row-reverse mb-3">
-    <button [disabled]="!selected.length" (click)="onDeleteClick(deleteModal)" class="btn btn-danger">{{'core.eliminar' | translate}}</button>
-    <button [disabled]="!selected.length" (click)="onDowloadFiles()" class="btn btn-primary mr-1 mr-lg-3">{{ 'core.descargar' | translate }}</button>
-    <button class="btn btn-primary mr-1 mr-lg-3" (click)="onAddNewClick(uploadModal)">{{'core.anadir' | translate}}</button>
+    <button [disabled]="!selected.length" *appAllowedPermissions="{permissions: [permissions.attachments.delete]}" (click)="onDeleteClick(deleteModal)" class="btn btn-danger">{{'core.eliminar' | translate}}</button>
+    <button [disabled]="!selected.length" *appAllowedPermissions="{permissions: [permissions.attachments.read]}" (click)="onDowloadFiles()" class="btn btn-primary mr-1 mr-lg-3">{{ 'core.descargar' | translate }}</button>
+    <button class="btn btn-primary mr-1 mr-lg-3" *appAllowedPermissions="{permissions: [permissions.attachments.write]}" (click)="onAddNewClick(uploadModal)">{{'core.anadir' | translate}}</button>
   </div>
   <app-grid class="flex-grow-1" [data]="card.adjuntos" [columns]="columns" [showToolbar]="false" [title]="'comun.adjuntos' | translate"
     (selectionChange)="selected = $event">

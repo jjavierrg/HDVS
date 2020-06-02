@@ -1,0 +1,13 @@
+<div class="position-relative d-flex flex-column w-100 h-100" *ngIf="review">
+  <app-card-info [cardId]="review.fichaId"></app-card-info>
+  <app-indicator-form #indicatorForm class="flex-grow-1" [review]="review"></app-indicator-form>
+
+  <div class="row mb-3 text-center">
+    <div class="col-lg-2 offset-lg-3">
+      <button class="btn btn-primary btn-block"(click)="onSave(true)">{{ 'seguimientos.guardar-y-finalizar' | translate }}</button>
+    </div>
+    <div class="col-lg-2 offset-lg-2 mt-3 mt-lg-0">
+      <button class="btn btn-primary btn-block" (click)="onSave(false);indicatorForm.moveNext()">{{ 'seguimientos.guardar-y-siguiente' | translate }}</button>
+    </div>
+  </div>
+</div>

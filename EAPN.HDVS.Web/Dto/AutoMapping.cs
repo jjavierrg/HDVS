@@ -55,10 +55,22 @@ namespace EAPN.HDVS.Web.Dto
             CreateMap<Dimension, DimensionDto>().ReverseMap();
             CreateMap<Categoria, CategoriaDto>().ReverseMap();
             CreateMap<Indicador, IndicadorDto>().ReverseMap();
-            CreateMap<Seguimiento, SeguimientoDto>().ReverseMap();
-            CreateMap<IndicadorSeguimiento, IndicadorSeguimientoDto>().ReverseMap();
+            CreateMap<Seguimiento, SeguimientoDto>()
+                .ForMember(d => d.OrganizacionId, opt => opt.MapFrom((src, dest) => src.Ficha?.OrganizacionId ?? 0))
+                .ReverseMap();
 
-            CreateMap<Ficha, FichaDto>().ReverseMap();
+            CreateMap<IndicadorSeguimiento, IndicadorSeguimientoDto>().ReverseMap()
+                .ForMember(d => d.Seguimiento, opt => opt.Ignore())
+                .ForMember(d => d.Indicador, opt => opt.Ignore());
+
+            CreateMap<Seguimiento, SeguimientoViewDto>()
+                .ForMember(d => d.NombreTecnico, opt => opt.MapFrom((src, dest) => src.Tecnico?.NombreCompleto))
+                .ForMember(d => d.Puntuacion, opt => opt.MapFrom((src, dest) => src.Indicadores?.Sum(x => x.Indicador?.Puntuacion) ?? 0));
+
+            CreateMap<Ficha, FichaDto>().ReverseMap()
+                .ForMember(x => x.Seguimientos, opt => opt.Ignore())
+                .ForMember(x => x.Organizacion, opt => opt.Ignore())
+                .ForMember(x => x.Tecnico, opt => opt.Ignore());
             CreateMap<Municipio, MunicipioDto>().ReverseMap();
             CreateMap<Provincia, ProvinciaDto>().ReverseMap();
             CreateMap<Pais, PaisDto>().ReverseMap();

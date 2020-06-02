@@ -20,5 +20,17 @@ namespace EAPN.HDVS.Shared.Permissions
         public const string PERSONALCARD_READ = "card:read";
         public const string PERSONALCARD_WRITE = "card:write";
         public const string PERSONALCARD_DELETE = "card:delete";
+
+        // Indicators
+        public const string PERSONALINDICATORS_ACCESS = "indicators:access";
+        public const string PERSONALINDICATORS_READ = "indicators:read";
+        public const string PERSONALINDICATORS_WRITE = "indicators:write";
+        public const string PERSONALINDICATORS_DELETE = "indicators:delete";
+
+        // Indicators
+        public const string PERSONALATTACHMENTS_ACCESS = "attachments:access";
+        public const string PERSONALATTACHMENTS_READ = "attachments:read";
+        public const string PERSONALATTACHMENTS_WRITE = "attachments:write";
+        public const string PERSONALATTACHMENTS_DELETE = "attachments:delete";
     }
 }

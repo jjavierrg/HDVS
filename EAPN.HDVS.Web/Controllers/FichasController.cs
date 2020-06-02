@@ -75,7 +75,15 @@ namespace EAPN.HDVS.Web.Controllers
         public async Task<ActionResult<FichaDto>> GetFicha(int id)
         {
             var query = GetBaseQueryable();
-            var ficha = await query.Include(x => x.Adjuntos).Include(x => x.Seguimientos).FirstOrDefaultAsync(x => x.Id == id);
+
+            if (User.HasPermission(Permissions.PERSONALATTACHMENTS_READ))
+                query = query.Include(x => x.Adjuntos);
+
+            if (User.HasPermission(Permissions.PERSONALINDICATORS_READ))
+                query = query.Include(x => x.Seguimientos).ThenInclude(x => x.Tecnico)
+                    .Include(x => x.Seguimientos).ThenInclude(x => x.Indicadores).ThenInclude(x => x.Indicador);
+
+            var ficha = await query.FirstOrDefaultAsync(x => x.Id == id);
 
             if (ficha != null)
                 _logger.LogInformation($"[Fichas] Se accede a la ficha [{ficha.Id}]");
@@ -145,8 +153,10 @@ namespace EAPN.HDVS.Web.Controllers
                 return BadRequest();
             }
 
+            var adjuntos = fichaDto.Adjuntos;
+            fichaDto.Adjuntos = null;
             var ficha = _mapper.Map<Ficha>(fichaDto);
-            var result = _fichaService.Add(ficha);            
+            var result = _fichaService.Add(ficha);
 
             await _fichaService.SaveChangesAsync();
 
@@ -161,6 +171,20 @@ namespace EAPN.HDVS.Web.Controllers
                     _adjuntoService.Update(foto);
                     await _adjuntoService.SaveChangesAsync();
                 }
+            }
+
+            // update attachment information
+            if (adjuntos != null && adjuntos.Any())
+            {
+                var ids = adjuntos.Select(x => x.Id);
+                var adjuntosDb = await _adjuntoService.GetListAsync(x => ids.Contains(x.Id));
+                foreach (var adjunto in adjuntosDb)
+                {
+                    adjunto.FichaId = ficha.Id;
+                    adjunto.OrganizacionId = ficha.OrganizacionId;
+                    _adjuntoService.Update(adjunto);
+                }
+                await _adjuntoService.SaveChangesAsync();
             }
 
             if (ficha != null)
@@ -185,7 +209,7 @@ namespace EAPN.HDVS.Web.Controllers
             if (id != fichaDto.Id)
                 return BadRequest();
 
-            var organizacionId= User.GetUserOrganizacionId();
+            var organizacionId = User.GetUserOrganizacionId();
             if (fichaDto.OrganizacionId != organizacionId)
             {
                 _logger.LogCritical($"[Fichas] Se ha intentado actualizar una ficha de otra organización [Organizacion_Id de destino: {fichaDto.OrganizacionId}]");
@@ -194,7 +218,7 @@ namespace EAPN.HDVS.Web.Controllers
 
             var query = GetBaseQueryable();
             var ficha = await query.SingleOrDefaultAsync(x => x.Id == id);
-            
+
             if (ficha == null)
             {
                 _logger.LogCritical($"[Fichas] Se ha intentado actualizar una ficha no válida [id: {fichaDto.Id}]");
@@ -205,7 +229,7 @@ namespace EAPN.HDVS.Web.Controllers
 
             _fichaService.Update(ficha);
             await _fichaService.SaveChangesAsync();
-            
+
             _logger.LogInformation($"[Fichas] Se ha actualizado la ficha [id: {ficha.Id}]");
             return NoContent();
         }
@@ -230,9 +254,9 @@ namespace EAPN.HDVS.Web.Controllers
                 return NotFound();
             }
 
-            if (ficha.Id != organizacionId && !User.HasSuperAdminPermission())
+            if (ficha.OrganizacionId != organizacionId)
             {
-                _logger.LogCritical($"[Fichas] Se ha intentado eliminar una ficha de usa organización a la que no se tenía acceso [id: {id}]");
+                _logger.LogCritical($"[Fichas] Se ha intentado eliminar una ficha de una organización a la que no se tenía acceso [id: {id}]");
                 return NotFound();
             }
 

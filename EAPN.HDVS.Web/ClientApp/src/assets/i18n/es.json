@@ -49,8 +49,10 @@
     "elementos-eliminados": "Se han eliminado los elementos seleccionados",
     "eliminar": "Eliminar",
     "error": "Error",
+    "fecha": "Fecha",
     "limpiar-subidas": "Limpiar completados",
     "no": "No",
+    "no-autorizado": "No está autorizado para realizar esta operación",
     "registro-no-encontrado": "Registro no encontrado",
     "si": "Sí",
     "siguiente": "Siguiente",
@@ -121,6 +123,11 @@
     "estadisticas": "Estadísticas",
     "inicio": "Inicio",
     "menu": "Menu"
+  },
+  "seguimientos": {
+    "guardar-y-finalizar": "Guardar y finalizar edición",
+    "guardar-y-siguiente": "Guardar y Siguiente",
+    "puntuacion": "Puntuación"
   },
   "validaciones": {
     "al-menos": "Debe completar al menos {{ required }} de los siguientes campos <strong>{{ controlNames }}</strong>.",

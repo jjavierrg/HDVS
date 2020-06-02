@@ -18,12 +18,13 @@
             </div>
           </ng-template>
         </ng-container>
-        <ng-container ngbNavItem>
+        <ng-container ngbNavItem *appAllowedPermissions="{permissions: [permissions.personalindicators.access]}">
           <a ngbNavLink>{{ 'comun.seguimientos' | translate }}</a>
           <ng-template ngbNavContent>
+            <app-card-review [card]="card" [canSaveCard]="cardValid" (reviewRequired)="onReviewRequired($event)"></app-card-review>
           </ng-template>
         </ng-container>
-        <ng-container ngbNavItem>
+        <ng-container ngbNavItem *appAllowedPermissions="{permissions: [permissions.attachments.access]}">
           <a ngbNavLink>{{ 'comun.adjuntos' | translate }}</a>
           <ng-template ngbNavContent>
             <app-card-attachments [card]="card"></app-card-attachments>

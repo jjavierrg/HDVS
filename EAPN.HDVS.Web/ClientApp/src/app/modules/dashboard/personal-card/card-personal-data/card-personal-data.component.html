@@ -119,10 +119,16 @@
       <input id="inputEmail" type="email" class="form-control" [placeholder]="'comun.email' | translate" email
         [(ngModel)]="card.email" name="{{ 'comun.email' | translate }}" />
     </div>
-    <div class="form-group col-md-4">
+    <div class="form-group col-md-3">
       <app-checkbox id="chkPolitica" [(ngModel)]="card.politicaFirmada" name="{{ 'ficha.acepta-politica' | translate }}"
         [label]="'ficha.acepta-politica' | translate">
       </app-checkbox>
+    </div>
+    <div class="form-group col-md-3">
+      <label for="inputUsuario">{{ 'ficha.tecnico' | translate }}</label>
+      <app-combobox id="inputUsuario" [placeholder]="'ficha.tecnico' | translate" [(ngModel)]="card.usuarioId"
+        name="{{ 'ficha.tecnico' | translate }}" required [data]="users">
+      </app-combobox>
     </div>
   </div>
   <div class="form-group">

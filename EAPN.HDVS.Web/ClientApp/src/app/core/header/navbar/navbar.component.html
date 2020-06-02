@@ -15,7 +15,7 @@
       <a routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" routerLink="/estadisticas"
         (click)="isMenuCollapsed = true" class="py-lg-3 nav-item nav-link"><i class="fas fa-chart-bar"></i>
         {{ 'navbar.estadisticas' | translate }}</a>
-      <a routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" routerLink="/ficha/alta"
+      <a routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" routerLink="/fichas/alta"
         (click)="isMenuCollapsed = true" class="py-lg-3 nav-item nav-link"
         *appAllowedPermissions="{permissions: [permissions.personalcard.write]}"><i class="fas fa-user-plus"></i>
         {{ 'navbar.alta-nueva' | translate }}</a>

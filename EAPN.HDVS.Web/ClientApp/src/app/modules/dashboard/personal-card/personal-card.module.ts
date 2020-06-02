@@ -14,6 +14,8 @@ import { ImageModule } from 'src/app/shared/modules/image/image.module';
 import { CardPersonalDataComponent } from './card-personal-data/card-personal-data.component';
 import { CardAttachmentsComponent } from './card-attachments/card-attachments.component';
 import { AttachmentUploaderModule } from 'src/app/shared/modules/attachment-uploader/attachment-uploader.module';
+import { CardReviewComponent } from './card-review/card-review.component';
+import { IndicatorModule } from 'src/app/shared/modules/indicator/indicator.module';
 
 const routes: Routes = [
   {
@@ -35,7 +37,7 @@ const routes: Routes = [
     component: CardFormComponent,
     canLoad: [AuthenticatedGuard],
     canActivate: [AuthenticatedGuard],
-    data: { allowedPermissions: [Permissions.personalcard.write] },
+    data: { allowedPermissions: [Permissions.personalcard.read] },
   },
   {
     path: '**',
@@ -45,7 +47,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [CardFinderComponent, CardFormComponent, CardPersonalDataComponent, CardAttachmentsComponent],
+  declarations: [CardFinderComponent, CardFormComponent, CardPersonalDataComponent, CardAttachmentsComponent, CardReviewComponent],
   imports: [
     CommonModule,
     CoreModule,
@@ -56,7 +58,8 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     ImageModule,
     NgbNavModule,
-    AttachmentUploaderModule
+    AttachmentUploaderModule,
+    IndicatorModule
   ],
 })
 export class PersonalCardModule {}
