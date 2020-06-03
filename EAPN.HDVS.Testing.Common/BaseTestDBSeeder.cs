@@ -62,7 +62,11 @@ namespace EAPN.HDVS.Testing.Common
             context.Perfiles.Add(new Perfil { Id = 3, Descripcion = "UserManagement" });
 
             for (int i = 2; i <= 18; i++)
-                context.PerfilesPermisos.Add(new PerfilPermiso { PerfilId = 2, PermisoId = i });
+            {
+                if (i != 6)
+                    context.PerfilesPermisos.Add(new PerfilPermiso { PerfilId = 2, PermisoId = i });
+            }
+                
 
             for (int i = 2; i <= 5; i++)
                 context.PerfilesPermisos.Add(new PerfilPermiso { PerfilId = 3, PermisoId = i });
