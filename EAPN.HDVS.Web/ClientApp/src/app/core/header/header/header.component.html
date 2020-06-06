@@ -10,9 +10,9 @@
   </a>
   <ul class="navbar-nav" *ngIf="usuario">
     <li class="nav-item" ngbDropdown>
-      <div class="nav-link c-pointer d-flex align-items-center mr-2 h40" ngbDropdownToggle *ngIf="usuario.fotoId">
+      <div class="nav-link c-pointer d-flex align-items-center mr-2 h40" ngbDropdownToggle>
         <app-secure-image class="d-none d-md-block" [adjuntoId]="usuario.fotoId" fallbackImagePath="assets/user.svg"
-          imageClasses="profile-picture rounded-circle">
+          imageClasses="profile-picture rounded-circle" *ngIf="usuario.fotoId">
         </app-secure-image>
         <span class="ml-2">{{ usuario.email }}</span>
       </div>

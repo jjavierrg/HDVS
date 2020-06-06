@@ -29,11 +29,11 @@ namespace EAPN.HDVS.Web.Migrations
                 columns: new[] { "Id", "Descripcion", "Clave" },
                 values: new object[,]
                 {
-                    { 11, "Adjuntos: Lectura", Permissions.PERSONALATTACHMENTS_ACCESS},
+                    { 11, "Adjuntos: Lectura", Permissions.PERSONALATTACHMENTS_READ},
                     { 12, "Adjuntos: Escritura", Permissions.PERSONALATTACHMENTS_WRITE },
                     { 13, "Adjuntos: Eliminar", Permissions.PERSONALATTACHMENTS_DELETE },
                     { 14, "Adjuntos: Acceder", Permissions.PERSONALATTACHMENTS_ACCESS },
-                    { 15, "Seguimientos: Lectura", Permissions.PERSONALINDICATORS_ACCESS},
+                    { 15, "Seguimientos: Lectura", Permissions.PERSONALINDICATORS_READ},
                     { 16, "Seguimientos: Escritura", Permissions.PERSONALINDICATORS_WRITE },
                     { 17, "Seguimientos: Eliminar", Permissions.PERSONALINDICATORS_DELETE },
                     { 18, "Seguimientos: Acceder", Permissions.PERSONALINDICATORS_ACCESS },
