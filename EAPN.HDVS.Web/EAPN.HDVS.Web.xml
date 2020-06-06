@@ -157,6 +157,13 @@
             <param name="id">Item identifier</param>
             <returns></returns>
         </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.FichasController.GetDatosFicha(System.Int32)">
+            <summary>
+            Get the item with the specified identifier
+            </summary>
+            <param name="id">Item identifier</param>
+            <returns></returns>
+        </member>
         <member name="M:EAPN.HDVS.Web.Controllers.FichasController.GetFichasFiltered(EAPN.HDVS.Infrastructure.Core.Queries.QueryData)">
             <summary>
             Get all items with a specific criteria filter

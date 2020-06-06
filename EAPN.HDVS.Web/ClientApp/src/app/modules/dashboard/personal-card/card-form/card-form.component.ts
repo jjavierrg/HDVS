@@ -7,6 +7,7 @@ import { AuthenticationService } from 'src/app/core/services/authentication.serv
 import { CardService } from 'src/app/core/services/card.service';
 import { Card } from 'src/app/shared/models/card';
 import { Permissions } from 'src/app/core/enums/permissions.enum';
+import { IReviewState } from 'src/app/shared/models/reviewState';
 
 @Component({
   selector: 'app-card-form',
@@ -78,18 +79,28 @@ export class CardFormComponent implements OnInit {
     }
   }
 
-  public async onReviewRequired(reviewId: number): Promise<void> {
+  public async onReviewRequired(reviewId: number): Promise<boolean> {
     try {
       const success = await this.service.saveCard(this.card).toPromise();
-      if (success) {
-        const review: SeguimientoDto = new SeguimientoDto({
-          fichaId: this.card.id,
-          organizacionId: this.card.organizacionId,
-          id: reviewId,
-          usuarioId: this.card.usuarioId
-        });
-        await this.router.navigate(['/seguimientos'], { state: review });
+      const state: IReviewState = { readonly: false, returnUrl: this.router.url };
+
+      if (!success) {
+        return false;
       }
+
+      if (reviewId) {
+        return this.router.navigate(['/seguimientos', reviewId], { state });
+      }
+
+      const review: SeguimientoDto = new SeguimientoDto({
+        fichaId: this.card.id,
+        organizacionId: this.card.organizacionId,
+        id: reviewId,
+        usuarioId: this.card.usuarioId
+      });
+
+      state.review = review;
+      return this.router.navigate(['/seguimientos'], { state });
     } catch (error) {
       this.alertService.error(error);
     }

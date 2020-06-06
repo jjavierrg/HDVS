@@ -34,8 +34,6 @@ namespace EAPN.HDVS.Web.Dto
         public bool PoliticaFirmada { get; set; }
         public bool Completa { get; set; }
 
-        public int? Edad { get; }
-
         public OrganizacionDto Organizacion { get; set; }
         public UsuarioDto Tecnico { get; set; }
         public SexoDto Sexo { get; set; }

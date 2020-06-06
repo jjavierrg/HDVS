@@ -47,6 +47,17 @@ namespace EAPN.HDVS.Web.Dto
                 .ForMember(d => d.TelefonoOrganizacion, opt => opt.MapFrom((src, dest) => src.Organizacion?.Telefono))
                 .ForMember(d => d.NombreTecnico, opt => opt.MapFrom((src, dest) => src.Tecnico?.Nombre));
 
+            CreateMap<Ficha, DatosFichaDto>()
+                .ForMember(d => d.Sexo, opt => opt.MapFrom((src, dest) => src.Sexo?.Descripcion))
+                .ForMember(d => d.Genero, opt => opt.MapFrom((src, dest) => src.Genero?.Descripcion))
+                .ForMember(d => d.Provincia, opt => opt.MapFrom((src, dest) => src.Provincia?.Nombre))
+                .ForMember(d => d.Municipio, opt => opt.MapFrom((src, dest) => src.Municipio?.Nombre))
+                .ForMember(d => d.Padron, opt => opt.MapFrom((src, dest) => src.Origen?.Descripcion))
+                .ForMember(d => d.Origen, opt => opt.MapFrom((src, dest) => src.Origen?.Descripcion))
+                .ForMember(d => d.Organizacion, opt => opt.MapFrom((src, dest) => src.Organizacion?.Nombre))
+                .ForMember(d => d.Tecnico, opt => opt.MapFrom((src, dest) => src.Tecnico?.NombreCompleto))
+                .ForMember(d => d.Nacionalidad, opt => opt.MapFrom((src, dest) => src.Nacionalidad?.Descripcion));
+
             CreateMap<Permiso, PermisoDto>().ReverseMap();
             CreateMap<UserToken, UserTokenDto>();
 

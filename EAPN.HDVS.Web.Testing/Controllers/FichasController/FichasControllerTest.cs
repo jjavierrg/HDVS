@@ -62,5 +62,24 @@ namespace EAPN.HDVS.Web.Testing.Controllers.FichasController
             Assert.Equal(foto.FichaId, fichaCreated.Id);
             Assert.Equal(foto.OrganizacionId, fichaCreated.OrganizacionId);
         }
+
+        [Fact]
+        [Trait("Category", "FichasController")]
+        public async Task ShoudGetDatosFicha()
+        {
+            // Arrange
+            var client = _factory.GetAuthenticatedClientAsync("usuario12@test.com");
+            var id = 15;
+
+            // Act
+            var response = await client.GetAsync($"{ENDPOINT}/{id}/datos");
+            var ficha = await ClientUtilities.GetResponseContent<DatosFichaDto>(response);
+
+            // Assert
+            Assert.True(response.IsSuccessStatusCode);
+            Assert.NotNull(ficha);
+
+            Assert.Equal(id, ficha.Id);
+        }
     }
 }

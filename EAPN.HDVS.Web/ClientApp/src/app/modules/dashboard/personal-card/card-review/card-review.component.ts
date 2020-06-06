@@ -3,6 +3,7 @@ import { Card } from 'src/app/shared/models/card';
 import { AgGridColumn } from 'ag-grid-angular';
 import { TranslateService } from '@ngx-translate/core';
 import { SeguimientoViewDto } from 'src/app/core/api/api.client';
+import { DateCellComponent } from 'src/app/shared/modules/grid/date-cell/date-cell.component';
 
 @Component({
   selector: 'app-card-review',
@@ -29,6 +30,7 @@ export class CardReviewComponent implements OnInit, OnChanges {
       headerName: this.translate.instant('core.fecha'),
       field: 'fecha',
       maxWidth: 150,
+      cellRendererFramework: DateCellComponent,
     },
     {
       headerName: this.translate.instant('seguimientos.puntuacion'),

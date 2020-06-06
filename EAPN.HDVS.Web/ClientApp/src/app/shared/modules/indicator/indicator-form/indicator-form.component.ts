@@ -22,8 +22,12 @@ export class IndicatorFormComponent implements OnInit {
     this.dimensions = await this.indicatorService.getDimensions().toPromise();
   }
 
+  public isLastPage(): boolean {
+    return this.activeTab >= this.dimensions.length - 1;
+  }
+
   public moveNext(): void {
-    if (this.activeTab < this.dimensions.length) {
+    if (!this.isLastPage()) {
       this.activeTab += 1;
     }
   }

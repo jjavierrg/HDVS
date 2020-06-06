@@ -94,6 +94,38 @@ namespace EAPN.HDVS.Web.Controllers
         }
 
         /// <summary>
+        /// Get the item with the specified identifier
+        /// </summary>
+        /// <param name="id">Item identifier</param>
+        /// <returns></returns>
+        [HttpGet("{id}/datos", Name = "GetDatosFicha")]
+        [AuthorizePermission(Permissions.PERSONALCARD_READ)]
+        [ProducesResponseType(typeof(DatosFichaDto), StatusCodes.Status200OK)]
+        public async Task<ActionResult<DatosFichaDto>> GetDatosFicha(int id)
+        {
+            var query = GetBaseQueryable();
+
+            if (User.HasPermission(Permissions.PERSONALATTACHMENTS_READ))
+                query = query.Include(x => x.Adjuntos);
+
+            if (User.HasPermission(Permissions.PERSONALINDICATORS_READ))
+                query = query.Include(x => x.Seguimientos).ThenInclude(x => x.Tecnico)
+                    .Include(x => x.Organizacion).Include(x => x.Tecnico)
+                    .Include(x => x.Sexo).Include(x => x.Genero)
+                    .Include(x => x.Municipio).Include(x => x.Provincia)
+                    .Include(x => x.Nacionalidad).Include(x => x.Origen).Include(x => x.Padron);
+
+            var ficha = await query.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (ficha != null)
+                _logger.LogInformation($"[Fichas] Se accede a la ficha [{ficha.Id}]");
+            else
+                _logger.LogWarning($"[Fichas] Se ha intentado acceder a una ficha no válida [id: {id}]");
+
+            return _mapper.Map<DatosFichaDto>(ficha);
+        }
+
+        /// <summary>
         /// Get all items with a specific criteria filter
         /// </summary>
         /// <param name="query">Query criteria filter</param>

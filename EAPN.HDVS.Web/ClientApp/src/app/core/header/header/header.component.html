@@ -10,14 +10,12 @@
   </a>
   <ul class="navbar-nav" *ngIf="usuario">
     <li class="nav-item" ngbDropdown>
-      <div class="nav-link c-pointer header-photo" ngbDropdownToggle *ngIf="usuario.fotoId">
-        <app-secure-image [adjuntoId]="usuario.fotoId" fallbackImagePath="assets/user.svg"
+      <div class="nav-link c-pointer d-flex align-items-center mr-2 h40" ngbDropdownToggle *ngIf="usuario.fotoId">
+        <app-secure-image class="d-none d-md-block" [adjuntoId]="usuario.fotoId" fallbackImagePath="assets/user.svg"
           imageClasses="profile-picture rounded-circle">
         </app-secure-image>
+        <span class="ml-2">{{ usuario.email }}</span>
       </div>
-      <a class="nav-link c-pointer" ngbDropdownToggle *ngIf="!usuario.fotoId">
-        {{ usuario.email }}
-      </a>
       <div ngbDropdownMenu class="dropdown-menu dropdown-menu-right">
         <a ngbDropdownItem *appAllowedPermissions="{permissions: [permissions.usermanagement.access]}"
           routerLink="/usuarios" [title]="'header.menu.usuarios-titulo' | translate">{{

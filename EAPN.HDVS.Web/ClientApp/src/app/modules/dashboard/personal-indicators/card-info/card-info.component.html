@@ -1,1 +1,64 @@
-<p>card-info works!</p>
+<ngb-accordion #acc="ngbAccordion" *ngIf="card">
+  <ngb-panel id="personal-data">
+    <ng-template ngbPanelHeader>
+      <div class="d-flex align-items-center w-100 c-pointer text-truncate" (click)="acc.toggle('personal-data')">
+        <app-secure-image class="thumbnail" [adjuntoId]="card.fotoId" fallbackImagePath="assets/user.svg"
+          imageClasses="profile-picture rounded-circle"></app-secure-image>
+        <div class="pl50 flex-grow-1 no-select text-truncate">
+          {{ card.nombre + ' ' + card.apellido1 + ' ' + card.apellido2}}</div>
+        <div>{{ acc.isExpanded('personal-data') ? '▲' : '▼'}}</div>
+      </div>
+    </ng-template>
+    <ng-template ngbPanelContent>
+      <div class="row">
+        <div class="col-6 label col-lg-1">{{ 'ficha.dni-abrev' | translate }}</div>
+        <div class="col-6 col-lg-2">{{ card.dni }}</div>
+        <div class="col-6 label col-lg-1">{{ 'ficha.fecha-nacimiento-abrev' | translate }}</div>
+        <div class="col-6 col-lg-2">{{ card.fechaNacimiento | defaultDate }}</div>
+        <div class="col-12 col-lg-6">
+          <div class="row">
+            <div class="col-6 label col-lg-1">{{ 'ficha.rad-abrev' | translate }}</div>
+            <div class="col-6 col-lg-2">{{ card.codigo }}</div>
+            <div class="col-6 label col-lg-1">{{ 'ficha.edad' | translate }}</div>
+            <div class="col-6 col-lg-2">{{ card.edad }}</div>
+            <div class="col-6 label col-lg-1">{{ 'ficha.sexo' | translate }}</div>
+            <div class="col-6 col-lg-2">{{ card.sexo }}</div>
+            <div class="col-6 label col-lg-1">{{ 'ficha.genero' | translate }}</div>
+            <div class="col-6 col-lg-2">{{ card.genero }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 label col-lg-1">{{ 'ficha.domicilio' | translate }}</div>
+        <div class="col-6 col-lg-2">{{ card.domicilio }}</div>
+        <div class="col-6 label col-lg-1">{{ 'ficha.municipio' | translate }}</div>
+        <div class="col-6 col-lg-2">{{ card.municipio }}</div>
+        <div class="col-6 label col-lg-1">{{ 'ficha.provincia' | translate }}</div>
+        <div class="col-6 col-lg-2">{{ card.provincia }}</div>
+        <div class="col-6 label col-lg-1">{{ 'ficha.codigo-postal' | translate }}</div>
+        <div class="col-6 col-lg-2">{{ card.cp }}</div>
+      </div>
+      <div class="row">
+        <div class="col-6 label col-lg-1">{{ 'ficha.nacionalidad' | translate }}</div>
+        <div class="col-6 col-lg-2">{{ card.nacionalidad }}</div>
+        <div class="col-6 label col-lg-1">{{ 'ficha.pais-origen' | translate }}</div>
+        <div class="col-6 col-lg-2">{{ card.origen }}</div>
+        <div class="col-6 label col-lg-1">{{ 'comun.telefono' | translate }}</div>
+        <div class="col-6 col-lg-2">{{ card.telefono }}</div>
+        <div class="col-6 label col-lg-1">{{ 'comun.email' | translate }}</div>
+        <div class="col-6 col-lg-2">{{ card.email }}</div>
+      </div>
+      <div class="row">
+        <div class="col-6 label col-lg-1">{{ 'ficha.tecnico' | translate }}</div>
+        <div class="col-6 col-lg-5">{{ card.tecnico }}</div>
+        <div class="col-6 label col-lg-1">{{ 'comun.organizacion' | translate }}</div>
+        <div class="col-6 col-lg-5">{{ card.organizacion }}</div>
+      </div>
+      <div class="row mt-3" *appAllowedPermissions="{permissions: [permissions.personalcard.write]}">
+        <div class="col-12 col-lg-2 offset-lg-10">
+          <button class="btn btn-block btn-primary" (click)="onEditCardClick()">{{ 'core.editar' | translate }}</button>
+        </div>
+      </div>
+    </ng-template>
+  </ngb-panel>
+</ngb-accordion>

@@ -1,6 +1,6 @@
 <div class="input-group" (blur)="onTouched()">
   <input class="form-control" [placeholder]="placeholder" name="dp" ngbDatepicker [footerTemplate]="footerTemplate"
-    #d="ngbDatepicker" [(ngModel)]="value">
+    #d="ngbDatepicker" [(ngModel)]="value" [disabled]="disabled">
   <div class="input-group-append">
     <button class="btn btn-primary" (click)="d.toggle()" type="button"><i class="far fa-calendar"></i></button>
   </div>
@@ -8,6 +8,6 @@
 
 <ng-template #footerTemplate>
   <hr class="my-0">
-  <button class="btn btn-primary btn-sm m-2 float-left"
+  <button class="btn btn-primary btn-sm m-2 float-left" *ngIf="!disabled"
     (click)="setToday(); d.close()">{{ 'core.calendario.hoy' | translate }}</button>
 </ng-template>

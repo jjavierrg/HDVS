@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { ApiClient, VistaPreviaFichaDto, QueryData, FichaDto, SexoDto, MasterDataDto, AdjuntoDto } from '../api/api.client';
 import { Observable, of } from 'rxjs';
-import { IBaseFilter, BaseFilter, getFilterQuery } from '../filters/basefilter';
-import { FilterComparison, FilterUnion } from '../filters/filter.enum';
-import { map, filter } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { isDate } from 'util';
+import { ApiClient, FichaDto, QueryData, VistaPreviaFichaDto, DatosFichaDto } from '../api/api.client';
+import { BaseFilter, getFilterQuery, IBaseFilter } from '../filters/basefilter';
+import { FilterComparison, FilterUnion } from '../filters/filter.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -37,6 +37,10 @@ export class CardService {
 
   public getCard(cardId: number): Observable<FichaDto> {
     return this.apiClient.getFicha(cardId);
+  }
+
+  public getPersonalData(cardId: number): Observable<DatosFichaDto> {
+    return this.apiClient.getDatosFicha(cardId);
   }
 
   public saveCard(card: FichaDto): Observable<FichaDto> {

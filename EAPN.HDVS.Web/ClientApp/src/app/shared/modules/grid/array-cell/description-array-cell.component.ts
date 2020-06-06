@@ -3,7 +3,7 @@ import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { ICellRendererParams, IAfterGuiAttachedParams } from 'ag-grid-community';
 
 @Component({
-  selector: 'app-array-cell',
+  selector: 'app-description-array-cell',
   template: '{{ value }}',
   styles: [''],
 })

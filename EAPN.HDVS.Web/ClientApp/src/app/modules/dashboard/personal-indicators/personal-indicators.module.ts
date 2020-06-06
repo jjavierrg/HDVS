@@ -7,6 +7,10 @@ import { PersonalIndicatorsFormComponent } from './personal-indicators-form/pers
 import { IndicatorModule } from 'src/app/shared/modules/indicator/indicator.module';
 import { CoreModule } from 'src/app/core/core.module';
 import { CardInfoComponent } from './card-info/card-info.component';
+import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
+import { ImageModule } from 'src/app/shared/modules/image/image.module';
+import { InputModule } from 'src/app/shared/modules/input/input.module';
+import { FormsModule } from '@angular/forms';
 
 const routes: Routes = [
   {
@@ -32,7 +36,16 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [PersonalIndicatorsFormComponent, CardInfoComponent],
-  imports: [CommonModule, RouterModule.forChild(routes), CoreModule, IndicatorModule],
+  imports: [
+    CommonModule,
+    RouterModule.forChild(routes),
+    CoreModule,
+    IndicatorModule,
+    NgbAccordionModule,
+    ImageModule,
+    InputModule,
+    FormsModule,
+  ],
   exports: [PersonalIndicatorsFormComponent],
 })
 export class PersonalIndicatorsModule {}

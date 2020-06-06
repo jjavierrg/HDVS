@@ -150,6 +150,12 @@ export interface IApiClient {
      */
     deleteFicha(id: number): Observable<void>;
     /**
+     * Get the item with the specified identifier
+     * @param id Item identifier
+     * @return Success
+     */
+    getDatosFicha(id: number): Observable<DatosFichaDto>;
+    /**
      * Get all items with a specific criteria filter
      * @param body (optional) Query criteria filter
      * @return Success
@@ -2034,6 +2040,70 @@ export class ApiClient implements IApiClient {
             }));
         }
         return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * Get the item with the specified identifier
+     * @param id Item identifier
+     * @return Success
+     */
+    getDatosFicha(id: number): Observable<DatosFichaDto> {
+        let url_ = this.baseUrl + "/api/Fichas/{id}/datos";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetDatosFicha(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetDatosFicha(<any>response_);
+                } catch (e) {
+                    return <Observable<DatosFichaDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<DatosFichaDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetDatosFicha(response: HttpResponseBase): Observable<DatosFichaDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = DatosFichaDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Unauthorized", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Forbidden", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<DatosFichaDto>(<any>null);
     }
 
     /**
@@ -7173,7 +7243,6 @@ export class FichaDto implements IFichaDto {
     observaciones?: string | undefined;
     politicaFirmada?: boolean;
     completa?: boolean;
-    readonly edad?: number | undefined;
     organizacion?: OrganizacionDto;
     tecnico?: UsuarioDto;
     sexo?: SexoDto;
@@ -7225,7 +7294,6 @@ export class FichaDto implements IFichaDto {
             this.observaciones = _data["observaciones"];
             this.politicaFirmada = _data["politicaFirmada"];
             this.completa = _data["completa"];
-            (<any>this).edad = _data["edad"];
             this.organizacion = _data["organizacion"] ? OrganizacionDto.fromJS(_data["organizacion"]) : <any>undefined;
             this.tecnico = _data["tecnico"] ? UsuarioDto.fromJS(_data["tecnico"]) : <any>undefined;
             this.sexo = _data["sexo"] ? SexoDto.fromJS(_data["sexo"]) : <any>undefined;
@@ -7285,7 +7353,6 @@ export class FichaDto implements IFichaDto {
         data["observaciones"] = this.observaciones;
         data["politicaFirmada"] = this.politicaFirmada;
         data["completa"] = this.completa;
-        data["edad"] = this.edad;
         data["organizacion"] = this.organizacion ? this.organizacion.toJSON() : <any>undefined;
         data["tecnico"] = this.tecnico ? this.tecnico.toJSON() : <any>undefined;
         data["sexo"] = this.sexo ? this.sexo.toJSON() : <any>undefined;
@@ -7338,7 +7405,6 @@ export interface IFichaDto {
     observaciones?: string | undefined;
     politicaFirmada?: boolean;
     completa?: boolean;
-    edad?: number | undefined;
     organizacion?: OrganizacionDto;
     tecnico?: UsuarioDto;
     sexo?: SexoDto;
@@ -7350,6 +7416,126 @@ export interface IFichaDto {
     origen?: PaisDto;
     seguimientos?: SeguimientoViewDto[] | undefined;
     adjuntos?: AdjuntoDto[] | undefined;
+}
+
+export class DatosFichaDto implements IDatosFichaDto {
+    id?: number;
+    fotoId?: number | undefined;
+    nombre?: string | undefined;
+    apellido1?: string | undefined;
+    apellido2?: string | undefined;
+    dni?: string | undefined;
+    codigo?: string | undefined;
+    fechaNacimiento?: Date | undefined;
+    edad?: number | undefined;
+    sexo?: string | undefined;
+    genero?: string | undefined;
+    domicilio?: string | undefined;
+    municipio?: string | undefined;
+    provincia?: string | undefined;
+    cp?: string | undefined;
+    padron?: string | undefined;
+    nacionalidad?: string | undefined;
+    origen?: string | undefined;
+    telefono?: string | undefined;
+    email?: string | undefined;
+    organizacion?: string | undefined;
+    tecnico?: string | undefined;
+
+    constructor(data?: IDatosFichaDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.fotoId = _data["fotoId"];
+            this.nombre = _data["nombre"];
+            this.apellido1 = _data["apellido1"];
+            this.apellido2 = _data["apellido2"];
+            this.dni = _data["dni"];
+            this.codigo = _data["codigo"];
+            this.fechaNacimiento = _data["fechaNacimiento"] ? new Date(_data["fechaNacimiento"].toString()) : <any>undefined;
+            this.edad = _data["edad"];
+            this.sexo = _data["sexo"];
+            this.genero = _data["genero"];
+            this.domicilio = _data["domicilio"];
+            this.municipio = _data["municipio"];
+            this.provincia = _data["provincia"];
+            this.cp = _data["cp"];
+            this.padron = _data["padron"];
+            this.nacionalidad = _data["nacionalidad"];
+            this.origen = _data["origen"];
+            this.telefono = _data["telefono"];
+            this.email = _data["email"];
+            this.organizacion = _data["organizacion"];
+            this.tecnico = _data["tecnico"];
+        }
+    }
+
+    static fromJS(data: any): DatosFichaDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new DatosFichaDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["fotoId"] = this.fotoId;
+        data["nombre"] = this.nombre;
+        data["apellido1"] = this.apellido1;
+        data["apellido2"] = this.apellido2;
+        data["dni"] = this.dni;
+        data["codigo"] = this.codigo;
+        data["fechaNacimiento"] = this.fechaNacimiento ? this.fechaNacimiento.toISOString() : <any>undefined;
+        data["edad"] = this.edad;
+        data["sexo"] = this.sexo;
+        data["genero"] = this.genero;
+        data["domicilio"] = this.domicilio;
+        data["municipio"] = this.municipio;
+        data["provincia"] = this.provincia;
+        data["cp"] = this.cp;
+        data["padron"] = this.padron;
+        data["nacionalidad"] = this.nacionalidad;
+        data["origen"] = this.origen;
+        data["telefono"] = this.telefono;
+        data["email"] = this.email;
+        data["organizacion"] = this.organizacion;
+        data["tecnico"] = this.tecnico;
+        return data; 
+    }
+}
+
+export interface IDatosFichaDto {
+    id?: number;
+    fotoId?: number | undefined;
+    nombre?: string | undefined;
+    apellido1?: string | undefined;
+    apellido2?: string | undefined;
+    dni?: string | undefined;
+    codigo?: string | undefined;
+    fechaNacimiento?: Date | undefined;
+    edad?: number | undefined;
+    sexo?: string | undefined;
+    genero?: string | undefined;
+    domicilio?: string | undefined;
+    municipio?: string | undefined;
+    provincia?: string | undefined;
+    cp?: string | undefined;
+    padron?: string | undefined;
+    nacionalidad?: string | undefined;
+    origen?: string | undefined;
+    telefono?: string | undefined;
+    email?: string | undefined;
+    organizacion?: string | undefined;
+    tecnico?: string | undefined;
 }
 
 export class FichaDtoQueryResult implements IFichaDtoQueryResult {

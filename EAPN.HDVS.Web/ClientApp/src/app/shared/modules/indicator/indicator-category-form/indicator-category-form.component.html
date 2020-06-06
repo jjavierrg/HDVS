@@ -15,7 +15,7 @@
           <div class="custom-control custom-radio" *ngFor="let opt of item.category.indicadores; let i=index">
             <input [disabled]="!enabled" type="radio" id="cat{{item.category.id}}ind{{opt.id}}"
               [name]="item.category.id" [value]="opt.id" [(ngModel)]="item.indicator.indicadorId"
-              class="custom-control-input" (change)="this.onChange()">
+              class="custom-control-input" (change)="item.indicator.indicador=opt; this.onChange()">
             <label class="custom-control-label" for="cat{{item.category.id}}ind{{opt.id}}">{{opt.descripcion}}</label>
             <i class="ml-1 fas fa-info-circle text-muted" *ngIf="opt.sugerencias" ngbTooltip="{{opt.sugerencias}}"
               #t="ngbTooltip" (click)="t.open()"></i>

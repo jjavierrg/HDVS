@@ -1,6 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { CardService } from 'src/app/core/services/card.service';
-import { FichaDto } from 'src/app/core/api/api.client';
+import { DatosFichaDto } from 'src/app/core/api/api.client';
+import { Permissions } from 'src/app/core/enums/permissions.enum';
 
 @Component({
   selector: 'app-card-info',
@@ -9,14 +10,20 @@ import { FichaDto } from 'src/app/core/api/api.client';
 })
 export class CardInfoComponent implements OnInit {
   @Input() cardId: number;
+  @Output() editCardRequired = new EventEmitter<number>();
 
-  public card: FichaDto;
+  public card: DatosFichaDto;
+  public permissions = Permissions;
 
   constructor(private cardService: CardService) {
   }
 
   async ngOnInit() {
-    this.card = await this.cardService.getCard(this.cardId).toPromise();
+    this.card = await this.cardService.getPersonalData(this.cardId).toPromise();
+  }
+
+  public onEditCardClick() {
+    this.editCardRequired.emit(this.cardId);
   }
 
 }

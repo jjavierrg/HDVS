@@ -7,6 +7,7 @@ import { UniqueEmailDirective } from './directives/unique-email.directive';
 import { PasswordRestrinctionsDirective } from './directives/password-restrictions.directive';
 import { AtLeastOneDirective } from './directives/at-least-one.directive';
 import { FileDropperDirective } from './directives/file-dropper.directive';
+import { DefaultDatePipe } from './pipes/default-date.pipe';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { FileDropperDirective } from './directives/file-dropper.directive';
     PasswordRestrinctionsDirective,
     AtLeastOneDirective,
     FileDropperDirective,
+    DefaultDatePipe
   ],
   imports: [
     TranslateModule.forChild({
@@ -35,6 +37,7 @@ import { FileDropperDirective } from './directives/file-dropper.directive';
     TranslateModule,
     AtLeastOneDirective,
     FileDropperDirective,
+    DefaultDatePipe
   ],
 })
 export class CoreModule {}
