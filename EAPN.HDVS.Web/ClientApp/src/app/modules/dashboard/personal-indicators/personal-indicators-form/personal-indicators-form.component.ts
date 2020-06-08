@@ -42,6 +42,14 @@ export class PersonalIndicatorsFormComponent implements OnInit {
     const reviewId = snapshot.params['id'];
     const state: IReviewState = this.location.getState();
 
+    if (
+      (state.readonly && !(await this.authService.isAuthorized([this.permissions.personalindicators.read]).toPromise())) ||
+      (!state.readonly && !(await this.authService.isAuthorized([this.permissions.personalindicators.write]).toPromise()))
+    ) {
+      await this.router.navigate(['/']).then(() => this.alertService.error(this.translate.instant('core.no-autorizado')));
+      return;
+    }
+
     await this.rangeService.forceRefresh();
     this.masterdataService.getUsuariosByPartnerId(partnerId).subscribe((x) => (this.users = x));
 
@@ -58,6 +66,10 @@ export class PersonalIndicatorsFormComponent implements OnInit {
     if (!review) {
       await this.router.navigate(['/']).then(() => this.alertService.error(this.translate.instant('core.registro-no-encontrado')));
       return;
+    }
+
+    if (!review.fecha) {
+      review.fecha = new Date();
     }
 
     if (review.organizacionId !== partnerId) {

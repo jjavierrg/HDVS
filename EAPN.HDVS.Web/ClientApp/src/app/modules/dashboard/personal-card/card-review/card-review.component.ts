@@ -6,6 +6,10 @@ import { SeguimientoViewDto } from 'src/app/core/api/api.client';
 import { DateCellComponent } from 'src/app/shared/modules/grid/date-cell/date-cell.component';
 import { IndicatorRangeCellComponent } from 'src/app/shared/modules/grid/indicator-range-cell/indicator-range-cell.component';
 import { RangeService } from 'src/app/core/services/range.service';
+import { Permissions } from 'src/app/core/enums/permissions.enum';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { IndicatorService } from 'src/app/core/services/indicator.service';
+import { AlertService } from 'src/app/core/services/alert.service';
 
 @Component({
   selector: 'app-card-review',
@@ -20,7 +24,7 @@ export class CardReviewComponent implements OnInit, OnChanges {
   @Output() public reviewEditRequired = new EventEmitter<number>();
 
   public selection: SeguimientoViewDto[] = [];
-  public forceRefresh: boolean = false;
+  public permissions = Permissions;
 
   public columns: Partial<AgGridColumn>[] = [
     {
@@ -49,7 +53,13 @@ export class CardReviewComponent implements OnInit, OnChanges {
     },
   ];
 
-  constructor(private translate: TranslateService, private rangeService: RangeService) {}
+  constructor(
+    private translate: TranslateService,
+    private rangeService: RangeService,
+    private modalService: NgbModal,
+    private indicatorService: IndicatorService,
+    private alertService: AlertService
+  ) {}
 
   async ngOnInit() {
     await this.rangeService.forceRefresh();
@@ -61,8 +71,30 @@ export class CardReviewComponent implements OnInit, OnChanges {
     }
   }
 
+  public async onDeleteClick(modal: any): Promise<void> {
+    if (!this.selection || !this.selection.length) {
+      return;
+    }
+
+    try {
+      await this.modalService.open(modal, { centered: true, backdrop: 'static' }).result;
+    } catch (error) {
+      return;
+    }
+
+    try {
+      await this.indicatorService.deleteReviews(this.selection);
+      this.card.seguimientos = this.card.seguimientos.filter((x) => !this.selection.some((sel) => sel.id === x.id));
+      this.selection = [];
+
+      this.alertService.success(this.translate.instant('core.elementos-eliminados'));
+    } catch (error) {
+      this.alertService.error(error);
+    }
+  }
+
   public onAddReviewClick(): void {
-    this.reviewRequired.emit(0);
+    this.reviewEditRequired.emit(0);
   }
 
   public onViewReviewClick(): void {

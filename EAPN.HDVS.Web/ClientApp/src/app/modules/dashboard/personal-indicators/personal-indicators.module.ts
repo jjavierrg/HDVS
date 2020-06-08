@@ -25,7 +25,7 @@ const routes: Routes = [
     component: PersonalIndicatorsFormComponent,
     canLoad: [AuthenticatedGuard],
     canActivate: [AuthenticatedGuard],
-    data: { allowedPermissions: [Permissions.personalindicators.write] },
+    data: { allowedPermissions: [Permissions.personalindicators.write, Permissions.personalindicators.read] },
   },
   {
     path: '**',
