@@ -13,6 +13,7 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
 import { LoaderModule } from './shared/modules/loader/loader.module';
 import { GlobalErrorHandler } from './core/handler/error-handler';
+import { DatePipe } from '@angular/common';
 
 const routes: Routes = [
   {
@@ -52,6 +53,7 @@ const routes: Routes = [
     }),
   ],
   providers: [
+    DatePipe,
     ApiClient,
     {
       provide: apiEndpoint,

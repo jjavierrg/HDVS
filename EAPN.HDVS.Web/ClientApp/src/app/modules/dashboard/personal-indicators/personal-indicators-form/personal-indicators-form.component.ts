@@ -9,6 +9,7 @@ import { Permissions } from 'src/app/core/enums/permissions.enum';
 import { IReviewState } from 'src/app/shared/models/reviewState';
 import { Location } from '@angular/common';
 import { MasterdataService } from 'src/app/core/services/masterdata.service';
+import { RangeService } from 'src/app/core/services/range.service';
 
 @Component({
   selector: 'app-personal-indicators-form',
@@ -31,7 +32,8 @@ export class PersonalIndicatorsFormComponent implements OnInit {
     private alertService: AlertService,
     private translate: TranslateService,
     private location: Location,
-    private masterdataService: MasterdataService
+    private masterdataService: MasterdataService,
+    private rangeService: RangeService
   ) {}
 
   async ngOnInit() {
@@ -40,7 +42,8 @@ export class PersonalIndicatorsFormComponent implements OnInit {
     const reviewId = snapshot.params['id'];
     const state: IReviewState = this.location.getState();
 
-    this.masterdataService.getUsuariosByPartnerId(partnerId).subscribe(x => this.users = x);
+    await this.rangeService.forceRefresh();
+    this.masterdataService.getUsuariosByPartnerId(partnerId).subscribe((x) => (this.users = x));
 
     let review: SeguimientoDto = state.review;
     try {
@@ -72,9 +75,21 @@ export class PersonalIndicatorsFormComponent implements OnInit {
       return 0;
     }
 
-    return this.review.indicadores.reduce((prev, item) =>
-     prev + item.indicador.puntuacion,
-      0);
+    return this.review.indicadores.reduce((prev, item) => prev + item.indicador.puntuacion, 0);
+  }
+
+  public getRange(): string {
+    const score: number = this.getPuntuacion();
+    return this.rangeService.getRangeDescriptionByScore(score);
+  }
+
+  public onEditCardRequired(): Promise<void> {
+    if (!this.review.fichaId) {
+      return;
+    }
+
+    this.returnUrl = `/fichas/${this.review.fichaId}`;
+    return this.onSave(true);
   }
 
   public async onSave(redirect: boolean): Promise<void> {

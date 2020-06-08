@@ -13,6 +13,7 @@ export class FileUploaderComponent {
 
   @Output() filesAdded = new EventEmitter<File[]>();
   @Output() uploadFinished = new EventEmitter<void>();
+  @Output() cancel = new EventEmitter<void>();
 
   constructor(private uploadService: UploadService) {
     this.uploadService.queue.subscribe((x) => {
@@ -39,5 +40,9 @@ export class FileUploaderComponent {
     }
 
     this.filesAdded.emit(files);
+  }
+
+  public onCancelClick(): void {
+    this.cancel.emit();
   }
 }

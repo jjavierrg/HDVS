@@ -32,6 +32,7 @@ namespace EAPN.HDVS.Infrastructure.Context
         public virtual DbSet<Pais> Paises { get; set; }
         public virtual DbSet<Provincia> Provincias { get; set; }
         public virtual DbSet<Municipio> Municipios { get; set; }
+        public virtual DbSet<Rango> Rangos { get; set; }
 
         public HDVSContext(DbContextOptions options) : base(options) { }
 
@@ -64,6 +65,7 @@ namespace EAPN.HDVS.Infrastructure.Context
             modelBuilder.ApplyConfiguration(new Configurations.FichaConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.SexoConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.SituacionAdministrativaConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.RangoConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

@@ -29,19 +29,19 @@ export class AlertService {
     return this.subject.asObservable();
   }
 
-  public success(message: string, closeAfter: number = 5000): void {
+  public success(message: string, closeAfter: number = 2500): void {
     this.alert(AlertType.Success, message, closeAfter);
   }
 
-  public error(message: string, closeAfter: number = 5000): void {
+  public error(message: string, closeAfter: number = 2500): void {
     this.alert(AlertType.Error, message, closeAfter);
   }
 
-  public info(message: string, closeAfter: number = 5000): void {
+  public info(message: string, closeAfter: number = 2500): void {
     this.alert(AlertType.Info, message, closeAfter);
   }
 
-  public warning(message: string, closeAfter: number = 5000): void {
+  public warning(message: string, closeAfter: number = 2500): void {
     this.alert(AlertType.Warning, message, closeAfter);
   }
 

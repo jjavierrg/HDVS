@@ -10,6 +10,7 @@ import { Permissions } from 'src/app/core/enums/permissions.enum';
 })
 export class CardInfoComponent implements OnInit {
   @Input() cardId: number;
+  @Input() showEditCardButton: boolean;
   @Output() editCardRequired = new EventEmitter<number>();
 
   public card: DatosFichaDto;

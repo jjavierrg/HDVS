@@ -1,13 +1,19 @@
 <input hidden type="file" #inputFile [multiple]="multiple" (change)="uploadFile($event.target.files)">
 <div class="file-uploader-container" appFileDropper (filesDropped)="uploadFile($event)">
-  <div *ngIf="!files.length" class="file-uploader d-none d-lg-flex" (click)="inputFile.click()">
+  <div *ngIf="!files.length" class="file-uploader d-none d-lg-flex flex-grow-1" (click)="inputFile.click()">
     <img src="assets/upload.svg" height="128" width="128">
     <span class="mt-3">{{ 'core.subir-ficheros-o-arrastrar' | translate }}</span>
   </div>
-  <button *ngIf="!files.length" class="btn btn-secondary d-block d-lg-none"
-    (click)="inputFile.click()">{{ 'core.subir-ficheros' | translate }}</button>
+  <div *ngIf="!files.length" class="d-flex d-lg-none flex-grow-1 align-items-center">
+    <button class="btn btn-secondary btn-block" (click)="inputFile.click()">{{ 'core.subir-ficheros' | translate }}</button>
+  </div>
   <div class="flex-grow-1 overflow-auto" *ngIf="files.length">
     <app-file-uploader-entry *ngFor="let file of files" [file]="file">
     </app-file-uploader-entry>
+  </div>
+  <div class="row" *ngIf="!files.length">
+    <div class="col-12">
+      <button class="btn btn-danger float-right" (click)="onCancelClick()">{{ 'core.cancelar' | translate }}</button>
+    </div>
   </div>
 </div>

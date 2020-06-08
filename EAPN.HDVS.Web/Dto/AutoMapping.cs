@@ -88,6 +88,7 @@ namespace EAPN.HDVS.Web.Dto
             CreateMap<Empadronamiento, EmpadronamientoDto>().ReverseMap();
             CreateMap<Sexo, SexoDto>().ReverseMap();
             CreateMap<SituacionAdministrativa, SituacionAdministrativaDto>().ReverseMap();
+            CreateMap<Rango, RangoDto>().ReverseMap();
 
             CreateMap<Municipio, MasterDataDto>()
                 .ForMember(d => d.Descripcion, opt => opt.MapFrom(src => src.Nombre));

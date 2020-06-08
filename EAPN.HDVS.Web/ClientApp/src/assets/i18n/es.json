@@ -13,6 +13,7 @@
     "descripcion": "Descripción",
     "dimensiones": "Dimensiones",
     "email": "Email",
+    "grado": "Grado",
     "nombre": "Nombre",
     "nueva-clave": "Nueva contraseña",
     "numero-usuarios": "Usuarios",
@@ -59,7 +60,8 @@
     "subiendo": "Subiendo",
     "subir-ficheros": "Subir Ficheros",
     "subir-ficheros-o-arrastrar": "Arrastre los ficheros o haga click aquí",
-    "tamano": "Tamaño"
+    "tamano": "Tamaño",
+    "ver": "Ver"
   },
   "ficha": {
     "acepta-politica": "Acepta y firma política privacidad",

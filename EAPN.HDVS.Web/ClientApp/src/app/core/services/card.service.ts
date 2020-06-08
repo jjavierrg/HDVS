@@ -5,12 +5,13 @@ import { isDate } from 'util';
 import { ApiClient, FichaDto, QueryData, VistaPreviaFichaDto, DatosFichaDto } from '../api/api.client';
 import { BaseFilter, getFilterQuery, IBaseFilter } from '../filters/basefilter';
 import { FilterComparison, FilterUnion } from '../filters/filter.enum';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CardService {
-  constructor(private apiClient: ApiClient) {}
+  constructor(private apiClient: ApiClient, private datepipe: DatePipe) {}
 
   public findPreviewCards(name: string, surname1: string, surname2: string, birth: Date): Observable<VistaPreviaFichaDto[]> {
     const filters: IBaseFilter[] = [];
@@ -48,10 +49,34 @@ export class CardService {
       return of(null);
     }
 
+    card.codigo = this.generateRadCode(card);
+    card.dni = card.dni.replace(/\W/g, '');
+
     if (card.id) {
       return this.apiClient.putFicha(card.id, card).pipe(map((_) => card));
     } else {
       return this.apiClient.postFicha(card);
+    }
+  }
+
+  private generateRadCode(card: FichaDto): string {
+    if (!card.fechaNacimiento || !card.apellido1) {
+      return '';
+    }
+
+    if (!card.apellido2 && !card.nombre) {
+      return '';
+    }
+
+    const apellido1: string = card.apellido1.replace(/\W/g, '').padEnd(2, 'X').toUpperCase();
+    const fechNac: string = this.datepipe.transform(card.fechaNacimiento, 'ddMMyyyy');
+
+    if (card.apellido2) {
+      const apellido2: string = card.apellido2.replace(/\W/g, '').padEnd(2, 'X').toUpperCase();
+      return `${apellido1.substr(0, 2)}${apellido2.substr(0, 2)}${fechNac}`;
+    } else {
+      const nombre: string = card.nombre.replace(/\W/g, '').padEnd(2, 'X').toUpperCase();
+      return `${nombre.substr(0, 2)}${apellido1.substr(0, 2)}${fechNac}`;
     }
   }
 }

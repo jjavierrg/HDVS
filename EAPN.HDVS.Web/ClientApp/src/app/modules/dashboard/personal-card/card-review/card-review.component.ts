@@ -4,6 +4,8 @@ import { AgGridColumn } from 'ag-grid-angular';
 import { TranslateService } from '@ngx-translate/core';
 import { SeguimientoViewDto } from 'src/app/core/api/api.client';
 import { DateCellComponent } from 'src/app/shared/modules/grid/date-cell/date-cell.component';
+import { IndicatorRangeCellComponent } from 'src/app/shared/modules/grid/indicator-range-cell/indicator-range-cell.component';
+import { RangeService } from 'src/app/core/services/range.service';
 
 @Component({
   selector: 'app-card-review',
@@ -15,6 +17,7 @@ export class CardReviewComponent implements OnInit, OnChanges {
   @Input() public canSaveCard: boolean;
 
   @Output() public reviewRequired = new EventEmitter<number>();
+  @Output() public reviewEditRequired = new EventEmitter<number>();
 
   public selection: SeguimientoViewDto[] = [];
   public forceRefresh: boolean = false;
@@ -25,6 +28,12 @@ export class CardReviewComponent implements OnInit, OnChanges {
       field: 'nombreTecnico',
       minWidth: 100,
       filter: 'agTextColumnFilter',
+    },
+    {
+      headerName: this.translate.instant('comun.grado'),
+      field: 'puntuacion',
+      minWidth: 100,
+      cellRendererFramework: IndicatorRangeCellComponent,
     },
     {
       headerName: this.translate.instant('core.fecha'),
@@ -40,9 +49,11 @@ export class CardReviewComponent implements OnInit, OnChanges {
     },
   ];
 
-  constructor(private translate: TranslateService) {}
+  constructor(private translate: TranslateService, private rangeService: RangeService) {}
 
-  ngOnInit() {}
+  async ngOnInit() {
+    await this.rangeService.forceRefresh();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes.canSaveCard.firstChange) {
@@ -54,9 +65,15 @@ export class CardReviewComponent implements OnInit, OnChanges {
     this.reviewRequired.emit(0);
   }
 
-  public onEditReviewClick(): void {
+  public onViewReviewClick(): void {
     if (this.selection.length === 1) {
       this.reviewRequired.emit(this.selection[0].id);
+    }
+  }
+
+  public onEditReviewClick(): void {
+    if (this.selection.length === 1) {
+      this.reviewEditRequired.emit(this.selection[0].id);
     }
   }
 }

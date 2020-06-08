@@ -6,7 +6,7 @@ import { InputModule } from 'src/app/shared/modules/input/input.module';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthenticatedGuard } from 'src/app/core/guards/authenticate.guard';
 import { FormsModule } from '@angular/forms';
-import { NgbModalModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModalModule, NgbNavModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { GridModule } from 'src/app/shared/modules/grid/grid.module';
 import { CardFormComponent } from './card-form/card-form.component';
 import { Permissions } from 'src/app/core/enums/permissions.enum';
@@ -59,7 +59,8 @@ const routes: Routes = [
     ImageModule,
     NgbNavModule,
     AttachmentUploaderModule,
-    IndicatorModule
+    IndicatorModule,
+    NgbDropdownModule
   ],
 })
 export class PersonalCardModule {}

@@ -11,6 +11,6 @@
 <!-- Upload Modal -->
 <ng-template #uploadModal let-modal>
   <div class="modal-body modal-upload-body">
-    <app-file-uploader (filesAdded)="onFileAdded($event)"></app-file-uploader>
+    <app-file-uploader (filesAdded)="onFileAdded($event)" (cancel)="modal.dismiss()"></app-file-uploader>
   </div>
 </ng-template>

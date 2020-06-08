@@ -5,10 +5,6 @@ export class Card extends FichaDto {
     super(data);
   }
 
-  public get rad(): string {
-    return '';
-  }
-
   public get edadCalculada(): number {
     if (!this.fechaNacimiento) {
       return;

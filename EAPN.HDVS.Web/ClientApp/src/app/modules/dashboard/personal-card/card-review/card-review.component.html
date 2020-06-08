@@ -1,7 +1,16 @@
 <div class="position-absolute w-100 h-100 d-flex flex-column" *ngIf="!forceRefresh">
   <div class="d-flex flex-row-reverse mb-3">
     <button [disabled]="!selection.length" class="btn btn-danger">{{'core.eliminar' | translate}}</button>
-    <button [disabled]="selection.length !== 1" class="btn btn-primary mr-1 mr-lg-3" (click)="onEditReviewClick()">{{ 'core.editar' | translate }}</button>
+    <div class="btn-group mr-1 mr-lg-3">
+      <button [disabled]="selection.length !== 1" type="button" class="btn btn-primary" (click)="onViewReviewClick()">{{ 'core.ver' | translate }}</button>
+      <div class="btn-group" ngbDropdown role="group" placement="bottom-right">
+        <button [disabled]="selection.length !== 1" class="btn btn-primary dropdown-toggle-split" ngbDropdownToggle></button>
+        <div class="dropdown-menu" ngbDropdownMenu>
+          <button ngbDropdownItem (click)="onEditReviewClick()">{{ 'core.editar' | translate }}</button>
+        </div>
+      </div>
+    </div>
+
     <button class="btn btn-primary mr-1 mr-lg-3" (click)="onAddReviewClick()">{{'core.anadir' | translate}}</button>
   </div>
   <app-grid class="flex-grow-1" [data]="card.seguimientos" [columns]="columns" [showToolbar]="false"

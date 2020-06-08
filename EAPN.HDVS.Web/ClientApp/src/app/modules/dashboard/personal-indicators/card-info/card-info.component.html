@@ -54,8 +54,8 @@
         <div class="col-6 label col-lg-1">{{ 'comun.organizacion' | translate }}</div>
         <div class="col-6 col-lg-5">{{ card.organizacion }}</div>
       </div>
-      <div class="row mt-3" *appAllowedPermissions="{permissions: [permissions.personalcard.write]}">
-        <div class="col-12 col-lg-2 offset-lg-10">
+      <div class="row mt-3" *ngIf="showEditCardButton">
+        <div class="col-12 col-lg-2 offset-lg-10" *appAllowedPermissions="{permissions: [permissions.personalcard.write]}">
           <button class="btn btn-block btn-primary" (click)="onEditCardClick()">{{ 'core.editar' | translate }}</button>
         </div>
       </div>
