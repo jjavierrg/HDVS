@@ -181,7 +181,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.UsuariosController
 
             // Assert
             Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
-            // Assert.Contains(_factory.Logger.LogEntries, x => x.LogLevel == LogLevel.Critical && x.Message.Contains("no autorizada: El usuario pertenece a otra organización"));
+            Assert.Contains(_factory.Logger.LogEntries, x => x.LogLevel == LogLevel.Critical && x.Message.Contains("no autorizada: El usuario pertenece a otra organización"));
         }
     }
 }

@@ -40,6 +40,10 @@ export class CardService {
     return this.apiClient.getFicha(cardId);
   }
 
+  public getAllCards(): Observable<FichaDto[]> {
+    return this.apiClient.getFichas();
+  }
+
   public getPersonalData(cardId: number): Observable<DatosFichaDto> {
     return this.apiClient.getDatosFicha(cardId);
   }
