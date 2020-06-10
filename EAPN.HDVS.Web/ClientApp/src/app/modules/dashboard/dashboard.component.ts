@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { RangeService } from 'src/app/core/services/range.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,9 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() { }
+  constructor(private rangeService: RangeService) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.rangeService.forceRefresh();
   }
 
 }

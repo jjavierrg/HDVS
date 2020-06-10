@@ -51,12 +51,7 @@ export class MasterdataService {
     return this.apiClient.getEmpadronamientosAsMasterData();
   }
 
-  public getUsuariosByPartnerId(partnerId: number): Observable<MasterDataDto[]> {
-    const filters: IBaseFilter[] = [new BaseFilter('OrganizacionId', +partnerId, FilterComparison.Equal, FilterUnion.And)];
-    const query: QueryData = new QueryData({ filterParameters: getFilterQuery(filters) });
-    return this.apiClient.getUsuariosFiltered(query).pipe(map((result) => result.data.map((x) => new MasterDataDto({
-      id: x.id,
-      descripcion: `${x.nombre} ${x.apellidos}`.trim()
-    }))));
+  public getUsuarios(): Observable<MasterDataDto[]> {
+    return this.apiClient.getUsuariosAsMasterdata();
   }
 }

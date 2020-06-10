@@ -102,6 +102,8 @@ namespace EAPN.HDVS.Web.Dto
             CreateMap<Perfil, MasterDataDto>();
             CreateMap<Permiso, MasterDataDto>();
             CreateMap<SituacionAdministrativa, MasterDataDto>();
+            CreateMap<Usuario, MasterDataDto>()
+                .ForMember(d => d.Descripcion, opt => opt.MapFrom(src => src.NombreCompleto));
             CreateMap<Organizacion, MasterDataDto>()
                 .ForMember(d => d.Descripcion, opt => opt.MapFrom(src => src.Nombre));
         }

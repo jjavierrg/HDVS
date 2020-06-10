@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace EAPN.HDVS.Web.Controllers
@@ -55,6 +56,19 @@ namespace EAPN.HDVS.Web.Controllers
             var usuarios = await _usuarioService.GetListAsync(GetSuperadminExclusionFilter(), q => q.Include(x => x.Perfiles).ThenInclude(x => x.Perfil).Include(x => x.PermisosAdicionales).ThenInclude(x => x.Permiso).Include(x => x.Organizacion), q => q.OrderBy(x => x.Email));
             _logger.LogInformation("Obtiene el listado de usuarios");
             return Ok(_mapper.MapList<UsuarioDto>(usuarios));
+        }
+
+        /// <summary>
+        /// Get all stored user from current partner
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("materdata", Name = "GetUsuariosAsMasterdata")]
+        [ProducesResponseType(typeof(IEnumerable<MasterDataDto>), StatusCodes.Status200OK)]
+        public async Task<ActionResult<IEnumerable<MasterDataDto>>> GetUsuariosAsMasterdata()
+        {
+            var usuarios = await _usuarioService.GetListAsync(x => x.OrganizacionId == User.GetUserOrganizacionId(), orderBy: q => q.OrderBy(x => x.Nombre).ThenBy(x => x.Apellidos));
+            _logger.LogInformation("Obtiene el listado de usuarios (masterdata)");
+            return Ok(_mapper.MapList<MasterDataDto>(usuarios));
         }
 
         /// <summary>

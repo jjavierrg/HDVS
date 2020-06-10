@@ -57,7 +57,6 @@ namespace EAPN.HDVS.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("masterdata", Name = "GetOrganizacionesAsMasterData")]
-        [AuthorizePermission(Permissions.APP_SUPERADMIN)]
         [ProducesResponseType(typeof(IEnumerable<MasterDataDto>), StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<MasterDataDto>>> GetOrganizacionesAsMasterData()
         {

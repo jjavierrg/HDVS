@@ -35,7 +35,7 @@ export class CardPersonalDataComponent implements OnInit, AfterViewInit {
       this.masterdataService.getCountries().toPromise(),
       this.masterdataService.getProvincias().toPromise(),
       this.masterdataService.getSituacionesAdministrativas().toPromise(),
-      this.masterdataService.getUsuariosByPartnerId(partnerId).toPromise(),
+      this.masterdataService.getUsuarios().toPromise(),
       this.masterdataService.getEmpadronamientos().toPromise(),
     ]);
 

@@ -708,6 +708,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.UsuariosController.GetUsuariosAsMasterdata">
+            <summary>
+            Get all stored user from current partner
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:EAPN.HDVS.Web.Controllers.UsuariosController.GetUsuario(System.Int32)">
             <summary>
             Get the item with the specified identifier

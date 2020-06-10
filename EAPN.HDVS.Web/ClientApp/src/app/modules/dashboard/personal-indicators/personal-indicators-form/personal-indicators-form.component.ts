@@ -51,7 +51,7 @@ export class PersonalIndicatorsFormComponent implements OnInit {
     }
 
     await this.rangeService.forceRefresh();
-    this.masterdataService.getUsuariosByPartnerId(partnerId).subscribe((x) => (this.users = x));
+    this.users = await this.masterdataService.getUsuarios().toPromise();
 
     let review: SeguimientoDto = state.review;
     try {
