@@ -14,3 +14,51 @@
     padding-right: 1rem !important;
   }
 }
+
+@media (min-width: map-get($grid-breakpoints, 'lg')) {
+  .addContainer {
+    align-self: flex-end;
+    position: relative;
+    background:  var(--placeholder-bg);
+    border-radius: 1rem;
+    border: 1px solid var(--primary);
+  }
+
+  .addContainer > span {
+    white-space: nowrap;
+    margin-left: 40px;
+    margin-right: 10px;
+    position: relative;
+    color: var(--primary);
+    font-weight: 600;
+  }
+
+  .addContainer > i {
+    height: 80px;
+    width: 80px;
+    left: -40px;
+    position: absolute;
+    background-color: var(--light);
+    top: -12px;
+    color: var(--primary);
+    border: 3px solid var(--gray);
+    border-radius: 50%;
+    text-align: center;
+    line-height: 80px;
+    font-size: 2em;
+    z-index: 1020;
+  }
+
+  .active.addContainer > i {
+    border-color: var(--secondary) !important;
+    color: var(--secondary) !important;
+  }
+
+  .active.addContainer {
+    background-color: var(--light);
+  }
+
+  .active.addContainer > span {
+    color: var(--secondary) !important;
+  }
+}
