@@ -40,10 +40,10 @@ namespace EAPN.HDVS.Web.Testing.Controllers.OrganizacionesController
             // Assert
             Assert.Equal(HttpStatusCode.Forbidden, getResponse.StatusCode);
             Assert.Equal(HttpStatusCode.Forbidden, getOneResponse.StatusCode);
-            Assert.Equal(HttpStatusCode.Forbidden, getMasterdataResponse.StatusCode);
             Assert.Equal(HttpStatusCode.Forbidden, putResponse.StatusCode);
             Assert.Equal(HttpStatusCode.Forbidden, postResponse.StatusCode);
             Assert.Equal(HttpStatusCode.Forbidden, deleteResponse.StatusCode);
+            Assert.Equal(HttpStatusCode.OK, getMasterdataResponse.StatusCode);
         }
 
         [Fact]
