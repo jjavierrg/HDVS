@@ -17,7 +17,7 @@
     "grado": "Grado",
     "nombre": "Nombre",
     "nueva-clave": "Nueva contraseña",
-    "numero-usuarios": "Usuarios",
+    "numero-usuarios": "Técnicos/as",
     "observaciones": "Observaciones",
     "organizacion": "Organización",
     "organizaciones": "Organizaciones",
@@ -25,7 +25,7 @@
     "permisos": "Permisos",
     "seguimientos": "Seguimientos",
     "telefono": "Teléfono",
-    "usuarios": "Usuarios",
+    "usuarios": "Técnicos/as",
     "web": "Web"
   },
   "core": {
@@ -90,7 +90,7 @@
     "sexo": "Sexo",
     "situacion-administrativa": "Situación Administrativa",
     "subir-politica": "Subir Política",
-    "tecnico": "Técnico",
+    "tecnico": "Técnico/a",
     "usuario-no-alta": "El usuario no está dado de alta"
   },
   "formulario-perfil": {
@@ -98,7 +98,7 @@
     "no-guardado": "No se ha podido modifcar su perfil. Revise si la contraseña actual es válida"
   },
   "formulario-usuarios": {
-    "nuevo-usuario": "Nuevo Usuario",
+    "nuevo-usuario": "Nuevo Técnico/a",
     "permisos-adicionales": "Permisos adicionales"
   },
   "header": {
@@ -111,8 +111,8 @@
       "organizaciones-titulo": "Organizaciones",
       "perfiles": "Perfiles",
       "perfiles-titulo": "Perfiles",
-      "usuarios": "Usuarios",
-      "usuarios-titulo": "Usuarios"
+      "usuarios": "Técnicos/as",
+      "usuarios-titulo": "Técnicos/as"
     },
     "titulo": "Herramienta de diagnóstico de vulnerabilidad social",
     "titulo-abreviado": "HDVS"
