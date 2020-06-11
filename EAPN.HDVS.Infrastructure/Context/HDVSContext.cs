@@ -6,6 +6,7 @@ namespace EAPN.HDVS.Infrastructure.Context
     public class HDVSContext : DbContext
     {
         public virtual DbSet<Log> Logs { get; set; }
+        public virtual DbSet<Configuracion> Configuraciones { get; set; }
 
         public virtual DbSet<TipoAdjunto> TiposAdjunto { get; set; }
         public virtual DbSet<Adjunto> Adjuntos { get; set; }
@@ -39,6 +40,7 @@ namespace EAPN.HDVS.Infrastructure.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new Configurations.LogConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.ConfiguracionConfiguration());
 
             modelBuilder.ApplyConfiguration(new Configurations.AdjuntoConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.TipoAdjuntoConfiguration());

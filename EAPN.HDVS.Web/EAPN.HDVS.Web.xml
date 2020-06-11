@@ -55,6 +55,34 @@
             <param name="id">Item identifier</param>
             <returns></returns>
         </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.ConfiguracionesController.#ctor(EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Configuracion},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.ConfiguracionesController},AutoMapper.IMapper)">
+            <summary>
+            </summary>
+            <param name="configuracionService"></param>
+            <param name="logger"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.ConfiguracionesController.GetConfiguraciones">
+            <summary>
+            Get all stored items
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.ConfiguracionesController.GetConfiguracion(System.Int32)">
+            <summary>
+            Get the item with the specified identifier
+            </summary>
+            <param name="id">Item identifier</param>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.ConfiguracionesController.PutConfiguracion(System.Int32,EAPN.HDVS.Web.Dto.ConfiguracionDto)">
+            <summary>
+            Update an existing item
+            </summary>
+            <param name="id">Item identifier</param>
+            <param name="configuracionDto">Item data</param>
+            <returns></returns>
+        </member>
         <member name="M:EAPN.HDVS.Web.Controllers.DatosUsuarioController.#ctor(EAPN.HDVS.Application.Services.User.IUsuarioService,Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.DatosUsuarioController},AutoMapper.IMapper)">
             <summary>
             </summary>

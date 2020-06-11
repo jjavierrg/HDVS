@@ -38,6 +38,8 @@ namespace EAPN.HDVS.Testing.Common
 
         public async Task Seed(HDVSContext context)
         {
+            context.Configuraciones.Add(new Configuracion { Id = 1, Enlaces = "", MostrarEnlaces = true });
+
             context.Permisos.Add(new Permiso { Id = 1, Clave = "--", Descripcion = "--" });
             context.Permisos.Add(new Permiso { Id = 2, Clave = Permissions.USERMANAGEMENT_READ, Descripcion = "Usuarios: Lectura" });
             context.Permisos.Add(new Permiso { Id = 3, Clave = Permissions.USERMANAGEMENT_WRITE, Descripcion = "Usuarios: Escritura" });
@@ -66,7 +68,7 @@ namespace EAPN.HDVS.Testing.Common
                 if (i != 6)
                     context.PerfilesPermisos.Add(new PerfilPermiso { PerfilId = 2, PermisoId = i });
             }
-                
+
 
             for (int i = 2; i <= 5; i++)
                 context.PerfilesPermisos.Add(new PerfilPermiso { PerfilId = 3, PermisoId = i });

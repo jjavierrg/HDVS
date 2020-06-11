@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-3 py-lg-0">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary py-lg-0">
   <span class="navbar-brand mb-0 h1 d-block d-lg-none">{{ 'navbar.menu' | translate }}</span>
 
   <button class="navbar-toggler ml-auto" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">
@@ -31,3 +31,7 @@
     </div>
   </div>
 </nav>
+<div *ngIf="links" class="d-flex flex-wrap justify-content-end mr-3">
+  <a *ngFor="let link of links" class="ml-2" [href]="link.link" target="_blank">{{ link.description }}<i
+      class="ml-1 fas fa-external-link-square-alt"></i></a>
+</div>

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ApiClient, MasterDataDto, QueryData } from '../api/api.client';
+import { ApiClient, MasterDataDto, QueryData, ConfiguracionDto } from '../api/api.client';
 import { Observable } from 'rxjs';
 import { IBaseFilter, BaseFilter, getFilterQuery } from '../filters/basefilter';
 import { FilterComparison, FilterUnion } from '../filters/filter.enum';
@@ -53,5 +53,9 @@ export class MasterdataService {
 
   public getUsuarios(): Observable<MasterDataDto[]> {
     return this.apiClient.getUsuariosAsMasterdata();
+  }
+
+  public getConfiguracion(): Observable<ConfiguracionDto> {
+    return this.apiClient.getConfiguracion(1);
   }
 }
