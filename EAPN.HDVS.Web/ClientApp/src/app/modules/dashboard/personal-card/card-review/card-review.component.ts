@@ -32,12 +32,7 @@ export class CardReviewComponent implements OnInit, OnChanges {
       field: 'nombreTecnico',
       minWidth: 100,
       filter: 'agTextColumnFilter',
-    },
-    {
-      headerName: this.translate.instant('comun.grado'),
-      field: 'puntuacion',
-      minWidth: 100,
-      cellRendererFramework: IndicatorRangeCellComponent,
+      flex: 2,
     },
     {
       headerName: this.translate.instant('core.fecha'),
@@ -50,6 +45,13 @@ export class CardReviewComponent implements OnInit, OnChanges {
       field: 'puntuacion',
       maxWidth: 150,
       filter: 'agNumberColumnFilter',
+    },
+    {
+      headerName: this.translate.instant('comun.grado'),
+      field: 'puntuacion',
+      minWidth: 100,
+      cellRendererFramework: IndicatorRangeCellComponent,
+      flex: 1,
     },
   ];
 
