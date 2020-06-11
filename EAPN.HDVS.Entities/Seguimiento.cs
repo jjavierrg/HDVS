@@ -10,6 +10,7 @@ namespace EAPN.HDVS.Entities
         public int FichaId { get; set; }
         public DateTime Fecha { get; set; }
         public string Observaciones { get; set; }
+        public bool Completo { get; set; }
 
         public Ficha Ficha { get; set; }
         public Usuario Tecnico{ get; set; }

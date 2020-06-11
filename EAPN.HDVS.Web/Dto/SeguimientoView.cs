@@ -9,6 +9,7 @@ namespace EAPN.HDVS.Web.Dto
         public string NombreTecnico { get; set; }
         public DateTime Fecha { get; set; }
         public int Puntuacion { get; set; }
+        public bool Completo { get; set; }
 
     }
 }

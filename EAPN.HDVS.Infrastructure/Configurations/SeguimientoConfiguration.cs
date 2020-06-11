@@ -16,6 +16,7 @@ namespace EAPN.HDVS.Infrastructure.Configurations
             builder.Property(x => x.UsuarioId).HasColumnName(nameof(Seguimiento.UsuarioId)).IsRequired();
             builder.Property(x => x.FichaId).HasColumnName(nameof(Seguimiento.FichaId)).IsRequired();
             builder.Property(x => x.Observaciones).HasColumnName(nameof(Seguimiento.Observaciones));
+            builder.Property(x => x.Completo).HasColumnName(nameof(Seguimiento.Completo)).IsRequired();
 
             builder.HasOne(x => x.Tecnico).WithMany().HasForeignKey(x => x.UsuarioId).OnDelete(DeleteBehavior.ClientSetNull);
             builder.HasOne(x => x.Ficha).WithMany(x => x.Seguimientos).HasForeignKey(x => x.FichaId).OnDelete(DeleteBehavior.Cascade); ;

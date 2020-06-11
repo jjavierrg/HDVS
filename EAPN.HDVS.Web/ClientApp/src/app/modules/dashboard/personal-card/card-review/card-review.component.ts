@@ -10,6 +10,7 @@ import { Permissions } from 'src/app/core/enums/permissions.enum';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IndicatorService } from 'src/app/core/services/indicator.service';
 import { AlertService } from 'src/app/core/services/alert.service';
+import { CheckboxCellComponent } from 'src/app/shared/modules/grid/checkbox-cell/checkbox-cell.component';
 
 @Component({
   selector: 'app-card-review',
@@ -52,6 +53,12 @@ export class CardReviewComponent implements OnInit, OnChanges {
       minWidth: 100,
       cellRendererFramework: IndicatorRangeCellComponent,
       flex: 1,
+    },
+    {
+      headerName: this.translate.instant('core.completado'),
+      field: 'completo',
+      maxWidth: 100,
+      cellRendererFramework: CheckboxCellComponent,
     },
   ];
 

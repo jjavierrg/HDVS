@@ -7949,6 +7949,7 @@ export class SeguimientoViewDto implements ISeguimientoViewDto {
     nombreTecnico?: string | undefined;
     fecha?: Date;
     puntuacion?: number;
+    completo?: boolean;
 
     constructor(data?: ISeguimientoViewDto) {
         if (data) {
@@ -7965,6 +7966,7 @@ export class SeguimientoViewDto implements ISeguimientoViewDto {
             this.nombreTecnico = _data["nombreTecnico"];
             this.fecha = _data["fecha"] ? new Date(_data["fecha"].toString()) : <any>undefined;
             this.puntuacion = _data["puntuacion"];
+            this.completo = _data["completo"];
         }
     }
 
@@ -7981,6 +7983,7 @@ export class SeguimientoViewDto implements ISeguimientoViewDto {
         data["nombreTecnico"] = this.nombreTecnico;
         data["fecha"] = this.fecha ? this.fecha.toISOString() : <any>undefined;
         data["puntuacion"] = this.puntuacion;
+        data["completo"] = this.completo;
         return data; 
     }
 }
@@ -7990,6 +7993,7 @@ export interface ISeguimientoViewDto {
     nombreTecnico?: string | undefined;
     fecha?: Date;
     puntuacion?: number;
+    completo?: boolean;
 }
 
 export class FichaDto implements IFichaDto {
@@ -8763,6 +8767,7 @@ export class SeguimientoDto implements ISeguimientoDto {
     fichaId?: number;
     fecha?: Date;
     observaciones?: string | undefined;
+    completo?: boolean;
     indicadores?: IndicadorSeguimientoDto[] | undefined;
 
     constructor(data?: ISeguimientoDto) {
@@ -8782,6 +8787,7 @@ export class SeguimientoDto implements ISeguimientoDto {
             this.fichaId = _data["fichaId"];
             this.fecha = _data["fecha"] ? new Date(_data["fecha"].toString()) : <any>undefined;
             this.observaciones = _data["observaciones"];
+            this.completo = _data["completo"];
             if (Array.isArray(_data["indicadores"])) {
                 this.indicadores = [] as any;
                 for (let item of _data["indicadores"])
@@ -8805,6 +8811,7 @@ export class SeguimientoDto implements ISeguimientoDto {
         data["fichaId"] = this.fichaId;
         data["fecha"] = this.fecha ? this.fecha.toISOString() : <any>undefined;
         data["observaciones"] = this.observaciones;
+        data["completo"] = this.completo;
         if (Array.isArray(this.indicadores)) {
             data["indicadores"] = [];
             for (let item of this.indicadores)
@@ -8821,6 +8828,7 @@ export interface ISeguimientoDto {
     fichaId?: number;
     fecha?: Date;
     observaciones?: string | undefined;
+    completo?: boolean;
     indicadores?: IndicadorSeguimientoDto[] | undefined;
 }
 
