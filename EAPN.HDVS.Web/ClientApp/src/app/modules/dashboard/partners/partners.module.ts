@@ -10,6 +10,7 @@ import { InputModule } from 'src/app/shared/modules/input/input.module';
 import { FormsModule } from '@angular/forms';
 import { PartnerListComponent } from './partner-list/partner-list.component';
 import { PartnerFormComponent } from './partner-form/partner-form.component';
+import { ImageModule } from 'src/app/shared/modules/image/image.module';
 
 const routes: Routes = [
   {
@@ -34,6 +35,6 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [PartnerListComponent, PartnerFormComponent],
-  imports: [CommonModule, CoreModule, GridModule, NgbModalModule, InputModule, FormsModule, RouterModule.forChild(routes)],
+  imports: [CommonModule, CoreModule, GridModule, NgbModalModule, InputModule, FormsModule, ImageModule, RouterModule.forChild(routes)],
 })
 export class PartnersModule { }

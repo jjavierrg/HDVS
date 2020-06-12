@@ -87,7 +87,10 @@ export class UserManagementFormComponent implements OnInit {
     }
 
     this.usuario.fotoId = foto.id;
-    this.saveUser(this.usuario);
+
+    if (this.usuario.id) {
+      this.saveUser(this.usuario);
+    }
   }
 
   private async saveUser(usuario: UsuarioDto): Promise<boolean> {

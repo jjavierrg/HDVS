@@ -1,6 +1,11 @@
 <div class="container" *ngIf="partner">
   <div class="card border-0">
-    <h5 class="card-header toolbar text-light justify-content-start">{{ title }}</h5>
+    <div class="card-header toolbar align-items-end justify-content-start border-bottom-0 flex-column flex-lg-row">
+      <app-secure-profile-image [photoId]="partner.fotoId" class="profile-picture align-self-center" fallbackImage="assets/partner.svg" imageClasses=" "
+        (imageChange)="onProfilePictureChanged($event)">
+      </app-secure-profile-image>
+      <h5 class="ml-3 flex-grow-1 text-light align-self-center">{{title}}</h5>
+    </div>
     <div class="card-body border border-top-0">
       <form (ngSubmit)="onSavepartner()" #partnerForm="ngForm">
         <div class="form-row">
@@ -24,7 +29,8 @@
           <div class="form-group col-md-4">
             <label for="inputEmail">{{ 'comun.email' | translate }}</label>
             <input id="inputEmail" type="email" class="form-control" [placeholder]="'comun.email' | translate"
-              [(ngModel)]="partner.email" name="{{ 'comun.email' | translate }}" #emailCtrl="ngModel" maxlength="250" email />
+              [(ngModel)]="partner.email" name="{{ 'comun.email' | translate }}" #emailCtrl="ngModel" maxlength="250"
+              email />
           </div>
           <div class="form-group col-md-4">
             <label for="inputWeb">{{ 'comun.web' | translate }}</label>
@@ -34,8 +40,8 @@
         </div>
         <div class="form-group">
           <label for="inputObservaciones">{{ 'comun.observaciones' | translate }}</label>
-          <quill-editor id="inputObservaciones" [(ngModel)]="partner.observaciones"
-            name="observaciones" #obsrvacionesCtrl="ngModel" [placeholder]="'comun.observaciones' | translate">
+          <quill-editor id="inputObservaciones" [(ngModel)]="partner.observaciones" name="observaciones"
+            #obsrvacionesCtrl="ngModel" [placeholder]="'comun.observaciones' | translate">
           </quill-editor>
         </div>
         <div class="form-group float-right">

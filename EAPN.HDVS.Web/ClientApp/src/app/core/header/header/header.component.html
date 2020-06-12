@@ -11,10 +11,13 @@
   <ul class="navbar-nav" *ngIf="usuario">
     <li class="nav-item" ngbDropdown>
       <div class="nav-link c-pointer d-flex align-items-center mr-2 h40" ngbDropdownToggle>
-        <app-secure-image class="d-none d-md-block" [adjuntoId]="usuario.fotoId" fallbackImagePath="assets/user.svg"
-          imageClasses="profile-picture rounded-circle" *ngIf="usuario.fotoId">
+        <app-secure-image class="position-relative d-none d-md-block" [adjuntoId]="partner.fotoId" fallbackImagePath="assets/partner.svg"
+          imageClasses="profile-picture" *ngIf="partner && partner.fotoId">
         </app-secure-image>
-        <span class="ml-2">{{ usuario.email }}</span>
+        <app-secure-image class="position-relative ml-3 d-none d-md-block" [adjuntoId]="usuario.fotoId" fallbackImagePath="assets/user.svg"
+        imageClasses="profile-picture rounded-circle" *ngIf="usuario.fotoId">
+      </app-secure-image>
+        <span class="ml-2" *ngIf="!usuario.fotoId">{{ usuario.email }}</span>
       </div>
       <div ngbDropdownMenu class="dropdown-menu dropdown-menu-right">
         <a ngbDropdownItem *appAllowedPermissions="{permissions: [permissions.usermanagement.access]}"

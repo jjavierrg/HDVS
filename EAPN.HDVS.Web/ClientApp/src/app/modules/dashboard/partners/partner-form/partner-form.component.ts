@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { OrganizacionDto } from 'src/app/core/api/api.client';
+import { OrganizacionDto, AdjuntoDto } from 'src/app/core/api/api.client';
 import { PartnerService } from 'src/app/core/services/partner.service';
 
 @Component({
@@ -56,6 +56,18 @@ export class PartnerFormComponent implements OnInit {
 
   public async onCancel(): Promise<void> {
     await this.router.navigate(['../'], { relativeTo: this.route });
+  }
+
+  public async onProfilePictureChanged(foto: AdjuntoDto): Promise<void> {
+    if (!foto) {
+      return;
+    }
+
+    this.partner.fotoId = foto.id;
+
+    if (this.partner.id) {
+      this.savepartner(this.partner);
+    }
   }
 
   private async savepartner(partner: OrganizacionDto): Promise<boolean> {

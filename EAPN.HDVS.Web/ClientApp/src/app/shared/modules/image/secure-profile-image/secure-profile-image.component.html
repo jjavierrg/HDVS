@@ -1,9 +1,9 @@
-<app-secure-image class="thumbnail" [adjuntoId]="photoId" fallbackImagePath="assets/user.svg" imageClasses="profile-picture rounded-circle"
+<app-secure-image [adjuntoId]="photoId" [fallbackImagePath]="fallbackImage" [imageClasses]="'profile-picture ' + imageClasses"
   [ngbPopover]="popContent" placement="right"></app-secure-image>
 
 <ng-template #popContent>
   <app-secure-image class="preview position-relative full-image" [adjuntoId]="photoId"></app-secure-image>
-  <div class="info" (click)="onFullImageClick(uploadModal)">
+  <div class="info" [ngClass]="{'info-visible': !photoId}" (click)="onFullImageClick(uploadModal)">
     <div class="info-text">{{ 'core.cambiar-imagen' | translate }}</div>
   </div>
 </ng-template>

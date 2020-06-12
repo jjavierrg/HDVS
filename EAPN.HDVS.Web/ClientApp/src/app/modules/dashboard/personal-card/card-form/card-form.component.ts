@@ -110,9 +110,14 @@ export class CardFormComponent implements OnInit {
     await this.router.navigate(['/']);
   }
 
-  public onProfilePictureChanged(foto: AdjuntoDto): void {
-    if (foto) {
-      this.card.fotoId = foto.id;
+  public async onProfilePictureChanged(foto: AdjuntoDto): Promise<void> {
+    if (!foto) {
+      return;
+    }
+
+    this.card.fotoId = foto.id;
+    if (this.card.id) {
+      await this.service.saveCard(this.card).toPromise();
     }
   }
 

@@ -145,9 +145,6 @@ namespace EAPN.HDVS.Web.Controllers
             if (adjunto.OrganizacionId.HasValue && adjunto.OrganizacionId.Value != User.GetUserOrganizacionId() && !User.HasSuperAdminPermission())
                 return null;
 
-            if (adjunto.OrganizacionId.HasValue && adjunto.FotoFicha == null && adjunto.FotoUsuario == null)
-                return null;
-
             var filePath = Path.Combine(_hostingEnvironment.ContentRootPath, _attachmentsFolder, adjunto.Tipo?.Carpeta, adjunto.Alias);
             var fileStream = System.IO.File.OpenRead(filePath);
 

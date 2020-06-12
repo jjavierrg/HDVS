@@ -19,6 +19,7 @@ namespace EAPN.HDVS.Entities
         public Ficha Ficha { get; set; }
         public Ficha FotoFicha { get; set; }
         public Usuario FotoUsuario{ get; set; }
+        public Organizacion FotoOrganizacion { get; set; }
         public TipoAdjunto Tipo { get; set; }
     }
 }

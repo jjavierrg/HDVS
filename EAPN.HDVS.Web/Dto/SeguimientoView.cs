@@ -10,6 +10,5 @@ namespace EAPN.HDVS.Web.Dto
         public DateTime Fecha { get; set; }
         public int Puntuacion { get; set; }
         public bool Completo { get; set; }
-
     }
 }
