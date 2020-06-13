@@ -5,6 +5,7 @@ using EAPN.HDVS.Web.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
@@ -42,7 +43,7 @@ namespace EAPN.HDVS.Web.Controllers
         public async Task<ActionResult<DatosUsuarioDto>> GetDatosUsuario()
         {
             var userId = User.GetUserId();
-            var usuario = await _usuarioService.GetFirstOrDefault(x => x.Id == userId);
+            var usuario = await _usuarioService.GetFirstOrDefault(x => x.Id == userId, q => q.Include(x => x.Organizacion));
 
             if (usuario == null)
                 return NotFound();

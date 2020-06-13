@@ -22,7 +22,9 @@ namespace EAPN.HDVS.Web.Dto
 
             CreateMap<Usuario, DatosUsuarioDto>()
                 .ForMember(d => d.ClaveActual, o => o.Ignore())
-                .ForMember(d => d.NuevaClave, o => o.Ignore());
+                .ForMember(d => d.Organizacion, opt => opt.MapFrom((src, dest) => src.Organizacion?.Nombre))
+                .ForMember(d => d.OrganizacionFotoId, opt => opt.MapFrom((src, dest) => src.Organizacion?.FotoId))
+                .ForMember(d => d.ClaveActual, o => o.Ignore());
 
             CreateMap<Perfil, PerfilDto>()
                 .ForMember(d => d.Permisos, opt => opt.MapFrom((src, dest) => src.Permisos.Select(x => x.Permiso)))

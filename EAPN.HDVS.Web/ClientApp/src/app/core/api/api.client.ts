@@ -7280,6 +7280,8 @@ export class DatosUsuarioDto implements IDatosUsuarioDto {
     apellidos?: string | undefined;
     claveActual?: string | undefined;
     nuevaClave?: string | undefined;
+    organizacionFotoId?: number | undefined;
+    organizacion?: string | undefined;
 
     constructor(data?: IDatosUsuarioDto) {
         if (data) {
@@ -7299,6 +7301,8 @@ export class DatosUsuarioDto implements IDatosUsuarioDto {
             this.apellidos = _data["apellidos"];
             this.claveActual = _data["claveActual"];
             this.nuevaClave = _data["nuevaClave"];
+            this.organizacionFotoId = _data["organizacionFotoId"];
+            this.organizacion = _data["organizacion"];
         }
     }
 
@@ -7318,6 +7322,8 @@ export class DatosUsuarioDto implements IDatosUsuarioDto {
         data["apellidos"] = this.apellidos;
         data["claveActual"] = this.claveActual;
         data["nuevaClave"] = this.nuevaClave;
+        data["organizacionFotoId"] = this.organizacionFotoId;
+        data["organizacion"] = this.organizacion;
         return data; 
     }
 }
@@ -7330,6 +7336,8 @@ export interface IDatosUsuarioDto {
     apellidos?: string | undefined;
     claveActual?: string | undefined;
     nuevaClave?: string | undefined;
+    organizacionFotoId?: number | undefined;
+    organizacion?: string | undefined;
 }
 
 export class IndicadorDto implements IIndicadorDto {

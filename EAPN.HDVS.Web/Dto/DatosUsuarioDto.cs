@@ -9,5 +9,7 @@
         public string Apellidos { get; set; }
         public string ClaveActual { get; set; }
         public string NuevaClave { get; set; }
+        public int? OrganizacionFotoId { get; set; }
+        public string Organizacion { get; set; }
     }
 }
