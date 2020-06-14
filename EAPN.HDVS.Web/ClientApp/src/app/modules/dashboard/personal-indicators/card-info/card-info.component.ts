@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { CardService } from 'src/app/core/services/card.service';
-import { DatosFichaDto } from 'src/app/core/api/api.client';
+import { IDatosFichaDto } from 'src/app/core/api/api.client';
 import { Permissions } from 'src/app/core/enums/permissions.enum';
 
 @Component({
@@ -13,7 +13,7 @@ export class CardInfoComponent implements OnInit {
   @Input() showEditCardButton: boolean;
   @Output() editCardRequired = new EventEmitter<number>();
 
-  public card: DatosFichaDto;
+  public card: IDatosFichaDto;
   public permissions = Permissions;
 
   constructor(private cardService: CardService) {

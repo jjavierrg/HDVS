@@ -2,6 +2,14 @@
   "adjuntos": {
     "fichero": "Fichero"
   },
+  "busqueda": {
+    "fecha-alta": "Fecha alta",
+    "fecha-ultimo-seguimiento": "Fecha último seguimiento",
+    "grado-vulnerabilidad": "Grado de vulnerabilidad",
+    "numero-resultados": "Resultados de la búsqueda: {{ count }}",
+    "ver-ficha": "Ver ficha",
+    "ver-resumen": "Ver resumen"
+  },
   "comun": {
     "activo": "Activo",
     "adjuntos": "Adjuntos",

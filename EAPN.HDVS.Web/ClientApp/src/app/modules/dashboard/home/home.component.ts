@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { FichaDto } from 'src/app/core/api/api.client';
-import { CardService } from 'src/app/core/services/card.service';
-import { AgGridColumn } from 'ag-grid-angular';
-import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { AgGridColumn } from 'ag-grid-angular';
+import { Observable } from 'rxjs';
+import { IFichaDto } from 'src/app/core/api/api.client';
+import { CardService } from 'src/app/core/services/card.service';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  public cards: Observable<FichaDto[]>;
+  public cards: Observable<IFichaDto[]>;
 
   public columns: Partial<AgGridColumn>[] = [
     {
@@ -44,7 +44,7 @@ export class HomeComponent implements OnInit {
 
   async ngOnInit() { }
 
-  public onEditCard(card: FichaDto): void {
+  public onEditCard(card: IFichaDto): void {
     if (!card) {
       return;
     }

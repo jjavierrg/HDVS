@@ -13,6 +13,7 @@ export class SecureProfileImageComponent implements OnInit {
   @Input() photoId: number;
   @Input() fichaId: number;
   @Input() organizacionId: number;
+  @Input() disableEdit: boolean = false;
   @Input() imageClasses: string = 'thumbnail rounded-circle';
   @Input() fallbackImage: string = 'assets/user.svg';
   @Output() imageChange = new EventEmitter<AdjuntoDto>();

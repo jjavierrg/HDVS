@@ -1,0 +1,2 @@
+<h5 *ngIf="results">{{ 'busqueda.numero-resultados' | translate: {count: results.length} }}</h5>
+<app-search-result-entry *ngFor="let entry of results" [data]="entry"></app-search-result-entry>

@@ -3,9 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { AgGridColumn } from 'ag-grid-angular';
-import { FichaDto, VistaPreviaFichaDto } from 'src/app/core/api/api.client';
+import { FichaDto, IVistaPreviaFichaDto } from 'src/app/core/api/api.client';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { CardService } from 'src/app/core/services/card.service';
+import { ISearchQuery, SearchQuery } from 'src/app/shared/models/search-query';
 
 @Component({
   selector: 'app-card-finder',
@@ -18,7 +19,7 @@ export class CardFinderComponent implements OnInit {
   public surname2: string;
   public birth: Date;
 
-  public matching: VistaPreviaFichaDto[];
+  public matching: IVistaPreviaFichaDto[];
 
   @ViewChild('noMatchModal', { static: false }) noMatchModal: ElementRef;
   @ViewChild('matchModal', { static: false }) matchModal: ElementRef;
@@ -88,7 +89,8 @@ export class CardFinderComponent implements OnInit {
   public async onSubmitQuery(): Promise<boolean> {
     this.matching = [];
     try {
-      this.matching = await this.service.findPreviewCards(this.name, this.surname1, this.surname2, this.birth).toPromise();
+      const query: ISearchQuery = new SearchQuery({ name: this.name, surname1: this.surname1, surname2: this.surname2, birth: this.birth });
+      this.matching = await this.service.findPreviewCards(query).toPromise();
     } catch (error) {
       this.alertService.error(error);
       return;

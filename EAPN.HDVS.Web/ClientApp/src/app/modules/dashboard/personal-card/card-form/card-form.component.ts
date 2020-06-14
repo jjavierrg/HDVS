@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { FichaDto, AdjuntoDto, SeguimientoViewDto, SeguimientoDto } from 'src/app/core/api/api.client';
+import { AdjuntoDto, IFichaDto, SeguimientoDto, SeguimientoViewDto } from 'src/app/core/api/api.client';
+import { Permissions } from 'src/app/core/enums/permissions.enum';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { AuthenticationService } from 'src/app/core/services/authentication.service';
 import { CardService } from 'src/app/core/services/card.service';
 import { Card } from 'src/app/shared/models/card';
-import { Permissions } from 'src/app/core/enums/permissions.enum';
 import { IReviewState } from 'src/app/shared/models/reviewState';
 
 @Component({
@@ -18,6 +18,7 @@ export class CardFormComponent implements OnInit {
   public card: Card;
   public cardValid: boolean;
   public permissions = Permissions;
+  public activeTab: string = '';
 
   public get fullName(): string {
     if (!this.card) {
@@ -44,8 +45,9 @@ export class CardFormComponent implements OnInit {
     const snapshot = this.route.snapshot;
     const cardId = snapshot.params['id'];
     const { navigationId: number, ...others } = window.history.state;
+    const hash = snapshot.fragment;
 
-    let card: FichaDto;
+    let card: IFichaDto;
     if (Object.keys(others).length) {
       card = others;
     }
@@ -66,6 +68,8 @@ export class CardFormComponent implements OnInit {
 
     await this.ensureRequiredCardFields(card);
     this.card = new Card(card);
+
+    this.activeTab = hash || 'datos';
   }
 
   public async onSaveCard(): Promise<void> {
@@ -96,7 +100,7 @@ export class CardFormComponent implements OnInit {
         fichaId: this.card.id,
         organizacionId: this.card.organizacionId,
         id: reviewId,
-        usuarioId: this.card.usuarioId
+        usuarioId: this.card.usuarioId,
       });
 
       state.review = review;
@@ -121,7 +125,7 @@ export class CardFormComponent implements OnInit {
     }
   }
 
-  private async ensureRequiredCardFields(card: FichaDto) {
+  private async ensureRequiredCardFields(card: IFichaDto) {
     const [partnerId, userId] = await Promise.all([
       this.authService.getUserPartnerId().toPromise(),
       this.authService.getUserId().toPromise(),

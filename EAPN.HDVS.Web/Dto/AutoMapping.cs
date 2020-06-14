@@ -42,6 +42,14 @@ namespace EAPN.HDVS.Web.Dto
                 .ForMember(d => d.NumeroUsuarios, opt => opt.MapFrom((src, dest) => src.Usuarios?.Count() ?? 0))
                 .ReverseMap();
 
+            CreateMap<Ficha, FichaBusquedaDto>()
+                .ForMember(d => d.NombreCompleto, opt => opt.MapFrom(src => $"{src.Nombre} {src.Apellido1} {src.Apellido2}".Trim()))
+                .ForMember(d => d.Organizacion, opt => opt.MapFrom((src, dest) => src.Organizacion?.Nombre))
+                .ForMember(d => d.Tecnico, opt => opt.MapFrom((src, dest) => src.Tecnico?.NombreCompleto))
+                .ForMember(d => d.UltimoSeguimientoId, opt => opt.MapFrom((src, dest) => src.Seguimientos?.OrderByDescending(x => x.Fecha).FirstOrDefault()?.Id))
+                .ForMember(d => d.FechaUltimoSeguimiento, opt => opt.MapFrom((src, dest) => src.Seguimientos?.OrderByDescending(x => x.Fecha).FirstOrDefault()?.Fecha))
+                .ForMember(d => d.PuntuacionUltimoSeguimiento, opt => opt.MapFrom((src, dest) => src.Seguimientos?.OrderByDescending(x => x.Fecha).FirstOrDefault()?.Indicadores?.Where(x => x.Indicador?.Activo ?? false).Sum(x => x.Indicador?.Puntuacion)));
+
             CreateMap<Ficha, VistaPreviaFichaDto>()
                 .ForMember(d => d.FichaId, opt => opt.MapFrom(src => src.Id))
                 .ForMember(d => d.NombreOrganizacion, opt => opt.MapFrom((src, dest) => src.Organizacion?.Nombre))
@@ -79,7 +87,7 @@ namespace EAPN.HDVS.Web.Dto
 
             CreateMap<Seguimiento, SeguimientoViewDto>()
                 .ForMember(d => d.NombreTecnico, opt => opt.MapFrom((src, dest) => src.Tecnico?.NombreCompleto))
-                .ForMember(d => d.Puntuacion, opt => opt.MapFrom((src, dest) => src.Indicadores?.Sum(x => x.Indicador?.Puntuacion) ?? 0));
+                .ForMember(d => d.Puntuacion, opt => opt.MapFrom((src, dest) => src.Indicadores?.Where(x => x.Indicador?.Activo ?? false).Sum(x => x.Indicador?.Puntuacion) ?? 0));
 
             CreateMap<Ficha, FichaDto>().ReverseMap()
                 .ForMember(x => x.Seguimientos, opt => opt.Ignore())

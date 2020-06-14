@@ -132,18 +132,19 @@ namespace EAPN.HDVS.Web.Controllers
         /// <returns></returns>
         [HttpPost("filtered", Name = "GetFichasFiltered")]
         [AuthorizePermission(Permissions.PERSONALCARD_READ)]
-        [ProducesResponseType(typeof(QueryResult<FichaDto>), StatusCodes.Status200OK)]
-        public async Task<ActionResult<QueryResult<FichaDto>>> GetFichasFiltered([FromBody]QueryData query)
+        [ProducesResponseType(typeof(QueryResult<FichaBusquedaDto>), StatusCodes.Status200OK)]
+        public async Task<ActionResult<QueryResult<FichaBusquedaDto>>> GetFichasFiltered([FromBody]QueryData query)
         {
             _logger.LogInformation($"Realiza una búsqueda de fichas con los siguientes filtros: ${query.FilterParameters}");
 
-            var result = await _filterPaginator.Execute(GetBaseQueryable(), query);
+            IQueryable<Ficha> basequery = GetBaseQueryable().Include(x => x.Tecnico).Include(x => x.Organizacion).Include(x => x.Seguimientos).ThenInclude(x => x.Indicadores).ThenInclude(x => x.Indicador);
+            var result = await _filterPaginator.Execute(basequery, query);
             var fichasIds = result.Data?.Select(x => x.Id);
 
             if (fichasIds.Any())
                 _logger.LogInformation($"[Fichas] Se obtiene un listado mediante búsqueda filtrada con las siguientes fichas: [{string.Join(", ", fichasIds)}]");
 
-            return _mapper.MapQueryResult<Ficha, FichaDto>(result);
+            return _mapper.MapQueryResult<Ficha, FichaBusquedaDto>(result);
         }
 
         /// <summary>

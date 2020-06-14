@@ -1,0 +1,52 @@
+<div *ngIf="data" class="mt-1 card">
+  <div class="card-body">
+    <h5 class="card-title">{{data.nombreCompleto}}</h5>
+    <h6 class="card-subtitle mb-2">
+      <div class="row">
+        <div class="col-md-6 col-xl-3 text-muted">
+          <strong>{{ 'busqueda.fecha-alta' | translate}}:</strong> {{data.fechaAlta | defaultDate}}
+        </div>
+        <div class="col-md-6 col-xl-3 text-muted">
+          <strong>{{ 'busqueda.fecha-ultimo-seguimiento' | translate}}:</strong>
+          {{data.fechaUltimoSeguimiento | defaultDate}}
+        </div>
+        <div class="col-md-6 col-xl-3 text-muted">
+          <strong>{{'comun.organizacion' | translate}}:</strong> {{data.organizacion}}
+        </div>
+        <div class="col-md-6 col-xl-3 text-muted">
+          <strong>{{'ficha.tecnico' | translate}}:</strong> {{data.tecnico}}
+        </div>
+      </div>
+    </h6>
+    <div class="row">
+      <div class="col-md-4 col-xl-3" *ngIf="data.ultimoSeguimientoId">
+        <button class="btn btn-block btn-primary d-flex align-items-stretch"
+          *appAllowedPermissions="{permissions: [permissions.personalindicators.read]}"
+          (click)="onViewReviewClick(data.ultimoSeguimientoId)">
+          <div class="d-flex flex-column mr-2 flex-grow-1">
+            <span>{{ 'busqueda.grado-vulnerabilidad' | translate }}</span>
+            <span>{{ getRangeDescription(data.puntuacionUltimoSeguimiento) }}</span>
+            <span>{{ 'seguimientos.puntuacion' | translate }}: {{ data.puntuacionUltimoSeguimiento }}</span>
+          </div>
+          <div class="d-flex align-items-center border-left pl-2">
+            <div class="d-flex flex-column">
+              <span>{{ 'busqueda.ver-resumen' | translate }}</span>
+              <i class="flex-grow-1 icon-middle mt-2 far fa-hand-pointer fa-2x"></i>
+            </div>
+          </div>
+        </button>
+      </div>
+      <div class="col-md-1 d-none d-md-block" *ngIf="data.ultimoSeguimientoId"></div>
+      <div class="col-md-2 mt-1 align-self-end">
+        <button class="btn btn-block btn-primary" (click)="onViewCardClick(data.id)"
+          *appAllowedPermissions="{permissions: [permissions.personalindicators.read]}">
+          <i class="far fa-eye mr-1"></i>{{ 'busqueda.ver-ficha' | translate }}</button>
+      </div>
+      <div class="col-md-2 mt-1 offset-md-1 align-self-end" *ngIf="data.ultimoSeguimientoId">
+        <button (click)="onViewCardClick(data.id, 'seguimientos')" class="btn btn-block btn-primary"
+          *appAllowedPermissions="{permissions: [permissions.personalindicators.read]}">
+          <i class="fas fa-edit mr-1"></i>{{ 'comun.seguimientos' | translate }}</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -3,7 +3,7 @@
 
 <ng-template #popContent>
   <app-secure-image class="preview position-relative full-image" [adjuntoId]="photoId"></app-secure-image>
-  <div class="info" [ngClass]="{'info-visible': !photoId}" (click)="onFullImageClick(uploadModal)">
+  <div class="info" [ngClass]="{'info-visible': !photoId}" (click)="onFullImageClick(uploadModal)" *ngIf="!disableEdit">
     <div class="info-text">{{ 'core.cambiar-imagen' | translate }}</div>
   </div>
 </ng-template>

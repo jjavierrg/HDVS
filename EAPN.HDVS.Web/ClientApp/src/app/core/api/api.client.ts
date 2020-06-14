@@ -178,7 +178,7 @@ export interface IApiClient {
      * @param body (optional) Query criteria filter
      * @return Success
      */
-    getFichasFiltered(body?: QueryData | undefined): Observable<FichaDtoQueryResult>;
+    getFichasFiltered(body?: QueryData | undefined): Observable<FichaBusquedaDtoQueryResult>;
     /**
      * Get all items with a specific criteria filter
      * @param body (optional) Query criteria filter
@@ -2377,7 +2377,7 @@ export class ApiClient implements IApiClient {
      * @param body (optional) Query criteria filter
      * @return Success
      */
-    getFichasFiltered(body?: QueryData | undefined): Observable<FichaDtoQueryResult> {
+    getFichasFiltered(body?: QueryData | undefined): Observable<FichaBusquedaDtoQueryResult> {
         let url_ = this.baseUrl + "/api/Fichas/filtered";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2400,14 +2400,14 @@ export class ApiClient implements IApiClient {
                 try {
                     return this.processGetFichasFiltered(<any>response_);
                 } catch (e) {
-                    return <Observable<FichaDtoQueryResult>><any>_observableThrow(e);
+                    return <Observable<FichaBusquedaDtoQueryResult>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<FichaDtoQueryResult>><any>_observableThrow(response_);
+                return <Observable<FichaBusquedaDtoQueryResult>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetFichasFiltered(response: HttpResponseBase): Observable<FichaDtoQueryResult> {
+    protected processGetFichasFiltered(response: HttpResponseBase): Observable<FichaBusquedaDtoQueryResult> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2418,7 +2418,7 @@ export class ApiClient implements IApiClient {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = FichaDtoQueryResult.fromJS(resultData200);
+            result200 = FichaBusquedaDtoQueryResult.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status === 401) {
@@ -2434,7 +2434,7 @@ export class ApiClient implements IApiClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<FichaDtoQueryResult>(<any>null);
+        return _observableOf<FichaBusquedaDtoQueryResult>(<any>null);
     }
 
     /**
@@ -8332,13 +8332,89 @@ export interface IDatosFichaDto {
     tecnico?: string | undefined;
 }
 
-export class FichaDtoQueryResult implements IFichaDtoQueryResult {
+export class FichaBusquedaDto implements IFichaBusquedaDto {
+    id?: number;
+    ultimoSeguimientoId?: number;
+    fotoId?: number | undefined;
+    codigo?: string | undefined;
+    nombreCompleto?: string | undefined;
+    organizacion?: string | undefined;
+    tecnico?: string | undefined;
+    fechaAlta?: Date | undefined;
+    fechaUltimoSeguimiento?: Date | undefined;
+    puntuacionUltimoSeguimiento?: number | undefined;
+    competada?: boolean;
+
+    constructor(data?: IFichaBusquedaDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.ultimoSeguimientoId = _data["ultimoSeguimientoId"];
+            this.fotoId = _data["fotoId"];
+            this.codigo = _data["codigo"];
+            this.nombreCompleto = _data["nombreCompleto"];
+            this.organizacion = _data["organizacion"];
+            this.tecnico = _data["tecnico"];
+            this.fechaAlta = _data["fechaAlta"] ? new Date(_data["fechaAlta"].toString()) : <any>undefined;
+            this.fechaUltimoSeguimiento = _data["fechaUltimoSeguimiento"] ? new Date(_data["fechaUltimoSeguimiento"].toString()) : <any>undefined;
+            this.puntuacionUltimoSeguimiento = _data["puntuacionUltimoSeguimiento"];
+            this.competada = _data["competada"];
+        }
+    }
+
+    static fromJS(data: any): FichaBusquedaDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new FichaBusquedaDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["ultimoSeguimientoId"] = this.ultimoSeguimientoId;
+        data["fotoId"] = this.fotoId;
+        data["codigo"] = this.codigo;
+        data["nombreCompleto"] = this.nombreCompleto;
+        data["organizacion"] = this.organizacion;
+        data["tecnico"] = this.tecnico;
+        data["fechaAlta"] = this.fechaAlta ? this.fechaAlta.toISOString() : <any>undefined;
+        data["fechaUltimoSeguimiento"] = this.fechaUltimoSeguimiento ? this.fechaUltimoSeguimiento.toISOString() : <any>undefined;
+        data["puntuacionUltimoSeguimiento"] = this.puntuacionUltimoSeguimiento;
+        data["competada"] = this.competada;
+        return data; 
+    }
+}
+
+export interface IFichaBusquedaDto {
+    id?: number;
+    ultimoSeguimientoId?: number;
+    fotoId?: number | undefined;
+    codigo?: string | undefined;
+    nombreCompleto?: string | undefined;
+    organizacion?: string | undefined;
+    tecnico?: string | undefined;
+    fechaAlta?: Date | undefined;
+    fechaUltimoSeguimiento?: Date | undefined;
+    puntuacionUltimoSeguimiento?: number | undefined;
+    competada?: boolean;
+}
+
+export class FichaBusquedaDtoQueryResult implements IFichaBusquedaDtoQueryResult {
     total?: number;
     orderBy?: string | undefined;
     ascending?: boolean;
-    data?: FichaDto[] | undefined;
+    data?: FichaBusquedaDto[] | undefined;
 
-    constructor(data?: IFichaDtoQueryResult) {
+    constructor(data?: IFichaBusquedaDtoQueryResult) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -8355,14 +8431,14 @@ export class FichaDtoQueryResult implements IFichaDtoQueryResult {
             if (Array.isArray(_data["data"])) {
                 this.data = [] as any;
                 for (let item of _data["data"])
-                    this.data!.push(FichaDto.fromJS(item));
+                    this.data!.push(FichaBusquedaDto.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): FichaDtoQueryResult {
+    static fromJS(data: any): FichaBusquedaDtoQueryResult {
         data = typeof data === 'object' ? data : {};
-        let result = new FichaDtoQueryResult();
+        let result = new FichaBusquedaDtoQueryResult();
         result.init(data);
         return result;
     }
@@ -8381,11 +8457,11 @@ export class FichaDtoQueryResult implements IFichaDtoQueryResult {
     }
 }
 
-export interface IFichaDtoQueryResult {
+export interface IFichaBusquedaDtoQueryResult {
     total?: number;
     orderBy?: string | undefined;
     ascending?: boolean;
-    data?: FichaDto[] | undefined;
+    data?: FichaBusquedaDto[] | undefined;
 }
 
 export class VistaPreviaFichaDto implements IVistaPreviaFichaDto {

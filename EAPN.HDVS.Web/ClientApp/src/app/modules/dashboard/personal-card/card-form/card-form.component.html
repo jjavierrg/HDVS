@@ -5,8 +5,8 @@
         [organizacionId]="card.organizacionId" (imageChange)="onProfilePictureChanged($event)">
       </app-secure-profile-image>
       <h5 class="ml-3 flex-grow-1 text-light align-self-center">{{fullName}}</h5>
-      <nav ngbNav #nav="ngbNav" class="nav-tabs clear-padding-bottom">
-        <ng-container ngbNavItem>
+      <nav ngbNav #nav="ngbNav" [(activeId)]="activeTab" class="nav-tabs clear-padding-bottom">
+        <ng-container ngbNavItem="datos">
           <a ngbNavLink>{{ 'ficha.datos' | translate }}</a>
           <ng-template ngbNavContent>
             <app-card-personal-data [card]="card" (cardValid)="cardValid = $event"></app-card-personal-data>
@@ -18,14 +18,14 @@
             </div>
           </ng-template>
         </ng-container>
-        <ng-container ngbNavItem *appAllowedPermissions="{permissions: [permissions.personalindicators.access]}">
+        <ng-container ngbNavItem="seguimientos" *appAllowedPermissions="{permissions: [permissions.personalindicators.access]}">
           <a ngbNavLink>{{ 'comun.seguimientos' | translate }}</a>
           <ng-template ngbNavContent>
             <app-card-review [card]="card" [canSaveCard]="cardValid" (reviewEditRequired)="onReviewRequired($event, false)" (reviewRequired)="onReviewRequired($event, true)">
             </app-card-review>
           </ng-template>
         </ng-container>
-        <ng-container ngbNavItem *appAllowedPermissions="{permissions: [permissions.attachments.access]}">
+        <ng-container  ngbNavItem="adjuntos" *appAllowedPermissions="{permissions: [permissions.attachments.access]}">
           <a ngbNavLink>{{ 'comun.adjuntos' | translate }}</a>
           <ng-template ngbNavContent>
             <app-card-attachments [card]="card"></app-card-attachments>

@@ -58,6 +58,12 @@ const routes: Routes = [
         canActivate: [AuthenticatedGuard],
         data: { allowedPermissions: [Permissions.personalindicators.access] },
       },
+      {
+        path: 'busqueda',
+        loadChildren: () => import('./search/search.module').then((m) => m.SearchModule),
+        canLoad: [AuthenticatedGuard],
+        canActivate: [AuthenticatedGuard],
+      },
     ],
   },
 ];

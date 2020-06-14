@@ -19,14 +19,13 @@
         (click)="isMenuCollapsed = true" class="py-lg-3 nav-item nav-link addContainer"
         *appAllowedPermissions="{permissions: [permissions.personalcard.write]}"><i class="fas fa-user-plus"></i>
         <span>{{ 'navbar.alta-nueva' | translate }} </span></a>
-      <a routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" routerLink="/buqueda"
+      <a routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" routerLink="/busqueda"
         (click)="isMenuCollapsed = true" class="py-lg-3 nav-item nav-link"
         *appAllowedPermissions="{permissions: [permissions.personalcard.read]}"><i class="fas fa-search"></i>
         {{ 'navbar.busqueda-avanzada' | translate }}</a>
-      <form class="form-inline my-2 my-lg-0" *appAllowedPermissions="{permissions: [permissions.personalcard.read]}">
-        <input class="form-control mr-lg-2" type="search"
-          placeholder="{{ 'navbar.busqueda-placeholder' | translate }}" />
-        <button class="btn btn-outline-light my-2 my-lg-0" type="button">{{ 'core.buscar' | translate }}</button>
+      <form class="form-inline my-2 my-lg-0" *appAllowedPermissions="{permissions: [permissions.personalcard.read]}" (submit)="onQuerySubmit(search.value); $event.preventDefault()">
+        <input class="form-control mr-lg-2" type="search"placeholder="{{ 'navbar.busqueda-placeholder' | translate }}" #search />
+        <button class="btn btn-outline-light my-2 my-lg-0" type="submit">{{ 'core.buscar' | translate }}</button>
       </form>
     </div>
   </div>
