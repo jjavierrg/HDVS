@@ -1,26 +1,26 @@
-<form (submit)="onSearch();$event.preventDefault()" *ngIf="!query.hideSearchForm">
+<form (submit)="onSearch();$event.preventDefault()" *ngIf="!query.hideSearchForm" #searchForm="ngForm">
   <div class="form-row">
     <div class="form-group col-md-4">
       <label for="inputName">{{ 'comun.nombre' | translate }}</label>
       <input type="text" class="form-control" id="inputName" placeholder="{{ 'comun.nombre' | translate }}"
-        [(ngModel)]="query.name" name="{{ 'comun.nombre' | translate }}">
+        [(ngModel)]="query.name" name="{{ 'comun.nombre' | translate }}" minlength="3">
     </div>
     <div class="form-group col-md-4">
       <label for="inputSurname1">{{ 'comun.apellido1' | translate }}</label>
       <input type="text" class="form-control" id="inputSurname1" placeholder="{{ 'comun.apellido1' | translate }}"
-        [(ngModel)]="query.surname1" name="{{ 'comun.apellido1' | translate }}">
+        [(ngModel)]="query.surname1" name="{{ 'comun.apellido1' | translate }}" minlength="3">
     </div>
     <div class="form-group col-md-4">
       <label for="inputSurname2">{{ 'comun.apellido2' | translate }}</label>
       <input type="text" class="form-control" id="inputSurname2" placeholder="{{ 'comun.apellido2' | translate }}"
-        [(ngModel)]="query.surname2" name="{{ 'comun.apellido2' | translate }}">
+        [(ngModel)]="query.surname2" name="{{ 'comun.apellido2' | translate }}" minlength="3">
     </div>
   </div>
   <div class="form-row">
     <div class="form-group col-md-3">
       <label for="inputIdNumber">{{ 'ficha.dni-abrev' | translate }}</label>
       <input type="text" class="form-control" id="inputIdNumber" placeholder="{{ 'ficha.dni-abrev' | translate }}"
-        [(ngModel)]="query.idnumber" name="{{ 'ficha.dni-abrev' | translate }}">
+        [(ngModel)]="query.idnumber" name="{{ 'ficha.dni-abrev' | translate }}" minlength="3">
     </div>
     <div class="form-group col-md-3">
       <label for="inputBirth">{{ 'ficha.fecha-nacimiento-abrev' | translate }}</label>
@@ -30,11 +30,14 @@
     <div class="form-group col-md-3">
       <label for="inputCodigoRad">{{ 'ficha.rad' | translate }}</label>
       <input type="text" class="form-control" id="inputCodigoRad" placeholder="{{ 'ficha.rad' | translate }}"
-        [(ngModel)]="query.rad" name="{{ 'ficha.rad' | translate }}">
+        [(ngModel)]="query.rad" name="{{ 'ficha.rad' | translate }}" minlength="3">
     </div>
     <div class="form-group col-md-3 align-self-end">
-      <input type="submit" class="btn btn-block btn-primary" value="{{ 'core.buscar' | translate }}">
+      <input [disabled]="searchForm.invalid" type="submit" class="btn btn-block btn-primary" value="{{ 'core.buscar' | translate }}">
     </div>
+  </div>
+  <div class="mt-3">
+    <app-validation-summary [form]="searchForm"></app-validation-summary>
   </div>
 </form>
 
