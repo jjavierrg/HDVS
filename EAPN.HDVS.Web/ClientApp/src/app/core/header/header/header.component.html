@@ -12,7 +12,7 @@
     <li class="nav-item" ngbDropdown>
       <div class="nav-link c-pointer d-flex align-items-center mr-2 h40" ngbDropdownToggle>
         <app-secure-image class="position-relative" [adjuntoId]="usuario.organizacionFotoId"
-          fallbackImagePath="assets/partner.svg" imageClasses="profile-picture">
+          fallbackImagePath="assets/partner.svg" imageClasses="profile-picture" *ngIf="usuario.organizacionFotoId">
         </app-secure-image>
         <app-secure-image class="position-relative ml-3" [adjuntoId]="usuario.fotoId"
           fallbackImagePath="assets/user.svg" imageClasses="profile-picture rounded-circle" *ngIf="usuario.fotoId">
