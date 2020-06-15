@@ -11,10 +11,10 @@
   <ul class="navbar-nav" *ngIf="usuario">
     <li class="nav-item" ngbDropdown>
       <div class="nav-link c-pointer d-flex align-items-center mr-2 h40" ngbDropdownToggle>
-        <app-secure-image class="position-relative d-none d-md-block" [adjuntoId]="usuario.organizacionFotoId"
+        <app-secure-image class="position-relative" [adjuntoId]="usuario.organizacionFotoId"
           fallbackImagePath="assets/partner.svg" imageClasses="profile-picture">
         </app-secure-image>
-        <app-secure-image class="position-relative ml-3 d-none d-md-block" [adjuntoId]="usuario.fotoId"
+        <app-secure-image class="position-relative ml-3" [adjuntoId]="usuario.fotoId"
           fallbackImagePath="assets/user.svg" imageClasses="profile-picture rounded-circle" *ngIf="usuario.fotoId">
         </app-secure-image>
         <span class="ml-2" *ngIf="!usuario.fotoId">{{ usuario.email }}</span>
