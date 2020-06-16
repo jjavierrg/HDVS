@@ -15,9 +15,8 @@
           fallbackImagePath="assets/partner.svg" imageClasses="profile-picture" *ngIf="usuario.organizacionFotoId">
         </app-secure-image>
         <app-secure-image class="position-relative ml-3" [adjuntoId]="usuario.fotoId"
-          fallbackImagePath="assets/user.svg" imageClasses="profile-picture rounded-circle" *ngIf="usuario.fotoId">
+          fallbackImagePath="assets/user.svg" imageClasses="profile-picture rounded-circle">
         </app-secure-image>
-        <span class="ml-2" *ngIf="!usuario.fotoId">{{ usuario.email }}</span>
       </div>
       <div ngbDropdownMenu class="dropdown-menu dropdown-menu-right">
         <a ngbDropdownItem *appAllowedPermissions="{permissions: [permissions.usermanagement.access]}"
