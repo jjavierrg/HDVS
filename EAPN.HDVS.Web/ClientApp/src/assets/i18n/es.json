@@ -103,7 +103,11 @@
   },
   "formulario-perfil": {
     "confirmar-clave": "Confirmar Contraseña",
-    "no-guardado": "No se ha podido modifcar su perfil. Revise si la contraseña actual es válida"
+    "no-guardado": "No se ha podido modifcar su perfil. Revise si la contraseña actual es válida",
+    "nuevo-perfil": "Nuevo Perfil"
+  },
+  "formulario-organizacion": {
+    "nueva-organizacion": "Nueva Organización"
   },
   "formulario-usuarios": {
     "nuevo-usuario": "Nuevo Técnico/a",

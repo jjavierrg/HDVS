@@ -41,7 +41,7 @@ export class PartnerFormComponent implements OnInit {
     } else {
       this.partner = new OrganizacionDto({ activa: true });
       this.editing = false;
-      this.title = this.translate.instant('formulario-usuarios.nuevo-usuario');
+      this.title = this.translate.instant('formulario-organizacion.nuevo-perfil');
     }
   }
 

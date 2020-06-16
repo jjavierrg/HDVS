@@ -45,7 +45,7 @@ export class ProfileFormComponent implements OnInit {
     } else {
       this.profile = new PerfilDto();
       this.editing = false;
-      this.title = this.translate.instant('formulario-usuarios.nuevo-usuario');
+      this.title = this.translate.instant('formulario-perfil.nuevo-perfil');
     }
   }
 
