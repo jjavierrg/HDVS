@@ -129,6 +129,22 @@ namespace EAPN.HDVS.Web.Migrations
                 value: "DNI",
                 schema: "dbo");
 
+            migrationBuilder.UpdateData(
+                table: "SituacionesAdministrativas",
+                keyColumn: "Id",
+                keyValue: 8,
+                column: "Descripcion",
+                value: "Autorización adm. especial penados extranjeros/as",
+                schema: "dbo");
+
+            migrationBuilder.UpdateData(
+                table: "SituacionesAdministrativas",
+                keyColumn: "Id",
+                keyValue: 9,
+                column: "Descripcion",
+                value: "NIE por razones humanitarias",
+                schema: "dbo");
+
             migrationBuilder.InsertData(
                 schema: "dbo",
                 table: "Empadronamientos",
