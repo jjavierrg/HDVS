@@ -9,6 +9,7 @@ import { DescriptionArrayCellComponent } from './array-cell/description-array-ce
 import { InputModule } from '../input/input.module';
 import { DateCellComponent } from './date-cell/date-cell.component';
 import { IndicatorRangeCellComponent } from './indicator-range-cell/indicator-range-cell.component';
+import { CompletedCellComponent } from './completed-cell/completed-cell.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { IndicatorRangeCellComponent } from './indicator-range-cell/indicator-ra
     DescriptionArrayCellComponent,
     DateCellComponent,
     IndicatorRangeCellComponent,
+    CompletedCellComponent,
   ],
   imports: [CommonModule, CoreModule, AgGridModule.withComponents([]), InputModule],
   exports: [GridComponent],
@@ -27,6 +29,7 @@ import { IndicatorRangeCellComponent } from './indicator-range-cell/indicator-ra
     DescriptionArrayCellComponent,
     DateCellComponent,
     IndicatorRangeCellComponent,
+    CompletedCellComponent,
   ],
 })
 export class GridModule {}

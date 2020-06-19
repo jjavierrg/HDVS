@@ -86,7 +86,13 @@ export class CardFormComponent implements OnInit {
   public async onReviewRequired(reviewId: number, readonly: boolean): Promise<boolean> {
     try {
       const success = await this.service.saveCard(this.card).toPromise();
-      const state: IReviewState = { readonly, returnUrl: this.router.url };
+
+      let returnUrl: string = this.router.url;
+      if (this.route.snapshot.fragment) {
+        returnUrl = returnUrl.slice(0, -1 * this.route.snapshot.fragment.length - 1);
+      }
+
+      const state: IReviewState = { readonly, returnUrl: `${ returnUrl }#seguimientos` };
 
       if (!success) {
         return false;

@@ -1,16 +1,16 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
-import { Card } from 'src/app/shared/models/card';
-import { AgGridColumn } from 'ag-grid-angular';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
+import { AgGridColumn } from 'ag-grid-angular';
 import { SeguimientoViewDto } from 'src/app/core/api/api.client';
+import { Permissions } from 'src/app/core/enums/permissions.enum';
+import { AlertService } from 'src/app/core/services/alert.service';
+import { IndicatorService } from 'src/app/core/services/indicator.service';
+import { RangeService } from 'src/app/core/services/range.service';
+import { Card } from 'src/app/shared/models/card';
+import { CompletedCellComponent } from 'src/app/shared/modules/grid/completed-cell/completed-cell.component';
 import { DateCellComponent } from 'src/app/shared/modules/grid/date-cell/date-cell.component';
 import { IndicatorRangeCellComponent } from 'src/app/shared/modules/grid/indicator-range-cell/indicator-range-cell.component';
-import { RangeService } from 'src/app/core/services/range.service';
-import { Permissions } from 'src/app/core/enums/permissions.enum';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { IndicatorService } from 'src/app/core/services/indicator.service';
-import { AlertService } from 'src/app/core/services/alert.service';
-import { CheckboxCellComponent } from 'src/app/shared/modules/grid/checkbox-cell/checkbox-cell.component';
 
 @Component({
   selector: 'app-card-review',
@@ -58,7 +58,7 @@ export class CardReviewComponent implements OnInit, OnChanges {
       headerName: this.translate.instant('core.completado'),
       field: 'completo',
       maxWidth: 100,
-      cellRendererFramework: CheckboxCellComponent,
+      cellRendererFramework: CompletedCellComponent,
     },
   ];
 
