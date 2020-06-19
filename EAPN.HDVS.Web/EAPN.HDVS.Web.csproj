@@ -48,6 +48,8 @@
     <Compile Remove="Migrations\20200523143000_Added Adjuntos, Areas, Dimensiones and Indicadores Entities.Designer.cs" />
     <Compile Remove="Migrations\20200607200254_Added Rango entity.cs" />
     <Compile Remove="Migrations\20200607200254_Added Rango entity.Designer.cs" />
+    <Compile Remove="Migrations\20200619213929_Added Verificado to IndicadorSeguimiento table.cs" />
+    <Compile Remove="Migrations\20200619213929_Added Verificado to IndicadorSeguimiento table.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

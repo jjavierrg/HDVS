@@ -17,7 +17,7 @@ namespace EAPN.HDVS.Infrastructure.Configurations
             builder.Property(x => x.Descripcion).HasColumnName(nameof(Indicador.Descripcion)).IsRequired();
             builder.Property(x => x.Activo).HasColumnName(nameof(Indicador.Activo)).IsRequired();
             builder.Property(x => x.Puntuacion).HasColumnName(nameof(Indicador.Puntuacion)).IsRequired();
-            builder.Property(x => x.Sugerencias).HasColumnName(nameof(Indicador.Sugerencias));
+            builder.Property(x => x.Verificacion).HasColumnName(nameof(Indicador.Verificacion));
 
             builder.HasOne(x => x.Categoria).WithMany(x => x.Indicadores).HasForeignKey(x => x.CategoriaId).OnDelete(DeleteBehavior.Cascade);
             builder.HasMany(x => x.Seguimientos).WithOne(x => x.Indicador).HasForeignKey(x => x.IndicadorId).OnDelete(DeleteBehavior.Cascade);

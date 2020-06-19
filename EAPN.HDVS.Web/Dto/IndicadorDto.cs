@@ -9,6 +9,6 @@
         public string Descripcion { get; set; }
         public bool Activo { get; set; }
         public int Puntuacion { get; set; }
-        public string Sugerencias { get; set; }
+        public string Verificacion { get; set; }
     }
 }

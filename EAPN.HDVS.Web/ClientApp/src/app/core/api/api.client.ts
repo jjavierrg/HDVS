@@ -7347,7 +7347,7 @@ export class IndicadorDto implements IIndicadorDto {
     descripcion?: string | undefined;
     activo?: boolean;
     puntuacion?: number;
-    sugerencias?: string | undefined;
+    verificacion?: string | undefined;
 
     constructor(data?: IIndicadorDto) {
         if (data) {
@@ -7366,7 +7366,7 @@ export class IndicadorDto implements IIndicadorDto {
             this.descripcion = _data["descripcion"];
             this.activo = _data["activo"];
             this.puntuacion = _data["puntuacion"];
-            this.sugerencias = _data["sugerencias"];
+            this.verificacion = _data["verificacion"];
         }
     }
 
@@ -7385,7 +7385,7 @@ export class IndicadorDto implements IIndicadorDto {
         data["descripcion"] = this.descripcion;
         data["activo"] = this.activo;
         data["puntuacion"] = this.puntuacion;
-        data["sugerencias"] = this.sugerencias;
+        data["verificacion"] = this.verificacion;
         return data; 
     }
 }
@@ -7397,7 +7397,7 @@ export interface IIndicadorDto {
     descripcion?: string | undefined;
     activo?: boolean;
     puntuacion?: number;
-    sugerencias?: string | undefined;
+    verificacion?: string | undefined;
 }
 
 export class CategoriaDto implements ICategoriaDto {
@@ -8804,6 +8804,7 @@ export class IndicadorSeguimientoDto implements IIndicadorSeguimientoDto {
     indicadorId?: number;
     seguimientoId?: number;
     observaciones?: string | undefined;
+    verificado?: boolean | undefined;
     indicador?: IndicadorDto;
 
     constructor(data?: IIndicadorSeguimientoDto) {
@@ -8820,6 +8821,7 @@ export class IndicadorSeguimientoDto implements IIndicadorSeguimientoDto {
             this.indicadorId = _data["indicadorId"];
             this.seguimientoId = _data["seguimientoId"];
             this.observaciones = _data["observaciones"];
+            this.verificado = _data["verificado"];
             this.indicador = _data["indicador"] ? IndicadorDto.fromJS(_data["indicador"]) : <any>undefined;
         }
     }
@@ -8836,6 +8838,7 @@ export class IndicadorSeguimientoDto implements IIndicadorSeguimientoDto {
         data["indicadorId"] = this.indicadorId;
         data["seguimientoId"] = this.seguimientoId;
         data["observaciones"] = this.observaciones;
+        data["verificado"] = this.verificado;
         data["indicador"] = this.indicador ? this.indicador.toJSON() : <any>undefined;
         return data; 
     }
@@ -8845,6 +8848,7 @@ export interface IIndicadorSeguimientoDto {
     indicadorId?: number;
     seguimientoId?: number;
     observaciones?: string | undefined;
+    verificado?: boolean | undefined;
     indicador?: IndicadorDto;
 }
 
