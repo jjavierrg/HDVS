@@ -19,7 +19,6 @@ import { RangeService } from 'src/app/core/services/range.service';
 export class PersonalIndicatorsFormComponent implements OnInit {
   public review: SeguimientoDto;
   public permissions = Permissions;
-  public readonly: boolean;
   public users: MasterDataDto[] = [];
 
   private returnUrl: string;
@@ -41,14 +40,6 @@ export class PersonalIndicatorsFormComponent implements OnInit {
     const snapshot = this.route.snapshot;
     const reviewId = snapshot.params['id'];
     const state: IReviewState = this.location.getState();
-
-    if (
-      (state.readonly && !(await this.authService.isAuthorized([this.permissions.personalindicators.read]).toPromise())) ||
-      (!state.readonly && !(await this.authService.isAuthorized([this.permissions.personalindicators.write]).toPromise()))
-    ) {
-      await this.router.navigate(['/']).then(() => this.alertService.error(this.translate.instant('core.no-autorizado')));
-      return;
-    }
 
     await this.rangeService.forceRefresh();
     this.users = await this.masterdataService.getUsuarios().toPromise();
@@ -79,7 +70,6 @@ export class PersonalIndicatorsFormComponent implements OnInit {
 
     this.review = new SeguimientoDto(review);
     this.returnUrl = state.returnUrl ? state.returnUrl : '/';
-    this.readonly = state.readonly;
   }
 
   public getPuntuacion(): number {
@@ -106,15 +96,11 @@ export class PersonalIndicatorsFormComponent implements OnInit {
 
   public async onSave(redirect: boolean): Promise<void> {
     try {
-      if (!this.readonly) {
-        await this.service.saveReview(this.review).toPromise();
-      }
+      await this.service.saveReview(this.review).toPromise();
 
       if (redirect) {
         await this.router.navigateByUrl(this.returnUrl);
-        if (!this.readonly) {
-          this.alertService.success(this.translate.instant('core.datos-guardados'));
-        }
+        this.alertService.success(this.translate.instant('core.datos-guardados'));
       }
     } catch (error) {
       this.alertService.error(error);

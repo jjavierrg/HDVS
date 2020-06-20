@@ -102,10 +102,11 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:EAPN.HDVS.Web.Controllers.DimensionesController.#ctor(EAPN.HDVS.Application.Services.Dimension.IDimenssionService,Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.DimensionesController},AutoMapper.IMapper)">
+        <member name="M:EAPN.HDVS.Web.Controllers.DimensionesController.#ctor(EAPN.HDVS.Application.Services.Dimension.IDimensionService,EAPN.HDVS.Application.Core.Services.IReadServiceBase{EAPN.HDVS.Entities.Categoria},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.DimensionesController},AutoMapper.IMapper)">
             <summary>
             </summary>
             <param name="dimensionService"></param>
+            <param name="categoryService"></param>
             <param name="logger"></param>
             <param name="mapper"></param>
         </member>
@@ -113,6 +114,13 @@
             <summary>
             Get all stored items with related data
             </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.DimensionesController.GetDimensionesByCategorias(System.Collections.Generic.IEnumerable{System.Int32})">
+            <summary>
+            Get all stored items with related data
+            </summary>
+            <param name="ids">Categorias ids that dimensions must contains</param>
             <returns></returns>
         </member>
         <member name="M:EAPN.HDVS.Web.Controllers.EmpadronamientosController.#ctor(EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Empadronamiento},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.EmpadronamientosController},AutoMapper.IMapper)">

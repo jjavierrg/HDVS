@@ -14,7 +14,6 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace EAPN.HDVS.Web.Controllers
@@ -24,18 +23,21 @@ namespace EAPN.HDVS.Web.Controllers
     [ApiController]
     public class DimensionesController : ControllerBase
     {
-        private readonly IDimenssionService _dimensionService;
+        private readonly IDimensionService _dimensionService;
+        private readonly IReadServiceBase<Categoria> _categoryService;
         private readonly ILogger<DimensionesController> _logger;
         private readonly IMapper _mapper;
 
         /// <summary>
         /// </summary>
         /// <param name="dimensionService"></param>
+        /// <param name="categoryService"></param>
         /// <param name="logger"></param>
         /// <param name="mapper"></param>
-        public DimensionesController(IDimenssionService dimensionService, ILogger<DimensionesController> logger, IMapper mapper)
+        public DimensionesController(IDimensionService dimensionService, IReadServiceBase<Categoria> categoryService, ILogger<DimensionesController> logger, IMapper mapper)
         {
             _dimensionService = dimensionService ?? throw new ArgumentNullException(nameof(dimensionService));
+            _categoryService = categoryService ?? throw new ArgumentNullException(nameof(categoryService));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
@@ -49,8 +51,25 @@ namespace EAPN.HDVS.Web.Controllers
         [ProducesResponseType(typeof(IEnumerable<DimensionDto>), StatusCodes.Status200OK)]
         public async Task<ActionResult<DimensionDto>> GetDimensiones()
         {
-            var dimensiones = await _dimensionService.GetActiveDimenssionsAsync();
+            var dimensiones = await _dimensionService.GetActiveDimensionsAsync();
             return Ok(_mapper.MapList<DimensionDto>(dimensiones));
+        }
+
+        /// <summary>
+        /// Get all stored items with related data
+        /// </summary>
+        /// <param name="ids">Categorias ids that dimensions must contains</param>
+        /// <returns></returns>
+        [HttpGet("categorias", Name = "GetDimensionesByCategorias")]
+        [AuthorizePermission(Permissions.PERSONALCARD_ACCESS)]
+        [ProducesResponseType(typeof(IEnumerable<DimensionDto>), StatusCodes.Status200OK)]
+        public async Task<ActionResult<DimensionDto>> GetDimensionesByCategorias([FromQuery] IEnumerable<int> ids)
+        {
+            var categorias = await _categoryService.GetListAsync(x => ids.Contains(x.Id), q => q.Include(x => x.Dimension), q => q.OrderBy(x => x.Dimension.Orden).ThenBy(x => x.Orden));
+            var dimensiones = categorias.GroupBy(x => x.Dimension).ToList();
+            dimensiones.ForEach(x => x.Key.Categorias = x.OrderBy(c => c.Orden).ToList());
+            
+            return Ok(_mapper.MapList<DimensionDto>(dimensiones.Select(x => x.Key).OrderBy(x => x.Orden)));
         }
     }
 }

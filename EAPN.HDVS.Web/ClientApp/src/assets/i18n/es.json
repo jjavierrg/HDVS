@@ -101,13 +101,13 @@
     "tecnico": "Técnico/a",
     "usuario-no-alta": "El usuario no está dado de alta"
   },
+  "formulario-organizacion": {
+    "nueva-organizacion": "Nueva Organización"
+  },
   "formulario-perfil": {
     "confirmar-clave": "Confirmar Contraseña",
     "no-guardado": "No se ha podido modifcar su perfil. Revise si la contraseña actual es válida",
     "nuevo-perfil": "Nuevo Perfil"
-  },
-  "formulario-organizacion": {
-    "nueva-organizacion": "Nueva Organización"
   },
   "formulario-usuarios": {
     "nuevo-usuario": "Nuevo Técnico/a",
@@ -144,9 +144,12 @@
     "menu": "Menu"
   },
   "seguimientos": {
+    "ficha-completa": "Ficha completa",
+    "ficha-incompleta": "Ficha incompleta",
     "guardar-y-finalizar": "Guardar y finalizar edición",
     "guardar-y-siguiente": "Guardar y Siguiente",
-    "puntuacion": "Puntuación"
+    "puntuacion": "Puntuación",
+    "volver-ficha": "Ir a la ficha"
   },
   "validaciones": {
     "al-menos": "Debe completar al menos {{ required }} de los siguientes campos <strong>{{ controlNames }}</strong>.",

@@ -92,14 +92,15 @@ export class CardFormComponent implements OnInit {
         returnUrl = returnUrl.slice(0, -1 * this.route.snapshot.fragment.length - 1);
       }
 
-      const state: IReviewState = { readonly, returnUrl: `${ returnUrl }#seguimientos` };
+      const state: IReviewState = { returnUrl: `${ returnUrl }#seguimientos` };
 
       if (!success) {
         return false;
       }
 
+      const reviewUrl: string = `/seguimientos${readonly ? '/resumen' : ''}`;
       if (reviewId) {
-        return this.router.navigate(['/seguimientos', reviewId], { state });
+        return this.router.navigate([reviewUrl, reviewId], { state });
       }
 
       const review: SeguimientoDto = new SeguimientoDto({

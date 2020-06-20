@@ -5,12 +5,12 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    public interface IDimenssionService : ICrudServiceBase<Dimension>
+    public interface IDimensionService : ICrudServiceBase<Dimension>
     {
         /// <summary>
-        /// Get only active dimenssion data
+        /// Get only active dimension data
         /// </summary>
-        /// <returns>List of active data related to dimenssions</returns>
-        Task<IEnumerable<Dimension>> GetActiveDimenssionsAsync();
+        /// <returns>List of active data related to dimensions</returns>
+        Task<IEnumerable<Dimension>> GetActiveDimensionsAsync();
     }
 }

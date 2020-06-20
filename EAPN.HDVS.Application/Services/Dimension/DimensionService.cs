@@ -9,14 +9,14 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    class DimenssionService : CrudServiceBase<Dimension>, IDimenssionService
+    class DimensionService : CrudServiceBase<Dimension>, IDimensionService
     {
-        public DimenssionService(IRepository<Dimension> repository, ILogger<DimenssionService> logger) : base(repository, logger)
+        public DimensionService(IRepository<Dimension> repository, ILogger<DimensionService> logger) : base(repository, logger)
         {
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<Dimension>> GetActiveDimenssionsAsync()
+        public async Task<IEnumerable<Dimension>> GetActiveDimensionsAsync()
         {
             var dimensiones = await GetListAsync(x => x.Activo, q => q.Include(x => x.Categorias).ThenInclude(x => x.Indicadores), q => q.OrderBy(x => x.Orden));
 

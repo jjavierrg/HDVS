@@ -21,8 +21,7 @@ export class SearchResultEntryComponent {
   }
 
   public onViewReviewClick(id: number): void {
-    const state: IReviewState = { readonly: true };
-    this.router.navigate(['/seguimientos', id], { state });
+    this.router.navigate(['/seguimientos', 'resumen', id]);
   }
 
   public onViewCardClick(id: number, segment: string): void {

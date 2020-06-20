@@ -35,6 +35,7 @@ namespace EAPN.HDVS.Entities
         public bool PoliticaFirmada { get; set; }
         public bool Completa { get; set; }
         public DateTime FechaAlta { get; set; }
+        public DateTime FechaUltimaModificacion { get; set; }
 
         public int? Edad
         {

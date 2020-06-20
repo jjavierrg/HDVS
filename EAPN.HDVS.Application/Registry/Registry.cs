@@ -16,11 +16,12 @@ namespace EAPN.HDVS.Application.Registry
             services.AddScoped<IRepository<Usuario>, UsuarioRepository>();
             services.AddScoped<IRepository<Organizacion>, OrganizacionRepository>();
             services.AddScoped<IRepository<Ficha>, FichaRepository>();
+            services.AddScoped<IRepository<Seguimiento>, SeguimientoRepository>();
 
             services.AddScoped(typeof(ICrudServiceBase<>), typeof(CrudServiceBase<>));
             services.AddScoped(typeof(IReadServiceBase<>), typeof(ReadServiceBase<>));
             services.AddScoped<IUsuarioService, UsuarioService>();
-            services.AddScoped<IDimenssionService, DimenssionService>();
+            services.AddScoped<IDimensionService, DimensionService>();
             services.AddScoped<ICrudServiceBase<Seguimiento>, SeguimientoService>();
 
             return services;

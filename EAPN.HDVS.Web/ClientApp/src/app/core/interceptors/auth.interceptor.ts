@@ -15,7 +15,7 @@ export class AuthInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let authReq = req;
     const exclusions: string[] = environment.tokenExcludeEndpoints;
-    const includeToken = req.url.startsWith(environment.apiEndpoint) && !exclusions.some((x) => req.url.toLowerCase().indexOf(x) >= 0);
+    const includeToken = req.url.startsWith(environment.apiEndpoint) && !exclusions.some((x) => req.url.toLowerCase().includes(x));
 
     if (!includeToken) {
       return next.handle(authReq);

@@ -11,6 +11,7 @@ import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
 import { ImageModule } from 'src/app/shared/modules/image/image.module';
 import { InputModule } from 'src/app/shared/modules/input/input.module';
 import { FormsModule } from '@angular/forms';
+import { PersonalIndicatorResumeComponent } from './personal-indicator-resume/personal-indicator-resume.component';
 
 const routes: Routes = [
   {
@@ -21,11 +22,18 @@ const routes: Routes = [
     data: { allowedPermissions: [Permissions.personalindicators.write] },
   },
   {
+    path: 'resumen/:id',
+    component: PersonalIndicatorResumeComponent,
+    canLoad: [AuthenticatedGuard],
+    canActivate: [AuthenticatedGuard],
+    data: { allowedPermissions: [Permissions.personalindicators.read] },
+  },
+  {
     path: ':id',
     component: PersonalIndicatorsFormComponent,
     canLoad: [AuthenticatedGuard],
     canActivate: [AuthenticatedGuard],
-    data: { allowedPermissions: [Permissions.personalindicators.write, Permissions.personalindicators.read] },
+    data: { allowedPermissions: [Permissions.personalindicators.write] },
   },
   {
     path: '**',
@@ -35,7 +43,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [PersonalIndicatorsFormComponent, CardInfoComponent],
+  declarations: [PersonalIndicatorsFormComponent, CardInfoComponent, PersonalIndicatorResumeComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),

@@ -1,4 +1,4 @@
-<div class="container" *ngIf="partner">
+<div class="container-fluid" *ngIf="partner">
   <div class="card border-0">
     <div class="card-header toolbar align-items-end justify-content-start border-bottom-0 flex-column flex-lg-row">
       <app-secure-profile-image [photoId]="partner.fotoId" class="profile-picture align-self-center" fallbackImage="assets/partner.svg" imageClasses=" "
@@ -41,7 +41,7 @@
         <div class="form-group">
           <label for="inputObservaciones">{{ 'comun.observaciones' | translate }}</label>
           <quill-editor id="inputObservaciones" [(ngModel)]="partner.observaciones" name="observaciones"
-            #obsrvacionesCtrl="ngModel" [placeholder]="'comun.observaciones' | translate">
+            #observacionesCtrl="ngModel" [placeholder]="'comun.observaciones' | translate">
           </quill-editor>
         </div>
         <div class="form-group float-right">

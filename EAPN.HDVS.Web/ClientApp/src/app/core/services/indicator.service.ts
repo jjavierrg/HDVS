@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ApiClient, DimensionDto, SeguimientoDto } from '../api/api.client';
+import { ApiClient, DimensionDto, SeguimientoDto, CategoriaDto } from '../api/api.client';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
@@ -11,6 +11,10 @@ export class IndicatorService {
 
   public getDimensions(): Observable<DimensionDto[]> {
     return this.apiClient.getDimensiones();
+  }
+
+  public getDimensionesByCategorias(ids: number[]): Observable<DimensionDto[]> {
+    return this.apiClient.getDimensionesByCategorias(ids);
   }
 
   public getReview(id: number): Observable<SeguimientoDto> {

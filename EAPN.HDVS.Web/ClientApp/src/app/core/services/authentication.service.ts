@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, ReplaySubject, throwError, of } from 'rxjs';
+import { BehaviorSubject, Observable, ReplaySubject, throwError, of, from } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { map, catchError, retry } from 'rxjs/operators';
 import { ApiClient, LoginAttempDto, UserTokenDto, DatosUsuarioDto } from '../api/api.client';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { sha3_512 } from 'js-sha3';
+import { HttpClient } from '@angular/common/http';
+import { Session } from 'protractor';
+import { JsonPipe } from '@angular/common';
 
 const helper = new JwtHelperService();
 const validMinutesOffset = 10;
@@ -139,19 +142,6 @@ export class AuthenticationService {
     );
   }
 
-  private getUserIdFromToken(token: UserTokenDto): number {
-    if (!token) {
-      return -1;
-    }
-
-    try {
-      const decoded = helper.decodeToken(token.accessToken);
-      return +decoded.sub;
-    } catch (error) {
-      return -1;
-    }
-  }
-
   private isTokenValid(token: UserTokenDto): boolean {
     if (!token) {
       return false;
@@ -168,7 +158,18 @@ export class AuthenticationService {
   }
 
   private refreshToken(oldToken: UserTokenDto): Observable<UserTokenDto> {
-    return this.handleTokenRequest(this.apiClient.refresh());
+    const promise = fetch(`${environment.apiEndpoint}/api/Auth/refresh`, {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        Authorization: `Bearer ${oldToken.accessToken}`,
+        'X-FP-API-KEY': 'chaptoken',
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const observable: Observable<UserTokenDto> = from(promise.then(async (x) => UserTokenDto.fromJS(await x.json())));
+    return this.handleTokenRequest(observable);
   }
 
   private handleTokenRequest(request: Observable<UserTokenDto>): Observable<UserTokenDto> {

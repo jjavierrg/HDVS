@@ -1,0 +1,76 @@
+@import 'src/styles.scss';
+
+.dimension-description {
+  margin-left: -30px;
+  background-color: var(--primary);
+  padding-left: calc(30px + 1rem);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+
+  h5 {
+    margin-bottom: 0;
+  }
+
+  &::after {
+    content: '';
+    left: 100%;
+    border: solid transparent;
+    position: absolute;
+    border-left-color: var(--primary);
+    margin-left: -15px;
+    border-width: 30px;
+  }
+}
+
+.line {
+  visibility: hidden;
+}
+
+.score {
+  color: var(--primary);
+  font-weight: bolder;
+  line-height: 60px;
+  font-size: x-large;
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.category-score-container {
+  left: -6px;
+}
+
+.category-score {
+  width: 25px;
+  height: 25px;
+  display: inline-block;
+  font-weight: bold;
+  line-height: 20px;
+}
+
+@media (min-width: map-get($grid-breakpoints, 'lg')) {
+  .line {
+    visibility: unset;
+    background: var(--primary);
+    height: 4px;
+    align-self: center;
+    margin-left: -5px;
+    margin-right: -1px;
+  }
+
+  .score {
+    background-color: var(--primary);
+    color: var(--white);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+  }
+
+  .category-score {
+    border: 1px solid;
+  }
+
+  .category-score-container {
+    left: 0;
+  }
+}
