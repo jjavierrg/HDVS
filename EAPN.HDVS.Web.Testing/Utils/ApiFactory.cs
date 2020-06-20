@@ -93,7 +93,7 @@ namespace EAPN.HDVS.Web.Testing.Utils
             return CreateClient();
         }
 
-        public HttpClient GetAuthenticatedClientAsync(string email)
+        public HttpClient GetAuthenticatedClient(string email)
         {
             var client = CreateClient();
 

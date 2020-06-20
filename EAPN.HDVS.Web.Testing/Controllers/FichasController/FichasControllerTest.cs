@@ -39,7 +39,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.FichasController
         public async Task ShoudUpdateFotoDataOnAdd()
         {
             // Arrange
-            var client = _factory.GetAuthenticatedClientAsync("usuario12@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario12@test.com");
             var ficha = GetNewFicha();
             var fotoId = 9;
 
@@ -68,7 +68,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.FichasController
         public async Task ShoudGetDatosFicha()
         {
             // Arrange
-            var client = _factory.GetAuthenticatedClientAsync("usuario12@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario12@test.com");
             var id = 15;
 
             // Act

@@ -22,7 +22,6 @@ namespace EAPN.HDVS.Entities
         public DateTime? FinBloqueo { get; set; }
         public IList<UsuarioPermiso> PermisosAdicionales { get; set; }
         public IList<UsuarioPerfil> Perfiles { get; set; }
-        public IList<RefreshToken> Tokens { get; set; }
         public Organizacion Organizacion { get; set; }
         public DateTime FechaAlta { get; set; }
         public Adjunto Foto { get; set; }

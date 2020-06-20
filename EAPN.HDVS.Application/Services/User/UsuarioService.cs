@@ -80,8 +80,6 @@ namespace EAPN.HDVS.Application.Services.User
                 usuario.UltimoAcceso = DateTime.UtcNow;
 
                 token = _tokenService.GenerateTokenForUser(usuario);
-                var lifeMinutes = _tokenService.GetRefreshTokenLifeMinutes();
-                usuario.Tokens = new List<RefreshToken>(new[] { new RefreshToken { FinValidez = DateTime.UtcNow.AddMinutes(lifeMinutes), Token = token.RefreshToken } });
             }
 
             Update(usuario);
@@ -91,27 +89,18 @@ namespace EAPN.HDVS.Application.Services.User
         }
 
         /// <inheritdoc />
-        public async Task<UserToken> RefreshTokenAsync(string refreshToken, int userId)
+        public async Task<UserToken> RefreshTokenAsync(int userId)
         {
-            if (string.IsNullOrEmpty(refreshToken)) throw new ArgumentNullException(nameof(refreshToken));
-
             var query = GetFullUsuarioQuery();
-            var usuario = await query.FirstOrDefaultAsync(x => x.Id == userId);
+            var usuario = await query.Include(x => x.Organizacion).FirstOrDefaultAsync(x => x.Id == userId);
             if (usuario == null) return null;
 
-            // Validate that user still active
+            // Validate that user/partner still active
             if (!usuario.Activo) return null;
-
-            if (!usuario.Tokens.Any(x => x.Token == refreshToken && x.FinValidez >= DateTime.UtcNow)) return null;
+            if (!usuario.Organizacion.Activa) return null;
 
             // Generate new token
             var token = _tokenService.GenerateTokenForUser(usuario);
-            var lifeMinutes = _tokenService.GetRefreshTokenLifeMinutes();
-            usuario.Tokens = new List<RefreshToken>(new[] { new RefreshToken { FinValidez = DateTime.UtcNow.AddMinutes(lifeMinutes), Token = token.RefreshToken } });
-
-            Update(usuario);
-            await SaveChangesAsync();
-
             return token;
         }
 
@@ -123,11 +112,8 @@ namespace EAPN.HDVS.Application.Services.User
             var id = user.Claims?.FirstOrDefault(c => c.Type == "sub")?.Value;
             if (!int.TryParse(id, out int intId)) return;
 
-            var usuario = await Repository.GetFirstOrDefault(x => x.Id == intId, q => q.Include(x => x.Tokens));
+            var usuario = await Repository.GetFirstOrDefault(x => x.Id == intId);
             if (usuario == null) return;
-
-            // Remove user refresh tokens
-            usuario.Tokens = new RefreshToken[] { };
 
             Update(usuario);
             await SaveChangesAsync();
@@ -170,8 +156,7 @@ namespace EAPN.HDVS.Application.Services.User
         {
             return Repository.EntitySet.Include(x => x.Perfiles).ThenInclude(x => x.Perfil).ThenInclude(x => x.Permisos).ThenInclude(x => x.Permiso)
                     .Include(x => x.PermisosAdicionales).ThenInclude(x => x.Permiso)
-                    .Include(x => x.Organizacion)
-                    .Include(x => x.Tokens);
+                    .Include(x => x.Organizacion);
         }
 
         public void UpdateWithtPass(Usuario usuario)

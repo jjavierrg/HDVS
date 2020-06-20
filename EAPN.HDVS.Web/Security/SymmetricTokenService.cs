@@ -25,15 +25,6 @@ namespace EAPN.HDVS.Web.Security
         }
 
         /// <summary>
-        /// Obtiene los minutos de válidez de un token de refresco (por defecto 1 día)
-        /// </summary>
-        /// <returns></returns>
-        public int GetRefreshTokenLifeMinutes()
-        {
-            return _tokenConfiguration?.RefreshTokenLifeMinutes ?? (24 * 60);
-        }
-
-        /// <summary>
         /// Genera un token de acceso válido para un usuario
         /// </summary>
         /// <param name="user"></param>
@@ -78,23 +69,8 @@ namespace EAPN.HDVS.Web.Security
             return new UserToken
             {
                 AccessToken = tokenHandler.WriteToken(tokenDescriptor),
-                ExpiresIn = secondsExpire,
-                RefreshToken = GenerateRefreshToken()
+                ExpiresIn = secondsExpire
             };
-        }
-
-        /// <summary>
-        /// Genera una cadena aleatoria para ser utilizada como token de refresco
-        /// </summary>
-        /// <returns></returns>
-        private string GenerateRefreshToken()
-        {
-            int size = 64;
-            var randomNumber = new byte[size];
-
-            using var rng = RandomNumberGenerator.Create();
-            rng.GetBytes(randomNumber);
-            return Convert.ToBase64String(randomNumber);
         }
     }
 }

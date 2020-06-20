@@ -36,7 +36,7 @@ namespace EAPN.HDVS.Application.Services.User
         /// <param name="refreshToken">refresh token associated to User</param>
         /// <param name="user">User Principal</param>
         /// <returns>New extended User Token</returns>
-        Task<UserToken> RefreshTokenAsync(string refreshToken, int userId);
+        Task<UserToken> RefreshTokenAsync(int userId);
 
         /// <summary>
         /// Store user changes and update password field

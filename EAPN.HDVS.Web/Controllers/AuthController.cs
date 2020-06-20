@@ -39,11 +39,13 @@ namespace EAPN.HDVS.Web.Controllers
             return _mapper.Map<UserTokenDto>(token);
         }
 
-        [HttpPost("refresh")]
+        [Authorize]
+        [HttpGet("refresh")]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(UserTokenDto), StatusCodes.Status200OK)]
-        public async Task<ActionResult<UserTokenDto>> RefreshTokenAsync([FromBody]RefreshTokenAttempDto refreshTokenAttempDto)
+        public async Task<ActionResult<UserTokenDto>> RefreshTokenAsync()
         {
-            var token = await _usuarioService.RefreshTokenAsync(refreshTokenAttempDto.RefreshToken, refreshTokenAttempDto.UserId);
+            var token = await _usuarioService.RefreshTokenAsync(User.GetUserId() ?? 0);
 
             //if (token == null)
             //    return Unauthorized();

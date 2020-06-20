@@ -60,10 +60,9 @@ export interface IApiClient {
      */
     auth(body?: LoginAttempDto | undefined): Observable<UserTokenDto>;
     /**
-     * @param body (optional) 
      * @return Success
      */
-    refresh(body?: RefreshTokenAttempDto | undefined): Observable<UserTokenDto>;
+    refresh(): Observable<UserTokenDto>;
     /**
      * @return Success
      */
@@ -1039,26 +1038,21 @@ export class ApiClient implements IApiClient {
     }
 
     /**
-     * @param body (optional) 
      * @return Success
      */
-    refresh(body?: RefreshTokenAttempDto | undefined): Observable<UserTokenDto> {
+    refresh(): Observable<UserTokenDto> {
         let url_ = this.baseUrl + "/api/Auth/refresh";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
-
         let options_ : any = {
-            body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
                 "Accept": "text/plain"
             })
         };
 
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
             return this.processRefresh(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
@@ -1079,12 +1073,23 @@ export class ApiClient implements IApiClient {
             (<any>response).error instanceof Blob ? (<any>response).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
+        if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result401: any = null;
+            let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
+            }));
+        } else if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result200 = UserTokenDto.fromJS(resultData200);
             return _observableOf(result200);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Forbidden", status, _responseText, _headers);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
@@ -7147,7 +7152,6 @@ export interface ILoginAttempDto {
 export class UserTokenDto implements IUserTokenDto {
     accessToken?: string | undefined;
     expiresIn?: number;
-    refreshToken?: string | undefined;
 
     constructor(data?: IUserTokenDto) {
         if (data) {
@@ -7162,7 +7166,6 @@ export class UserTokenDto implements IUserTokenDto {
         if (_data) {
             this.accessToken = _data["accessToken"];
             this.expiresIn = _data["expiresIn"];
-            this.refreshToken = _data["refreshToken"];
         }
     }
 
@@ -7177,7 +7180,6 @@ export class UserTokenDto implements IUserTokenDto {
         data = typeof data === 'object' ? data : {};
         data["accessToken"] = this.accessToken;
         data["expiresIn"] = this.expiresIn;
-        data["refreshToken"] = this.refreshToken;
         return data; 
     }
 }
@@ -7185,47 +7187,6 @@ export class UserTokenDto implements IUserTokenDto {
 export interface IUserTokenDto {
     accessToken?: string | undefined;
     expiresIn?: number;
-    refreshToken?: string | undefined;
-}
-
-export class RefreshTokenAttempDto implements IRefreshTokenAttempDto {
-    userId?: number;
-    refreshToken?: string | undefined;
-
-    constructor(data?: IRefreshTokenAttempDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.userId = _data["userId"];
-            this.refreshToken = _data["refreshToken"];
-        }
-    }
-
-    static fromJS(data: any): RefreshTokenAttempDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new RefreshTokenAttempDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["userId"] = this.userId;
-        data["refreshToken"] = this.refreshToken;
-        return data; 
-    }
-}
-
-export interface IRefreshTokenAttempDto {
-    userId?: number;
-    refreshToken?: string | undefined;
 }
 
 export class ConfiguracionDto implements IConfiguracionDto {

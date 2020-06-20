@@ -41,6 +41,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.AuthController
         {
             // Arrange
             var client = _factory.GetAnonymousClient();
+            var autorizedClient = _factory.GetAuthenticatedClient("usuario1@test.com");
 
             // Act
             var attemp = new LoginAttempDto { Email = "usuario1@test.com", Password = "pass" };
@@ -51,59 +52,15 @@ namespace EAPN.HDVS.Web.Testing.Controllers.AuthController
             var token = await ClientUtilities.GetResponseContent<UserTokenDto>(response);
             Assert.NotNull(token);
             Assert.NotEmpty(token.AccessToken);
-            Assert.NotEmpty(token.RefreshToken);
 
             // Act
-            var refresh = new RefreshTokenAttempDto { UserId = 1, RefreshToken = token.RefreshToken };
-            var refreshResponse = await client.PostAsync("/api/auth/refresh/", ClientUtilities.GetRequestContent(refresh));
+            var refreshResponse = await autorizedClient.GetAsync("/api/auth/refresh/");
 
             // Assert
             refreshResponse.EnsureSuccessStatusCode();
             var refreshed = await ClientUtilities.GetResponseContent<UserTokenDto>(refreshResponse);
             Assert.NotNull(refreshed);
             Assert.NotEmpty(refreshed.AccessToken);
-            Assert.NotEmpty(refreshed.RefreshToken);
-            Assert.NotEqual(token.RefreshToken, refreshed.RefreshToken);
-        }
-
-        [Fact]
-        [Trait("Category", "AuthController")]
-        public async Task ShouldNotRefreshOldToken()
-        {
-            // Arrange
-            var client = _factory.GetAnonymousClient();
-
-            // Act
-            var attemp = new LoginAttempDto { Email = "usuario1@test.com", Password = "pass" };
-            var response = await client.PostAsync("/api/auth/", ClientUtilities.GetRequestContent(attemp));
-
-            // Assert
-            response.EnsureSuccessStatusCode();
-            var token = await ClientUtilities.GetResponseContent<UserTokenDto>(response);
-            Assert.NotNull(token);
-            Assert.NotEmpty(token.AccessToken);
-            Assert.NotEmpty(token.RefreshToken);
-
-            // Act
-            var refresh = new RefreshTokenAttempDto { UserId = 1, RefreshToken = token.RefreshToken };
-            var refreshResponse = await client.PostAsync("/api/auth/refresh/", ClientUtilities.GetRequestContent(refresh));
-
-            // Assert
-            refreshResponse.EnsureSuccessStatusCode();
-            var refreshed = await ClientUtilities.GetResponseContent<UserTokenDto>(refreshResponse);
-            Assert.NotNull(refreshed);
-            Assert.NotEmpty(refreshed.AccessToken);
-            Assert.NotEmpty(refreshed.RefreshToken);
-            Assert.NotEqual(token.RefreshToken, refreshed.RefreshToken);
-
-            // Act
-            var refreshOldToken = new RefreshTokenAttempDto { UserId = 1, RefreshToken = token.RefreshToken };
-            var refreshOldResponse = await client.PostAsync("/api/auth/refresh/", ClientUtilities.GetRequestContent(refreshOldToken));
-
-            // Assert
-            refreshOldResponse.EnsureSuccessStatusCode();
-            var refreshedOld = await ClientUtilities.GetResponseContent<UserTokenDto>(refreshOldResponse);
-            Assert.Null(refreshedOld);
         }
 
         [Fact]

@@ -27,7 +27,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.PerfilesController
         public async Task ShoudNotAllowedUser()
         {
             // Arrange
-            var client = _factory.GetAuthenticatedClientAsync("usuario4@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario4@test.com");
             var perfil = new PerfilDto { Descripcion = "test", Permisos = new List<MasterDataDto>() };
 
             // Act
@@ -52,7 +52,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.PerfilesController
         public async Task AllowedUserShouldGetPerfiles()
         {
             // Arrange
-            var client = _factory.GetAuthenticatedClientAsync("usuario1@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario1@test.com");
 
             // Act
             var response = await client.GetAsync(ENDPOINT);
@@ -69,7 +69,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.PerfilesController
         public async Task AllowedUserShouldGetMasterdata()
         {
             // Arrange
-            var client = _factory.GetAuthenticatedClientAsync("usuario10@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario10@test.com");
 
             // Act
             var response = await client.GetAsync($"{ENDPOINT}/masterdata");
@@ -86,7 +86,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.PerfilesController
         public async Task NotAdminShouldGetNotAdminProfiles()
         {
             // Arrange
-            var client = _factory.GetAuthenticatedClientAsync("usuario10@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario10@test.com");
 
             // Act
             var response = await client.GetAsync($"{ENDPOINT}/masterdata");
@@ -104,7 +104,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.PerfilesController
         {
             // Arrange
             var id = 1;
-            var client = _factory.GetAuthenticatedClientAsync("usuario1@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario1@test.com");
 
             // Act
             var response = await client.GetAsync($"{ENDPOINT}/{id}");
@@ -122,7 +122,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.PerfilesController
         {
             // Arrange
             var guid = Guid.NewGuid().ToString();
-            var client = _factory.GetAuthenticatedClientAsync("usuario1@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario1@test.com");
             var perfil = new PerfilDto { Descripcion = guid, Permisos = new List<MasterDataDto>() };
 
             // Act
@@ -152,7 +152,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.PerfilesController
             // Arrange
             var id = 2;
             var guid = Guid.NewGuid().ToString();
-            var client = _factory.GetAuthenticatedClientAsync("usuario1@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario1@test.com");
             var perfil = new PerfilDto { Id = id, Descripcion = guid };
 
             // Act
@@ -180,7 +180,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.PerfilesController
         {
             // Arrange
             var id = 3;
-            var client = _factory.GetAuthenticatedClientAsync("usuario1@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario1@test.com");
 
             // Act
             var response = await client.DeleteAsync($"{ENDPOINT}/{id}");

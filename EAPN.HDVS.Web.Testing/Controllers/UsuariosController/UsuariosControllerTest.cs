@@ -44,7 +44,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.UsuariosController
         public async Task AllowedSuperadminUserShouldGetUsuarios()
         {
             // Arrange
-            var client = _factory.GetAuthenticatedClientAsync("usuario11@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario11@test.com");
 
             // Act
             var response = await client.GetAsync(ENDPOINT);
@@ -63,7 +63,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.UsuariosController
         {
             // Arrange
             var id = 4;
-            var client = _factory.GetAuthenticatedClientAsync("usuario10@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario10@test.com");
 
             // Act
             var response = await client.GetAsync($"{ENDPOINT}/{id}");
@@ -81,7 +81,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.UsuariosController
         {
             // Arrange
             var guid = Guid.NewGuid().ToString();
-            var client = _factory.GetAuthenticatedClientAsync("usuario10@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario10@test.com");
             var usuario = CreateUsuarioDto(0, 1, 1, guid);
 
             // Act
@@ -111,7 +111,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.UsuariosController
             // Arrange
             var id = 25;
             var guid = Guid.NewGuid().ToString();
-            var client = _factory.GetAuthenticatedClientAsync("usuario10@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario10@test.com");
             var usuario = CreateUsuarioDto(id, 1, 2, guid);
 
             // Act
@@ -139,7 +139,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.UsuariosController
         {
             // Arrange
             var id = 30;
-            var client = _factory.GetAuthenticatedClientAsync("usuario10@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario10@test.com");
 
             // Act
             var response = await client.DeleteAsync($"{ENDPOINT}/{id}");

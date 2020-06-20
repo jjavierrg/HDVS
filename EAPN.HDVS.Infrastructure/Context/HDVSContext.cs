@@ -23,8 +23,7 @@ namespace EAPN.HDVS.Infrastructure.Context
         public virtual DbSet<Perfil> Perfiles { get; set; }
         public virtual DbSet<PerfilPermiso> PerfilesPermisos { get; set; }
         public virtual DbSet<Permiso> Permisos { get; set; }
-        public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
-
+        
         public virtual DbSet<Organizacion> Organizaciones { get; set; }
         public virtual DbSet<Ficha> Fichas { get; set; }
         public virtual DbSet<SituacionAdministrativa> SituacionesAdministrativas { get; set; }
@@ -57,7 +56,6 @@ namespace EAPN.HDVS.Infrastructure.Context
             modelBuilder.ApplyConfiguration(new Configurations.PerfilConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.PerfilPermisoConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.PermisoConfiguration());
-            modelBuilder.ApplyConfiguration(new Configurations.RefreshTokenConfiguration());
 
             modelBuilder.ApplyConfiguration(new Configurations.OrganizacionConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.EmpadronamientoConfiguration());

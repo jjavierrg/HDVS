@@ -27,7 +27,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.UsuariosController
         public async Task ShoudNotAllowedUser()
         {
             // Arrange
-            var client = _factory.GetAuthenticatedClientAsync("usuario4@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario4@test.com");
             var usuario = new UsuarioDto { Nombre = "test" };
 
             // Act
@@ -53,7 +53,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.UsuariosController
         {
             // Arrange
             var adminId = 1;
-            var client = _factory.GetAuthenticatedClientAsync("usuario10@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario10@test.com");
 
             // Act
             var response = await client.GetAsync($"{ENDPOINT}");
@@ -72,7 +72,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.UsuariosController
         {
             // Arrange
             var id = 1;
-            var client = _factory.GetAuthenticatedClientAsync("usuario10@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario10@test.com");
 
             // Act
             var response = await client.GetAsync($"{ENDPOINT}/{id}");
@@ -88,7 +88,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.UsuariosController
         public async Task NotAdminShouldNotGetOtherPartnerUsers()
         {
             // Arrange
-            var client = _factory.GetAuthenticatedClientAsync("usuario10@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario10@test.com");
 
             // Act
             var response = await client.GetAsync(ENDPOINT);
@@ -107,7 +107,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.UsuariosController
         {
             // Arrange
             var id = 2;
-            var client = _factory.GetAuthenticatedClientAsync("usuario10@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario10@test.com");
 
             // Act
             var response = await client.GetAsync($"{ENDPOINT}/{id}");
@@ -123,7 +123,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.UsuariosController
         public async Task NotAdminShouldNotCreateOtherPartnerUser()
         {
             // Arrange
-            var client = _factory.GetAuthenticatedClientAsync("usuario10@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario10@test.com");
             var usuario = new UsuarioDto { };
 
             // Act
@@ -140,7 +140,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.UsuariosController
         {
             // Arrange
             var id = 2;
-            var client = _factory.GetAuthenticatedClientAsync("usuario10@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario10@test.com");
             var usuario = new UsuarioDto { Id = id, OrganizacionId = 2 };
 
             // Act
@@ -157,7 +157,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.UsuariosController
         {
             // Arrange
             var id = 1;
-            var client = _factory.GetAuthenticatedClientAsync("usuario10@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario10@test.com");
             var usuario = new UsuarioDto { Id = id, OrganizacionId = 2 };
 
             // Act
@@ -174,7 +174,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.UsuariosController
         {
             // Arrange
             var id = 2;
-            var client = _factory.GetAuthenticatedClientAsync("usuario10@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario10@test.com");
 
             // Act
             var response = await client.DeleteAsync($"{ENDPOINT}/{id}");

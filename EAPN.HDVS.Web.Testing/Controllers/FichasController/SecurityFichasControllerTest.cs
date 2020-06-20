@@ -43,7 +43,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.FichasController
         public async Task ShoudNotCreateFichaForOtherAsociacion()
         {
             // Arrange
-            var client = _factory.GetAuthenticatedClientAsync("usuario1@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario1@test.com");
             var dto = GetNewFicha();
             var fotoId = 9;
 

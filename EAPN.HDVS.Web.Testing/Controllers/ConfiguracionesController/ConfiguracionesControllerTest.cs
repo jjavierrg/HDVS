@@ -26,7 +26,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.ConfiguracionesController
         public async Task ShoudAllUserGetConfiguracion()
         {
             // Arrange
-            var client = _factory.GetAuthenticatedClientAsync("usuario4@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario4@test.com");
 
             // Act
             var response = await client.GetAsync($"{ENDPOINT}/1");
@@ -49,7 +49,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.ConfiguracionesController
         public async Task ShoudNotAdminNoUpdateConfiguracion()
         {
             // Arrange
-            var client = _factory.GetAuthenticatedClientAsync("usuario4@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario4@test.com");
             var dto = new ConfiguracionDto { Id = 1, Enlaces = "updated", MostrarEnlaces = false };
 
             // Act
@@ -66,7 +66,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.ConfiguracionesController
         public async Task ShoudAdminUpdateConfiguracion()
         {
             // Arrange
-            var client = _factory.GetAuthenticatedClientAsync("usuario1@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario1@test.com");
             var guid = Guid.NewGuid().ToString();
             var dto = new ConfiguracionDto { Id = 1, Enlaces = guid, MostrarEnlaces = false };
 

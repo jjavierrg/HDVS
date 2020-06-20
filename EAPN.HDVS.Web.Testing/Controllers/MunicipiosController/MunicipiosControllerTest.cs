@@ -27,7 +27,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.MunicipiosController
         public async Task ShoudNotAllowedUser()
         {
             // Arrange
-            var client = _factory.GetAuthenticatedClientAsync("usuario4@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario4@test.com");
             var municipio = new MunicipioDto { Id = 1, Nombre = "Test" };
 
             // Act
@@ -50,7 +50,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.MunicipiosController
         public async Task ShoudAllowedUserToMasterdata()
         {
             // Arrange
-            var client = _factory.GetAuthenticatedClientAsync("usuario4@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario4@test.com");
 
             // Act
             var response = await client.GetAsync($"{ENDPOINT}/masterdata");
@@ -67,7 +67,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.MunicipiosController
         public async Task AllowedUserShouldGetMunicipios()
         {
             // Arrange
-            var client = _factory.GetAuthenticatedClientAsync("usuario1@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario1@test.com");
 
             // Act
             var response = await client.GetAsync(ENDPOINT);
@@ -84,7 +84,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.MunicipiosController
         public async Task AllowedUserShouldGetMasterdata()
         {
             // Arrange
-            var client = _factory.GetAuthenticatedClientAsync("usuario1@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario1@test.com");
 
             // Act
             var response = await client.GetAsync($"{ENDPOINT}/masterdata");
@@ -102,7 +102,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.MunicipiosController
         {
             // Arrange
             int provinciaId = 7;
-            var client = _factory.GetAuthenticatedClientAsync("usuario1@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario1@test.com");
 
             // Act
             var response = await client.GetAsync($"{ENDPOINT}/provincia/{provinciaId}/masterdata");
@@ -121,7 +121,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.MunicipiosController
         {
             // Arrange
             var id = 1;
-            var client = _factory.GetAuthenticatedClientAsync("usuario1@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario1@test.com");
 
             // Act
             var response = await client.GetAsync($"{ENDPOINT}/{id}");
@@ -139,7 +139,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.MunicipiosController
         {
             // Arrange
             var guid = Guid.NewGuid().ToString();
-            var client = _factory.GetAuthenticatedClientAsync("usuario1@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario1@test.com");
             var municipio = new MunicipioDto { Nombre = guid, ProvinciaId = 5 };
 
             // Act
@@ -169,7 +169,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.MunicipiosController
             // Arrange
             var id = 200;
             var guid = Guid.NewGuid().ToString();
-            var client = _factory.GetAuthenticatedClientAsync("usuario1@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario1@test.com");
             var municipio = new MunicipioDto { Nombre = guid, Id = id, ProvinciaId = 3 };
 
             // Act
@@ -197,7 +197,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.MunicipiosController
         {
             // Arrange
             var id = 220;
-            var client = _factory.GetAuthenticatedClientAsync("usuario1@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario1@test.com");
 
             // Act
             var response = await client.DeleteAsync($"{ENDPOINT}/{id}");

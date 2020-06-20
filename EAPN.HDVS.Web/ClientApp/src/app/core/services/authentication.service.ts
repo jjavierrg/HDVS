@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, ReplaySubject, throwError, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { map, catchError, retry } from 'rxjs/operators';
-import { ApiClient, LoginAttempDto, UserTokenDto, RefreshTokenAttempDto, DatosUsuarioDto } from '../api/api.client';
+import { ApiClient, LoginAttempDto, UserTokenDto, DatosUsuarioDto } from '../api/api.client';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { sha3_512 } from 'js-sha3';
 
 const helper = new JwtHelperService();
-const validMinutesOffset = 2;
+const validMinutesOffset = 10;
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +16,15 @@ export class AuthenticationService {
   private currentTokenSubject: BehaviorSubject<UserTokenDto>;
 
   constructor(private apiClient: ApiClient) {
-    this.currentTokenSubject = new BehaviorSubject<UserTokenDto>(JSON.parse(localStorage.getItem(environment.tokenLocalStorageKey)));
+    let token = localStorage.getItem(environment.tokenLocalStorageKey);
+    if (!token) {
+      token = sessionStorage.getItem(environment.tokenLocalStorageKey);
+      if (token) {
+        localStorage.setItem(environment.tokenLocalStorageKey, token);
+      }
+    }
+
+    this.currentTokenSubject = new BehaviorSubject<UserTokenDto>(JSON.parse(token));
   }
 
   public getDatosUsuario(): Observable<DatosUsuarioDto> {
@@ -48,6 +56,7 @@ export class AuthenticationService {
   public logout(): void {
     // remove user from local storage to log user out
     localStorage.removeItem(environment.tokenLocalStorageKey);
+    sessionStorage.removeItem(environment.tokenLocalStorageKey);
     this.currentTokenSubject.next(null);
   }
 
@@ -159,21 +168,20 @@ export class AuthenticationService {
   }
 
   private refreshToken(oldToken: UserTokenDto): Observable<UserTokenDto> {
-    const refreshToken = oldToken ? oldToken.refreshToken : '';
-    const userId = this.getUserIdFromToken(oldToken);
-    const request: RefreshTokenAttempDto = new RefreshTokenAttempDto({ refreshToken, userId });
-    return this.handleTokenRequest(this.apiClient.refresh(request));
+    return this.handleTokenRequest(this.apiClient.refresh());
   }
 
   private handleTokenRequest(request: Observable<UserTokenDto>): Observable<UserTokenDto> {
     return request.pipe(
       catchError((err) => {
         localStorage.removeItem(environment.tokenLocalStorageKey);
+        sessionStorage.removeItem(environment.tokenLocalStorageKey);
         this.currentTokenSubject.next(null);
         return throwError(err);
       }),
       map((token: UserTokenDto) => {
         localStorage.setItem(environment.tokenLocalStorageKey, JSON.stringify(token));
+        sessionStorage.setItem(environment.tokenLocalStorageKey, JSON.stringify(token));
         this.currentTokenSubject.next(token);
         return token;
       })

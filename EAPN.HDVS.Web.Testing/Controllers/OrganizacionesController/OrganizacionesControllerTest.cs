@@ -26,7 +26,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.OrganizacionesController
         public async Task ShoudNotAllowedUser()
         {
             // Arrange
-            var client = _factory.GetAuthenticatedClientAsync("usuario4@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario4@test.com");
             var organizacion = new OrganizacionDto { Activa = true, Nombre = "test", Observaciones = "" };
 
             // Act
@@ -51,7 +51,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.OrganizacionesController
         public async Task AllowedUserShouldGetOrganizaciones()
         {
             // Arrange
-            var client = _factory.GetAuthenticatedClientAsync("usuario1@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario1@test.com");
 
             // Act
             var response = await client.GetAsync(ENDPOINT);
@@ -68,7 +68,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.OrganizacionesController
         public async Task AllowedUserShouldGetMasterdata()
         {
             // Arrange
-            var client = _factory.GetAuthenticatedClientAsync("usuario1@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario1@test.com");
 
             // Act
             var response = await client.GetAsync($"{ENDPOINT}/masterdata");
@@ -86,7 +86,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.OrganizacionesController
         {
             // Arrange
             var id = 1;
-            var client = _factory.GetAuthenticatedClientAsync("usuario1@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario1@test.com");
 
             // Act
             var response = await client.GetAsync($"{ENDPOINT}/{id}");
@@ -104,7 +104,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.OrganizacionesController
         {
             // Arrange
             var guid = Guid.NewGuid().ToString();
-            var client = _factory.GetAuthenticatedClientAsync("usuario1@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario1@test.com");
             var organizacion = new OrganizacionDto { Activa = true, Nombre = guid, Observaciones = "" };
 
             // Act
@@ -134,7 +134,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.OrganizacionesController
             // Arrange
             var id = 3;
             var guid = Guid.NewGuid().ToString();
-            var client = _factory.GetAuthenticatedClientAsync("usuario1@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario1@test.com");
             var organizacion = new OrganizacionDto { Activa = true, Nombre = guid, Observaciones = "", Id = id };
 
             // Act
@@ -162,7 +162,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.OrganizacionesController
         {
             // Arrange
             var id = 3;
-            var client = _factory.GetAuthenticatedClientAsync("usuario1@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario1@test.com");
 
             // Act
             var response = await client.DeleteAsync($"{ENDPOINT}/{id}");

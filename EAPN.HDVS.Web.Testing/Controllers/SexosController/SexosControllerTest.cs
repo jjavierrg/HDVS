@@ -27,7 +27,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.SexosController
         public async Task ShoudNotAllowedUser()
         {
             // Arrange
-            var client = _factory.GetAuthenticatedClientAsync("usuario4@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario4@test.com");
             var sexo = new SexoDto { Id = 1, Descripcion = "Test" };
 
             // Act
@@ -50,7 +50,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.SexosController
         public async Task ShoudAllowedUserToMasterdata()
         {
             // Arrange
-            var client = _factory.GetAuthenticatedClientAsync("usuario4@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario4@test.com");
 
             // Act
             var response = await client.GetAsync($"{ENDPOINT}/masterdata");
@@ -67,7 +67,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.SexosController
         public async Task AllowedUserShouldGetSexos()
         {
             // Arrange
-            var client = _factory.GetAuthenticatedClientAsync("usuario1@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario1@test.com");
 
             // Act
             var response = await client.GetAsync(ENDPOINT);
@@ -84,7 +84,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.SexosController
         public async Task AllowedUserShouldGetMasterdata()
         {
             // Arrange
-            var client = _factory.GetAuthenticatedClientAsync("usuario1@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario1@test.com");
 
             // Act
             var response = await client.GetAsync($"{ENDPOINT}/masterdata");
@@ -102,7 +102,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.SexosController
         {
             // Arrange
             var id = 1;
-            var client = _factory.GetAuthenticatedClientAsync("usuario1@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario1@test.com");
 
             // Act
             var response = await client.GetAsync($"{ENDPOINT}/{id}");
@@ -120,7 +120,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.SexosController
         {
             // Arrange
             var guid = Guid.NewGuid().ToString();
-            var client = _factory.GetAuthenticatedClientAsync("usuario1@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario1@test.com");
             var sexo = new SexoDto { Descripcion = guid };
 
             // Act
@@ -150,7 +150,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.SexosController
             // Arrange
             var id = 10;
             var guid = Guid.NewGuid().ToString();
-            var client = _factory.GetAuthenticatedClientAsync("usuario1@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario1@test.com");
             var sexo = new SexoDto { Descripcion = guid, Id = id };
 
             // Act
@@ -178,7 +178,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.SexosController
         {
             // Arrange
             var id = 20;
-            var client = _factory.GetAuthenticatedClientAsync("usuario1@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario1@test.com");
 
             // Act
             var response = await client.DeleteAsync($"{ENDPOINT}/{id}");

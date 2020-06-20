@@ -789,23 +789,11 @@
             </summary>
             <param name="tokenConfiguration"></param>
         </member>
-        <member name="M:EAPN.HDVS.Web.Security.SymmetricTokenService.GetRefreshTokenLifeMinutes">
-            <summary>
-            Obtiene los minutos de válidez de un token de refresco (por defecto 1 día)
-            </summary>
-            <returns></returns>
-        </member>
         <member name="M:EAPN.HDVS.Web.Security.SymmetricTokenService.GenerateTokenForUser(EAPN.HDVS.Entities.Usuario)">
             <summary>
             Genera un token de acceso válido para un usuario
             </summary>
             <param name="user"></param>
-            <returns></returns>
-        </member>
-        <member name="M:EAPN.HDVS.Web.Security.SymmetricTokenService.GenerateRefreshToken">
-            <summary>
-            Genera una cadena aleatoria para ser utilizada como token de refresco
-            </summary>
             <returns></returns>
         </member>
     </members>

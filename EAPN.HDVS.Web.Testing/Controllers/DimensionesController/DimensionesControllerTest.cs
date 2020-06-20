@@ -27,7 +27,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.DimensionesController
         public async Task ShoudNotAllowedUser()
         {
             // Arrange
-            var client = _factory.GetAuthenticatedClientAsync("usuario4@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario4@test.com");
             var dimension = new DimensionDto { Orden = 1};
 
             // Act
@@ -42,7 +42,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.DimensionesController
         public async Task AllowedUserShouldGetDimensiones()
         {
             // Arrange
-            var client = _factory.GetAuthenticatedClientAsync("usuario1@test.com");
+            var client = _factory.GetAuthenticatedClient("usuario1@test.com");
 
             // Act
             var response = await client.GetAsync(ENDPOINT);
