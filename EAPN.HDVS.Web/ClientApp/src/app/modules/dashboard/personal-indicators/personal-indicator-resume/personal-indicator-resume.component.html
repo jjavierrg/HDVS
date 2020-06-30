@@ -1,7 +1,7 @@
 <div class="position-relative d-flex flex-column w-100 h-100" *ngIf="review">
   <div class="row">
     <div class="col-12">
-      <a class="nav-link pl-0" [routerLink]="'/fichas/' + review.fichaId">&lt; {{ 'seguimientos.volver-ficha' | translate }}</a>
+      <a class="d-inline-block nav-link pl-0" [routerLink]="'/fichas/' + review.fichaId">&lt; {{ 'seguimientos.volver-ficha' | translate }}</a>
     </div>
     <div class="col-12" *ngIf="!!review.completo">
       <div class="alert alert-success text-center font-weight-bold" role="alert">
