@@ -17,7 +17,7 @@
               [name]="item.category.id" [value]="opt.id" [(ngModel)]="item.indicator.indicadorId"
               class="custom-control-input" (change)="item.indicator.indicador=opt; this.onChange()">
             <label class="custom-control-label" for="cat{{item.category.id}}ind{{opt.id}}">{{opt.descripcion}}</label>
-            <i *ngIf="item.indicator && item.indicator.indicador && item.indicator.indicador.verificacion"
+            <i *ngIf="opt.verificacion"
               class="ml-1 fas fa-info-circle text-muted"></i>
           </div>
           <div class="form-group mt-3" *ngIf="item.indicator && item.indicator.indicador">
