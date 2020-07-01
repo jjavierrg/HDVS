@@ -14,6 +14,7 @@ namespace EAPN.HDVS.Infrastructure.Configurations
             builder.Property(x => x.Id).HasColumnName(nameof(Categoria.Id)).IsRequired().ValueGeneratedOnAdd();
             builder.Property(x => x.Orden).HasColumnName(nameof(Categoria.Orden)).IsRequired();
             builder.Property(x => x.Descripcion).HasColumnName(nameof(Categoria.Descripcion)).HasMaxLength(150).IsRequired();
+            builder.Property(x => x.Obligatorio).HasColumnName(nameof(Categoria.Obligatorio)).IsRequired();
             builder.Property(x => x.Activo).HasColumnName(nameof(Categoria.Activo)).IsRequired();
 
             builder.HasOne(x => x.Dimension).WithMany(x => x.Categorias).HasForeignKey(x => x.DimensionId).OnDelete(DeleteBehavior.Cascade);

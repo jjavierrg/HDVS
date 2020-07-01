@@ -32,14 +32,17 @@ namespace EAPN.HDVS.Application.Services.Seguimientos
 
         private async Task<bool> IsCompletedAsync(Seguimiento item)
         {
+            if (item.ForzadoIncompleto.HasValue && item.ForzadoIncompleto.Value)
+                return false;
+
             if (item.Completo)
                 return true;
 
             var indicadoresIds = item.Indicadores.Select(x => x.IndicadorId);
-            var categorias = await _categoriaRepository.GetListAsync(x => x.Activo && x.Dimension.Activo);
+            var categoriasObligatorias = await _categoriaRepository.GetListAsync(x => x.Activo && x.Dimension.Activo && x.Obligatorio);
             var categoriasSeguimientos = await _categoriaRepository.GetListAsync(x => x.Indicadores.Any(i => indicadoresIds.Contains(i.Id)));
 
-            return categorias.All(c => categoriasSeguimientos.Contains(c));
+            return categoriasObligatorias.All(c => categoriasSeguimientos.Contains(c));
         }
     }
 }

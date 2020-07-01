@@ -63,6 +63,7 @@
     "limpiar-subidas": "Limpiar completados",
     "no": "No",
     "no-autorizado": "No está autorizado para realizar esta operación",
+    "obligatorio": "Obligatorio",
     "registro-no-encontrado": "Registro no encontrado",
     "si": "Sí",
     "siguiente": "Siguiente",
@@ -142,6 +143,9 @@
     "estadisticas": "Estadísticas",
     "inicio": "Inicio",
     "menu": "Menu"
+  },
+  "seguimiento": {
+    "dejar-incompleto": "Dejar incompleto"
   },
   "seguimientos": {
     "ficha-completa": "Ficha completa",

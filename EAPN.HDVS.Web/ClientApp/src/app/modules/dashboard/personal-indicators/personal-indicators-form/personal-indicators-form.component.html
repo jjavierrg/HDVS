@@ -16,13 +16,17 @@
           name="{{ 'ficha.tecnico' | translate }}" required [data]="users">
         </app-combobox>
       </div>
-      <div class="form-group offset-md-1 col-md-3">
+      <div class="form-group col-md-3">
         <label for="inputRango">{{ 'comun.grado' | translate }}</label>
         <input id="inputRango" type="text" class="form-control" disabled [value]="getRange()" />
       </div>
-      <div class="form-group col-md-2">
+      <div class="form-group col-md-1">
         <label for="inputPuntuacion">{{ 'seguimientos.puntuacion' | translate }}</label>
         <input id="inputPuntuacion" type="number" class="form-control" disabled [value]="getPuntuacion()" />
+      </div>
+      <div class="form-group col-md-2">
+        <app-checkbox [(ngModel)]="review.forzadoIncompleto" name="{{ 'seguimiento.dejar-incompleto' | translate }}"
+          label="{{ 'seguimiento.dejar-incompleto' | translate }}"></app-checkbox>
       </div>
     </div>
   </form>
@@ -30,13 +34,13 @@
 
   <div class="row mb-3 text-center">
     <div class="col-lg-3 offset-lg-2">
-      <button class="btn btn-primary btn-block" [disabled]="reviewForm.invalid"
-        (click)="onSave(true)">{{ 'seguimientos.guardar-y-finalizar' | translate }}</button>
-    </div>
-    <div class="col-lg-3 offset-lg-2 mt-3 mt-lg-0">
       <button class="btn btn-primary btn-block" (click)="onSave(false);indicatorForm.moveNext()"
         [disabled]="reviewForm.invalid"
         *ngIf="!indicatorForm.isLastPage()">{{ 'seguimientos.guardar-y-siguiente' | translate }}</button>
+    </div>
+    <div class="col-lg-3 offset-lg-2 mt-3 mt-lg-0">
+      <button class="btn btn-primary btn-block" [disabled]="reviewForm.invalid"
+        (click)="onSave(true)">{{ 'seguimientos.guardar-y-finalizar' | translate }}</button>
     </div>
   </div>
 </div>

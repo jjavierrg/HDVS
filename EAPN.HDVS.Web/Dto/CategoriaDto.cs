@@ -9,6 +9,7 @@ namespace EAPN.HDVS.Web.Dto
         public int Orden { get; set; }
         public int DimensionId { get; set; }
         public string Descripcion { get; set; }
+        public bool Obligatorio { get; set; }
         public bool Activo { get; set; }
 
         public IList<IndicadorDto> Indicadores { get; set; }

@@ -4,14 +4,16 @@ using EAPN.HDVS.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EAPN.HDVS.Web.Migrations
 {
     [DbContext(typeof(HDVSContext))]
-    partial class HDVSContextModelSnapshot : ModelSnapshot
+    [Migration("20200701211741_Added obligatorio field to categoria and ForzadoIncompleto to seguimiento")]
+    partial class AddedobligatoriofieldtocategoriaandForzadoIncompletotoseguimiento
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
