@@ -1,0 +1,19 @@
+<div *ngIf="configuration">
+  <div class="d-flex justify-content-between">
+    <app-checkbox label="{{ 'configuracion.mostrar-enlaces' | translate }}" class="align-self-center"
+      [(ngModel)]="configuration.mostrarEnlaces"></app-checkbox>
+    <button class="btn btn-link mr-3"
+      (click)="onAddLinkClick()">{{ 'configuracion.anadir-enlace' | translate }}</button>
+  </div>
+  <div class="form-row mt-3" *ngFor="let link of links">
+    <div class="col">
+      <input type="text" class="form-control" placeholder="{{ 'configuracion.enlace-descripcion' | translate }}"
+        [(ngModel)]="link.description" (change)="onChange()">
+    </div>
+    <div class="col">
+      <input type="url" class="form-control" placeholder="{{ 'configuracion.enlace-enlace' | translate }}"
+        [(ngModel)]="link.link" (change)="onChange()">
+    </div>
+    <i class="fas fa-times align-self-center ml-3 c-pointer" (click)="onDeleteLinkClick(link)"></i>
+  </div>
+</div>

@@ -64,6 +64,13 @@ const routes: Routes = [
         canLoad: [AuthenticatedGuard],
         canActivate: [AuthenticatedGuard],
       },
+      {
+        path: 'configuracion',
+        loadChildren: () => import('./configuration/configuration.module').then((m) => m.ConfigurationModule),
+        canLoad: [AuthenticatedGuard],
+        canActivate: [AuthenticatedGuard],
+        data: { allowedPermissions: [Permissions.user.superadmin] },
+      },
     ],
   },
 ];

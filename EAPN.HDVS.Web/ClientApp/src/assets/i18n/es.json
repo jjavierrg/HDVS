@@ -36,6 +36,13 @@
     "usuarios": "Técnicos/as",
     "web": "Web"
   },
+  "configuracion": {
+    "anadir-enlace": "Añadir enlace",
+    "enlace-descripcion": "Descripción",
+    "enlace-enlace": "Enlace",
+    "enlaces": "Enlaces",
+    "mostrar-enlaces": "Mostrar enlaces"
+  },
   "core": {
     "abrir-todo": "Abrir Todo",
     "aceptar": "Aceptar",
@@ -60,6 +67,7 @@
     "eliminar": "Eliminar",
     "error": "Error",
     "fecha": "Fecha",
+    "guardar": "Guardar",
     "limpiar-subidas": "Limpiar completados",
     "no": "No",
     "no-autorizado": "No está autorizado para realizar esta operación",
@@ -118,6 +126,7 @@
     "menu": {
       "cerrar-sesion": "Cerrar Sesión",
       "cerrar-sesion-titulo": "Cerrar Sesión",
+      "configuracion": "Configuración",
       "mi-perfil": "Mi Perfil",
       "mi-perfil-titulo": "Mi Perfil",
       "organizaciones": "Organizaciones",

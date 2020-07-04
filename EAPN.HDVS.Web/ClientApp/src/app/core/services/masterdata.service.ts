@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ApiClient, MasterDataDto, QueryData, ConfiguracionDto } from '../api/api.client';
 import { Observable } from 'rxjs';
-import { IBaseFilter, BaseFilter, getFilterQuery } from '../filters/basefilter';
-import { FilterComparison, FilterUnion } from '../filters/filter.enum';
-import { map } from 'rxjs/operators';
+import { ApiClient, ConfiguracionDto, MasterDataDto } from '../api/api.client';
 
 @Injectable({
   providedIn: 'root',
@@ -57,5 +54,9 @@ export class MasterdataService {
 
   public getConfiguracion(): Observable<ConfiguracionDto> {
     return this.apiClient.getConfiguracion(1);
+  }
+
+  public saveConfiguracion(configuracion: ConfiguracionDto): Observable<void> {
+    return this.apiClient.putConfiguracion(1, configuracion);
   }
 }
