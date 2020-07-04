@@ -1,0 +1,22 @@
+<h4 *ngIf="user" class="text-primary">
+  {{ 'inicio.bienvenido' | translate: {nombre: user.nombre + ' ' + user.apellidos} }}
+</h4>
+<div *appAllowedPermissions="{permissions: [permissions.personalcard.access]}">
+  <div class="mt-3 mb-2" *ngIf="dashboard">
+    {{ 'inicio.expedientes-titulo' | translate }}
+  </div>
+  <div class="ml-md-5" *ngIf="dashboard">
+    <div>
+      <i class="fas fa-check-circle text-success"></i>
+      {{ ( dashboard.completos === 1 ? 'inicio.expedientes-completos' : 'inicio.expedientes-completos-plural') | translate: {expedientes: dashboard.completos}  }}
+    </div>
+    <div>
+      <i class="fas fa-info-circle text-danger"></i>
+      {{ ( dashboard.incompletos === 1 ? 'inicio.expedientes-incompletos' : 'inicio.expedientes-incompletos-plural') | translate: {expedientes: dashboard.incompletos}  }}
+    </div>
+    <div>
+      <i class="fas fa-clock text-info"></i>
+      {{ ( dashboard.desactualizados === 1 ? 'inicio.expedientes-no-actualizados' : 'inicio.expedientes-no-actualizados-plural') | translate: {expedientes: dashboard.desactualizados}  }}
+    </div>
+  </div>
+</div>

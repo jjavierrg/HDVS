@@ -33,7 +33,7 @@
         [(ngModel)]="query.rad" name="{{ 'ficha.rad' | translate }}" minlength="3">
     </div>
     <div class="form-group col-md-3 align-self-end">
-      <input [disabled]="searchForm.invalid" type="submit" class="btn btn-block btn-primary" value="{{ 'core.buscar' | translate }}">
+      <input [disabled]="searchForm.invalid || query.isEmpty()" type="submit" class="btn btn-block btn-primary" value="{{ 'core.buscar' | translate }}">
     </div>
   </div>
   <div class="mt-3">

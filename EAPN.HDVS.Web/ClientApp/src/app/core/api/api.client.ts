@@ -154,6 +154,11 @@ export interface IApiClient {
      */
     postFicha(body?: FichaDto | undefined): Observable<FichaDto>;
     /**
+     * Get initial dashboard information
+     * @return Success
+     */
+    getResumen(): Observable<ResumenExpedientesDto>;
+    /**
      * Get the item with the specified identifier
      * @param id Item identifier
      * @return Success
@@ -2174,6 +2179,66 @@ export class ApiClient implements IApiClient {
             }));
         }
         return _observableOf<FichaDto>(<any>null);
+    }
+
+    /**
+     * Get initial dashboard information
+     * @return Success
+     */
+    getResumen(): Observable<ResumenExpedientesDto> {
+        let url_ = this.baseUrl + "/api/Fichas/resumen";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetResumen(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetResumen(<any>response_);
+                } catch (e) {
+                    return <Observable<ResumenExpedientesDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ResumenExpedientesDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetResumen(response: HttpResponseBase): Observable<ResumenExpedientesDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ResumenExpedientesDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Unauthorized", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Forbidden", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ResumenExpedientesDto>(<any>null);
     }
 
     /**
@@ -8248,6 +8313,50 @@ export interface IFichaDto {
     origen?: PaisDto;
     seguimientos?: SeguimientoViewDto[] | undefined;
     adjuntos?: AdjuntoDto[] | undefined;
+}
+
+export class ResumenExpedientesDto implements IResumenExpedientesDto {
+    completos?: number;
+    incompletos?: number;
+    desactualizados?: number;
+
+    constructor(data?: IResumenExpedientesDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.completos = _data["completos"];
+            this.incompletos = _data["incompletos"];
+            this.desactualizados = _data["desactualizados"];
+        }
+    }
+
+    static fromJS(data: any): ResumenExpedientesDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ResumenExpedientesDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["completos"] = this.completos;
+        data["incompletos"] = this.incompletos;
+        data["desactualizados"] = this.desactualizados;
+        return data; 
+    }
+}
+
+export interface IResumenExpedientesDto {
+    completos?: number;
+    incompletos?: number;
+    desactualizados?: number;
 }
 
 export class DatosFichaDto implements IDatosFichaDto {

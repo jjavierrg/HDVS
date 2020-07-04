@@ -186,6 +186,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.FichasController.GetResumen">
+            <summary>
+            Get initial dashboard information
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:EAPN.HDVS.Web.Controllers.FichasController.GetFicha(System.Int32)">
             <summary>
             Get the item with the specified identifier

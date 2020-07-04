@@ -130,6 +130,16 @@
     "titulo": "Herramienta de diagnóstico de vulnerabilidad social",
     "titulo-abreviado": "HDVS"
   },
+  "inicio": {
+    "bienvenido": "Bienvenido/a  {{ nombre }}",
+    "expedientes-completos": "{{ expedientes }} expediente completo",
+    "expedientes-completos-plural": "{{ expedientes }} expedientes completos",
+    "expedientes-incompletos": "{{ expedientes }} expediente incompleto",
+    "expedientes-incompletos-plural": "{{ expedientes }} expedientes incompletos",
+    "expedientes-no-actualizados": "{{ expedientes }} expediente que no se actualiza desde hace más de un año",
+    "expedientes-no-actualizados-plural": "{{ expedientes }} expedientes que no se actualizan desde hace más de un año",
+    "expedientes-titulo": "Estos son tus expedientes"
+  },
   "login": {
     "autenticando": "Autenticando...",
     "error": "No se pudo iniciar sesión con los datos introducidos",

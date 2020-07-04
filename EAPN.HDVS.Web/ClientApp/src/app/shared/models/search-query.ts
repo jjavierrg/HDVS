@@ -7,6 +7,7 @@ export interface ISearchQuery {
   birth?: Date;
   partnerId?: number;
   hideSearchForm?: boolean;
+  isEmpty?(): boolean;
 }
 
 export class SearchQuery implements ISearchQuery {
@@ -23,5 +24,8 @@ export class SearchQuery implements ISearchQuery {
     if (data) {
       Object.assign(this, data);
     }
+  }
+  public isEmpty(): boolean {
+    return !this.idnumber && !this.name && !this.surname1 && !this.surname2 && !this.rad && !this.birth && !this.partnerId;
   }
 }

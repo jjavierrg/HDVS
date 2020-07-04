@@ -65,6 +65,23 @@ namespace EAPN.HDVS.Web.Controllers
         }
 
         /// <summary>
+        /// Get initial dashboard information
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("resumen", Name = "GetResumen")]
+        [AuthorizePermission(Permissions.PERSONALCARD_READ)]
+        [ProducesResponseType(typeof(ResumenExpedientesDto), StatusCodes.Status200OK)]
+        public async Task<ActionResult<ResumenExpedientesDto>> GetResumen()
+        {
+            var query = GetBaseQueryable().Where(x => x.UsuarioId == User.GetUserId());
+            var completed = await query.CountAsync(x => x.Completa);
+            var incompleted = await query.CountAsync(x => !x.Completa);
+            var notUpdated = await query.CountAsync(x => x.FechaUltimaModificacion <= DateTime.Now.AddYears(-1));
+
+            return Ok(new ResumenExpedientesDto { Completos = completed, Incompletos = incompleted, Desactualizados = notUpdated });
+        }
+
+        /// <summary>
         /// Get the item with the specified identifier
         /// </summary>
         /// <param name="id">Item identifier</param>
