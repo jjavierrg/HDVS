@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ApiClient, ConfiguracionDto, MasterDataDto } from '../api/api.client';
+import { ApiClient, ConfiguracionDto, MasterDataDto, RangoDto } from '../api/api.client';
 
 @Injectable({
   providedIn: 'root',
@@ -58,5 +58,13 @@ export class MasterdataService {
 
   public saveConfiguracion(configuracion: ConfiguracionDto): Observable<void> {
     return this.apiClient.putConfiguracion(1, configuracion);
+  }
+
+  public getRanges(): Observable<RangoDto[]> {
+    return this.apiClient.getRangos();
+  }
+
+  public saveRanges(ranges: RangoDto[]): Observable<void> {
+    return this.apiClient.postRangos(ranges);
   }
 }

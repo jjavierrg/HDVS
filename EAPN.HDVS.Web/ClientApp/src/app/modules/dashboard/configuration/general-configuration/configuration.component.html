@@ -3,7 +3,13 @@
     <li ngbNavItem="links">
       <a ngbNavLink>{{ 'configuracion.enlaces' | translate }}</a>
       <ng-template ngbNavContent>
-        <app-enlaces [(configuration)]="configuration"></app-enlaces>
+        <app-links [(configuration)]="configuration"></app-links>
+      </ng-template>
+    </li>
+    <li ngbNavItem="range">
+      <a ngbNavLink>{{ 'comun.grados' | translate }}</a>
+      <ng-template ngbNavContent>
+        <app-range [(ranges)]="ranges"></app-range>
       </ng-template>
     </li>
   </ul>

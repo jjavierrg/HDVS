@@ -8,6 +8,7 @@ import { PasswordRestrinctionsDirective } from './directives/password-restrictio
 import { AtLeastOneDirective } from './directives/at-least-one.directive';
 import { FileDropperDirective } from './directives/file-dropper.directive';
 import { DefaultDatePipe } from './pipes/default-date.pipe';
+import { NumericDirective } from './directives/numeric.directive';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { DefaultDatePipe } from './pipes/default-date.pipe';
     PasswordRestrinctionsDirective,
     AtLeastOneDirective,
     FileDropperDirective,
-    DefaultDatePipe
+    DefaultDatePipe,
+    NumericDirective
   ],
   imports: [
     TranslateModule.forChild({
@@ -37,7 +39,8 @@ import { DefaultDatePipe } from './pipes/default-date.pipe';
     TranslateModule,
     AtLeastOneDirective,
     FileDropperDirective,
-    DefaultDatePipe
+    DefaultDatePipe,
+    NumericDirective
   ],
 })
 export class CoreModule {}

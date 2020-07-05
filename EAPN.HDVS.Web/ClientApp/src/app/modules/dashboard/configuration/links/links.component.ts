@@ -2,11 +2,11 @@ import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChange
 import { ConfiguracionDto } from 'src/app/core/api/api.client';
 
 @Component({
-  selector: 'app-enlaces',
-  templateUrl: './enlaces.component.html',
-  styleUrls: ['./enlaces.component.scss'],
+  selector: 'app-links',
+  templateUrl: './links.component.html',
+  styleUrls: ['./links.component.scss'],
 })
-export class EnlacesComponent implements OnInit, OnChanges {
+export class LinksComponent implements OnInit, OnChanges {
   @Input() public configuration: ConfiguracionDto;
   @Output() public configurationChange = new EventEmitter<ConfiguracionDto>();
 

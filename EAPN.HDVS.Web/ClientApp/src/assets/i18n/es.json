@@ -23,6 +23,7 @@
     "email": "Email",
     "fichas": "Fichas",
     "grado": "Grado",
+    "grados": "Grados",
     "nombre": "Nombre",
     "nueva-clave": "Nueva contraseña",
     "numero-usuarios": "Técnicos/as",
@@ -38,10 +39,14 @@
   },
   "configuracion": {
     "anadir-enlace": "Añadir enlace",
+    "anadir-rango": "Añadir Rango",
     "enlace-descripcion": "Descripción",
     "enlace-enlace": "Enlace",
     "enlaces": "Enlaces",
-    "mostrar-enlaces": "Mostrar enlaces"
+    "mostrar-enlaces": "Mostrar enlaces",
+    "rango-descripcion": "Descripciòn",
+    "rango-maximo": "Máximo",
+    "rango-minimo": "Mínimo"
   },
   "core": {
     "abrir-todo": "Abrir Todo",

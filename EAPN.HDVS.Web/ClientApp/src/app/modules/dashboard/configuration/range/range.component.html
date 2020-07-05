@@ -1,0 +1,23 @@
+<div *ngIf="ranges">
+  <div class="d-flex justify-content-end">
+    <button class="btn btn-link mr-3"
+      (click)="onAddRangeClick()">{{ 'configuracion.anadir-rango' | translate }}</button>
+  </div>
+  <div class="form-row mt-3" *ngFor="let range of ranges">
+    <div class="col-3">
+      <input type="number" appNumeric class="form-control" placeholder="{{ 'configuracion.rango-minimo' | translate }}"
+        [(ngModel)]="range.minimo">
+    </div>
+    <div class="col-3">
+      <input type="number" appNumeric class="form-control" placeholder="{{ 'configuracion.rango-maximo' | translate }}"
+        [(ngModel)]="range.maximo">
+    </div>
+    <div class="col-5">
+      <input type="text" class="form-control" placeholder="{{ 'configuracion.rango-descripcion' | translate }}"
+        [(ngModel)]="range.descripcion">
+    </div>
+    <div class="col-1 align-self-center text-center">
+      <i class="fas fa-times c-pointer" (click)="onDeleteRangeClick(range)"></i>
+    </div>
+  </div>
+</div>

@@ -575,6 +575,13 @@
             <param name="rangoDto">Item data</param>
             <returns></returns>
         </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.RangosController.PostRangos(System.Collections.Generic.IEnumerable{EAPN.HDVS.Web.Dto.RangoDto})">
+            <summary>
+            Overwrite current range configuraction
+            </summary>
+            <param name="rangosDto">List of ranges</param>
+            <returns></returns>
+        </member>
         <member name="M:EAPN.HDVS.Web.Controllers.RangosController.DeleteRango(System.Int32)">
             <summary>
             Delete existing item

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ConfiguracionDto } from 'src/app/core/api/api.client';
+import { ConfiguracionDto, RangoDto } from 'src/app/core/api/api.client';
 import { AlertService } from 'src/app/core/services/alert.service';
 import { MasterdataService } from 'src/app/core/services/masterdata.service';
+import { RangeService } from 'src/app/core/services/range.service';
 
 @Component({
   selector: 'app-configuration',
@@ -11,16 +12,31 @@ import { MasterdataService } from 'src/app/core/services/masterdata.service';
 })
 export class ConfigurationComponent implements OnInit {
   public configuration: ConfiguracionDto;
+  public ranges: RangoDto[];
 
-  constructor(private masterdataService: MasterdataService, private alertService: AlertService, private translate: TranslateService) {}
+  constructor(
+    private masterdataService: MasterdataService,
+    private alertService: AlertService,
+    private translate: TranslateService
+  ) {}
 
   async ngOnInit(): Promise<void> {
-    this.configuration = await this.masterdataService.getConfiguracion().toPromise();
+    const [config, ranges] = await Promise.all([
+      this.masterdataService.getConfiguracion().toPromise(),
+      this.masterdataService.getRanges().toPromise(),
+    ]);
+
+    this.configuration = config;
+    this.ranges = ranges;
   }
 
   public async onSaveClick(): Promise<void> {
     try {
-      await this.masterdataService.saveConfiguracion(this.configuration).toPromise();
+      await Promise.all([
+        this.masterdataService.saveConfiguracion(this.configuration).toPromise(),
+        this.masterdataService.saveRanges(this.ranges).toPromise(),
+      ]);
+
       this.alertService.success(this.translate.instant('core.datos-guardados'));
     } catch (err) {
       this.alertService.error(err);

@@ -48,7 +48,7 @@ namespace EAPN.HDVS.Web.Controllers
         [ProducesResponseType(typeof(IEnumerable<RangoDto>), StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<RangoDto>>> GetRangos()
         {
-            var rangos = await _rangoService.GetListAsync(orderBy: q => q.OrderBy(x => x.Descripcion));
+            var rangos = await _rangoService.GetListAsync(orderBy: s => s.OrderBy(x => x.Minimo).ThenBy(x => x.Maximo));
             return Ok(_mapper.MapList<RangoDto>(rangos));
         }
 
@@ -75,8 +75,8 @@ namespace EAPN.HDVS.Web.Controllers
         [ProducesResponseType(typeof(RangoDto), StatusCodes.Status200OK)]
         public async Task<ActionResult<RangoDto>> GetRango(int id)
         {
-            var Rango = await _rangoService.GetFirstOrDefault(x => x.Id == id);
-            return _mapper.Map<RangoDto>(Rango);
+            var rango = await _rangoService.GetFirstOrDefault(x => x.Id == id);
+            return _mapper.Map<RangoDto>(rango);
         }
 
         /// <summary>
@@ -89,10 +89,10 @@ namespace EAPN.HDVS.Web.Controllers
         [HttpPost(Name = "PostRango")]
         public async Task<ActionResult<RangoDto>> PostRango(RangoDto rangoDto)
         {
-            var Rango = _mapper.Map<Rango>(rangoDto);
-            var result = _rangoService.Add(Rango);
+            var rango = _mapper.Map<Rango>(rangoDto);
+            var result = _rangoService.Add(rango);
 
-            _logger.LogInformation($"Se ha añadido un nuevo Rango: {Rango.Descripcion}");
+            _logger.LogInformation($"Se ha añadido un nuevo Rango: {rango.Descripcion}");
 
             await _rangoService.SaveChangesAsync();
             return CreatedAtAction(nameof(GetRango), new { id = result.Id }, _mapper.Map<RangoDto>(result));
@@ -114,14 +114,37 @@ namespace EAPN.HDVS.Web.Controllers
             if (id != rangoDto.Id)
                 return BadRequest();
 
-            var Rango = await _rangoService.GetFirstOrDefault(x => x.Id == id);
-            if (Rango == null)
+            var rango = await _rangoService.GetFirstOrDefault(x => x.Id == id);
+            if (rango == null)
                 return NotFound();
 
-            _logger.LogInformation($"Se actualiza el Rango {Rango.Descripcion} : {rangoDto.Descripcion}");
-            _mapper.Map(rangoDto, Rango);
+            _logger.LogInformation($"Se actualiza el Rango {rango.Descripcion} : {rangoDto.Descripcion}");
+            _mapper.Map(rangoDto, rango);
 
-            _rangoService.Update(Rango);
+            _rangoService.Update(rango);
+            await _rangoService.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Overwrite current range configuraction
+        /// </summary>
+        /// <param name="rangosDto">List of ranges</param>
+        /// <returns></returns>
+        [AuthorizePermission(Permissions.APP_SUPERADMIN)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [HttpPut("configuracion", Name = "PostRangos")]
+        public async Task<IActionResult> PostRangos(IEnumerable<RangoDto> rangosDto)
+        {
+            _logger.LogInformation($"Se actualizan todos los rangos");
+            
+            var rangos = _mapper.MapList<Rango>(rangosDto);
+            _rangoService.RemoveRange(x => x.Id > 0);
+            _rangoService.AddRange(rangos);
+
             await _rangoService.SaveChangesAsync();
 
             return NoContent();
@@ -138,12 +161,12 @@ namespace EAPN.HDVS.Web.Controllers
         [HttpDelete("{id}", Name = "DeleteRango")]
         public async Task<IActionResult> DeleteRango(int id)
         {
-            var Rango = await _rangoService.GetFirstOrDefault(x => x.Id == id);
-            if (Rango == null)
+            var rango = await _rangoService.GetFirstOrDefault(x => x.Id == id);
+            if (rango == null)
                 return NotFound();
 
-            _logger.LogWarning($"Se elimina el Rango {Rango.Descripcion}");
-            _rangoService.Remove(Rango);
+            _logger.LogWarning($"Se elimina el Rango {rango.Descripcion}");
+            _rangoService.Remove(rango);
             await _rangoService.SaveChangesAsync();
 
             return NoContent();

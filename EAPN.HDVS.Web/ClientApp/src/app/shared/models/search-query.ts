@@ -26,6 +26,6 @@ export class SearchQuery implements ISearchQuery {
     }
   }
   public isEmpty(): boolean {
-    return !this.idnumber && !this.name && !this.surname1 && !this.surname2 && !this.rad && !this.birth && !this.partnerId;
+    return !this.idnumber && !this.name && !this.surname1 && !this.surname2 && !this.rad && !this.birth;
   }
 }
