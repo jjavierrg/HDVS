@@ -20,11 +20,11 @@ export class MasterdataService {
     return this.apiClient.getOrganizacionesAsMasterData();
   }
 
-  public getGenders(): Observable<MasterDataDto[]> {
+  public getSexos(): Observable<MasterDataDto[]> {
     return this.apiClient.getSexosAsMasterData();
   }
 
-  public getCountries(): Observable<MasterDataDto[]> {
+  public getPaises(): Observable<MasterDataDto[]> {
     return this.apiClient.getPaisesAsMasterData();
   }
 
@@ -60,11 +60,11 @@ export class MasterdataService {
     return this.apiClient.putConfiguracion(1, configuracion);
   }
 
-  public getRanges(): Observable<RangoDto[]> {
+  public getRangos(): Observable<RangoDto[]> {
     return this.apiClient.getRangos();
   }
 
-  public saveRanges(ranges: RangoDto[]): Observable<void> {
-    return this.apiClient.postRangos(ranges);
+  public saveRangos(rangos: RangoDto[]): Observable<void> {
+    return this.apiClient.postRangos(rangos);
   }
 }

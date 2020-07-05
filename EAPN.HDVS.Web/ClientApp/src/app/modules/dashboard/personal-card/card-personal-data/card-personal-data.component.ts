@@ -31,8 +31,8 @@ export class CardPersonalDataComponent implements OnInit, AfterViewInit {
 
     // Load Data
     const [genders, countries, provincias, situacAdminis, users, empadronamientos] = await Promise.all([
-      this.masterdataService.getGenders().toPromise(),
-      this.masterdataService.getCountries().toPromise(),
+      this.masterdataService.getSexos().toPromise(),
+      this.masterdataService.getPaises().toPromise(),
       this.masterdataService.getProvincias().toPromise(),
       this.masterdataService.getSituacionesAdministrativas().toPromise(),
       this.masterdataService.getUsuarios().toPromise(),

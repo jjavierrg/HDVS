@@ -23,7 +23,7 @@ export class ConfigurationComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     const [config, ranges] = await Promise.all([
       this.masterdataService.getConfiguracion().toPromise(),
-      this.masterdataService.getRanges().toPromise(),
+      this.masterdataService.getRangos().toPromise(),
     ]);
 
     this.configuration = config;
@@ -34,7 +34,7 @@ export class ConfigurationComponent implements OnInit {
     try {
       await Promise.all([
         this.masterdataService.saveConfiguracion(this.configuration).toPromise(),
-        this.masterdataService.saveRanges(this.ranges).toPromise(),
+        this.masterdataService.saveRangos(this.ranges).toPromise(),
       ]);
 
       this.alertService.success(this.translate.instant('core.datos-guardados'));

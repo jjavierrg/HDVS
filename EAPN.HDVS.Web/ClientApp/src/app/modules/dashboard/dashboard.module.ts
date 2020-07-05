@@ -18,6 +18,13 @@ const routes: Routes = [
         loadChildren: () => import('./home/home.module').then((m) => m.HomeModule),
       },
       {
+        path: 'estadisticas',
+        loadChildren: () => import('./stats/stats.module').then((m) => m.StatsModule),
+        canLoad: [AuthenticatedGuard],
+        canActivate: [AuthenticatedGuard],
+        data: { allowedPermissions: [Permissions.usermanagement.access] },
+      },
+      {
         path: 'usuarios',
         loadChildren: () => import('./user-management/user-management.module').then((m) => m.UserManagementModule),
         canLoad: [AuthenticatedGuard],

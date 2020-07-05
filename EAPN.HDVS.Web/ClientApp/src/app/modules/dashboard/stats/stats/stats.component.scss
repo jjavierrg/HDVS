@@ -1,0 +1,18 @@
+#sidebar {
+  position: relative;
+  margin-left: -1rem;
+  min-width: 250px;
+  max-width: 250px;
+  overflow-y: auto;
+}
+
+#sidebar-filters > .form-group-tabbed {
+  position: relative;
+  width: 100%;
+  padding-right: 1rem;
+
+  & > *:not(:first-child) {
+    display: block;
+    margin-left: 1rem;
+  }
+}
