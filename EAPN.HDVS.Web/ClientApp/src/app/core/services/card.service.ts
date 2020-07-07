@@ -37,7 +37,10 @@ export class CardService {
     }
 
     card.codigo = this.generateRadCode(card);
-    card.dni = card.dni.replace(/\W/g, '');
+
+    if (card.dni) {
+      card.dni = card.dni.replace(/\W/g, '');
+    }
 
     if (card.id) {
       return this.apiClient.putFicha(card.id, card).pipe(map((_) => card));
