@@ -3,7 +3,7 @@
     <div [ngbCollapse]="isCollapsed" class="border-top border-right shadow" id="sidebar">
       <div class="container mt-3">
         <form id="sidebar-filters">
-          <div class="form-group form-group-tabbed">
+          <div class="form-group form-group-tabbed" *appAllowedPermissions="{permissions: [permissions.stats.global]}">
             <app-checkbox [label]="'comun.organizacion' | translate" name="chkOrganizacion"
               [(ngModel)]="filters.searchByOrganizacion"></app-checkbox>
             <app-combobox [disabled]="!filters.searchByOrganizacion" name="organizacion" [data]="organizaciones"

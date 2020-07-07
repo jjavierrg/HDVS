@@ -32,6 +32,7 @@ namespace EAPN.HDVS.Web.Dto
         public string MotivoAlta { get; set; }
         public string Observaciones { get; set; }
         public bool PoliticaFirmada { get; set; }
+        public bool DatosCompletos { get; set; }
         public bool Completa { get; set; }
 
         public OrganizacionDto Organizacion { get; set; }

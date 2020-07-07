@@ -8220,6 +8220,7 @@ export class FichaDto implements IFichaDto {
     motivoAlta?: string | undefined;
     observaciones?: string | undefined;
     politicaFirmada?: boolean;
+    datosCompletos?: boolean;
     completa?: boolean;
     organizacion?: OrganizacionDto;
     tecnico?: UsuarioDto;
@@ -8271,6 +8272,7 @@ export class FichaDto implements IFichaDto {
             this.motivoAlta = _data["motivoAlta"];
             this.observaciones = _data["observaciones"];
             this.politicaFirmada = _data["politicaFirmada"];
+            this.datosCompletos = _data["datosCompletos"];
             this.completa = _data["completa"];
             this.organizacion = _data["organizacion"] ? OrganizacionDto.fromJS(_data["organizacion"]) : <any>undefined;
             this.tecnico = _data["tecnico"] ? UsuarioDto.fromJS(_data["tecnico"]) : <any>undefined;
@@ -8330,6 +8332,7 @@ export class FichaDto implements IFichaDto {
         data["motivoAlta"] = this.motivoAlta;
         data["observaciones"] = this.observaciones;
         data["politicaFirmada"] = this.politicaFirmada;
+        data["datosCompletos"] = this.datosCompletos;
         data["completa"] = this.completa;
         data["organizacion"] = this.organizacion ? this.organizacion.toJSON() : <any>undefined;
         data["tecnico"] = this.tecnico ? this.tecnico.toJSON() : <any>undefined;
@@ -8382,6 +8385,7 @@ export interface IFichaDto {
     motivoAlta?: string | undefined;
     observaciones?: string | undefined;
     politicaFirmada?: boolean;
+    datosCompletos?: boolean;
     completa?: boolean;
     organizacion?: OrganizacionDto;
     tecnico?: UsuarioDto;

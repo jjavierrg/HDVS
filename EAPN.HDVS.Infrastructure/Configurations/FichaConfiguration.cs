@@ -38,7 +38,8 @@ namespace EAPN.HDVS.Infrastructure.Configurations
             builder.Property(x => x.MotivoAlta).HasColumnName(nameof(Ficha.MotivoAlta));
             builder.Property(x => x.Observaciones).HasColumnName(nameof(Ficha.Observaciones));
             builder.Property(x => x.PoliticaFirmada).HasColumnName(nameof(Ficha.PoliticaFirmada));
-            builder.Property(x => x.Completa).HasColumnName(nameof(Ficha.Completa));
+            builder.Property(x => x.Completa).HasColumnName(nameof(Ficha.Completa)).IsRequired();
+            builder.Property(x => x.DatosCompletos).HasColumnName(nameof(Ficha.DatosCompletos)).IsRequired();
             builder.Property(x => x.FechaAlta).HasColumnName(nameof(Ficha.FechaAlta)).IsRequired();
             builder.Property(x => x.FechaUltimaModificacion).HasColumnName(nameof(Ficha.FechaUltimaModificacion)).IsRequired();
 

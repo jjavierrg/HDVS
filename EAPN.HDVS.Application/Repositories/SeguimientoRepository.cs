@@ -19,8 +19,8 @@ namespace EAPN.HDVS.Application.Repositories
             item.FechaAlta = DateTime.Now;
             item.FechaUltimaModificacion = DateTime.Now;
 
-            UpdateFichas(new int[] { item.FichaId });
             base.Add(item);
+            UpdateFichas(new int[] { item.FichaId });
         }
         public override void AddRange(IEnumerable<Seguimiento> items)
         {
@@ -30,30 +30,43 @@ namespace EAPN.HDVS.Application.Repositories
                 item.FechaUltimaModificacion = DateTime.Now;
             }
 
-            UpdateFichas(items.Select(x => x.FichaId));
             base.AddRange(items);
+            UpdateFichas(items.Select(x => x.FichaId));
         }
 
         public override void Update(Seguimiento item)
         {
             item.FechaUltimaModificacion = DateTime.Now;
-            UpdateFichas(new int[] { item.FichaId });
             base.Update(item);
+            UpdateFichas(new int[] { item.FichaId });
         }
 
         public override void UpdateRange(IEnumerable<Seguimiento> items)
         {
-            foreach(var item in items)
+            foreach (var item in items)
                 item.FechaUltimaModificacion = DateTime.Now;
 
-            UpdateFichas(items.Select(x => x.FichaId));
             base.UpdateRange(items);
+            UpdateFichas(items.Select(x => x.FichaId));
         }
 
-        private void UpdateFichas(IEnumerable<int> fichasIds)
+        public override void Remove(Seguimiento item)
         {
-            var fichas = Context.Set<Ficha>().Where(x => fichasIds.Contains(x.Id)).ToList();
-            fichas.ForEach(x => x.FechaUltimaModificacion = DateTime.Now);
+            var fichaId = item.FichaId;
+            base.Remove(item);
+            UpdateFichas(new int[] { fichaId }, new int[] { item.Id });
+        }
+
+        private void UpdateFichas(IEnumerable<int> fichasIds, IEnumerable<int> seguimientosExcludedIds = null)
+        {
+            seguimientosExcludedIds ??= new int[] { };
+            var fichas = Context.Set<Ficha>().Where(x => fichasIds.Contains(x.Id)).Include(x => x.Seguimientos).ToList();
+
+            fichas.ForEach(x => {
+                var seguimiento = x.Seguimientos.OrderByDescending(x => x.Fecha).FirstOrDefault(x => !seguimientosExcludedIds.Contains(x.Id));
+                x.FechaUltimaModificacion = DateTime.Now;
+                x.Completa = x.DatosCompletos && seguimiento != null && seguimiento.Completo;
+            });
             Context.UpdateRange(fichas);
         }
     }

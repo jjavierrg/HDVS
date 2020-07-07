@@ -54,7 +54,7 @@ namespace EAPN.HDVS.Testing.Common
             context.Permisos.Add(new Permiso { Id = 12, Clave = Permissions.PERSONALATTACHMENTS_WRITE, Descripcion = "Adjuntos: Escritura" });
             context.Permisos.Add(new Permiso { Id = 13, Clave = Permissions.PERSONALATTACHMENTS_DELETE, Descripcion = "Adjuntos: Eliminar" });
             context.Permisos.Add(new Permiso { Id = 14, Clave = Permissions.PERSONALATTACHMENTS_ACCESS, Descripcion = "Adjuntos: Acceder" });
-            context.Permisos.Add(new Permiso { Id = 15, Clave = Permissions.PERSONALINDICATORS_ACCESS, Descripcion = "Indicadores: Lectura" });
+            context.Permisos.Add(new Permiso { Id = 15, Clave = Permissions.PERSONALINDICATORS_READ, Descripcion = "Indicadores: Lectura" });
             context.Permisos.Add(new Permiso { Id = 16, Clave = Permissions.PERSONALINDICATORS_WRITE, Descripcion = "Indicadores: Escritura" });
             context.Permisos.Add(new Permiso { Id = 17, Clave = Permissions.PERSONALINDICATORS_DELETE, Descripcion = "Indicadores: Eliminar" });
             context.Permisos.Add(new Permiso { Id = 18, Clave = Permissions.PERSONALINDICATORS_ACCESS, Descripcion = "Indicadores: Acceder" });

@@ -16,7 +16,7 @@ const routes: Routes = [
     component: StatsComponent,
     canLoad: [AuthenticatedGuard],
     canActivate: [AuthenticatedGuard],
-    data: { allowedPermissions: [Permissions.user.superadmin] },
+    data: { allowedPermissions: [Permissions.stats.access] },
   },
 ];
 

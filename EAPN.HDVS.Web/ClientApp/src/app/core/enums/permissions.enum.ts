@@ -26,4 +26,8 @@ export const Permissions = {
     write: 'attachments:write',
     delete: 'attachments:delete',
   },
+  stats: {
+    access: 'stats:access',
+    global: 'stats:global',
+  },
 };

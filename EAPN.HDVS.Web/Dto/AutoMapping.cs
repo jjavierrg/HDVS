@@ -89,7 +89,9 @@ namespace EAPN.HDVS.Web.Dto
                 .ForMember(d => d.NombreTecnico, opt => opt.MapFrom((src, dest) => src.Tecnico?.NombreCompleto))
                 .ForMember(d => d.Puntuacion, opt => opt.MapFrom((src, dest) => src.Indicadores?.Where(x => x.Indicador?.Activo ?? false).Sum(x => x.Indicador?.Puntuacion) ?? 0));
 
-            CreateMap<Ficha, FichaDto>().ReverseMap()
+            CreateMap<Ficha, FichaDto>()
+                .AfterMap((ficha, dto) => dto.Seguimientos = dto.Seguimientos.OrderByDescending(x => x.Fecha).ToList())
+                .ReverseMap()
                 .ForMember(x => x.Seguimientos, opt => opt.Ignore())
                 .ForMember(x => x.Organizacion, opt => opt.Ignore())
                 .ForMember(x => x.Tecnico, opt => opt.Ignore());

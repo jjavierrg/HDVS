@@ -1,6 +1,6 @@
 <form #cardForm="ngForm">
   <div class="form-row">
-    <div class="form-group col-md-4">
+    <div class="form-group col-md-2">
       <label for="inputNombre">{{ 'comun.nombre' | translate }} *</label>
       <input id="inputNombre" type="text" class="form-control" [placeholder]="'comun.nombre' | translate" required
         [(ngModel)]="card.nombre" name="{{ 'comun.nombre' | translate }}" #nombreCtrl="ngModel" maxlength="150" />
@@ -21,6 +21,10 @@
       <label for="inputCodigoRad">{{ 'ficha.rad' | translate }}</label>
       <input id="inputCodigoRad" type="text" class="form-control" [placeholder]="'ficha.rad' | translate"
         [(ngModel)]="card.codigo" name="{{ 'ficha.rad' | translate }}" #codigoRADCtrl="ngModel" readonly />
+    </div>
+    <div class="form-group col-md-2">
+      <app-checkbox [label]="'ficha.datos-completos' | translate" [(ngModel)]="card.datosCompletos"
+        name="{{ 'ficha.datos-completos' | translate }}"></app-checkbox>
     </div>
   </div>
   <div class="form-row">

@@ -40,6 +40,7 @@ export class CardReviewComponent implements OnInit, OnChanges {
       field: 'fecha',
       maxWidth: 150,
       cellRendererFramework: DateCellComponent,
+      sort: 'desc',
     },
     {
       headerName: this.translate.instant('seguimientos.puntuacion'),

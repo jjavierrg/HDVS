@@ -3,6 +3,7 @@ import { DimensionDto, MasterDataDto, RangoDto } from 'src/app/core/api/api.clie
 import { AlertService } from 'src/app/core/services/alert.service';
 import { MasterdataService } from 'src/app/core/services/masterdata.service';
 import { IndicatorService } from 'src/app/core/services/indicator.service';
+import { Permissions } from 'src/app/core/enums/permissions.enum';
 
 class StatsFilters {
   public searchByOrganizacion: boolean;
@@ -33,6 +34,7 @@ export class StatsComponent implements OnInit {
   public paises: MasterDataDto[];
   public dimensiones: DimensionDto[];
   public rangos: RangoDto[];
+  public permissions = Permissions;
 
   constructor(
     private masterdataService: MasterdataService,

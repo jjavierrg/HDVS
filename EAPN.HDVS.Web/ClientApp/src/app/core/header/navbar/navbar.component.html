@@ -13,7 +13,8 @@
         {{ 'navbar.inicio' | translate }}
       </a>
       <a routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" routerLink="/estadisticas"
-        (click)="isMenuCollapsed = true" class="py-lg-3 nav-item nav-link"><i class="fas fa-chart-bar"></i>
+        *appAllowedPermissions="{permissions: [permissions.stats.access]}" (click)="isMenuCollapsed = true"
+        class="py-lg-3 nav-item nav-link"><i class="fas fa-chart-bar"></i>
         {{ 'navbar.estadisticas' | translate }}</a>
       <a routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" routerLink="/fichas/alta"
         (click)="isMenuCollapsed = true" class="py-lg-3 nav-item nav-link addContainer"
@@ -23,8 +24,10 @@
         (click)="isMenuCollapsed = true" class="py-lg-3 nav-item nav-link"
         *appAllowedPermissions="{permissions: [permissions.personalcard.read]}"><i class="fas fa-search"></i>
         {{ 'navbar.busqueda-avanzada' | translate }}</a>
-      <form class="form-inline my-2 my-lg-0" *appAllowedPermissions="{permissions: [permissions.personalcard.read]}" (submit)="onQuerySubmit(search.value); $event.preventDefault()">
-        <input class="form-control mr-lg-2" type="search"placeholder="{{ 'navbar.busqueda-placeholder' | translate }}" #search />
+      <form class="form-inline my-2 my-lg-0" *appAllowedPermissions="{permissions: [permissions.personalcard.read]}"
+        (submit)="onQuerySubmit(search.value); $event.preventDefault()">
+        <input class="form-control mr-lg-2" type="search" placeholder="{{ 'navbar.busqueda-placeholder' | translate }}"
+          #search />
         <button class="btn btn-outline-light my-2 my-lg-0" type="submit">{{ 'core.buscar' | translate }}</button>
       </form>
     </div>

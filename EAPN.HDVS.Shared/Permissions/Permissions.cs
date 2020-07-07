@@ -32,5 +32,9 @@ namespace EAPN.HDVS.Shared.Permissions
         public const string PERSONALATTACHMENTS_READ = "attachments:read";
         public const string PERSONALATTACHMENTS_WRITE = "attachments:write";
         public const string PERSONALATTACHMENTS_DELETE = "attachments:delete";
+
+        // Indicators
+        public const string STATS_ACCESS = "stats:access";
+        public const string STATS_GLOBAL = "stats:global";
     }
 }

@@ -34,6 +34,7 @@ namespace EAPN.HDVS.Entities
         public string Observaciones { get; set; }
         public bool PoliticaFirmada { get; set; }
         public bool Completa { get; set; }
+        public bool DatosCompletos { get; set; }
         public DateTime FechaAlta { get; set; }
         public DateTime FechaUltimaModificacion { get; set; }
 

@@ -22,7 +22,7 @@ const routes: Routes = [
         loadChildren: () => import('./stats/stats.module').then((m) => m.StatsModule),
         canLoad: [AuthenticatedGuard],
         canActivate: [AuthenticatedGuard],
-        data: { allowedPermissions: [Permissions.usermanagement.access] },
+        data: { allowedPermissions: [Permissions.stats.access] },
       },
       {
         path: 'usuarios',

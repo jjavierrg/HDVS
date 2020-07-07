@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 namespace EAPN.HDVS.Application.Repositories
 {
@@ -16,7 +18,7 @@ namespace EAPN.HDVS.Application.Repositories
         public override void Add(Ficha item)
         {
             item.FechaAlta = DateTime.Now;
-            item.FechaUltimaModificacion = DateTime.Now;
+            SetFichaState(item);
             base.Add(item);
         }
         public override void AddRange(IEnumerable<Ficha> items)
@@ -24,7 +26,7 @@ namespace EAPN.HDVS.Application.Repositories
             foreach (var item in items)
             {
                 item.FechaAlta = DateTime.Now;
-                item.FechaUltimaModificacion = DateTime.Now;
+                SetFichaState(item);
             }
 
             base.AddRange(items);
@@ -32,16 +34,26 @@ namespace EAPN.HDVS.Application.Repositories
 
         public override void Update(Ficha item)
         {
-            item.FechaUltimaModificacion = DateTime.Now;
+            SetFichaState(item);
             base.Update(item);
         }
 
         public override void UpdateRange(IEnumerable<Ficha> items)
         {
             foreach(var item in items)
-                item.FechaUltimaModificacion = DateTime.Now;
-
+                SetFichaState(item);
+            
             base.UpdateRange(items);
+        }
+
+
+        private void SetFichaState(Ficha ficha)
+        {
+            var seguimiento = Context.Set<Seguimiento>().OrderByDescending(x => x.Fecha).FirstOrDefault(x => x.FichaId == ficha.Id);
+            ficha.FechaUltimaModificacion = DateTime.Now;
+            ficha.Completa = ficha.DatosCompletos && seguimiento != null && seguimiento.Completo;
+
+            Context.Update(ficha);
         }
     }
 }
