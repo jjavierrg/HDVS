@@ -73,10 +73,23 @@ export class CardFormComponent implements OnInit {
   }
 
   public async onSaveCard(): Promise<void> {
+    const isnew: boolean = !this.card.id;
+    const createNewSeg: boolean =
+      isnew &&
+      (await this.authService
+        .isAuthorized([this.permissions.personalindicators.access, this.permissions.personalindicators.write], true)
+        .toPromise());
+
     try {
-      const success = await this.service.saveCard(this.card).toPromise();
-      if (success) {
-        this.router.navigate(['/']).then(() => this.alertService.success(this.translate.instant('core.datos-guardados')));
+      if (!createNewSeg) {
+        const saved = await this.service.saveCard(this.card).toPromise();
+        this.card.id = saved.id;
+
+        if (saved) {
+          this.alertService.success(this.translate.instant('core.datos-guardados'));
+        }
+      } else {
+        await this.onReviewRequired(0, false);
       }
     } catch (error) {
       this.alertService.error(error);
@@ -85,19 +98,14 @@ export class CardFormComponent implements OnInit {
 
   public async onReviewRequired(reviewId: number, readonly: boolean): Promise<boolean> {
     try {
-      const success = await this.service.saveCard(this.card).toPromise();
+      const saved = await this.service.saveCard(this.card).toPromise();
 
-      let returnUrl: string = this.router.url;
-      if (this.route.snapshot.fragment) {
-        returnUrl = returnUrl.slice(0, -1 * this.route.snapshot.fragment.length - 1);
-      }
-
-      const state: IReviewState = { returnUrl: `${ returnUrl }#seguimientos` };
-
-      if (!success) {
+      if (!saved) {
         return false;
       }
 
+      this.card.id = saved.id;
+      const state: IReviewState = { returnUrl: `fichas/${this.card.id}#seguimientos` };
       const reviewUrl: string = `/seguimientos${readonly ? '/resumen' : ''}`;
       if (reviewId) {
         return this.router.navigate([reviewUrl, reviewId], { state });
