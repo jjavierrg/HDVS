@@ -12,7 +12,7 @@
         <ng-template ngbPanelHeader>
           <div class="no-select c-pointer d-flex justify-content-between align-items-center" (click)="acc.toggle(i)">
             <span>{{cat.category.descripcion + (cat.category.obligatorio ? ' *' : '')}}</span>
-            <button *ngIf="enabled" class="btn btn-link" (click)="onClearSelectionClick(cat, $event)">Restablecer</button>
+            <button *ngIf="enabled" class="btn btn-link" (click)="onClearSelectionClick(cat, $event)">{{ 'core.restablecer' | translate }}</button>
           </div>
         </ng-template>
         <ng-template ngbPanelContent>

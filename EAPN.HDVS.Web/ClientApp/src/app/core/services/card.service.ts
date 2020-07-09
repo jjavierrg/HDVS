@@ -1,12 +1,11 @@
+import { DatePipe } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { isDate } from 'util';
-import { ApiClient, FichaDto, QueryData, VistaPreviaFichaDto, DatosFichaDto, IVistaPreviaFichaDto, IFichaDto, IDatosFichaDto, ResumenExpedientesDto } from '../api/api.client';
+import { ISearchQuery } from 'src/app/shared/models/search-query';
+import { ApiClient, FichaDto, IDatosFichaDto, IFichaDto, IVistaPreviaFichaDto, QueryData, ResumenExpedientesDto } from '../api/api.client';
 import { BaseFilter, getFilterQuery, IBaseFilter } from '../filters/basefilter';
 import { FilterComparison, FilterUnion } from '../filters/filter.enum';
-import { DatePipe } from '@angular/common';
-import { ISearchQuery } from 'src/app/shared/models/search-query';
 
 @Injectable({
   providedIn: 'root',

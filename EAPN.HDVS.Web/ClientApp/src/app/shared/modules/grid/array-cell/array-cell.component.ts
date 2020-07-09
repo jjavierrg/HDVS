@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
-import { ICellRendererParams, IAfterGuiAttachedParams } from 'ag-grid-community';
+import { IAfterGuiAttachedParams, ICellRendererParams } from 'ag-grid-community';
 
 @Component({
   selector: 'app-array-cell',
@@ -20,7 +20,7 @@ export class ArrayCellComponent implements ICellRendererAngularComp {
 
   afterGuiAttached?(params?: IAfterGuiAttachedParams): void {}
 
-  private setValue(data: string[]){
+  private setValue(data: string[]) {
     if (!data || data.length <= 0) {
       this.value = '';
     } else {

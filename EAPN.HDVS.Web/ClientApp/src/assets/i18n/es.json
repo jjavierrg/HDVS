@@ -78,6 +78,7 @@
     "no-autorizado": "No está autorizado para realizar esta operación",
     "obligatorio": "Obligatorio",
     "registro-no-encontrado": "Registro no encontrado",
+    "restablecer": "Restablecer",
     "si": "Sí",
     "siguiente": "Siguiente",
     "subiendo": "Subiendo",
@@ -170,7 +171,7 @@
     "menu": "Menu"
   },
   "seguimiento": {
-    "dejar-incompleto": "Dejar incompleto"
+    "completo": "Completo"
   },
   "seguimientos": {
     "ficha-completa": "Ficha completa",
