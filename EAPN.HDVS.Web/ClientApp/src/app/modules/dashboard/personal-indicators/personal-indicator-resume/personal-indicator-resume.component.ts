@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SeguimientoDto, MasterDataDto, DimensionDto, CategoriaDto } from 'src/app/core/api/api.client';
+import { SeguimientoDto, MasterDataDto, DimensionDto, CategoriaDto, IndicadorSeguimientoDto } from 'src/app/core/api/api.client';
 import { IReviewState } from 'src/app/shared/models/reviewState';
 import { Location } from '@angular/common';
 import { MasterdataService } from 'src/app/core/services/masterdata.service';
@@ -104,19 +104,8 @@ export class PersonalIndicatorResumeComponent implements OnInit {
     return indicators.reduce((result, ind) => (result += ind.indicador.puntuacion), 0);
   }
 
-  public checkedIndicator(categoryId: number): string {
-    const indicator = this.review.indicadores.find((x) => x.indicador && x.indicador.categoriaId === categoryId);
-    return indicator.verificado ? indicator.indicador.verificacion : '';
-  }
-
-  public getCategoryDescription(categoryId: number): string {
-    const indicator = this.review.indicadores.find((x) => x.indicador && x.indicador.categoriaId === categoryId).indicador;
-    return indicator ? indicator.descripcion : '';
-  }
-
-  public getCategoryScore(categoryId: number): number {
-    const indicator = this.review.indicadores.find((x) => x.indicador && x.indicador.categoriaId === categoryId).indicador;
-    return indicator ? indicator.puntuacion : 0;
+  public getIndicators(categoryId: number): IndicadorSeguimientoDto[] {
+    return this.review.indicadores.filter((x) => x.indicador && x.indicador.categoriaId === categoryId);
   }
 
   public getCategoryObservations(categoryId: number): string {

@@ -12,7 +12,6 @@ namespace EAPN.HDVS.Web.Dto
         public DateTime Fecha { get; set; }
         public string Observaciones { get; set; }
         public bool Completo { get; set; }
-        public bool? ForzadoIncompleto { get; set; }
 
         public IList<IndicadorSeguimientoDto> Indicadores { get; set; }
     }

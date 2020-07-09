@@ -7586,6 +7586,7 @@ export class CategoriaDto implements ICategoriaDto {
     dimensionId?: number;
     descripcion?: string | undefined;
     obligatorio?: boolean;
+    respuestaMultiple?: boolean;
     activo?: boolean;
     indicadores?: IndicadorDto[] | undefined;
 
@@ -7605,6 +7606,7 @@ export class CategoriaDto implements ICategoriaDto {
             this.dimensionId = _data["dimensionId"];
             this.descripcion = _data["descripcion"];
             this.obligatorio = _data["obligatorio"];
+            this.respuestaMultiple = _data["respuestaMultiple"];
             this.activo = _data["activo"];
             if (Array.isArray(_data["indicadores"])) {
                 this.indicadores = [] as any;
@@ -7628,6 +7630,7 @@ export class CategoriaDto implements ICategoriaDto {
         data["dimensionId"] = this.dimensionId;
         data["descripcion"] = this.descripcion;
         data["obligatorio"] = this.obligatorio;
+        data["respuestaMultiple"] = this.respuestaMultiple;
         data["activo"] = this.activo;
         if (Array.isArray(this.indicadores)) {
             data["indicadores"] = [];
@@ -7644,6 +7647,7 @@ export interface ICategoriaDto {
     dimensionId?: number;
     descripcion?: string | undefined;
     obligatorio?: boolean;
+    respuestaMultiple?: boolean;
     activo?: boolean;
     indicadores?: IndicadorDto[] | undefined;
 }
@@ -9092,7 +9096,6 @@ export class SeguimientoDto implements ISeguimientoDto {
     fecha?: Date;
     observaciones?: string | undefined;
     completo?: boolean;
-    forzadoIncompleto?: boolean | undefined;
     indicadores?: IndicadorSeguimientoDto[] | undefined;
 
     constructor(data?: ISeguimientoDto) {
@@ -9113,7 +9116,6 @@ export class SeguimientoDto implements ISeguimientoDto {
             this.fecha = _data["fecha"] ? new Date(_data["fecha"].toString()) : <any>undefined;
             this.observaciones = _data["observaciones"];
             this.completo = _data["completo"];
-            this.forzadoIncompleto = _data["forzadoIncompleto"];
             if (Array.isArray(_data["indicadores"])) {
                 this.indicadores = [] as any;
                 for (let item of _data["indicadores"])
@@ -9138,7 +9140,6 @@ export class SeguimientoDto implements ISeguimientoDto {
         data["fecha"] = this.fecha ? this.fecha.toISOString() : <any>undefined;
         data["observaciones"] = this.observaciones;
         data["completo"] = this.completo;
-        data["forzadoIncompleto"] = this.forzadoIncompleto;
         if (Array.isArray(this.indicadores)) {
             data["indicadores"] = [];
             for (let item of this.indicadores)
@@ -9156,7 +9157,6 @@ export interface ISeguimientoDto {
     fecha?: Date;
     observaciones?: string | undefined;
     completo?: boolean;
-    forzadoIncompleto?: boolean | undefined;
     indicadores?: IndicadorSeguimientoDto[] | undefined;
 }
 

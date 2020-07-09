@@ -1,11 +1,6 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { CategoriaDto, IndicadorDto, IndicadorSeguimientoDto } from 'src/app/core/api/api.client';
 
-interface IIndicatorItem {
-  category: CategoriaDto;
-  indicator: IndicadorSeguimientoDto;
-}
-
 @Component({
   selector: 'app-indicator-category-form',
   templateUrl: './indicator-category-form.component.html',
@@ -18,43 +13,112 @@ export class IndicatorCategoryFormComponent implements OnInit {
   @Input() enabled: boolean = true;
   @Output() selectionChange = new EventEmitter<IndicadorSeguimientoDto[]>();
 
-  public internalItems: IIndicatorItem[];
+  public internalCategories: { observations: string; category: CategoriaDto }[];
+  public observations: string;
+  public verified: boolean;
   public showCloseAll: boolean = false;
 
   constructor() {}
 
   ngOnInit(): void {
-    this.internalItems = this.categories.map((x) => <IIndicatorItem>{ category: x, indicator: this.getCategorySelection(x) });
-  }
+    this.internalCategories = this.categories.map((x) => ({ observations: '', category: x }));
 
-  public onChange(): void {
-    const others = this.getOtherDimensionSelection();
-    const values = (this.internalItems || []).filter((x) => !!x.indicator.indicadorId);
-    values.forEach((x) => (x.indicator.seguimientoId ? x.indicator.seguimientoId : this.reviewId));
-
-    let result = [...values.map((x) => x.indicator), ... others];
-    result = result.filter((value, index, self) => self.indexOf(value) === index);
-
-    this.selectionChange.emit(result);
-  }
-
-  private getCategorySelection(category: CategoriaDto): IndicadorSeguimientoDto {
-    const catIndicators = (category.indicadores || []).map((x) => x.id);
-
-    if (!(catIndicators || []).length) {
-      return new IndicadorSeguimientoDto({ seguimientoId: this.reviewId, indicadorId: null, observaciones: null });
+    if (!this.selection) {
+      this.selection = [];
     }
 
-    const selected: IndicadorSeguimientoDto = (this.selection || []).find((x) => catIndicators.some((c) => c === x.indicadorId));
-    return selected ? selected : new IndicadorSeguimientoDto({ seguimientoId: this.reviewId, indicadorId: null, observaciones: null });
+    this.selection.forEach((x) => {
+      const cat = this.internalCategories.find((c) => x.indicador && c.category.id === x.indicador.categoriaId);
+      if (cat) {
+        cat.observations = x.observaciones;
+      }
+    });
   }
 
-  private getOtherDimensionSelection(): IndicadorSeguimientoDto[] {
-    const dimensionIndicators: number[] = this.categories.reduce((prev, cat) => {
-      prev.push((cat.indicadores || []).map((x) => x.id));
-      return prev;
-    }, []);
+  public indicatorSelected(indicator: IndicadorDto): boolean {
+    if (!indicator || !this.selection) {
+      return false;
+    }
 
-    return (this.selection || []).filter(x => !dimensionIndicators.some(dim => dim === x.indicadorId));
+    return this.selection.some((x) => x.indicadorId === indicator.id);
+  }
+
+  public setIndicatorSelected(indicator: IndicadorDto, selected: boolean, allowMultiple: boolean, observations: string): void {
+    if (!indicator) {
+      return;
+    }
+
+    if (!this.selection) {
+      this.selection = [];
+    }
+
+    if (selected && !this.selection.some((x) => x.indicadorId === indicator.id)) {
+      if (!allowMultiple) {
+        this.selection = this.selection.filter((x) => x.indicador.categoriaId !== indicator.categoriaId);
+      }
+
+      this.selection.push(
+        new IndicadorSeguimientoDto({
+          indicadorId: indicator.id,
+          indicador: indicator,
+          seguimientoId: this.reviewId,
+          observaciones: observations,
+          verificado: false,
+        })
+      );
+    } else if (!selected && this.selection.some((x) => x.indicadorId === indicator.id)) {
+      this.selection = this.selection.filter((x) => x.indicadorId !== indicator.id);
+    }
+
+    this.selectionChange.emit(this.selection);
+  }
+
+  public showVerificationSection(category: CategoriaDto): boolean {
+    if (!category) {
+      return false;
+    }
+
+    return this.selection.some((x) => x.indicador && x.indicador.categoriaId === category.id && x.indicador.verificacion);
+  }
+
+  public verificationSelected(indicator: IndicadorDto): boolean {
+    return indicator && this.selection && this.selection.some((x) => x.indicadorId === indicator.id && x.verificado);
+  }
+
+  public setVerificationSelected(indicator: IndicadorDto, selected: boolean): boolean {
+    if (!indicator) {
+      return;
+    }
+
+    const selection = this.selection.find((x) => x.indicadorId === indicator.id);
+    if (selection) {
+      selection.verificado = selected;
+      this.selectionChange.emit(this.selection);
+    }
+  }
+
+  public onObservationsChange(cat: { observations: string; category: CategoriaDto }): void {
+    if (!cat) {
+      return;
+    }
+
+    this.selection
+      .filter((x) => x.indicador && x.indicador.categoriaId === cat.category.id)
+      .forEach((x) => (x.observaciones = cat.observations));
+
+    this.selectionChange.emit(this.selection);
+  }
+
+  public onClearSelectionClick(cat: { observations: string; category: CategoriaDto }, event: Event): void {
+    event.stopPropagation();
+
+    if (!cat || !this.selection) {
+      return;
+    }
+
+    cat.observations = '';
+    this.selection = this.selection.filter((x) => x.indicador && x.indicador.categoriaId !== cat.category.id);
+
+    this.selectionChange.emit(this.selection);
   }
 }

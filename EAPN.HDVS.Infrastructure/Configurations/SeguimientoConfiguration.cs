@@ -17,7 +17,6 @@ namespace EAPN.HDVS.Infrastructure.Configurations
             builder.Property(x => x.FichaId).HasColumnName(nameof(Seguimiento.FichaId)).IsRequired();
             builder.Property(x => x.Observaciones).HasColumnName(nameof(Seguimiento.Observaciones));
             builder.Property(x => x.Completo).HasColumnName(nameof(Seguimiento.Completo)).IsRequired();
-            builder.Property(x => x.ForzadoIncompleto).HasColumnName(nameof(Seguimiento.ForzadoIncompleto));
             builder.Property(x => x.FechaAlta).HasColumnName(nameof(Seguimiento.FechaAlta)).IsRequired();
             builder.Property(x => x.FechaUltimaModificacion).HasColumnName(nameof(Seguimiento.FechaUltimaModificacion)).IsRequired();
 

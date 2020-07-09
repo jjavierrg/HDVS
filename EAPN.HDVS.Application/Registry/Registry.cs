@@ -1,7 +1,6 @@
 ﻿using EAPN.HDVS.Application.Core.Services;
 using EAPN.HDVS.Application.Repositories;
 using EAPN.HDVS.Application.Services.Dimension;
-using EAPN.HDVS.Application.Services.Seguimientos;
 using EAPN.HDVS.Application.Services.User;
 using EAPN.HDVS.Entities;
 using EAPN.HDVS.Infrastructure.Core.Repository;
@@ -22,7 +21,6 @@ namespace EAPN.HDVS.Application.Registry
             services.AddScoped(typeof(IReadServiceBase<>), typeof(ReadServiceBase<>));
             services.AddScoped<IUsuarioService, UsuarioService>();
             services.AddScoped<IDimensionService, DimensionService>();
-            services.AddScoped<ICrudServiceBase<Seguimiento>, SeguimientoService>();
 
             return services;
         }

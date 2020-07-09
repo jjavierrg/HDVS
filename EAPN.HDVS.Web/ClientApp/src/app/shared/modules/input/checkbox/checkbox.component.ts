@@ -1,4 +1,4 @@
-import { Component, OnInit, forwardRef, Input } from '@angular/core';
+import { Component, OnInit, forwardRef, Input, Output, EventEmitter } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 
 @Component({
@@ -17,6 +17,7 @@ export class CheckboxComponent implements OnInit, ControlValueAccessor {
   @Input() public label: string;
   @Input() public checked: boolean = false;
   @Input() public disabled: boolean = false;
+  @Output() public change = new EventEmitter<boolean>();
 
   public onChange = (checked: boolean) => {};
   public onTouched = () => {};
@@ -28,6 +29,7 @@ export class CheckboxComponent implements OnInit, ControlValueAccessor {
 
     this.checked = !this.checked;
     this.onChange(this.checked);
+    this.change.emit(this.checked);
   }
 
   writeValue(checked: boolean): void {

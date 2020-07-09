@@ -11,7 +11,6 @@ namespace EAPN.HDVS.Entities
         public DateTime Fecha { get; set; }
         public string Observaciones { get; set; }
         public bool Completo { get; set; }
-        public bool? ForzadoIncompleto { get; set; }
         public DateTime FechaAlta { get; set; }
         public DateTime FechaUltimaModificacion { get; set; }
 

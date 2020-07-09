@@ -8,29 +8,36 @@
   </div>
   <div class="flex-grow-1">
     <ngb-accordion #acc="ngbAccordion">
-      <ngb-panel [id]="i" *ngFor="let item of internalItems; let i=index" [title]="item.category.descripcion">
+      <ngb-panel [id]="i" *ngFor="let cat of internalCategories; let i=index" [title]="cat.category.descripcion">
         <ng-template ngbPanelHeader>
-          <div class="no-select c-pointer" (click)="acc.toggle(i)">
-            {{item.category.descripcion + (item.category.obligatorio ? ' *' : '')}}</div>
+          <div class="no-select c-pointer d-flex justify-content-between align-items-center" (click)="acc.toggle(i)">
+            <span>{{cat.category.descripcion + (cat.category.obligatorio ? ' *' : '')}}</span>
+            <button *ngIf="enabled" class="btn btn-link" (click)="onClearSelectionClick(cat, $event)">Restablecer</button>
+          </div>
         </ng-template>
         <ng-template ngbPanelContent>
-          <div class="custom-control custom-radio" *ngFor="let opt of item.category.indicadores; let i=index">
-            <input [disabled]="!enabled" type="radio" id="cat{{item.category.id}}ind{{opt.id}}"
-              [name]="item.category.id" [value]="opt.id" [(ngModel)]="item.indicator.indicadorId"
-              class="custom-control-input" (change)="item.indicator.indicador=opt; this.onChange()">
-            <label class="custom-control-label" for="cat{{item.category.id}}ind{{opt.id}}">{{opt.descripcion}}</label>
-            <i class="ml-1 fas fa-info-circle text-muted" *ngIf="opt.verificacion" ngbTooltip="{{opt.verificacion}}"
-              #t="ngbTooltip" (click)="t.open()" container="body"></i>
+          <div *ngFor="let indicator of cat.category.indicadores; let i=index;">
+            <ng-container
+              *ngTemplateOutlet="cat.category.respuestaMultiple ? multiple : simple; context: {$implicit: { cat: cat, indicator: indicator }}">
+            </ng-container>
+
+            <i class="ml-1 fas fa-info-circle text-muted" *ngIf="indicator.verificacion"
+              ngbTooltip="{{indicator.verificacion}}" #t="ngbTooltip" (click)="t.open()" container="body"></i>
           </div>
-          <div class="form-group mt-3" *ngIf="item.indicator && item.indicator.indicador">
-            <app-checkbox *ngIf="item.indicator.indicador.verificacion" [label]="item.indicator.indicador.verificacion"
-              [(ngModel)]="item.indicator.verificado" [disabled]="!enabled"></app-checkbox>
+
+          <div class="form-group mt-4 border-top" *ngIf="showVerificationSection(cat.category)">
+            <div *ngFor="let indicator of cat.category.indicadores; let i=index;">
+              <app-checkbox *ngIf="indicator.verificacion && indicatorSelected(indicator)"
+                [checked]="verificationSelected(indicator)" (change)="setVerificationSelected(indicator, $event)"
+                [label]="indicator.verificacion" [disabled]="!enabled"></app-checkbox>
+            </div>
           </div>
+
           <div class="form-group mt-3">
             <label for="inputObservaciones">{{ 'comun.observaciones' | translate }}</label>
-            <quill-editor [disabled]="!enabled" id="inputObservaciones" [(ngModel)]="item.indicator.observaciones"
-              name="observaciones" [placeholder]="'comun.observaciones' | translate"
-              (onContentChanged)="this.onChange()">
+            <quill-editor [disabled]="!enabled" id="inputObservaciones" [(ngModel)]="cat.observations"
+              name="observaciones" [placeholder]="'comun.observaciones' | translate" [readOnly]="!enabled"
+              (onContentChanged)="onObservationsChange(cat)">
             </quill-editor>
           </div>
         </ng-template>
@@ -38,3 +45,20 @@
     </ngb-accordion>
   </div>
 </div>
+
+<ng-template #multiple let-data>
+  <div class="d-inline-block">
+    <app-checkbox [label]="data.indicator.descripcion" [checked]="indicatorSelected(data.indicator)"
+      [disabled]="!enabled" (change)="setIndicatorSelected(data.indicator, $event, true)">
+    </app-checkbox>
+  </div>
+</ng-template>
+
+<ng-template #simple let-data>
+  <div class="custom-control custom-radio d-inline-block" *ngIf="!data.cat.category.respuestaMultiple">
+    <input class="custom-control-input" [disabled]="!enabled" type="radio" [id]="data.indicator.id"
+      [name]="data.cat.category.id" [checked]="indicatorSelected(data.indicator)"
+      (change)="setIndicatorSelected(data.indicator, $event.target.checked, false)">
+    <label class="custom-control-label" [for]="data.indicator.id">{{ data.indicator.descripcion }}</label>
+  </div>
+</ng-template>
