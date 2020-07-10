@@ -12,17 +12,23 @@
         <ng-template ngbPanelHeader>
           <div class="no-select c-pointer d-flex justify-content-between align-items-center" (click)="acc.toggle(i)">
             <span>{{cat.category.descripcion + (cat.category.obligatorio ? ' *' : '')}}</span>
-            <button *ngIf="enabled" class="btn btn-link" (click)="onClearSelectionClick(cat, $event)">{{ 'core.restablecer' | translate }}</button>
+            <button *ngIf="enabled" class="btn btn-link"
+              (click)="onClearSelectionClick(cat, $event)">{{ 'core.restablecer' | translate }}</button>
           </div>
         </ng-template>
         <ng-template ngbPanelContent>
           <div *ngFor="let indicator of cat.category.indicadores; let i=index;">
-            <ng-container
-              *ngTemplateOutlet="cat.category.respuestaMultiple ? multiple : simple; context: {$implicit: { cat: cat, indicator: indicator }}">
-            </ng-container>
+            <div class="custom-control d-inline-block"
+              [ngClass]="cat.category.respuestaMultiple ? 'custom-checkbox' : 'custom-radio'">
+              <ng-container
+                *ngTemplateOutlet="cat.category.respuestaMultiple ? multiple : simple; context: {$implicit: { cat: cat, indicator: indicator }}">
+              </ng-container>
 
-            <i class="ml-1 fas fa-info-circle text-muted" *ngIf="indicator.verificacion"
-              ngbTooltip="{{indicator.verificacion}}" #t="ngbTooltip" (click)="t.open()" container="body"></i>
+              <label class="custom-control-label" [for]="indicator.id">{{ indicator.descripcion }}<i
+                  class="ml-1 fas fa-info-circle text-muted" *ngIf="indicator.verificacion"
+                  ngbTooltip="{{indicator.verificacion}}" #t="ngbTooltip" (click)="t.open()"
+                  container="body"></i></label>
+            </div>
           </div>
 
           <div class="form-group mt-4 border-top" *ngIf="showVerificationSection(cat.category)">
@@ -47,18 +53,13 @@
 </div>
 
 <ng-template #multiple let-data>
-  <div class="d-inline-block">
-    <app-checkbox [label]="data.indicator.descripcion" [checked]="indicatorSelected(data.indicator)"
-      [disabled]="!enabled" (change)="setIndicatorSelected(data.indicator, $event, true)">
-    </app-checkbox>
-  </div>
+  <input type="checkbox" class="custom-control-input" [disabled]="!enabled" [id]="data.indicator.id"
+    [name]="data.indicator.id" [checked]="indicatorSelected(data.indicator)"
+    (change)="setIndicatorSelected(data.indicator, $event, true)">
 </ng-template>
 
 <ng-template #simple let-data>
-  <div class="custom-control custom-radio d-inline-block" *ngIf="!data.cat.category.respuestaMultiple">
-    <input class="custom-control-input" [disabled]="!enabled" type="radio" [id]="data.indicator.id"
-      [name]="data.cat.category.id" [checked]="indicatorSelected(data.indicator)"
-      (change)="setIndicatorSelected(data.indicator, $event.target.checked, false)">
-    <label class="custom-control-label" [for]="data.indicator.id">{{ data.indicator.descripcion }}</label>
-  </div>
+  <input class="custom-control-input" [disabled]="!enabled" type="radio" [id]="data.indicator.id"
+    [name]="data.cat.category.id" [checked]="indicatorSelected(data.indicator)"
+    (change)="setIndicatorSelected(data.indicator, $event.target.checked, false)">
 </ng-template>
