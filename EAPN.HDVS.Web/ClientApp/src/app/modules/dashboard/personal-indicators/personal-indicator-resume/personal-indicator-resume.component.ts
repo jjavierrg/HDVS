@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { SeguimientoDto, MasterDataDto, DimensionDto, CategoriaDto, IndicadorSeguimientoDto } from 'src/app/core/api/api.client';
 import { IReviewState } from 'src/app/shared/models/reviewState';
 import { Location } from '@angular/common';
@@ -10,6 +10,9 @@ import { AlertService } from 'src/app/core/services/alert.service';
 import { TranslateService } from '@ngx-translate/core';
 import { RangeService } from 'src/app/core/services/range.service';
 import { Permissions } from 'src/app/core/enums/permissions.enum';
+import * as Highcharts from 'highcharts';
+import { ChartDirector } from 'src/app/core/chart/chart-director';
+import { ResumeBuilder } from 'src/app/shared/chart/resume-builder';
 
 @Component({
   selector: 'app-personal-indicator-resume',
@@ -21,7 +24,8 @@ export class PersonalIndicatorResumeComponent implements OnInit {
   public dimensions: DimensionDto[];
   public permissions = Permissions;
   public users: MasterDataDto[] = [];
-
+  public highcharts: typeof Highcharts = Highcharts;
+  public chartOptions: Highcharts.Options;
   private returnUrl: string;
 
   constructor(
@@ -33,7 +37,9 @@ export class PersonalIndicatorResumeComponent implements OnInit {
     private translate: TranslateService,
     private location: Location,
     private masterdataService: MasterdataService,
-    private rangeService: RangeService
+    private rangeService: RangeService,
+    private charDirector: ChartDirector,
+    private injector: Injector
   ) {}
 
   async ngOnInit() {
@@ -64,8 +70,8 @@ export class PersonalIndicatorResumeComponent implements OnInit {
       return;
     }
 
-    await this.retrieveData(this.review);
     this.returnUrl = state.returnUrl ? state.returnUrl : '/';
+    await Promise.all([this.retrieveData(this.review), this.getChartData(this.review.fichaId)]);
   }
 
   public getPuntuacion(): number {
@@ -117,5 +123,14 @@ export class PersonalIndicatorResumeComponent implements OnInit {
     const onlyUnique = (value: number, index: number, array: number[]): boolean => array.indexOf(value) === index;
     const catIds: number[] = this.review.indicadores.map((x) => (x.indicador ? x.indicador.categoriaId : 0)).filter(onlyUnique);
     this.dimensions = await this.service.getDimensionesByCategorias(catIds).toPromise();
+  }
+
+  private async getChartData(cardId: number): Promise<void> {
+    const reviews = await this.service.getCardReviews(cardId).toPromise();
+    const builder = this.injector.get(ResumeBuilder);
+
+    this.charDirector.setBuilder(builder);
+    await this.charDirector.buildGraph(reviews);
+    this.chartOptions = this.charDirector.getChartOptions();
   }
 }

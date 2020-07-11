@@ -12,6 +12,7 @@ import { ImageModule } from 'src/app/shared/modules/image/image.module';
 import { InputModule } from 'src/app/shared/modules/input/input.module';
 import { FormsModule } from '@angular/forms';
 import { PersonalIndicatorResumeComponent } from './personal-indicator-resume/personal-indicator-resume.component';
+import { HighchartsChartModule } from 'highcharts-angular';
 
 const routes: Routes = [
   {
@@ -53,6 +54,7 @@ const routes: Routes = [
     ImageModule,
     InputModule,
     FormsModule,
+    HighchartsChartModule,
   ],
   exports: [PersonalIndicatorsFormComponent],
 })

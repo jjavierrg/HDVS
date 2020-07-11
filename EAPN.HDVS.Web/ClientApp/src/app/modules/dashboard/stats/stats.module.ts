@@ -6,7 +6,6 @@ import { AuthenticatedGuard } from 'src/app/core/guards/authenticate.guard';
 import { StatsComponent } from './stats/stats.component';
 import { CoreModule } from 'src/app/core/core.module';
 import { FormsModule } from '@angular/forms';
-import { ChartsModule } from 'ng2-charts';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { InputModule } from 'src/app/shared/modules/input/input.module';
 
@@ -22,6 +21,6 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [StatsComponent],
-  imports: [CommonModule, CoreModule, InputModule, NgbCollapseModule, RouterModule.forChild(routes), FormsModule, ChartsModule],
+  imports: [CommonModule, CoreModule, InputModule, NgbCollapseModule, RouterModule.forChild(routes), FormsModule],
 })
 export class StatsModule { }
