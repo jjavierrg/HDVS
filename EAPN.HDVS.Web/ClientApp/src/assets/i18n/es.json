@@ -170,10 +170,9 @@
     "inicio": "Inicio",
     "menu": "Menu"
   },
-  "seguimiento": {
-    "completo": "Completo"
-  },
   "seguimientos": {
+    "completo": "Completo",
+    "evolucion": "Evolución",
     "ficha-completa": "Ficha completa",
     "ficha-incompleta": "Ficha incompleta",
     "guardar-y-finalizar": "Guardar y finalizar edición",

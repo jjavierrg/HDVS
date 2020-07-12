@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Options } from 'highcharts';
+import { Options, SeriesOptionsType, XAxisOptions } from 'highcharts';
 import { DimensionDto, SeguimientoDto } from 'src/app/core/api/api.client';
 import { IndicatorService } from 'src/app/core/services/indicator.service';
 import { ChartBase, IChartTypedBase } from '../../core/chart/chart-base';
 import { IChartBuilder } from '../../core/chart/chart-builder';
-import { ICategory, ISerieSelector, IValueSelector } from '../../core/chart/Types';
+import { ICategory, IChartLabels, ISerieSelector, IValueSelector } from '../../core/chart/Types';
 
 @Injectable({
   providedIn: 'root',
@@ -13,14 +13,34 @@ export class ResumeBuilder implements IChartBuilder {
   private dimensions: DimensionDto[];
   private chart: IChartTypedBase<SeguimientoDto>;
 
-  constructor(private indicatorService: IndicatorService) {}
-
-  async initialize(): Promise<void> {
-    this.dimensions = await this.indicatorService.getDimensions().toPromise();
+  constructor(private indicatorService: IndicatorService) {
     this.chart = new ChartBase<SeguimientoDto>();
+    const options: Options = {
+      chart: {
+        type: 'column',
+      },
+      xAxis: {
+        type: 'category',
+        crosshair: true,
+      },
+    };
+
+    this.chart.setOptions(options);
   }
 
-  setCategorySelector(): void {
+  public setLabels(labels: IChartLabels): void {
+    this.chart.setLabels(labels);
+  }
+
+  public setBaseOptions(options: Options): void {
+    this.chart.setOptions(options);
+  }
+
+  public async initialize(): Promise<void> {
+    this.dimensions = await this.indicatorService.getDimensions().toPromise();
+  }
+
+  public setCategorySelector(): void {
     const dimensions = this.dimensions;
     const selector = function (data: SeguimientoDto[]): ICategory[] {
       return dimensions.map((x) => ({ id: x.id, value: x.descripcion }));
@@ -29,7 +49,7 @@ export class ResumeBuilder implements IChartBuilder {
     this.chart.setCategorySelector(selector);
   }
 
-  setSerieSelector(): void {
+  public setSerieSelector(): void {
     const serieSelector: ISerieSelector<SeguimientoDto> = (data: SeguimientoDto) => {
       return { id: data.fecha, type: 'column', value: data.fecha.toDateString() };
     };
@@ -37,29 +57,63 @@ export class ResumeBuilder implements IChartBuilder {
     this.chart.setSerieSelector(serieSelector);
   }
 
-  setValueSelector(): void {
+  public setValueSelector(): void {
     const dimensions = this.dimensions;
 
-    const valueSelector: IValueSelector<SeguimientoDto> = (data: SeguimientoDto[], category: ICategory): any[] => {
-      const categorias = (dimensions.find((x) => x.id === category.id) || { categorias: [] }).categorias;
-      return data.map((x) => {
-        const indicadores = x.indicadores.filter((i) => categorias.some((c) => c.id === i.indicador.categoriaId));
-        if (!indicadores) {
-          return 0;
-        }
+    const valueSelector: IValueSelector<SeguimientoDto> = (data: SeguimientoDto[], category: ICategory): any => {
+      if ((data || []).length !== 1) {
+        return;
+      }
 
-        return indicadores.reduce((prv, item) => (prv += item.indicador.puntuacion), 0);
-      });
+      const seguimiento = data[0];
+      const categorias = (dimensions.find((x) => x.id === category.id) || { categorias: [] }).categorias;
+      const indicadores = seguimiento.indicadores.filter((i) => categorias.some((c) => c.id === i.indicador.categoriaId));
+      if (!indicadores) {
+        return 0;
+      }
+
+      const value = indicadores.reduce((prv, item) => (prv += item.indicador.puntuacion), 0);
+      return { name: category.value, y: value, drilldown: `${category.id}-${seguimiento.id}` };
     };
 
     this.chart.setValueSelector(valueSelector);
   }
 
-  setData(data: any[]): void {
-    this.chart.setData(data as SeguimientoDto[]);
+  public setData(data: any[]): void {
+    const seguimientos = data as SeguimientoDto[];
+    this.chart.setData(seguimientos);
+
+    // set drilldown data
+    const series: SeriesOptionsType[] = [];
+    seguimientos.forEach((s) => {
+      this.dimensions.forEach((d) => {
+        const categories = d.categorias || [];
+        const serieData = categories.map((c) => {
+          const indicators = (s.indicadores || []).filter((i) => i.indicador && c.id === i.indicador.categoriaId);
+          const value = indicators.reduce((prv, item) => (prv += item.indicador.puntuacion), 0);
+          return [c.descripcion, value];
+        });
+
+        series.push({
+          id: `${d.id}-${s.id}`,
+          type: 'column',
+          name: `${d.descripcion} ${s.fecha.toDateString()}`,
+          data: serieData,
+        });
+      });
+    });
+
+    const options: Options = {
+      drilldown: { series },
+    };
+
+    this.chart.setOptions(options);
   }
 
-  getChartOptions(): Options {
-    return this.chart.getChartOptions();
+  public getChartOptions(): Options {
+    const options = this.chart.getChartOptions();
+    (options.xAxis as XAxisOptions).categories = undefined;
+
+    return options;
   }
 }

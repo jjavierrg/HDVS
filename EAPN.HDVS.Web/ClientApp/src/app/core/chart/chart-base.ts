@@ -1,8 +1,10 @@
 import { Options } from 'highcharts';
-import { ICategory, ICategorySelector, ISerie, ISerieSelector, IValueSelector } from './Types';
+import { ICategorySelector, ISerieSelector, IValueSelector, ICategory, ISerie, IChartLabels } from './Types';
 
 export interface IChartBase {
-  getChartOptions(): Highcharts.Options;
+  getChartOptions(): Options;
+  setOptions(options: Options): void;
+  setLabels(labels: IChartLabels): void;
 }
 
 export interface IChartTypedBase<T> extends IChartBase {
@@ -17,9 +19,34 @@ export class ChartBase<T> implements IChartBase {
   private categorySelector: ICategorySelector<T>;
   private serieSelector: ISerieSelector<T>;
   private valueSelector: IValueSelector<T>;
+  private baseOptions: Options = {};
 
   public setData(data: T[]): void {
     this.data = data;
+  }
+
+  public setOptions(options: Options): void {
+    this.baseOptions = this.combineObjects(options, this.baseOptions);
+  }
+
+  public setLabels(labels: IChartLabels): void {
+    const options: Options = {
+      title: {
+        text: labels.chartTitle,
+      },
+      xAxis: {
+        title: {
+          text: labels.xAxisTitle,
+        },
+      },
+      yAxis: {
+        title: {
+          text: labels.yAxisTitle,
+        },
+      },
+    };
+
+    this.setOptions(options);
   }
 
   public setCategorySelector(selector: ICategorySelector<T>): void {
@@ -54,15 +81,15 @@ export class ChartBase<T> implements IChartBase {
       chartSeries.push({ type: key.type as any, name: key.value, data });
     });
 
-    const options: Highcharts.Options = {
+    const options: Options = {
       xAxis: {
         categories: categories,
-        crosshair: true,
       },
       series: chartSeries,
     };
 
-    return options;
+    this.setOptions(options);
+    return this.baseOptions;
   }
 
   private groupBy(list: T[], keyGetter: ISerieSelector<T>): Map<ISerie, T[]> {
@@ -79,5 +106,17 @@ export class ChartBase<T> implements IChartBase {
     });
 
     return map;
+  }
+
+  private combineObjects<TType>(target: TType, source: TType): TType {
+    Object.entries(source).forEach(([key, value]) => {
+      if (value && typeof value === 'object' && !Array.isArray(value)) {
+        this.combineObjects((target[key] = target[key] || {}), value);
+        return;
+      }
+      target[key] = value;
+    });
+
+    return target;
   }
 }
