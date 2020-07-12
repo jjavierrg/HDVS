@@ -1,5 +1,5 @@
 import { Options } from 'highcharts';
-import { IChartLabels } from './Types';
+import { IChartLabels } from './types';
 
 /**
  * The Builder interface specifies methods for creating chartOption object

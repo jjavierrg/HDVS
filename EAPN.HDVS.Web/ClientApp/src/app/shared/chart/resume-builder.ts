@@ -4,7 +4,7 @@ import { DimensionDto, SeguimientoDto } from 'src/app/core/api/api.client';
 import { IndicatorService } from 'src/app/core/services/indicator.service';
 import { ChartBase, IChartTypedBase } from '../../core/chart/chart-base';
 import { IChartBuilder } from '../../core/chart/chart-builder';
-import { ICategory, IChartLabels, ISerieSelector, IValueSelector } from '../../core/chart/Types';
+import { ICategory, IChartLabels, ISerieSelector, IValueSelector } from '../../core/chart/types';
 
 @Injectable({
   providedIn: 'root',

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Options } from 'highcharts';
 import { IChartBuilder } from './chart-builder';
-import { IChartLabels } from './Types';
+import { IChartLabels } from './types';
 
 /**
  * The Director is only responsible for executing the building steps in a

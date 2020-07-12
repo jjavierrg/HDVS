@@ -1,5 +1,5 @@
 import { Options } from 'highcharts';
-import { ICategorySelector, ISerieSelector, IValueSelector, ICategory, ISerie, IChartLabels } from './Types';
+import { ICategorySelector, ISerieSelector, IValueSelector, ICategory, ISerie, IChartLabels } from './types';
 
 export interface IChartBase {
   getChartOptions(): Options;

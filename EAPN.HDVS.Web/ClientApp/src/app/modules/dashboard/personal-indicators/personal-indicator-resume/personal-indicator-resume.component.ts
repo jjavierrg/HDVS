@@ -15,7 +15,7 @@ import HC_exporting from 'highcharts/modules/exporting';
 import HC_drilldown from 'highcharts/modules/drilldown';
 import { ChartDirector } from 'src/app/core/chart/chart-director';
 import { ResumeBuilder } from 'src/app/shared/chart/resume-builder';
-import { IChartLabels } from 'src/app/core/chart/Types';
+import { IChartLabels } from 'src/app/core/chart/types';
 
 @Component({
   selector: 'app-personal-indicator-resume',
