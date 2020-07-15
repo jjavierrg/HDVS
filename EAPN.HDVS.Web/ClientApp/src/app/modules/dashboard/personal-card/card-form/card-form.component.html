@@ -10,22 +10,28 @@
           <a ngbNavLink>{{ 'ficha.datos' | translate }}</a>
           <ng-template ngbNavContent>
             <app-card-personal-data [card]="card" (cardValid)="cardValid = $event"></app-card-personal-data>
-            <div class="float-right">
-              <button type="button" class="btn btn-light"
+            <div class="row">
+              <div class="col-12 offset-md-8 mt-2 mt-md-0 col-md-2">
+                <button type="button" class="btn btn-block btn-light"
                 (click)="onCancel()">{{ 'core.cancelar' | translate }}</button>
-              <button type="button" class="btn btn-primary ml-2" (click)="onSaveCard()"
+              </div>
+              <div class="col-12 mt-2 mt-md-0 col-md-2">
+                <button type="button" class="btn btn-block btn-primary" (click)="onSaveCard()"
                 [disabled]="!cardValid">{{ 'core.aceptar' | translate }}</button>
+              </div>
             </div>
           </ng-template>
         </ng-container>
-        <ng-container ngbNavItem="seguimientos" *appAllowedPermissions="{permissions: [permissions.personalindicators.access]}">
+        <ng-container ngbNavItem="seguimientos"
+          *appAllowedPermissions="{permissions: [permissions.personalindicators.access]}">
           <a ngbNavLink>{{ 'comun.seguimientos' | translate }}</a>
           <ng-template ngbNavContent>
-            <app-card-review [card]="card" [canSaveCard]="cardValid" (reviewEditRequired)="onReviewRequired($event, false)" (reviewRequired)="onReviewRequired($event, true)">
+            <app-card-review [card]="card" [canSaveCard]="cardValid"
+              (reviewEditRequired)="onReviewRequired($event, false)" (reviewRequired)="onReviewRequired($event, true)">
             </app-card-review>
           </ng-template>
         </ng-container>
-        <ng-container  ngbNavItem="adjuntos" *appAllowedPermissions="{permissions: [permissions.attachments.access]}">
+        <ng-container ngbNavItem="adjuntos" *appAllowedPermissions="{permissions: [permissions.attachments.access]}">
           <a ngbNavLink>{{ 'comun.adjuntos' | translate }}</a>
           <ng-template ngbNavContent>
             <app-card-attachments [card]="card"></app-card-attachments>

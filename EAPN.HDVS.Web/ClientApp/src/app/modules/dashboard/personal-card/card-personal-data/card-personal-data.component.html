@@ -1,17 +1,17 @@
 <form #cardForm="ngForm">
   <div class="form-row">
-    <div class="form-group col-md-2">
+    <div class="form-group col-md-3">
       <label for="inputNombre">{{ 'comun.nombre' | translate }} *</label>
       <input id="inputNombre" type="text" class="form-control" [placeholder]="'comun.nombre' | translate" required
         [(ngModel)]="card.nombre" name="{{ 'comun.nombre' | translate }}" #nombreCtrl="ngModel" maxlength="150" />
     </div>
-    <div class="form-group col-md-3">
+    <div class="form-group col-md-2">
       <label for="inputApellido1">{{ 'comun.apellido1' | translate }}</label>
       <input id="inputApellido1" type="text" class="form-control" [placeholder]="'comun.apellido1' | translate"
         [(ngModel)]="card.apellido1" name="{{ 'comun.apellido1' | translate }}" #apellido1Ctrl="ngModel"
         maxlength="250" />
     </div>
-    <div class="form-group col-md-3">
+    <div class="form-group col-md-2">
       <label for="inputApellido2">{{ 'comun.apellido2' | translate }}</label>
       <input id="inputApellido2" type="text" class="form-control" [placeholder]="'comun.apellido2' | translate"
         [(ngModel)]="card.apellido2" name="{{ 'comun.apellido2' | translate }}" #apellido2Ctrl="ngModel"
@@ -22,9 +22,11 @@
       <input id="inputCodigoRad" type="text" class="form-control" [placeholder]="'ficha.rad' | translate"
         [(ngModel)]="card.codigo" name="{{ 'ficha.rad' | translate }}" #codigoRADCtrl="ngModel" readonly />
     </div>
-    <div class="form-group col-md-2">
-      <app-checkbox [label]="'ficha.datos-completos' | translate" [(ngModel)]="card.datosCompletos"
-        name="{{ 'ficha.datos-completos' | translate }}"></app-checkbox>
+    <div class="form-group col-md-3">
+      <label for="inputUsuario">{{ 'ficha.tecnico' | translate }}</label>
+      <app-combobox id="inputUsuario" [placeholder]="'ficha.tecnico' | translate" [(ngModel)]="card.usuarioId"
+        name="{{ 'ficha.tecnico' | translate }}" required [data]="users">
+      </app-combobox>
     </div>
   </div>
   <div class="form-row">
@@ -113,7 +115,7 @@
     </div>
   </div>
   <div class="form-row">
-    <div class="form-group col-md-2">
+    <div class="form-group col-md-3">
       <label for="inputTelefono">{{ 'comun.telefono' | translate }}</label>
       <input id="inputTelefono" type="tel" class="form-control" [placeholder]="'comun.telefono' | translate"
         [(ngModel)]="card.telefono" name="{{ 'comun.telefono' | translate }}" #telefonoCtrl="ngModel" />
@@ -128,11 +130,10 @@
         [label]="'ficha.acepta-politica' | translate">
       </app-checkbox>
     </div>
-    <div class="form-group col-md-3">
-      <label for="inputUsuario">{{ 'ficha.tecnico' | translate }}</label>
-      <app-combobox id="inputUsuario" [placeholder]="'ficha.tecnico' | translate" [(ngModel)]="card.usuarioId"
-        name="{{ 'ficha.tecnico' | translate }}" required [data]="users">
-      </app-combobox>
+    <div class="form-group col-md-2 d-flex justify-content-md-end align-items-md-end">
+      <ui-switch checkedLabel="{{ 'ficha.completa' | translate }}" uncheckedLabel="{{ 'ficha.incompleta' | translate }}"
+        [(ngModel)]="card.datosCompletos" name="{{ 'ficha.datos-completos' | translate }}" class="d-flex">
+      </ui-switch>
     </div>
   </div>
   <div class="form-group">

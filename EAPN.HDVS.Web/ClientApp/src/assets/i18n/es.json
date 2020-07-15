@@ -93,6 +93,7 @@
     "codigo-postal": "Código Postal",
     "coincidencias-encontradas": "Coincidencias encontradas",
     "coincidencias-mensaje": "Se han encontrado las siguientes fichas con los datos introducidos. Si no se trata de ninguna de estas fichas, pulse en Añadir.",
+    "completa": "Completa",
     "datos": "Datos",
     "datos-completos": "Datos completos",
     "datos-personales": "Datos Personales",
@@ -105,6 +106,7 @@
     "fecha-nacimiento-abrev": "Fec. Nac.",
     "fotocopia-dni": "Fotocopia Ident.",
     "genero": "Género",
+    "incompleta": "Incompleta",
     "municipio": "Municipio",
     "nacionalidad": "Nacionalidad",
     "pais-origen": "País de origen",
@@ -154,7 +156,8 @@
     "expedientes-incompletos-plural": "{{ expedientes }} expedientes incompletos",
     "expedientes-no-actualizados": "{{ expedientes }} expediente que no se actualiza desde hace más de un año",
     "expedientes-no-actualizados-plural": "{{ expedientes }} expedientes que no se actualizan desde hace más de un año",
-    "expedientes-titulo": "Estos son tus expedientes"
+    "expedientes-titulo": "Estos son tus expedientes",
+    "explicacion-completo": "Para que un expediente aparezca como completo, la pestaña de datos debe estar marcada como completada así como el último seguimiento"
   },
   "login": {
     "autenticando": "Autenticando...",
@@ -177,6 +180,7 @@
     "ficha-incompleta": "Ficha incompleta",
     "guardar-y-finalizar": "Guardar y finalizar edición",
     "guardar-y-siguiente": "Guardar y Siguiente",
+    "incompleto": "Incompleto",
     "puntuacion": "Puntuación",
     "volver-ficha": "Ir a la ficha"
   },

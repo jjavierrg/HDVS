@@ -13,6 +13,7 @@ import { InputModule } from 'src/app/shared/modules/input/input.module';
 import { FormsModule } from '@angular/forms';
 import { PersonalIndicatorResumeComponent } from './personal-indicator-resume/personal-indicator-resume.component';
 import { HighchartsChartModule } from 'highcharts-angular';
+import { UiSwitchModule } from 'ngx-ui-switch';
 
 const routes: Routes = [
   {
@@ -55,6 +56,7 @@ const routes: Routes = [
     InputModule,
     FormsModule,
     HighchartsChartModule,
+    UiSwitchModule,
   ],
   exports: [PersonalIndicatorsFormComponent],
 })

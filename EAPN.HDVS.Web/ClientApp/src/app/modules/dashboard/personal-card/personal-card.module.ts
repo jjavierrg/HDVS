@@ -16,6 +16,7 @@ import { CardAttachmentsComponent } from './card-attachments/card-attachments.co
 import { AttachmentUploaderModule } from 'src/app/shared/modules/attachment-uploader/attachment-uploader.module';
 import { CardReviewComponent } from './card-review/card-review.component';
 import { IndicatorModule } from 'src/app/shared/modules/indicator/indicator.module';
+import { UiSwitchModule } from 'ngx-ui-switch';
 
 const routes: Routes = [
   {
@@ -60,7 +61,8 @@ const routes: Routes = [
     NgbNavModule,
     AttachmentUploaderModule,
     IndicatorModule,
-    NgbDropdownModule
+    NgbDropdownModule,
+    UiSwitchModule,
   ],
 })
 export class PersonalCardModule {}
