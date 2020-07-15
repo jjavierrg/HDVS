@@ -55,7 +55,7 @@
 <ng-template #multiple let-data>
   <input type="checkbox" class="custom-control-input" [disabled]="!enabled" [id]="data.indicator.id"
     [name]="data.indicator.id" [checked]="indicatorSelected(data.indicator)"
-    (change)="setIndicatorSelected(data.indicator, $event, true)">
+    (change)="setIndicatorSelected(data.indicator, $event.target.checked, true)">
 </ng-template>
 
 <ng-template #simple let-data>
