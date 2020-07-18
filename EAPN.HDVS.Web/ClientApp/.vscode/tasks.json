@@ -32,6 +32,11 @@
           }
         }
       }
+    },
+    {
+      "label": "Kill Terminal",
+      "type": "process",
+      "command":"${command:workbench.action.terminal.kill}",
     }
   ]
 }

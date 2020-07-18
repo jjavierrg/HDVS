@@ -94,7 +94,9 @@ namespace EAPN.HDVS.Web.Dto
                 .ReverseMap()
                 .ForMember(x => x.Seguimientos, opt => opt.Ignore())
                 .ForMember(x => x.Organizacion, opt => opt.Ignore())
-                .ForMember(x => x.Tecnico, opt => opt.Ignore());
+                .ForMember(x => x.Tecnico, opt => opt.Ignore())
+                .ForMember(x => x.FechaNacimiento, opt => opt.MapFrom((src, dest) => src.FechaNacimiento?.Date));
+
             CreateMap<Municipio, MunicipioDto>().ReverseMap();
             CreateMap<Provincia, ProvinciaDto>().ReverseMap();
             CreateMap<Pais, PaisDto>().ReverseMap();

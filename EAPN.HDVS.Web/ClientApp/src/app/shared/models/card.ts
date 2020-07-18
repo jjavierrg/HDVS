@@ -17,7 +17,7 @@ export class Card extends FichaDto {
         return age;
       } else if (now.getMonth() < this.fechaNacimiento.getMonth()) {
         return age - 1;
-      } else if (now.getDay() > this.fechaNacimiento.getDay()) {
+      } else if (now.getDate() < this.fechaNacimiento.getDate()) {
         return age - 1;
       } else {
         return age;

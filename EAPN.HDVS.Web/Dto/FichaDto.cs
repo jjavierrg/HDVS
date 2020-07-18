@@ -7,7 +7,7 @@ namespace EAPN.HDVS.Web.Dto
     {
         public int Id { get; set; }
         public int? FotoId { get; set; }
-        public int OrganizacionId{ get; set; }
+        public int OrganizacionId { get; set; }
         public int UsuarioId { get; set; }
         public string Codigo { get; set; }
         public string Nombre { get; set; }
@@ -19,14 +19,14 @@ namespace EAPN.HDVS.Web.Dto
         public int? SexoId { get; set; }
         public int? GeneroId { get; set; }
         public string Domicilio { get; set; }
-        public string CP{ get; set; }
+        public string CP { get; set; }
         public int? MunicipioId { get; set; }
         public int? ProvinciaId { get; set; }
         public int? PadronId { get; set; }
         public bool DocumentacionEmpadronamiento { get; set; }
         public int? NacionalidadId { get; set; }
         public int? OrigenId { get; set; }
-        public int? SituacionAdministrativaId{ get; set; }
+        public int? SituacionAdministrativaId { get; set; }
         public string Telefono { get; set; }
         public string Email { get; set; }
         public string MotivoAlta { get; set; }

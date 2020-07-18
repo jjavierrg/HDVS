@@ -10,7 +10,8 @@
             "request": "launch",
             "preLaunchTask": "npm: debug",
             "url": "http://localhost:4200",
-            "webRoot": "${workspaceFolder}"
+            "webRoot": "${workspaceFolder}",
+            "postDebugTask": "Kill Terminal",
         }
     ]
 }

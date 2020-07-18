@@ -4,6 +4,7 @@ import { NgbCalendar, NgbDate, NgbDateAdapter, NgbDateParserFormatter, NgbDatepi
 import { DateParserFormatter } from './helpers/date-parse-formatter';
 import { DatepickerTranslation } from './helpers/datepicker-translation';
 import { DateAdapter } from './helpers/date-adapter';
+import { toJSDate } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-calendar';
 
 const adapter = DateAdapter;
 
@@ -39,7 +40,8 @@ export class DatepickerComponent implements ControlValueAccessor {
   public onTouched = () => {};
 
   public setToday(): void {
-    this.value = new Date();
+    const today = new Date();
+    this.value = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0, 0));
   }
 
   writeValue(value: Date): void {

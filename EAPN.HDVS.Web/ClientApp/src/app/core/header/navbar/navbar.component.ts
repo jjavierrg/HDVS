@@ -38,8 +38,7 @@ export class NavbarComponent {
     }
 
     const query: ISearchQuery = new SearchQuery({ idnumber });
-    const _ = await this.router.navigate(['busqueda']);
-    return this.searchService.submitQuery(query);
+    const _ = await this.router.navigate(['busqueda'], { queryParams: { q: query.toJSON() } });
   }
 
   @HostListener('document:click', ['$event'])
