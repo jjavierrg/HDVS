@@ -1,3 +1,10 @@
+export enum SearchType {
+  user_completed = 'completos',
+  user_incompleted = 'incompletos',
+  user_outdated = 'desactualizados',
+  user_all = 'todos',
+}
+
 export interface ISearchQuery {
   idnumber?: string;
   name?: string;

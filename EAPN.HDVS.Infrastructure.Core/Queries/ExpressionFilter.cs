@@ -110,10 +110,14 @@ namespace EAPN.HDVS.Infrastructure.Core.Queries
             if (filter.Comparison != Comparison.In)
             {
                 var propertyType = ((PropertyInfo)member.Member).PropertyType;
-                var converter = TypeDescriptor.GetConverter(propertyType);
-                if (!converter.CanConvertFrom(typeof(string))) throw new NotSupportedException();
-                //will give the integer value if the string is integer  
-                var propertyValue = converter.ConvertFromInvariantString(filter.Value.ToString());
+                var propertyValue = filter.Value;
+                if (!propertyType.IsAssignableFrom(propertyValue.GetType()))
+                {
+                    var converter = TypeDescriptor.GetConverter(propertyType);
+                    if (!converter.CanConvertFrom(typeof(string))) throw new NotSupportedException();
+                    propertyValue = converter.ConvertFromInvariantString(filter.Value.ToString());
+                }
+
                 constant = Expression.Constant(new { Value = propertyValue });
             }
             else

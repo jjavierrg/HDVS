@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IFichaBusquedaDto } from 'src/app/core/api/api.client';
@@ -6,7 +5,7 @@ import { AlertService } from 'src/app/core/services/alert.service';
 import { AuthenticationService } from 'src/app/core/services/authentication.service';
 import { RangeService } from 'src/app/core/services/range.service';
 import { SearchService } from 'src/app/core/services/search.service';
-import { ISearchQuery, SearchQuery } from 'src/app/shared/models/search-query';
+import { ISearchQuery, SearchQuery, SearchType } from 'src/app/shared/models/search-query';
 
 @Component({
   selector: 'app-advanced-search',
@@ -31,9 +30,19 @@ export class AdvancedSearchComponent implements OnInit {
     await this.rangeService.forceRefresh();
 
     this.activatedRoute.queryParams.subscribe((params) => {
-      if (params.q && !this.refreshingParams) {
+      if (this.refreshingParams) {
+        return;
+      }
+
+      if (params.t) {
+        this.query.hideSearchForm = true;
+        this.searchBySearchType(params.t);
+      } else if (params.q) {
         this.query = SearchQuery.fromJSON(params.q);
         this.onSearch(false);
+      } else {
+        this.query = new SearchQuery();
+        this.results = [];
       }
     });
   }
@@ -50,6 +59,17 @@ export class AdvancedSearchComponent implements OnInit {
       this.query.partnerId = partnerId;
 
       this.results = await this.service.findCards(this.query).toPromise();
+    } catch (error) {
+      this.alertService.error(error);
+    }
+  }
+
+  private async searchBySearchType(type: SearchType): Promise<void> {
+    const userId: number = await this.authService.getUserId().toPromise();
+    const partnerId: number = await this.authService.getUserPartnerId().toPromise();
+
+    try {
+      this.results = await this.service.findCardsBySearchType(type, userId, partnerId).toPromise();
     } catch (error) {
       this.alertService.error(error);
     }

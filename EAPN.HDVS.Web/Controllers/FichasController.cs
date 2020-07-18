@@ -74,11 +74,12 @@ namespace EAPN.HDVS.Web.Controllers
         public async Task<ActionResult<ResumenExpedientesDto>> GetResumen()
         {
             var query = GetBaseQueryable().Where(x => x.UsuarioId == User.GetUserId());
+            var total = await query.CountAsync();
             var completed = await query.CountAsync(x => x.Completa);
             var incompleted = await query.CountAsync(x => !x.Completa);
             var notUpdated = await query.CountAsync(x => x.FechaUltimaModificacion <= DateTime.Now.AddYears(-1));
 
-            return Ok(new ResumenExpedientesDto { Completos = completed, Incompletos = incompleted, Desactualizados = notUpdated });
+            return Ok(new ResumenExpedientesDto { Total = total, Completos = completed, Incompletos = incompleted, Desactualizados = notUpdated });
         }
 
         /// <summary>
@@ -150,7 +151,7 @@ namespace EAPN.HDVS.Web.Controllers
         [HttpPost("filtered", Name = "GetFichasFiltered")]
         [AuthorizePermission(Permissions.PERSONALCARD_READ)]
         [ProducesResponseType(typeof(QueryResult<FichaBusquedaDto>), StatusCodes.Status200OK)]
-        public async Task<ActionResult<QueryResult<FichaBusquedaDto>>> GetFichasFiltered([FromBody]QueryData query)
+        public async Task<ActionResult<QueryResult<FichaBusquedaDto>>> GetFichasFiltered([FromBody] QueryData query)
         {
             _logger.LogInformation($"Realiza una búsqueda de fichas con los siguientes filtros: ${query.FilterParameters}");
 
@@ -172,7 +173,7 @@ namespace EAPN.HDVS.Web.Controllers
         [HttpPost("vistaprevia/filtered", Name = "GetVistaPeviaFichas")]
         [AuthorizePermission(Permissions.PERSONALCARD_READ)]
         [ProducesResponseType(typeof(QueryResult<VistaPreviaFichaDto>), StatusCodes.Status200OK)]
-        public async Task<ActionResult<QueryResult<VistaPreviaFichaDto>>> GetVistaPeviaFichas([FromBody]QueryData query)
+        public async Task<ActionResult<QueryResult<VistaPreviaFichaDto>>> GetVistaPeviaFichas([FromBody] QueryData query)
         {
             _logger.LogInformation($"Solicita una vista previa de fichas con los siguiente parámetros: ${query.FilterParameters}");
 

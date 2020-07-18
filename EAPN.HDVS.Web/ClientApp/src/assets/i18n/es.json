@@ -157,7 +157,8 @@
     "expedientes-no-actualizados": "{{ expedientes }} expediente que no se actualiza desde hace más de un año",
     "expedientes-no-actualizados-plural": "{{ expedientes }} expedientes que no se actualizan desde hace más de un año",
     "expedientes-titulo": "Estos son tus expedientes",
-    "explicacion-completo": "Para que un expediente aparezca como completo, la pestaña de datos debe estar marcada como completada así como el último seguimiento"
+    "explicacion-completo": "Para que un expediente aparezca como completo, la pestaña de datos debe estar marcada como completada así como el último seguimiento",
+    "total-expedientes": "Número total de expedientes: {{ expedientes }}"
   },
   "login": {
     "autenticando": "Autenticando...",

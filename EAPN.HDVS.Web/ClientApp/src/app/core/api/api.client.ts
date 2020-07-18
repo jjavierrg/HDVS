@@ -8405,6 +8405,7 @@ export interface IFichaDto {
 }
 
 export class ResumenExpedientesDto implements IResumenExpedientesDto {
+    total?: number;
     completos?: number;
     incompletos?: number;
     desactualizados?: number;
@@ -8420,6 +8421,7 @@ export class ResumenExpedientesDto implements IResumenExpedientesDto {
 
     init(_data?: any) {
         if (_data) {
+            this.total = _data["total"];
             this.completos = _data["completos"];
             this.incompletos = _data["incompletos"];
             this.desactualizados = _data["desactualizados"];
@@ -8435,6 +8437,7 @@ export class ResumenExpedientesDto implements IResumenExpedientesDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["total"] = this.total;
         data["completos"] = this.completos;
         data["incompletos"] = this.incompletos;
         data["desactualizados"] = this.desactualizados;
@@ -8443,6 +8446,7 @@ export class ResumenExpedientesDto implements IResumenExpedientesDto {
 }
 
 export interface IResumenExpedientesDto {
+    total?: number;
     completos?: number;
     incompletos?: number;
     desactualizados?: number;
