@@ -40,7 +40,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.FichasController
 
         [Fact]
         [Trait("Category", "FichasController")]
-        public async Task ShoudNotCreateFichaForOtherAsociacion()
+        public async Task ShouldNotCreateFichaForOtherAsociacion()
         {
             // Arrange
             var client = _factory.GetAuthenticatedClient("usuario1@test.com");
@@ -53,7 +53,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.FichasController
             dto.OrganizacionId = 2;
 
             var response = await client.PostAsync($"{ENDPOINT}", ClientUtilities.GetRequestContent(dto));
-            var ficha= await ClientUtilities.GetResponseContent<FichaDto>(response);
+            var ficha = await ClientUtilities.GetResponseContent<FichaDto>(response);
 
             // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);

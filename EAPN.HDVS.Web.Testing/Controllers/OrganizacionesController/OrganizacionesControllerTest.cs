@@ -23,7 +23,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.OrganizacionesController
 
         [Fact]
         [Trait("Category", "OrganizacionesController")]
-        public async Task ShoudNotAllowedUser()
+        public async Task ShouldNotAllowedUser()
         {
             // Arrange
             var client = _factory.GetAuthenticatedClient("usuario4@test.com");

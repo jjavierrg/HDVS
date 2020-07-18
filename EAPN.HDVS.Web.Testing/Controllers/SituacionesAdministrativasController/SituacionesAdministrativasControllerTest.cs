@@ -24,7 +24,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.SituacionesAdministrativasController
 
         [Fact]
         [Trait("Category", "SituacionesAdministrativasController")]
-        public async Task ShoudNotAllowedUser()
+        public async Task ShouldNotAllowedUser()
         {
             // Arrange
             var client = _factory.GetAuthenticatedClient("usuario4@test.com");
@@ -47,7 +47,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.SituacionesAdministrativasController
 
         [Fact]
         [Trait("Category", "SituacionesAdministrativasController")]
-        public async Task ShoudAllowedUserToMasterdata()
+        public async Task ShouldAllowedUserToMasterdata()
         {
             // Arrange
             var client = _factory.GetAuthenticatedClient("usuario4@test.com");

@@ -23,7 +23,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.ConfiguracionesController
 
         [Fact]
         [Trait("Category", "ConfiguracionesController")]
-        public async Task ShoudAllUserGetConfiguracion()
+        public async Task ShouldAllUserGetConfiguracion()
         {
             // Arrange
             var client = _factory.GetAuthenticatedClient("usuario4@test.com");
@@ -46,7 +46,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.ConfiguracionesController
 
         [Fact]
         [Trait("Category", "ConfiguracionesController")]
-        public async Task ShoudNotAdminNoUpdateConfiguracion()
+        public async Task ShouldNotAdminNoUpdateConfiguracion()
         {
             // Arrange
             var client = _factory.GetAuthenticatedClient("usuario4@test.com");
@@ -63,7 +63,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.ConfiguracionesController
 
         [Fact]
         [Trait("Category", "ConfiguracionesController")]
-        public async Task ShoudAdminUpdateConfiguracion()
+        public async Task ShouldAdminUpdateConfiguracion()
         {
             // Arrange
             var client = _factory.GetAuthenticatedClient("usuario1@test.com");
