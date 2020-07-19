@@ -7,7 +7,6 @@ import { UniqueEmailDirective } from './directives/unique-email.directive';
 import { PasswordRestrinctionsDirective } from './directives/password-restrictions.directive';
 import { AtLeastOneDirective } from './directives/at-least-one.directive';
 import { FileDropperDirective } from './directives/file-dropper.directive';
-import { DefaultDatePipe } from './pipes/default-date.pipe';
 import { NumericDirective } from './directives/numeric.directive';
 
 @NgModule({
@@ -17,7 +16,6 @@ import { NumericDirective } from './directives/numeric.directive';
     PasswordRestrinctionsDirective,
     AtLeastOneDirective,
     FileDropperDirective,
-    DefaultDatePipe,
     NumericDirective
   ],
   imports: [
@@ -39,7 +37,6 @@ import { NumericDirective } from './directives/numeric.directive';
     TranslateModule,
     AtLeastOneDirective,
     FileDropperDirective,
-    DefaultDatePipe,
     NumericDirective
   ],
 })

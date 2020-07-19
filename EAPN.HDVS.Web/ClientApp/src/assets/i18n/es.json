@@ -1,4 +1,5 @@
 {
+  "_langId": "es-ES",
   "adjuntos": {
     "fichero": "Fichero"
   },
@@ -9,6 +10,29 @@
     "numero-resultados": "Resultados de la búsqueda: {{ count }}",
     "ver-ficha": "Ver ficha",
     "ver-resumen": "Ver resumen"
+  },
+  "chart": {
+    "contextButtonTitle": "Ver opciones",
+    "decimalPoint": ".",
+    "downloadCSV": "Descargar imagen CSV",
+    "downloadJPEG": "Descargar imagen JPEG",
+    "downloadPDF": "Descargar imagen PDF",
+    "downloadPNG": "Descargar imagen PNG",
+    "downloadSVG": "Descargar imagen SVG",
+    "downloadXLS": "Descargar imagen XLS",
+    "loading": "Cargando...",
+    "months": ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"],
+    "printChart": "Imprimir",
+    "rangeSelectorFrom": "Desde",
+    "rangeSelectorTo": "Hasta",
+    "rangeSelectorZoom": "Período",
+    "resetZoom": "Reiniciar zoom",
+    "resetZoomTitle": "Reiniciar zoom",
+    "shortMonths": ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"],
+    "thousandsSep": ",",
+    "viewData": "Vista de Datos",
+    "viewFullscreen": "Ver pantalla completa",
+    "weekdays": ["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"]
   },
   "comun": {
     "activo": "Activo",

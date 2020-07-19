@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Options } from 'highcharts';
 import { ICategorySelector, ISerieSelector, IValueSelector, ICategory, ISerie, IChartLabels } from './types';
 
@@ -20,6 +21,8 @@ export class ChartBase<T> implements IChartBase {
   private serieSelector: ISerieSelector<T>;
   private valueSelector: IValueSelector<T>;
   private baseOptions: Options = {};
+
+  constructor(private translate: TranslateService) {}
 
   public setData(data: T[]): void {
     this.data = data;
@@ -86,6 +89,7 @@ export class ChartBase<T> implements IChartBase {
         categories: categories,
       },
       series: chartSeries,
+      lang: this.translate.instant('chart')
     };
 
     this.setOptions(options);

@@ -4,7 +4,7 @@ import { ICellRendererParams, IAfterGuiAttachedParams } from 'ag-grid-community'
 
 @Component({
   selector: 'app-date-cell',
-  template: '{{ value | defaultDate}}',
+  template: '{{ value | date}}',
   styles: [''],
 })
 export class DateCellComponent implements ICellRendererAngularComp {

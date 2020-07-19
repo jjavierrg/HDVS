@@ -4,11 +4,11 @@
     <h6 class="card-subtitle mb-2">
       <div class="row">
         <div class="col-md-6 col-xl-3 text-muted">
-          <strong>{{ 'busqueda.fecha-alta' | translate}}:</strong> {{data.fechaAlta | defaultDate}}
+          <strong>{{ 'busqueda.fecha-alta' | translate}}:</strong> {{data.fechaAlta | date:'shortDate' }}
         </div>
         <div class="col-md-6 col-xl-3 text-muted">
           <strong>{{ 'busqueda.fecha-ultimo-seguimiento' | translate}}:</strong>
-          {{data.fechaUltimoSeguimiento | defaultDate}}
+          {{data.fechaUltimoSeguimiento | date:'shortDate'}}
         </div>
         <div class="col-md-6 col-xl-3 text-muted">
           <strong>{{'comun.organizacion' | translate}}:</strong> {{data.organizacion}}

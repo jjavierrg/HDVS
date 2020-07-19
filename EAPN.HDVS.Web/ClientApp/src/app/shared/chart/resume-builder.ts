@@ -1,4 +1,6 @@
+import { DatePipe } from '@angular/common';
 import { Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { Options, SeriesOptionsType, XAxisOptions } from 'highcharts';
 import { DimensionDto, SeguimientoDto } from 'src/app/core/api/api.client';
 import { IndicatorService } from 'src/app/core/services/indicator.service';
@@ -12,9 +14,10 @@ import { ICategory, IChartLabels, ISerieSelector, IValueSelector } from '../../c
 export class ResumeBuilder implements IChartBuilder {
   private dimensions: DimensionDto[];
   private chart: IChartTypedBase<SeguimientoDto>;
+  private pipe = new DatePipe('es-ES');
 
-  constructor(private indicatorService: IndicatorService) {
-    this.chart = new ChartBase<SeguimientoDto>();
+  constructor(private indicatorService: IndicatorService, private translate: TranslateService) {
+    this.chart = new ChartBase<SeguimientoDto>(translate);
     const options: Options = {
       chart: {
         type: 'column',
@@ -51,7 +54,7 @@ export class ResumeBuilder implements IChartBuilder {
 
   public setSerieSelector(): void {
     const serieSelector: ISerieSelector<SeguimientoDto> = (data: SeguimientoDto) => {
-      return { id: data.fecha, type: 'column', value: data.fecha.toDateString() };
+      return { id: data.fecha, type: 'column', value: this.pipe.transform(data.fecha, 'fullDate') };
     };
 
     this.chart.setSerieSelector(serieSelector);

@@ -1,8 +1,8 @@
 import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
-import { NgModule, ErrorHandler } from '@angular/core';
+import { NgModule, ErrorHandler, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { environment } from 'src/environments/environment';
 import { AppComponent } from './app.component';
@@ -15,6 +15,8 @@ import { LoaderModule } from './shared/modules/loader/loader.module';
 import { GlobalErrorHandler } from './core/handler/error-handler';
 import { DatePipe } from '@angular/common';
 import { UiSwitchModule } from 'ngx-ui-switch';
+import { registerLocaleData } from '@angular/common';
+import localeES from '@angular/common/locales/es';
 
 const routes: Routes = [
   {
@@ -33,6 +35,8 @@ const routes: Routes = [
     redirectTo: 'dashboard',
   },
 ];
+
+registerLocaleData(localeES, 'es-ES');
 
 @NgModule({
   declarations: [AppComponent],
@@ -57,7 +61,7 @@ const routes: Routes = [
       defaultBgColor: '#ffc107',
       checkedTextColor: 'white',
       uncheckedTextColor: 'black',
-    })
+    }),
   ],
   providers: [
     DatePipe,
@@ -65,6 +69,11 @@ const routes: Routes = [
     {
       provide: apiEndpoint,
       useValue: environment.apiEndpoint,
+    },
+    {
+      provide: LOCALE_ID,
+      deps: [TranslateService],
+      useFactory: (translateService: TranslateService) => translateService.instant('_langId')
     },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: ErrorHandler, useClass: GlobalErrorHandler },
