@@ -16,6 +16,6 @@
   </div>
   <ag-grid-angular class="grid ag-theme-alpine flex-grow-1" [columnDefs]="columns" [rowData]="data"
     [paginationPageSize]="25" [defaultColDef]="defaultColDef" (selectionChanged)="onSelectionChanged($event)"
-    [pagination]="pagination" [rowSelection]="multiselect ? 'multiple' : 'single'" suppressCellSelection>
+    [pagination]="pagination" [rowSelection]="multiselect ? 'multiple' : 'single'" suppressCellSelection [localeTextFunc]="getLocaleTextFunc()">
   </ag-grid-angular>
 </div>

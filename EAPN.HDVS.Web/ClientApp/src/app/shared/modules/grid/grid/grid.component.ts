@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { AgGridColumn } from 'ag-grid-angular';
 import { RowNode, SelectionChangedEvent } from 'ag-grid-community';
 
@@ -32,7 +33,7 @@ export class GridComponent<T> implements OnInit {
 
   public selectedRows: RowNode[];
 
-  constructor() {
+  constructor(private translate: TranslateService) {
     this.defaultColDef = {
       resizable: true,
       editable: false,
@@ -82,5 +83,13 @@ export class GridComponent<T> implements OnInit {
 
     const items = this.selectedRows.map((x) => <T>x.data);
     this.deleteItems.emit(items);
+  }
+
+  public getLocaleTextFunc(): (key: string, defaultValue: string) => string {
+    const translateService = this.translate;
+    return function (key: string, defaultValue: string): string {
+      const translated = translateService.instant(`grid.${key}`);
+      return !translated || translated === `grid.${key}` ? defaultValue : translated;
+    };
   }
 }
