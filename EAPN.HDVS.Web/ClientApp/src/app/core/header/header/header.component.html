@@ -20,16 +20,18 @@
       </div>
       <div ngbDropdownMenu class="dropdown-menu dropdown-menu-right">
         <div *appAllowedPermissions="{permissions: [permissions.user.superadmin]}">
-          <a ngbDropdownItem *appAllowedPermissions="{permissions:[permissions.user.superadmin]}"
-            routerLink="/configuracion"
+          <a ngbDropdownItem routerLink="/configuracion"
             [title]="'header.menu.configuracion' | translate">{{'header.menu.configuracion' | translate}}</a>
           <a ngbDropdownItem routerLink="/perfiles"
             [title]="'header.menu.perfiles-titulo' | translate">{{'header.menu.perfiles' | translate}}</a>
           <a ngbDropdownItem routerLink="/organizaciones"
             [title]="'header.menu.organizaciones-titulo' | translate">{{'header.menu.organizaciones' | translate}}</a>
           <div class="dropdown-divider"></div>
+          <a ngbDropdownItem routerLink="/logs"
+            [title]="'header.menu.logs-titulo' | translate">{{'header.menu.logs' | translate}}</a>
+          <div class="dropdown-divider"></div>
         </div>
-        <div *appAllowedPermissions="{permissions: [permissions.user.superadmin]}">
+        <div *appAllowedPermissions="{permissions: [permissions.usermanagement.access]}">
           <a ngbDropdownItem routerLink="/usuarios"
             [title]="'header.menu.usuarios-titulo' | translate">{{'header.menu.usuarios' | translate}}</a>
           <div class="dropdown-divider"></div>

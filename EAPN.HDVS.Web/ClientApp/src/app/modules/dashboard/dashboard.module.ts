@@ -78,6 +78,13 @@ const routes: Routes = [
         canActivate: [AuthenticatedGuard],
         data: { allowedPermissions: [Permissions.user.superadmin] },
       },
+      {
+        path: 'logs',
+        loadChildren: () => import('./logs/logs.module').then((m) => m.LogsModule),
+        canLoad: [AuthenticatedGuard],
+        canActivate: [AuthenticatedGuard],
+        data: { allowedPermissions: [Permissions.user.superadmin] },
+      },
     ],
   },
 ];
