@@ -199,6 +199,17 @@ export interface IApiClient {
      * Get all stored items
      * @return Success
      */
+    getLogs(): Observable<LogEntryDto[]>;
+    /**
+     * Get all items with a specific criteria filter
+     * @param body (optional) Query criteria filter
+     * @return Success
+     */
+    getLogsFiltered(body?: QueryData | undefined): Observable<LogEntryDtoQueryResult>;
+    /**
+     * Get all stored items
+     * @return Success
+     */
     getMunicipios(): Observable<MunicipioDto[]>;
     /**
      * Add new item to collection
@@ -2649,6 +2660,135 @@ export class ApiClient implements IApiClient {
             }));
         }
         return _observableOf<VistaPreviaFichaDtoQueryResult>(<any>null);
+    }
+
+    /**
+     * Get all stored items
+     * @return Success
+     */
+    getLogs(): Observable<LogEntryDto[]> {
+        let url_ = this.baseUrl + "/api/Log";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetLogs(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLogs(<any>response_);
+                } catch (e) {
+                    return <Observable<LogEntryDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<LogEntryDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetLogs(response: HttpResponseBase): Observable<LogEntryDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(LogEntryDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Unauthorized", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Forbidden", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<LogEntryDto[]>(<any>null);
+    }
+
+    /**
+     * Get all items with a specific criteria filter
+     * @param body (optional) Query criteria filter
+     * @return Success
+     */
+    getLogsFiltered(body?: QueryData | undefined): Observable<LogEntryDtoQueryResult> {
+        let url_ = this.baseUrl + "/api/Log/filtered";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetLogsFiltered(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLogsFiltered(<any>response_);
+                } catch (e) {
+                    return <Observable<LogEntryDtoQueryResult>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<LogEntryDtoQueryResult>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetLogsFiltered(response: HttpResponseBase): Observable<LogEntryDtoQueryResult> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = LogEntryDtoQueryResult.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Unauthorized", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Forbidden", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<LogEntryDtoQueryResult>(<any>null);
     }
 
     /**
@@ -8834,6 +8974,142 @@ export interface IVistaPreviaFichaDtoQueryResult {
     orderBy?: string | undefined;
     ascending?: boolean;
     data?: VistaPreviaFichaDto[] | undefined;
+}
+
+export class LogEntryDto implements ILogEntryDto {
+    id?: number;
+    userId?: number | undefined;
+    date?: Date;
+    logger?: string | undefined;
+    level?: string | undefined;
+    levelOrder?: number;
+    exception?: string | undefined;
+    callSite?: string | undefined;
+    message?: string | undefined;
+    ip?: string | undefined;
+    userName?: string | undefined;
+    organizacionName?: string | undefined;
+
+    constructor(data?: ILogEntryDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.userId = _data["userId"];
+            this.date = _data["date"] ? new Date(_data["date"].toString()) : <any>undefined;
+            this.logger = _data["logger"];
+            this.level = _data["level"];
+            this.levelOrder = _data["levelOrder"];
+            this.exception = _data["exception"];
+            this.callSite = _data["callSite"];
+            this.message = _data["message"];
+            this.ip = _data["ip"];
+            this.userName = _data["userName"];
+            this.organizacionName = _data["organizacionName"];
+        }
+    }
+
+    static fromJS(data: any): LogEntryDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new LogEntryDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["userId"] = this.userId;
+        data["date"] = this.date ? this.date.toISOString() : <any>undefined;
+        data["logger"] = this.logger;
+        data["level"] = this.level;
+        data["levelOrder"] = this.levelOrder;
+        data["exception"] = this.exception;
+        data["callSite"] = this.callSite;
+        data["message"] = this.message;
+        data["ip"] = this.ip;
+        data["userName"] = this.userName;
+        data["organizacionName"] = this.organizacionName;
+        return data; 
+    }
+}
+
+export interface ILogEntryDto {
+    id?: number;
+    userId?: number | undefined;
+    date?: Date;
+    logger?: string | undefined;
+    level?: string | undefined;
+    levelOrder?: number;
+    exception?: string | undefined;
+    callSite?: string | undefined;
+    message?: string | undefined;
+    ip?: string | undefined;
+    userName?: string | undefined;
+    organizacionName?: string | undefined;
+}
+
+export class LogEntryDtoQueryResult implements ILogEntryDtoQueryResult {
+    total?: number;
+    orderBy?: string | undefined;
+    ascending?: boolean;
+    data?: LogEntryDto[] | undefined;
+
+    constructor(data?: ILogEntryDtoQueryResult) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.total = _data["total"];
+            this.orderBy = _data["orderBy"];
+            this.ascending = _data["ascending"];
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data!.push(LogEntryDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): LogEntryDtoQueryResult {
+        data = typeof data === 'object' ? data : {};
+        let result = new LogEntryDtoQueryResult();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["total"] = this.total;
+        data["orderBy"] = this.orderBy;
+        data["ascending"] = this.ascending;
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface ILogEntryDtoQueryResult {
+    total?: number;
+    orderBy?: string | undefined;
+    ascending?: boolean;
+    data?: LogEntryDto[] | undefined;
 }
 
 export class PerfilDto implements IPerfilDto {

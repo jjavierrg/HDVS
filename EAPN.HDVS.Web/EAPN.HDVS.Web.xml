@@ -248,6 +248,26 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.LogController.#ctor(EAPN.HDVS.Application.Core.Services.IReadServiceBase{EAPN.HDVS.Entities.LogEntry},AutoMapper.IMapper,EAPN.HDVS.Infrastructure.Core.Queries.IFilterPaginable{EAPN.HDVS.Entities.LogEntry})">
+            <summary>
+            </summary>
+            <param name="logEntryService"></param>
+            <param name="mapper"></param>
+            <param name="filterPaginator"></param>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.LogController.GetLogs">
+            <summary>
+            Get all stored items
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.LogController.GetLogsFiltered(EAPN.HDVS.Infrastructure.Core.Queries.QueryData)">
+            <summary>
+            Get all items with a specific criteria filter
+            </summary>
+            <param name="query">Query criteria filter</param>
+            <returns></returns>
+        </member>
         <member name="M:EAPN.HDVS.Web.Controllers.MunicipiosController.#ctor(EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Municipio},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.MunicipiosController},AutoMapper.IMapper)">
             <summary>
             </summary>

@@ -5,7 +5,7 @@ namespace EAPN.HDVS.Infrastructure.Context
 {
     public class HDVSContext : DbContext
     {
-        public virtual DbSet<Log> Logs { get; set; }
+        public virtual DbSet<LogEntry> Logs { get; set; }
         public virtual DbSet<Configuracion> Configuraciones { get; set; }
 
         public virtual DbSet<TipoAdjunto> TiposAdjunto { get; set; }

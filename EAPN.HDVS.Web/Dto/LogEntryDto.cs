@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace EAPN.HDVS.Entities
+namespace EAPN.HDVS.Web.Dto
 {
-    public class LogEntry
+    public class LogEntryDto
     {
         public long Id { get; set; }
         public int? UserId { get; set; }
@@ -15,6 +15,7 @@ namespace EAPN.HDVS.Entities
         public string Message { get; set; }
         public string Ip { get; set; }
 
-        public Usuario Usuario { get; set; }
+        public string UserName { get; set; }
+        public string OrganizacionName { get; set; }
     }
 }

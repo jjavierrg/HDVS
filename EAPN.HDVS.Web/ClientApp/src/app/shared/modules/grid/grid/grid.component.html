@@ -1,19 +1,21 @@
 <div class="d-flex flex-column h-100 w-100">
   <div *ngIf="showToolbar" class="toolbar d-block d-sm-flex">
-    <div class="align-self-center text-light text-center"><h4 *ngIf="title" class="mb-3 mb-sm-0">{{ title }}</h4></div>
+    <div class="align-self-center text-light text-center">
+      <h4 *ngIf="title" class="mb-3 mb-sm-0">{{ title }}</h4>
+    </div>
     <div class="d-flex float-right float-sm-none">
       <div *ngIf="showAddButton"><button *appAllowedPermissions="{permissions: permissionsAddButton}"
-          class="btn text-light" (click)="onAddItem()">{{ 'core.anadir' | translate }}</button></div>
+          class="btn text-light" (click)="onAddItem()">{{ addButtonText ? addButtonText: ('core.anadir' | translate) }}</button></div>
       <div *ngIf="showEditButton"><button *appAllowedPermissions="{permissions: permissionsEditButton}"
           class="btn text-light" [disabled]="!selectedRows || selectedRows.length !== 1"
-          (click)="onEditItem()">{{ 'core.editar' | translate }}</button></div>
+          (click)="onEditItem()">{{ editButtonText ? editButtonText: ('core.editar' | translate) }}</button></div>
       <div *ngIf="showDeleteButton"><button *appAllowedPermissions="{permissions: permissionsDeleteButton}"
           class="btn btn-danger" [disabled]="!selectedRows || selectedRows.length === 0"
-          (click)="onDeleteItem()">{{ 'core.eliminar' | translate }}</button></div>
+          (click)="onDeleteItem()">{{ deleteButtonText ? deleteButtonText: ('core.eliminar' | translate) }}</button></div>
     </div>
   </div>
   <ag-grid-angular class="grid ag-theme-alpine flex-grow-1" [columnDefs]="columns" [rowData]="data"
-    [defaultColDef]="defaultColDef" (selectionChanged)="onSelectionChanged($event)"
-    [rowSelection]="multiselect ? 'multiple' : 'single'" suppressCellSelection>
+    [paginationPageSize]="25" [defaultColDef]="defaultColDef" (selectionChanged)="onSelectionChanged($event)"
+    [pagination]="pagination" [rowSelection]="multiselect ? 'multiple' : 'single'" suppressCellSelection>
   </ag-grid-angular>
 </div>

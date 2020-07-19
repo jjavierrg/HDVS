@@ -24,6 +24,7 @@
     "fichas": "Fichas",
     "grado": "Grado",
     "grados": "Grados de exclusión",
+    "logs": "Logs",
     "nombre": "Nombre",
     "nueva-clave": "Nueva contraseña",
     "numero-usuarios": "Técnicos/as",
@@ -34,6 +35,7 @@
     "permisos": "Permisos",
     "seguimientos": "Seguimientos",
     "telefono": "Teléfono",
+    "usuario": "Técnico/a",
     "usuarios": "Técnicos/as",
     "web": "Web"
   },
@@ -167,6 +169,10 @@
     "error": "No se pudo iniciar sesión con los datos introducidos",
     "iniciar-sesion": "Iniciar Sesión",
     "titulo": "HDVS - EAPN Madrid"
+  },
+  "logs": {
+    "ip": "IP",
+    "level": "Gravedad"
   },
   "navbar": {
     "alta-nueva": "Alta Nueva",

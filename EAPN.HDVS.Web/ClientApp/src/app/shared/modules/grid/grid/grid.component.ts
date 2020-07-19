@@ -12,10 +12,14 @@ export class GridComponent<T> implements OnInit {
   @Input() public defaultColDef: Partial<AgGridColumn>;
   @Input() public title: string;
   @Input() public data: T[];
+  @Input() public pagination: boolean = false;
   @Input() public multiselect: boolean = true;
   @Input() public showToolbar: boolean = true;
   @Input() public showAddButton: boolean = true;
   @Input() public showEditButton: boolean = true;
+  @Input() public addButtonText: string;
+  @Input() public editButtonText: string;
+  @Input() public deleteButtonText: string;
   @Input() public showDeleteButton: boolean = true;
   @Input() public permissionsAddButton: string[];
   @Input() public permissionsEditButton: string[];

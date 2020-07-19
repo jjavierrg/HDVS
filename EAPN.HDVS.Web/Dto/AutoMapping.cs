@@ -121,6 +121,10 @@ namespace EAPN.HDVS.Web.Dto
                 .ForMember(d => d.Descripcion, opt => opt.MapFrom(src => src.NombreCompleto));
             CreateMap<Organizacion, MasterDataDto>()
                 .ForMember(d => d.Descripcion, opt => opt.MapFrom(src => src.Nombre));
+
+            CreateMap<LogEntry, LogEntryDto>()
+                .ForMember(d => d.UserName, opt => opt.MapFrom((src, dest) => src.Usuario?.NombreCompleto))
+                .ForMember(d => d.OrganizacionName, opt => opt.MapFrom((src, dest) => src.Usuario?.Organizacion?.Nombre));
         }
     }
 }
