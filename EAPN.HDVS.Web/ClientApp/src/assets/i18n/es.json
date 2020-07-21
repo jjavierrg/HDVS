@@ -21,18 +21,52 @@
     "downloadSVG": "Descargar imagen SVG",
     "downloadXLS": "Descargar imagen XLS",
     "loading": "Cargando...",
-    "months": ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"],
+    "months": [
+      "Enero",
+      "Febrero",
+      "Marzo",
+      "Abril",
+      "Mayo",
+      "Junio",
+      "Julio",
+      "Agosto",
+      "Septiembre",
+      "Octubre",
+      "Noviembre",
+      "Diciembre"
+    ],
     "printChart": "Imprimir",
     "rangeSelectorFrom": "Desde",
     "rangeSelectorTo": "Hasta",
     "rangeSelectorZoom": "Período",
     "resetZoom": "Reiniciar zoom",
     "resetZoomTitle": "Reiniciar zoom",
-    "shortMonths": ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"],
+    "shortMonths": [
+      "Ene",
+      "Feb",
+      "Mar",
+      "Abr",
+      "May",
+      "Jun",
+      "Jul",
+      "Ago",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dic"
+    ],
     "thousandsSep": ",",
     "viewData": "Vista de Datos",
     "viewFullscreen": "Ver pantalla completa",
-    "weekdays": ["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"]
+    "weekdays": [
+      "Lunes",
+      "Martes",
+      "Miércoles",
+      "Jueves",
+      "Viernes",
+      "Sábado",
+      "Domingo"
+    ]
   },
   "comun": {
     "activo": "Activo",
@@ -112,6 +146,12 @@
     "subir-ficheros-o-arrastrar": "Arrastre los ficheros o haga click aquí",
     "tamano": "Tamaño",
     "ver": "Ver"
+  },
+  "estadisticas": {
+    "datos-globales": "Todas las organizaciones",
+    "filtros": "Filtros",
+    "grafica": "Gráfica",
+    "opciones": "Opciones"
   },
   "ficha": {
     "acepta-politica": "Acepta y firma política privacidad",

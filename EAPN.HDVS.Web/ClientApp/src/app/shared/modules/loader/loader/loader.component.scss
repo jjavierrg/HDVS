@@ -1,18 +1,20 @@
 .loader-container {
   position: absolute;
   background-color: rgba(255, 255, 255, 0.6);
-  width: 100%; height: 100%;
-  z-index: 100000
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
 }
 
 .loader-symbol-container {
   position: absolute;
-  top: 50%; left: 50%;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
 }
 
 .flip-vertical-left {
-	animation: flip-vertical-left 3s cubic-bezier(0.455, 0.030, 0.515, 0.955) infinite ;
+  animation: flip-vertical-left 3s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
 }
 
 @keyframes flip-vertical-left {

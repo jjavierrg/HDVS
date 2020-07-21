@@ -6,9 +6,10 @@ import { IndicatorService } from 'src/app/core/services/indicator.service';
 import { Permissions } from 'src/app/core/enums/permissions.enum';
 
 class StatsFilters {
-  public searchByOrganizacion: boolean;
+  public searchByAllOrganizacion: boolean;
   public searchByFechaAlta: boolean;
   public searchBySexo: boolean;
+  public searchByGenero: boolean;
   public searchByNacionalidad: boolean;
   public searchByPaisOrigen: boolean;
   public searchByCodPostal: boolean;
@@ -16,6 +17,7 @@ class StatsFilters {
   public fechaDesde: Date;
   public fechaHasta: Date;
   public idSexo: boolean;
+  public idGenero: boolean;
   public idNacionalidad: boolean;
   public idPaisOrigen: boolean;
   public codPostal: boolean;
@@ -29,8 +31,8 @@ class StatsFilters {
 export class StatsComponent implements OnInit {
   public isCollapsed: boolean = true;
   public filters: StatsFilters = new StatsFilters();
-  public organizaciones: MasterDataDto[];
   public sexos: MasterDataDto[];
+  public generos: MasterDataDto[];
   public paises: MasterDataDto[];
   public dimensiones: DimensionDto[];
   public rangos: RangoDto[];
@@ -44,16 +46,13 @@ export class StatsComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     try {
-      const [organizaciones, sexos, paises, dimensiones, rangos] = await Promise.all([
-        this.masterdataService.getOrganizaciones().toPromise(),
+      const [sexos, paises, dimensiones, rangos] = await Promise.all([
         this.masterdataService.getSexos().toPromise(),
         this.masterdataService.getPaises().toPromise(),
         this.indicatorService.getDimensions().toPromise(),
         this.masterdataService.getRangos().toPromise(),
       ]);
 
-      this.organizaciones = organizaciones;
-      this.organizaciones = organizaciones;
       this.sexos = sexos;
       this.paises = paises;
       this.dimensiones = dimensiones;
