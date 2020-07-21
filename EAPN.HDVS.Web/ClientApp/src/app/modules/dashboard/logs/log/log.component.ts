@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
@@ -19,9 +20,9 @@ export class LogComponent implements OnInit {
     {
       headerName: this.translate.instant('core.fecha'),
       field: 'date',
-      maxWidth: 130,
+      maxWidth: 180,
       filter: 'agDateColumnFilter',
-      cellRendererFramework: DateCellComponent,
+      valueFormatter: this.logDateFormatter.bind(this),
       sort: 'desc',
     },
     {
@@ -30,7 +31,6 @@ export class LogComponent implements OnInit {
       minWidth: 100,
       maxWidth: 200,
       filter: 'agTextColumnFilter',
-      enableRowGroup: true,
     },
     {
       headerName: this.translate.instant('comun.organizacion'),
@@ -38,7 +38,6 @@ export class LogComponent implements OnInit {
       minWidth: 100,
       maxWidth: 200,
       filter: 'agTextColumnFilter',
-      enableRowGroup: true,
     },
     {
       headerName: this.translate.instant('logs.level'),
@@ -51,20 +50,15 @@ export class LogComponent implements OnInit {
       field: 'message',
       minWidth: 100,
       filter: 'agTextColumnFilter',
-    },
-    {
-      headerName: this.translate.instant('core.error'),
-      field: 'exception',
-      minWidth: 100,
-      filter: 'agTextColumnFilter',
-    },
+    }
   ];
 
   constructor(
     private logService: LogService,
     private alertService: AlertService,
     private translate: TranslateService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private datePipe: DatePipe,
   ) {}
 
   async ngOnInit() {
@@ -85,5 +79,10 @@ export class LogComponent implements OnInit {
     } catch (error) {
       return;
     }
+  }
+
+  private logDateFormatter(params): string {
+    const date = (params || {}).value;
+    return this.datePipe.transform(date, 'medium');
   }
 }

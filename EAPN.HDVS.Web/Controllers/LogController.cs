@@ -48,7 +48,7 @@ namespace EAPN.HDVS.Web.Controllers
         public async Task<ActionResult<IEnumerable<LogEntryDto>>> GetLogs()
         {
             var entries = await _logEntryService.GetListAsync(includes: q => q.Include(x => x.Usuario).ThenInclude(x => x.Organizacion), orderBy: q => q.OrderByDescending(x => x.Date));
-            return Ok(_mapper.MapList<LogEntryDto>(entries));
+            return Ok(_mapper.MapList<LogEntryDto>(entries.Where(x => string.IsNullOrEmpty(x.Exception))));
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace EAPN.HDVS.Web.Controllers
         public async Task<ActionResult<QueryResult<LogEntryDto>>> GetLogsFiltered([FromBody] QueryData query)
         {
             IQueryable<LogEntry> basequery = _logEntryService.Repository.EntitySet.Include(x => x.Usuario).ThenInclude(x => x.Organizacion);
-            var result = await _filterPaginator.Execute(basequery, query);
+            var result = await _filterPaginator.Execute(basequery.Where(x => string.IsNullOrEmpty(x.Exception)), query);
             return _mapper.MapQueryResult<LogEntry, LogEntryDto>(result);
         }
     }

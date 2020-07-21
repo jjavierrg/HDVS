@@ -13,7 +13,7 @@
   <div ngbAutofocus class="modal-body">
     <div class="row">
       <div class="col-4 label col-lg-2">{{ 'core.fecha' | translate }}</div>
-      <div class="col-8 col-lg-4">{{ selectedEntry.date | date }}</div>
+      <div class="col-8 col-lg-4">{{ selectedEntry.date | date: 'medium' }}</div>
       <div class="col-4 label col-lg-2">{{ 'logs.ip' | translate }}</div>
       <div class="col-8 col-lg-4">{{ selectedEntry.ip }}</div>
       <div class="col-4 label col-lg-2">{{ 'comun.usuario' | translate }}</div>
