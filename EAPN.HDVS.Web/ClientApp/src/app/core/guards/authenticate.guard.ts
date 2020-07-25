@@ -54,7 +54,7 @@ export class AuthenticatedGuard implements CanActivate, CanActivateChild, CanLoa
 
   private isAuthorized(url: string, allowedPermissions: string[], requireAll: boolean): Observable<boolean> {
     if (!this.auth.isAuthenticated) {
-      this.router.navigateByUrl('/login');
+      this.router.navigate(['login'], { queryParams: { returnUrl: url }});
       return of(false);
     }
 
