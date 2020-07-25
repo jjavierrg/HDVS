@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
+import { HighchartsChartModule } from 'highcharts-angular';
 import { CoreModule } from 'src/app/core/core.module';
 import { Permissions } from 'src/app/core/enums/permissions.enum';
 import { AuthenticatedGuard } from 'src/app/core/guards/authenticate.guard';
@@ -21,6 +22,6 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [StatsComponent],
-  imports: [CommonModule, CoreModule, InputModule, NgbAccordionModule, RouterModule.forChild(routes), FormsModule],
+  imports: [CommonModule, CoreModule, InputModule, NgbAccordionModule, RouterModule.forChild(routes), FormsModule, HighchartsChartModule],
 })
-export class StatsModule { }
+export class StatsModule {}

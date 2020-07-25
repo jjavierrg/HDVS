@@ -254,6 +254,25 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:EAPN.HDVS.Web.Controllers.GraficasController">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.GraficasController.#ctor(EAPN.HDVS.Application.Core.Services.IReadServiceBase{EAPN.HDVS.Entities.Ficha},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.FichasController},AutoMapper.IMapper,EAPN.HDVS.Infrastructure.Core.Queries.IFilterPaginable{EAPN.HDVS.Entities.Ficha})">
+            <summary>
+            </summary>
+            <param name="fichaService"></param>
+            <param name="logger"></param>
+            <param name="mapper"></param>
+            <param name="filterPaginator"></param>
+        </member>
+        <member name="M:EAPN.HDVS.Web.Controllers.GraficasController.GetChartData(EAPN.HDVS.Infrastructure.Core.Queries.QueryData)">
+            <summary>
+            Get chart data acording to user query
+            </summary>
+            <param name="query">Query criteria filter</param>
+            <returns></returns>
+        </member>
         <member name="M:EAPN.HDVS.Web.Controllers.LogController.#ctor(EAPN.HDVS.Application.Core.Services.IReadServiceBase{EAPN.HDVS.Entities.LogEntry},AutoMapper.IMapper,EAPN.HDVS.Infrastructure.Core.Queries.IFilterPaginable{EAPN.HDVS.Entities.LogEntry})">
             <summary>
             </summary>

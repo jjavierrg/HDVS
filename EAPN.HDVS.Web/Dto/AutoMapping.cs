@@ -125,6 +125,16 @@ namespace EAPN.HDVS.Web.Dto
             CreateMap<LogEntry, LogEntryDto>()
                 .ForMember(d => d.UserName, opt => opt.MapFrom((src, dest) => src.Usuario?.NombreCompleto))
                 .ForMember(d => d.OrganizacionName, opt => opt.MapFrom((src, dest) => src.Usuario?.Organizacion?.Nombre));
+
+            CreateMap<Ficha, DatosGraficaDTO>()
+                .ForMember(d => d.Sexo, opt => opt.MapFrom((src, dest) => src.Sexo?.Descripcion))
+                .ForMember(d => d.Genero, opt => opt.MapFrom((src, dest) => src.Genero?.Descripcion))
+                .ForMember(d => d.Municipio, opt => opt.MapFrom((src, dest) => src.Municipio?.Nombre))
+                .ForMember(d => d.Provincia, opt => opt.MapFrom((src, dest) => src.Provincia?.Nombre))
+                .ForMember(d => d.Padron, opt => opt.MapFrom((src, dest) => src.Padron?.Descripcion))
+                .ForMember(d => d.Nacionalidad, opt => opt.MapFrom((src, dest) => src.Nacionalidad?.Descripcion))
+                .ForMember(d => d.Origen, opt => opt.MapFrom((src, dest) => src.Origen?.Descripcion))
+                .ForMember(d => d.SituacionAdministrativa, opt => opt.MapFrom((src, dest) => src.SituacionAdministrativa?.Descripcion));
         }
     }
 }

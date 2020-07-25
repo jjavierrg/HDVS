@@ -136,6 +136,7 @@
     "limpiar-subidas": "Limpiar completados",
     "no": "No",
     "no-autorizado": "No está autorizado para realizar esta operación",
+    "no-especificado": "No especificado",
     "obligatorio": "Obligatorio",
     "registro-no-encontrado": "Registro no encontrado",
     "restablecer": "Restablecer",
@@ -148,10 +149,14 @@
     "ver": "Ver"
   },
   "estadisticas": {
+    "categoria": "Categoría",
     "datos-globales": "Todas las organizaciones",
     "filtros": "Filtros",
     "grafica": "Gráfica",
-    "opciones": "Opciones"
+    "opciones": "Opciones",
+    "serie": "Serie",
+    "titulo-grafica": "Nº Fichas: {{ categoria }}{{serie}}",
+    "titulo-grafica-compuesta": "Nº Fichas por {{ categoria }} y {{ serie }}"
   },
   "ficha": {
     "acepta-politica": "Acepta y firma política privacidad",

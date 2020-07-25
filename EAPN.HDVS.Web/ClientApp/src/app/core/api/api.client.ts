@@ -196,6 +196,12 @@ export interface IApiClient {
      */
     getVistaPeviaFichas(body?: QueryData | undefined): Observable<VistaPreviaFichaDtoQueryResult>;
     /**
+     * Get chart data acording to user query
+     * @param body (optional) Query criteria filter
+     * @return Success
+     */
+    getChartData(body?: QueryData | undefined): Observable<DatosGraficaDTO[]>;
+    /**
      * Get all stored items
      * @return Success
      */
@@ -2660,6 +2666,75 @@ export class ApiClient implements IApiClient {
             }));
         }
         return _observableOf<VistaPreviaFichaDtoQueryResult>(<any>null);
+    }
+
+    /**
+     * Get chart data acording to user query
+     * @param body (optional) Query criteria filter
+     * @return Success
+     */
+    getChartData(body?: QueryData | undefined): Observable<DatosGraficaDTO[]> {
+        let url_ = this.baseUrl + "/api/Graficas/filtered";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetChartData(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetChartData(<any>response_);
+                } catch (e) {
+                    return <Observable<DatosGraficaDTO[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<DatosGraficaDTO[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetChartData(response: HttpResponseBase): Observable<DatosGraficaDTO[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(DatosGraficaDTO.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Unauthorized", status, _responseText, _headers);
+            }));
+        } else if (status === 403) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("Forbidden", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<DatosGraficaDTO[]>(<any>null);
     }
 
     /**
@@ -8974,6 +9049,118 @@ export interface IVistaPreviaFichaDtoQueryResult {
     orderBy?: string | undefined;
     ascending?: boolean;
     data?: VistaPreviaFichaDto[] | undefined;
+}
+
+export class DatosGraficaDTO implements IDatosGraficaDTO {
+    organizacionId?: number;
+    fechaNacimiento?: Date | undefined;
+    sexoId?: number | undefined;
+    generoId?: number | undefined;
+    municipioId?: number | undefined;
+    provinciaId?: number | undefined;
+    padronId?: number | undefined;
+    nacionalidadId?: number | undefined;
+    origenId?: number | undefined;
+    situacionAdministrativaId?: number | undefined;
+    sexo?: string | undefined;
+    genero?: string | undefined;
+    municipio?: string | undefined;
+    provincia?: string | undefined;
+    padron?: string | undefined;
+    nacionalidad?: string | undefined;
+    origen?: string | undefined;
+    situacionAdministrativa?: string | undefined;
+    rangoId?: number | undefined;
+    rango?: string | undefined;
+
+    constructor(data?: IDatosGraficaDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.organizacionId = _data["organizacionId"];
+            this.fechaNacimiento = _data["fechaNacimiento"] ? new Date(_data["fechaNacimiento"].toString()) : <any>undefined;
+            this.sexoId = _data["sexoId"];
+            this.generoId = _data["generoId"];
+            this.municipioId = _data["municipioId"];
+            this.provinciaId = _data["provinciaId"];
+            this.padronId = _data["padronId"];
+            this.nacionalidadId = _data["nacionalidadId"];
+            this.origenId = _data["origenId"];
+            this.situacionAdministrativaId = _data["situacionAdministrativaId"];
+            this.sexo = _data["sexo"];
+            this.genero = _data["genero"];
+            this.municipio = _data["municipio"];
+            this.provincia = _data["provincia"];
+            this.padron = _data["padron"];
+            this.nacionalidad = _data["nacionalidad"];
+            this.origen = _data["origen"];
+            this.situacionAdministrativa = _data["situacionAdministrativa"];
+            this.rangoId = _data["rangoId"];
+            this.rango = _data["rango"];
+        }
+    }
+
+    static fromJS(data: any): DatosGraficaDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new DatosGraficaDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["organizacionId"] = this.organizacionId;
+        data["fechaNacimiento"] = this.fechaNacimiento ? this.fechaNacimiento.toISOString() : <any>undefined;
+        data["sexoId"] = this.sexoId;
+        data["generoId"] = this.generoId;
+        data["municipioId"] = this.municipioId;
+        data["provinciaId"] = this.provinciaId;
+        data["padronId"] = this.padronId;
+        data["nacionalidadId"] = this.nacionalidadId;
+        data["origenId"] = this.origenId;
+        data["situacionAdministrativaId"] = this.situacionAdministrativaId;
+        data["sexo"] = this.sexo;
+        data["genero"] = this.genero;
+        data["municipio"] = this.municipio;
+        data["provincia"] = this.provincia;
+        data["padron"] = this.padron;
+        data["nacionalidad"] = this.nacionalidad;
+        data["origen"] = this.origen;
+        data["situacionAdministrativa"] = this.situacionAdministrativa;
+        data["rangoId"] = this.rangoId;
+        data["rango"] = this.rango;
+        return data; 
+    }
+}
+
+export interface IDatosGraficaDTO {
+    organizacionId?: number;
+    fechaNacimiento?: Date | undefined;
+    sexoId?: number | undefined;
+    generoId?: number | undefined;
+    municipioId?: number | undefined;
+    provinciaId?: number | undefined;
+    padronId?: number | undefined;
+    nacionalidadId?: number | undefined;
+    origenId?: number | undefined;
+    situacionAdministrativaId?: number | undefined;
+    sexo?: string | undefined;
+    genero?: string | undefined;
+    municipio?: string | undefined;
+    provincia?: string | undefined;
+    padron?: string | undefined;
+    nacionalidad?: string | undefined;
+    origen?: string | undefined;
+    situacionAdministrativa?: string | undefined;
+    rangoId?: number | undefined;
+    rango?: string | undefined;
 }
 
 export class LogEntryDto implements ILogEntryDto {

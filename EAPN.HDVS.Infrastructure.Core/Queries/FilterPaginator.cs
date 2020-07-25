@@ -13,7 +13,11 @@ namespace EAPN.HDVS.Infrastructure.Core.Queries
         public async Task<QueryResult<T>> Execute(IQueryable<T> queryCollection, IQueryData queryData)
         {
             var filter = GetFilters(queryData);
-            return await PaginateAsAsync(queryCollection.Where(filter), queryData);
+
+            if (filter != null)
+                queryCollection = queryCollection.Where(filter);
+
+            return await PaginateAsAsync(queryCollection, queryData);
         }
 
         /// <inheritDoc />
@@ -29,17 +33,17 @@ namespace EAPN.HDVS.Infrastructure.Core.Queries
         /// <inheritDoc />
         public async Task<QueryResult<T>> PaginateAsAsync(IQueryable<T> queryCollection, IQueryData queryData)
         {
-            var orderStatement = GetOrderStatement(queryData);
-            var orderAscending = queryData.Order ?? "";
-            var page = queryData.PageIndex < 1 ? 1 : queryData.PageIndex;
+            var orderStatement = queryData == null ? null : GetOrderStatement(queryData);
+            var orderAscending = queryData?.Order ?? "";
+            var page = queryData?.PageIndex ?? 0;
+            var pageSize = queryData?.PageSize ?? 0;
+            page = Math.Max(page, 1);
 
             var totalResult = await queryCollection.CountAsync();
             queryCollection = queryCollection.OrderBy(orderStatement);
 
-            if (queryData.PageSize > 0)
-            {
-                queryCollection = queryCollection.Skip((page - 1) * queryData.PageSize).Take(queryData.PageSize);
-            }
+            if (pageSize > 0)
+                queryCollection = queryCollection.Skip((page - 1) * pageSize).Take(pageSize);
 
             var dataResult = await queryCollection.OrderBy(orderStatement).ToListAsync();
 
@@ -48,7 +52,7 @@ namespace EAPN.HDVS.Infrastructure.Core.Queries
                 Total = totalResult,
                 Data = dataResult,
                 Ascending = orderAscending.Trim().Equals("asc", StringComparison.OrdinalIgnoreCase),
-                OrderBy = queryData.OrderField ?? ""
+                OrderBy = queryData?.OrderField ?? ""
             };
         }
 

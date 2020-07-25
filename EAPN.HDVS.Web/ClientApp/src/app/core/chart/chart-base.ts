@@ -5,6 +5,7 @@ import { ICategorySelector, ISerieSelector, IValueSelector, ICategory, ISerie, I
 export interface IChartBase {
   getChartOptions(): Options;
   setOptions(options: Options): void;
+  clearOptions(): void;
   setLabels(labels: IChartLabels): void;
 }
 
@@ -30,6 +31,10 @@ export class ChartBase<T> implements IChartBase {
 
   public setOptions(options: Options): void {
     this.baseOptions = this.combineObjects(options, this.baseOptions);
+  }
+
+  public clearOptions(): void {
+    this.baseOptions = {};
   }
 
   public setLabels(labels: IChartLabels): void {
@@ -80,8 +85,8 @@ export class ChartBase<T> implements IChartBase {
 
     series.forEach((values, key) => {
       const data: any[] = [];
-      mappers.forEach((x) => data.push(this.valueSelector(values, x)));
-      chartSeries.push({ type: key.type as any, name: key.value, data });
+      mappers.forEach((x) => data.push(this.valueSelector(values.data, x)));
+      chartSeries.push({ type: values.serie.type as any, name: values.serie.value, data });
     });
 
     const options: Options = {
@@ -89,24 +94,24 @@ export class ChartBase<T> implements IChartBase {
         categories: categories,
       },
       series: chartSeries,
-      lang: this.translate.instant('chart')
+      lang: this.translate.instant('chart'),
     };
 
     this.setOptions(options);
     return this.baseOptions;
   }
 
-  private groupBy(list: T[], keyGetter: ISerieSelector<T>): Map<ISerie, T[]> {
-    const map = new Map<any, T[]>();
+  private groupBy(list: T[], keyGetter: ISerieSelector<T>): Map<number, { serie: ISerie; data: T[] }> {
+    const map = new Map<number, { serie: ISerie; data: T[] }>();
 
     list.forEach((item: T) => {
-      const key = keyGetter(item);
+      const serie = keyGetter(item);
 
-      if (!map.has(key)) {
-        map.set(key, []);
+      if (!map.has(serie.id)) {
+        map.set(serie.id, { serie, data: [] });
       }
 
-      map.get(key).push(item);
+      map.get(serie.id).data.push(item);
     });
 
     return map;
