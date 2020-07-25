@@ -121,6 +121,7 @@
     },
     "cambiar-imagen": "Pulse para cambiar la imagen",
     "cancelar": "Cancelar",
+    "cargando": "Cargando",
     "cerrar-todo": "Cerrar Todo",
     "completado": "Completado",
     "confirmar-eliminacion": "<p><strong>¿Está seguro de querer eliminar los elementos seleccionados?</strong></p><p>Toda la información asociada será eliminada por completo. Tenga en cuenta que esta operación <span class='text-danger'>no se puede deshacer.</span></p>",
