@@ -20,6 +20,7 @@
     "downloadPNG": "Descargar imagen PNG",
     "downloadSVG": "Descargar imagen SVG",
     "downloadXLS": "Descargar imagen XLS",
+    "drillUpText": "< Volver",
     "loading": "Cargando...",
     "months": [
       "Enero",
@@ -155,8 +156,8 @@
     "grafica": "Gráfica",
     "opciones": "Opciones",
     "serie": "Serie",
-    "titulo-grafica": "Nº Fichas: {{ categoria }}{{serie}}",
-    "titulo-grafica-compuesta": "Nº Fichas por {{ categoria }} y {{ serie }}"
+    "titulo-grafica": "Nº Fichas: {{serie}}{{ categoria }}",
+    "titulo-grafica-compuesta": "Nº Fichas por {{ serie }} y {{ categoria }}"
   },
   "ficha": {
     "acepta-politica": "Acepta y firma política privacidad",

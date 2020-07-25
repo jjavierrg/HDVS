@@ -3,35 +3,16 @@ import { TranslateService } from '@ngx-translate/core';
 import * as Highcharts from 'highcharts';
 import HC_drilldown from 'highcharts/modules/drilldown';
 import HC_exporting from 'highcharts/modules/exporting';
-import { DatosGraficaDTO, DimensionDto, MasterDataDto, RangoDto } from 'src/app/core/api/api.client';
+import { DatosGraficaDTO, MasterDataDto, RangoDto } from 'src/app/core/api/api.client';
 import { ChartDirector } from 'src/app/core/chart/chart-director';
 import { ChartFieldSelector } from 'src/app/core/chart/chart-field.selector';
 import { ICategory, ICategorySelector, IChartLabels, ISerie, ISerieSelector, IValueSelector } from 'src/app/core/chart/types';
 import { Permissions } from 'src/app/core/enums/permissions.enum';
 import { AlertService } from 'src/app/core/services/alert.service';
-import { GraphService } from 'src/app/core/services/graph.service';
-import { IndicatorService } from 'src/app/core/services/indicator.service';
+import { GraphService, StatsFilters } from 'src/app/core/services/graph.service';
 import { MasterdataService } from 'src/app/core/services/masterdata.service';
 import { CustomBuilder } from 'src/app/shared/chart/custom-builder';
 import { SelectorsService } from '../selectors/selectors.service';
-
-class StatsFilters {
-  public searchByAllOrganizacion: boolean;
-  public searchByFechaAlta: boolean;
-  public searchBySexo: boolean;
-  public searchByGenero: boolean;
-  public searchByNacionalidad: boolean;
-  public searchByPaisOrigen: boolean;
-  public searchByCodPostal: boolean;
-  public idOrganizacion: boolean;
-  public fechaDesde: Date;
-  public fechaHasta: Date;
-  public idSexo: boolean;
-  public idGenero: boolean;
-  public idNacionalidad: boolean;
-  public idPaisOrigen: boolean;
-  public codPostal: boolean;
-}
 
 @Component({
   selector: 'app-stats',
@@ -44,7 +25,6 @@ export class StatsComponent implements OnInit {
   public sexos: MasterDataDto[];
   public generos: MasterDataDto[];
   public paises: MasterDataDto[];
-  public dimensiones: DimensionDto[];
   public rangos: RangoDto[];
   public permissions = Permissions;
   public highcharts: typeof Highcharts = Highcharts;
@@ -55,7 +35,6 @@ export class StatsComponent implements OnInit {
 
   constructor(
     private masterdataService: MasterdataService,
-    private indicatorService: IndicatorService,
     private graphService: GraphService,
     private alertService: AlertService,
     private charDirector: ChartDirector,
@@ -70,16 +49,14 @@ export class StatsComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     try {
-      const [sexos, paises, dimensiones, rangos] = await Promise.all([
+      const [sexos, paises, rangos] = await Promise.all([
         this.masterdataService.getSexos().toPromise(),
         this.masterdataService.getPaises().toPromise(),
-        this.indicatorService.getDimensions().toPromise(),
         this.masterdataService.getRangos().toPromise(),
       ]);
 
       this.sexos = sexos;
       this.paises = paises;
-      this.dimensiones = dimensiones;
       this.rangos = rangos;
 
       this.isCollapsed = false;
@@ -88,13 +65,25 @@ export class StatsComponent implements OnInit {
     }
   }
 
+  public onRangoChange(rangoid: number, checked: boolean): void {
+    if (checked && !this.filters.rangos.includes(rangoid)) {
+      this.filters.rangos.push(rangoid);
+    } else if (!checked && this.filters.rangos.includes(rangoid)) {
+      this.filters.rangos = this.filters.rangos.filter((x) => x !== rangoid);
+    }
+  }
+
+  public getRangoChecked(rangoid: number): boolean {
+    return this.filters.rangos.includes(rangoid);
+  }
+
   public async generateChart(): Promise<void> {
     this.chartOptions = null;
     const category = this.selectors.find((x) => x.id === this.category);
     const serie = this.selectors.find((x) => x.id === this.serie);
     const title = category.id === 0 || serie.id === 0 ? 'titulo-grafica' : 'titulo-grafica-compuesta';
 
-    const items = await this.graphService.getGraphData(null).toPromise();
+    const items = await this.graphService.getGraphData(this.filters).toPromise();
     const builder = new CustomBuilder<DatosGraficaDTO>(this.translate);
     const labels: IChartLabels = {
       chartTitle: this.translate.instant(`estadisticas.${title}`, {

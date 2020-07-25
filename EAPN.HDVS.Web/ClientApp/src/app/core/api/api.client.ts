@@ -200,7 +200,7 @@ export interface IApiClient {
      * @param body (optional) Query criteria filter
      * @return Success
      */
-    getChartData(body?: QueryData | undefined): Observable<DatosGraficaDTO[]>;
+    getChartData(body?: GraphQuery | undefined): Observable<DatosGraficaDTO[]>;
     /**
      * Get all stored items
      * @return Success
@@ -2673,7 +2673,7 @@ export class ApiClient implements IApiClient {
      * @param body (optional) Query criteria filter
      * @return Success
      */
-    getChartData(body?: QueryData | undefined): Observable<DatosGraficaDTO[]> {
+    getChartData(body?: GraphQuery | undefined): Observable<DatosGraficaDTO[]> {
         let url_ = this.baseUrl + "/api/Graficas/filtered";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2721,9 +2721,19 @@ export class ApiClient implements IApiClient {
             }
             return _observableOf(result200);
             }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = ProblemDetails.fromJS(resultData400);
+            return throwException("Bad Request", status, _responseText, _headers, result400);
+            }));
         } else if (status === 401) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("Unauthorized", status, _responseText, _headers);
+            let result401: any = null;
+            let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("Unauthorized", status, _responseText, _headers, result401);
             }));
         } else if (status === 403) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
@@ -9049,6 +9059,58 @@ export interface IVistaPreviaFichaDtoQueryResult {
     orderBy?: string | undefined;
     ascending?: boolean;
     data?: VistaPreviaFichaDto[] | undefined;
+}
+
+export class GraphQuery implements IGraphQuery {
+    query?: QueryData;
+    rangos?: number[] | undefined;
+    globalData?: boolean;
+
+    constructor(data?: IGraphQuery) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.query = _data["query"] ? QueryData.fromJS(_data["query"]) : <any>undefined;
+            if (Array.isArray(_data["rangos"])) {
+                this.rangos = [] as any;
+                for (let item of _data["rangos"])
+                    this.rangos!.push(item);
+            }
+            this.globalData = _data["globalData"];
+        }
+    }
+
+    static fromJS(data: any): GraphQuery {
+        data = typeof data === 'object' ? data : {};
+        let result = new GraphQuery();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["query"] = this.query ? this.query.toJSON() : <any>undefined;
+        if (Array.isArray(this.rangos)) {
+            data["rangos"] = [];
+            for (let item of this.rangos)
+                data["rangos"].push(item);
+        }
+        data["globalData"] = this.globalData;
+        return data; 
+    }
+}
+
+export interface IGraphQuery {
+    query?: QueryData;
+    rangos?: number[] | undefined;
+    globalData?: boolean;
 }
 
 export class DatosGraficaDTO implements IDatosGraficaDTO {

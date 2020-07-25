@@ -62,6 +62,12 @@ export class SelectorsService {
         valueProperty: 'situacionAdministrativaId',
         emptyDescriptionMessage: noDataMessage,
       }),
+      new ChartFieldSelector<DatosGraficaDTO>(9, {
+        name: this.translate.instant('comun.grados'),
+        descriptorProperty: 'rango',
+        valueProperty: 'rangoId',
+        emptyDescriptionMessage: noDataMessage,
+      }),
     ];
   }
 }

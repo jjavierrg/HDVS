@@ -258,19 +258,20 @@
             <summary>
             </summary>
         </member>
-        <member name="M:EAPN.HDVS.Web.Controllers.GraficasController.#ctor(EAPN.HDVS.Application.Core.Services.IReadServiceBase{EAPN.HDVS.Entities.Ficha},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.FichasController},AutoMapper.IMapper,EAPN.HDVS.Infrastructure.Core.Queries.IFilterPaginable{EAPN.HDVS.Entities.Ficha})">
+        <member name="M:EAPN.HDVS.Web.Controllers.GraficasController.#ctor(EAPN.HDVS.Application.Core.Services.IReadServiceBase{EAPN.HDVS.Entities.Ficha},EAPN.HDVS.Application.Core.Services.IReadServiceBase{EAPN.HDVS.Entities.Rango},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.FichasController},AutoMapper.IMapper,EAPN.HDVS.Infrastructure.Core.Queries.IFilterPaginable{EAPN.HDVS.Entities.Ficha})">
             <summary>
             </summary>
             <param name="fichaService"></param>
+            <param name="rangoService"></param>
             <param name="logger"></param>
             <param name="mapper"></param>
             <param name="filterPaginator"></param>
         </member>
-        <member name="M:EAPN.HDVS.Web.Controllers.GraficasController.GetChartData(EAPN.HDVS.Infrastructure.Core.Queries.QueryData)">
+        <member name="M:EAPN.HDVS.Web.Controllers.GraficasController.GetChartData(EAPN.HDVS.Web.Dto.GraphQuery)">
             <summary>
             Get chart data acording to user query
             </summary>
-            <param name="query">Query criteria filter</param>
+            <param name="graphQuery">Query criteria filter</param>
             <returns></returns>
         </member>
         <member name="M:EAPN.HDVS.Web.Controllers.LogController.#ctor(EAPN.HDVS.Application.Core.Services.IReadServiceBase{EAPN.HDVS.Entities.LogEntry},AutoMapper.IMapper,EAPN.HDVS.Infrastructure.Core.Queries.IFilterPaginable{EAPN.HDVS.Entities.LogEntry})">
@@ -850,6 +851,79 @@
             Users with superadmin permission exclusion filter
             </summary>
             <returns></returns>
+        </member>
+        <member name="P:EAPN.HDVS.Web.Dto.DatosGraficaDTO.OrganizacionId">
+            <exclude />
+        </member>
+        <member name="P:EAPN.HDVS.Web.Dto.DatosGraficaDTO.FechaNacimiento">
+            <exclude />
+        </member>
+        <member name="P:EAPN.HDVS.Web.Dto.DatosGraficaDTO.SexoId">
+            <exclude />
+        </member>
+        <member name="P:EAPN.HDVS.Web.Dto.DatosGraficaDTO.GeneroId">
+            <exclude />
+        </member>
+        <member name="P:EAPN.HDVS.Web.Dto.DatosGraficaDTO.MunicipioId">
+            <exclude />
+        </member>
+        <member name="P:EAPN.HDVS.Web.Dto.DatosGraficaDTO.ProvinciaId">
+            <exclude />
+        </member>
+        <member name="P:EAPN.HDVS.Web.Dto.DatosGraficaDTO.PadronId">
+            <exclude />
+        </member>
+        <member name="P:EAPN.HDVS.Web.Dto.DatosGraficaDTO.NacionalidadId">
+            <exclude />
+        </member>
+        <member name="P:EAPN.HDVS.Web.Dto.DatosGraficaDTO.OrigenId">
+            <exclude />
+        </member>
+        <member name="P:EAPN.HDVS.Web.Dto.DatosGraficaDTO.SituacionAdministrativaId">
+            <exclude />
+        </member>
+        <member name="P:EAPN.HDVS.Web.Dto.DatosGraficaDTO.Sexo">
+            <exclude />
+        </member>
+        <member name="P:EAPN.HDVS.Web.Dto.DatosGraficaDTO.Genero">
+            <exclude />
+        </member>
+        <member name="P:EAPN.HDVS.Web.Dto.DatosGraficaDTO.Municipio">
+            <exclude />
+        </member>
+        <member name="P:EAPN.HDVS.Web.Dto.DatosGraficaDTO.Provincia">
+            <exclude />
+        </member>
+        <member name="P:EAPN.HDVS.Web.Dto.DatosGraficaDTO.Padron">
+            <exclude />
+        </member>
+        <member name="P:EAPN.HDVS.Web.Dto.DatosGraficaDTO.Nacionalidad">
+            <exclude />
+        </member>
+        <member name="P:EAPN.HDVS.Web.Dto.DatosGraficaDTO.Origen">
+            <exclude />
+        </member>
+        <member name="P:EAPN.HDVS.Web.Dto.DatosGraficaDTO.SituacionAdministrativa">
+            <exclude />
+        </member>
+        <member name="P:EAPN.HDVS.Web.Dto.DatosGraficaDTO.RangoId">
+            <exclude />
+        </member>
+        <member name="P:EAPN.HDVS.Web.Dto.DatosGraficaDTO.Rango">
+            <exclude />
+        </member>
+        <member name="T:EAPN.HDVS.Web.Dto.GraphQuery">
+            <summary>
+            </summary>
+        </member>
+        <member name="P:EAPN.HDVS.Web.Dto.GraphQuery.Query">
+            <exclude />
+        </member>
+        <member name="P:EAPN.HDVS.Web.Dto.GraphQuery.Rangos">
+            <exclude />
+        </member>
+        <member name="P:EAPN.HDVS.Web.Dto.GraphQuery.GlobalData">
+            <exclude />
         </member>
         <member name="T:EAPN.HDVS.Web.Security.SymmetricTokenService">
             <summary>

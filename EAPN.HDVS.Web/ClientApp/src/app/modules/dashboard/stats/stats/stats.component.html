@@ -53,23 +53,10 @@
                   <app-combobox [disabled]="!filters.searchByPaisOrigen" name="pais-origen" [data]="paises"
                     [(ngModel)]="filters.idPaisOrigen"></app-combobox>
                 </div>
-                <div class="form-group form-group-tabbed">
-                  <app-checkbox [label]="'ficha.codigo-postal' | translate" name="chkCodigo-postal"
-                    [(ngModel)]="filters.searchByCodPostal"></app-checkbox>
-                  <div>
-                    <input type="number" [disabled]="!filters.searchByCodPostal" name="codigo-postal"
-                      class="form-control px-0" maxlength="10" [(ngModel)]="filters.codPostal" />
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label>{{ 'comun.dimensiones' | translate }}</label>
-                  <app-checkbox class="d-block ml-3" *ngFor="let dimension of dimensiones"
-                    [label]="dimension.descripcion">
-                  </app-checkbox>
-                </div>
                 <div class="form-group">
                   <label>{{ 'comun.grados' | translate }}</label>
-                  <app-checkbox class="d-block ml-3" *ngFor="let rango of rangos" [label]="rango.descripcion">
+                  <app-checkbox class="d-block ml-3" *ngFor="let rango of rangos" [label]="rango.descripcion"
+                    [checked]="getRangoChecked(rango.id)" (change)="onRangoChange(rango.id, $event)">
                   </app-checkbox>
                 </div>
               </form>
@@ -82,10 +69,10 @@
               </div>
             </ng-template>
             <ng-template ngbPanelContent>
-              {{ 'estadisticas.categoria' | translate }}
-              <app-combobox [data]="selectors" [(ngModel)]="category"></app-combobox>
               {{ 'estadisticas.serie' | translate }}
               <app-combobox [data]="selectors" [(ngModel)]="serie"></app-combobox>
+              {{ 'estadisticas.categoria' | translate }}
+              <app-combobox [data]="selectors" [(ngModel)]="category"></app-combobox>
             </ng-template>
           </ngb-panel>
         </ngb-accordion>
