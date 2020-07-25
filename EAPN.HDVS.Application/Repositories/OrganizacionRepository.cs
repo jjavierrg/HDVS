@@ -21,7 +21,9 @@ namespace EAPN.HDVS.Application.Repositories
         public override void AddRange(IEnumerable<Organizacion> items)
         {
             foreach (var item in items)
+            {
                 item.FechaAlta = DateTime.Now;
+            }
 
             base.AddRange(items);
         }

@@ -6,7 +6,7 @@ namespace EAPN.HDVS.Infrastructure.Core.Queries
     /// <summary>
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IFilterPaginable<T>: IPaginable<T>, IFilterable<T> where T : class
+    public interface IFilterPaginable<T> : IPaginable<T>, IFilterable<T> where T : class
     {
         /// <summary>
         /// Get result query after filter and pagination

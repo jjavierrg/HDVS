@@ -5,6 +5,6 @@
         public int UsuarioId { get; set; }
         public int PermisoId { get; set; }
         public Usuario Usuario { get; set; }
-        public Permiso Permiso{ get; set; }
+        public Permiso Permiso { get; set; }
     }
 }

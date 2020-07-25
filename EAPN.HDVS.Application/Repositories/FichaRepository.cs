@@ -5,7 +5,6 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 
 namespace EAPN.HDVS.Application.Repositories
 {
@@ -40,9 +39,11 @@ namespace EAPN.HDVS.Application.Repositories
 
         public override void UpdateRange(IEnumerable<Ficha> items)
         {
-            foreach(var item in items)
+            foreach (var item in items)
+            {
                 SetFichaState(item);
-            
+            }
+
             base.UpdateRange(items);
         }
 

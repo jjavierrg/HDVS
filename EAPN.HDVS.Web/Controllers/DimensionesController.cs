@@ -68,7 +68,7 @@ namespace EAPN.HDVS.Web.Controllers
             var categorias = await _categoryService.GetListAsync(x => ids.Contains(x.Id), q => q.Include(x => x.Dimension), q => q.OrderBy(x => x.Dimension.Orden).ThenBy(x => x.Orden));
             var dimensiones = categorias.GroupBy(x => x.Dimension).ToList();
             dimensiones.ForEach(x => x.Key.Categorias = x.OrderBy(c => c.Orden).ToList());
-            
+
             return Ok(_mapper.MapList<DimensionDto>(dimensiones.Select(x => x.Key).OrderBy(x => x.Orden)));
         }
     }

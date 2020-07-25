@@ -1,8 +1,6 @@
 ﻿using EAPN.HDVS.Web.Dto;
 using EAPN.HDVS.Web.Testing.Utils;
 using System;
-using System.Collections.Generic;
-using System.Net;
 using System.Threading.Tasks;
 using Xunit;
 

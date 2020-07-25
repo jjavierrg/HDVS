@@ -3,7 +3,6 @@ using EAPN.HDVS.Infrastructure.Context;
 using EAPN.HDVS.Testing.Common;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace EAPN.HDVS.Web.Testing.Controllers.FichasController
@@ -24,7 +23,7 @@ namespace EAPN.HDVS.Web.Testing.Controllers.FichasController
                 OrganizacionId = 1,
                 UsuarioId = 1,
                 SexoId = 1,
-                GeneroId= 1,
+                GeneroId = 1,
                 MunicipioId = 1,
                 ProvinciaId = 1,
                 NacionalidadId = 1,
@@ -40,11 +39,8 @@ namespace EAPN.HDVS.Web.Testing.Controllers.FichasController
                 context.Fichas.Add(GetNewFicha(i));
             }
 
-            var lastAttachmentId = await context.Fichas.AnyAsync() ? await context.Fichas.MaxAsync(x => x.Id) + 1 : 0;
             for (int i = lastId; i <= 10; i++)
-            {
                 context.Adjuntos.Add(new Adjunto { Id = i, Alias = "Alias", FechaAlta = DateTime.Now, NombreOriginal = "NombreOriginal", Tamano = 123, TipoId = 1 });
-            }
 
             await context.SaveChangesAsync();
         }

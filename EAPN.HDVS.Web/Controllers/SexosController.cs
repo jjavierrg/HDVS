@@ -109,11 +109,15 @@ namespace EAPN.HDVS.Web.Controllers
         public async Task<IActionResult> PutSexo(int id, SexoDto sexoDto)
         {
             if (id != sexoDto.Id)
+            {
                 return BadRequest();
+            }
 
             var sexo = await _sexoService.GetFirstOrDefault(x => x.Id == id);
             if (sexo == null)
+            {
                 return NotFound();
+            }
 
             _logger.LogInformation($"Se actualiza el sexo {sexo.Descripcion} : {sexoDto.Descripcion}");
             _mapper.Map(sexoDto, sexo);
@@ -137,7 +141,9 @@ namespace EAPN.HDVS.Web.Controllers
         {
             var sexo = await _sexoService.GetFirstOrDefault(x => x.Id == id);
             if (sexo == null)
+            {
                 return NotFound();
+            }
 
             _logger.LogWarning($"Se elimina el sexo {sexo.Descripcion}");
             _sexoService.Remove(sexo);

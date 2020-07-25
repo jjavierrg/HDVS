@@ -11,12 +11,15 @@ namespace EAPN.HDVS.Web.Extensions
             return mapper.Map<IEnumerable<T>>(collection);
         }
 
-        public static QueryResult<T> MapQueryResult<O, T>(this IMapper mapper, QueryResult<O> queryResult) where T : class, new() where O: class
+        public static QueryResult<T> MapQueryResult<O, T>(this IMapper mapper, QueryResult<O> queryResult) where T : class, new() where O : class
         {
             if (queryResult == null)
+            {
                 return null;
+            }
 
-            var result = new QueryResult<T> {
+            var result = new QueryResult<T>
+            {
                 Ascending = queryResult.Ascending,
                 OrderBy = queryResult.OrderBy,
                 Total = queryResult.Total,

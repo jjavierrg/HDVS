@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using EAPN.HDVS.Application.Services.User;
-using EAPN.HDVS.Web.Dto;
 using EAPN.HDVS.Web.Dto.Auth;
 using EAPN.HDVS.Web.Extensions;
 using Microsoft.AspNetCore.Authorization;
@@ -15,9 +14,9 @@ namespace EAPN.HDVS.Web.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private IUsuarioService _usuarioService;
-        private ILogger<AuthController> _logger;
-        private IMapper _mapper;
+        private readonly IUsuarioService _usuarioService;
+        private readonly ILogger<AuthController> _logger;
+        private readonly IMapper _mapper;
 
         public AuthController(IUsuarioService usuarioService, ILogger<AuthController> logger, IMapper mapper)
         {
@@ -32,10 +31,6 @@ namespace EAPN.HDVS.Web.Controllers
         public async Task<ActionResult<UserTokenDto>> AuthenticateAsync([FromBody] LoginAttempDto loginAttempDto)
         {
             var token = await _usuarioService.LoginAsync(loginAttempDto.Email, loginAttempDto.Password);
-
-            //if (token == null)
-            //    return Unauthorized();
-
             return _mapper.Map<UserTokenDto>(token);
         }
 
@@ -46,10 +41,6 @@ namespace EAPN.HDVS.Web.Controllers
         public async Task<ActionResult<UserTokenDto>> RefreshTokenAsync()
         {
             var token = await _usuarioService.RefreshTokenAsync(User.GetUserId() ?? 0);
-
-            //if (token == null)
-            //    return Unauthorized();
-
             return _mapper.Map<UserTokenDto>(token);
         }
 

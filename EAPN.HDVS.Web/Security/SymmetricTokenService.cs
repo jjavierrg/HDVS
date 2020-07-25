@@ -7,15 +7,16 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
 
 namespace EAPN.HDVS.Web.Security
 {
+    /// <summary>
+    /// </summary>
     public class SymmetricTokenService : ITokenService
     {
-        private ITokenConfiguration _tokenConfiguration;
-        
+        private readonly ITokenConfiguration _tokenConfiguration;
+
         /// <summary>
         /// </summary>
         /// <param name="tokenConfiguration"></param>
@@ -32,7 +33,9 @@ namespace EAPN.HDVS.Web.Security
         public UserToken GenerateTokenForUser(Usuario user)
         {
             if (user == null)
+            {
                 return null;
+            }
 
             var permisos = user.Perfiles.SelectMany(x => x.Perfil?.Permisos).Select(x => x.Permiso)
                             .Union(user.PermisosAdicionales.Select(x => x.Permiso))
@@ -51,9 +54,13 @@ namespace EAPN.HDVS.Web.Security
             var secondsExpire = Math.Max(_tokenConfiguration.TokenLifeMinutes, 10) * 60;
 
             if (permisos.Any())
+            {
                 claims.AddRange(permisos.Select(x => new Claim(ClaimTypes.Role, x.Clave)));
+            }
             else
+            {
                 claims.Add(new Claim(ClaimTypes.Role, "Anonymous"));
+            }
 
             var key = Encoding.ASCII.GetBytes(_tokenConfiguration.SymmetricSecret);
             var tokenDescriptor = new JwtSecurityToken(

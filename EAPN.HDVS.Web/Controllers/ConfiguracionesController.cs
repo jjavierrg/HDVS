@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace EAPN.HDVS.Web.Controllers
@@ -76,11 +75,15 @@ namespace EAPN.HDVS.Web.Controllers
         public async Task<IActionResult> PutConfiguracion(int id, ConfiguracionDto configuracionDto)
         {
             if (id != configuracionDto.Id)
+            {
                 return BadRequest();
+            }
 
             var configuracion = await _configuracionService.GetFirstOrDefault(x => x.Id == id);
             if (configuracion == null)
+            {
                 return NotFound();
+            }
 
             _logger.LogInformation($"Se actualiza la configuracion");
             _mapper.Map(configuracionDto, configuracion);

@@ -2,7 +2,6 @@
 using EAPN.HDVS.Application.Core.Services;
 using EAPN.HDVS.Entities;
 using EAPN.HDVS.Infrastructure.Core.Queries;
-using EAPN.HDVS.Infrastructure.Core.Repository;
 using EAPN.HDVS.Shared.Permissions;
 using EAPN.HDVS.Web.Dto;
 using EAPN.HDVS.Web.Extensions;
@@ -19,6 +18,8 @@ using System.Threading.Tasks;
 
 namespace EAPN.HDVS.Web.Controllers
 {
+    /// <summary>
+    /// </summary>
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
@@ -55,11 +56,13 @@ namespace EAPN.HDVS.Web.Controllers
         [ProducesResponseType(typeof(IEnumerable<FichaDto>), StatusCodes.Status200OK)]
         public async Task<ActionResult<FichaDto>> GetFichas()
         {
-            var fichas = await GetBaseQueryable().ToListAsync();
+            var fichas = await GetBaseQueryable().Include(x => x.Sexo).Include(x => x.Nacionalidad).ToListAsync();
             var fichasIds = fichas.Select(x => x.Id);
 
             if (fichasIds.Any())
+            {
                 _logger.LogInformation($"[Fichas] Se obtiene un listado con las siguientes fichas: [{string.Join(", ", fichasIds)}]");
+            }
 
             return Ok(_mapper.MapList<FichaDto>(fichas));
         }
@@ -95,18 +98,26 @@ namespace EAPN.HDVS.Web.Controllers
             var query = GetBaseQueryable();
 
             if (User.HasPermission(Permissions.PERSONALATTACHMENTS_READ))
+            {
                 query = query.Include(x => x.Adjuntos);
+            }
 
             if (User.HasPermission(Permissions.PERSONALINDICATORS_READ))
+            {
                 query = query.Include(x => x.Seguimientos).ThenInclude(x => x.Tecnico)
                     .Include(x => x.Seguimientos).ThenInclude(x => x.Indicadores).ThenInclude(x => x.Indicador);
+            }
 
             var ficha = await query.FirstOrDefaultAsync(x => x.Id == id);
 
             if (ficha != null)
+            {
                 _logger.LogInformation($"[Fichas] Se accede a la ficha [{ficha.Id}]");
+            }
             else
+            {
                 _logger.LogWarning($"[Fichas] Se ha intentado acceder a una ficha no válida [id: {id}]");
+            }
 
             return _mapper.Map<FichaDto>(ficha);
         }
@@ -124,21 +135,29 @@ namespace EAPN.HDVS.Web.Controllers
             var query = GetBaseQueryable();
 
             if (User.HasPermission(Permissions.PERSONALATTACHMENTS_READ))
+            {
                 query = query.Include(x => x.Adjuntos);
+            }
 
             if (User.HasPermission(Permissions.PERSONALINDICATORS_READ))
+            {
                 query = query.Include(x => x.Seguimientos).ThenInclude(x => x.Tecnico)
                     .Include(x => x.Organizacion).Include(x => x.Tecnico)
                     .Include(x => x.Sexo).Include(x => x.Genero)
                     .Include(x => x.Municipio).Include(x => x.Provincia)
                     .Include(x => x.Nacionalidad).Include(x => x.Origen).Include(x => x.Padron);
+            }
 
             var ficha = await query.FirstOrDefaultAsync(x => x.Id == id);
 
             if (ficha != null)
+            {
                 _logger.LogInformation($"[Fichas] Se accede a la ficha [{ficha.Id}]");
+            }
             else
+            {
                 _logger.LogWarning($"[Fichas] Se ha intentado acceder a una ficha no válida [id: {id}]");
+            }
 
             return _mapper.Map<DatosFichaDto>(ficha);
         }
@@ -160,7 +179,9 @@ namespace EAPN.HDVS.Web.Controllers
             var fichasIds = result.Data?.Select(x => x.Id);
 
             if (fichasIds.Any())
+            {
                 _logger.LogInformation($"[Fichas] Se obtiene un listado mediante búsqueda filtrada con las siguientes fichas: [{string.Join(", ", fichasIds)}]");
+            }
 
             return _mapper.MapQueryResult<Ficha, FichaBusquedaDto>(result);
         }
@@ -181,7 +202,9 @@ namespace EAPN.HDVS.Web.Controllers
             var fichasIds = result.Data?.Select(x => x.Id);
 
             if (fichasIds.Any())
+            {
                 _logger.LogInformation($"[Fichas] Se obtiene un vista previa de las siguientes fichas: [{string.Join(", ", fichasIds)}]");
+            }
 
             return _mapper.MapQueryResult<Ficha, VistaPreviaFichaDto>(result);
         }
@@ -239,7 +262,9 @@ namespace EAPN.HDVS.Web.Controllers
             }
 
             if (ficha != null)
+            {
                 _logger.LogInformation($"[Fichas] Se ha creado la ficha [id: {ficha.Id}]");
+            }
 
             return CreatedAtAction(nameof(GetFicha), new { id = result.Id }, _mapper.Map<FichaDto>(result));
         }
@@ -258,7 +283,9 @@ namespace EAPN.HDVS.Web.Controllers
         public async Task<IActionResult> PutFicha(int id, FichaDto fichaDto)
         {
             if (id != fichaDto.Id)
+            {
                 return BadRequest();
+            }
 
             var organizacionId = User.GetUserOrganizacionId();
             if (fichaDto.OrganizacionId != organizacionId)

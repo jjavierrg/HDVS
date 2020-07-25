@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EAPN.HDVS.Application.Models
+﻿namespace EAPN.HDVS.Application.Models
 {
     public class UserToken
     {

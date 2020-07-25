@@ -47,7 +47,7 @@ namespace EAPN.HDVS.Web.Controllers
         [ProducesResponseType(typeof(IEnumerable<MunicipioDto>), StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<MunicipioDto>>> GetMunicipios()
         {
-            var municipios = await _municipioService.GetListAsync(includes: q=> q.Include(x => x.Provincia), orderBy: q => q.OrderBy(x => x.Nombre));
+            var municipios = await _municipioService.GetListAsync(includes: q => q.Include(x => x.Provincia), orderBy: q => q.OrderBy(x => x.Nombre));
             return Ok(_mapper.MapList<MunicipioDto>(municipios));
         }
 
@@ -123,11 +123,15 @@ namespace EAPN.HDVS.Web.Controllers
         public async Task<IActionResult> PutMunicipio(int id, MunicipioDto municipioDto)
         {
             if (id != municipioDto.Id)
+            {
                 return BadRequest();
+            }
 
             var municipio = await _municipioService.GetFirstOrDefault(x => x.Id == id);
             if (municipio == null)
+            {
                 return NotFound();
+            }
 
             _logger.LogInformation($"Se actualiza el municipio {municipio.Nombre} : {municipioDto.Nombre}");
             _mapper.Map(municipioDto, municipio);
@@ -151,7 +155,9 @@ namespace EAPN.HDVS.Web.Controllers
         {
             var municipio = await _municipioService.GetFirstOrDefault(x => x.Id == id);
             if (municipio == null)
+            {
                 return NotFound();
+            }
 
             _logger.LogWarning($"Se elimina el municipio {municipio.Nombre}");
             _municipioService.Remove(municipio);

@@ -78,7 +78,9 @@ namespace EAPN.HDVS.Web.Controllers
             var query = _perfilService.Repository.EntitySet;
             var filter = GetSuperadminExclusionFilter();
             if (filter != null)
+            {
                 query.Where(filter);
+            }
 
             var perfil = await query.Include(x => x.Permisos).ThenInclude(x => x.Permiso).FirstOrDefaultAsync(x => x.Id == id);
             return _mapper.Map<PerfilDto>(perfil);
@@ -115,11 +117,15 @@ namespace EAPN.HDVS.Web.Controllers
         public async Task<IActionResult> PutPerfil(int id, PerfilDto perfilDto)
         {
             if (id != perfilDto.Id)
+            {
                 return BadRequest();
+            }
 
             var perfil = await _perfilService.GetFirstOrDefault(x => x.Id == id, q => q.Include(x => x.Permisos));
             if (perfil == null)
+            {
                 return NotFound();
+            }
 
             _mapper.Map(perfilDto, perfil);
 
@@ -142,7 +148,9 @@ namespace EAPN.HDVS.Web.Controllers
         {
             var perfil = await _perfilService.GetFirstOrDefault(x => x.Id == id);
             if (perfil == null)
+            {
                 return NotFound();
+            }
 
             _perfilService.Remove(perfil);
             await _perfilService.SaveChangesAsync();
@@ -158,7 +166,9 @@ namespace EAPN.HDVS.Web.Controllers
         {
             Expression<Func<Perfil, bool>> filter = null;
             if (!User.HasSuperAdminPermission())
+            {
                 filter = x => !x.Permisos.Any(r => r.Permiso.Clave == Permissions.APP_SUPERADMIN);
+            }
 
             return filter;
         }

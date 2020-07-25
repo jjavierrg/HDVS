@@ -1,9 +1,6 @@
 ﻿using EAPN.HDVS.Entities;
 using EAPN.HDVS.Infrastructure.Context;
 using EAPN.HDVS.Testing.Common;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EAPN.HDVS.Web.Testing.Controllers.PerfilesController

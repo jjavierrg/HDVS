@@ -1,9 +1,7 @@
 ﻿using EAPN.HDVS.Web.Dto;
-using EAPN.HDVS.Web.Dto.Auth;
 using EAPN.HDVS.Web.Testing.Utils;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;

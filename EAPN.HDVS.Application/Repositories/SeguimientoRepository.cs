@@ -44,7 +44,9 @@ namespace EAPN.HDVS.Application.Repositories
         public override void UpdateRange(IEnumerable<Seguimiento> items)
         {
             foreach (var item in items)
+            {
                 item.FechaUltimaModificacion = DateTime.Now;
+            }
 
             base.UpdateRange(items);
             UpdateFichas(items.Select(x => x.FichaId));
@@ -62,7 +64,8 @@ namespace EAPN.HDVS.Application.Repositories
             seguimientosExcludedIds ??= new int[] { };
             var fichas = Context.Set<Ficha>().Where(x => fichasIds.Contains(x.Id)).Include(x => x.Seguimientos).ToList();
 
-            fichas.ForEach(x => {
+            fichas.ForEach(x =>
+            {
                 var seguimiento = x.Seguimientos.OrderByDescending(x => x.Fecha).FirstOrDefault(x => !seguimientosExcludedIds.Contains(x.Id));
                 x.FechaUltimaModificacion = DateTime.Now;
                 x.Completa = x.DatosCompletos && seguimiento != null && seguimiento.Completo;

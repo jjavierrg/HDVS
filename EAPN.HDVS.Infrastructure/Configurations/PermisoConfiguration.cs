@@ -1,5 +1,4 @@
 ﻿using EAPN.HDVS.Entities;
-using EAPN.HDVS.Shared.Permissions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

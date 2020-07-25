@@ -109,11 +109,15 @@ namespace EAPN.HDVS.Web.Controllers
         public async Task<IActionResult> PutProvincia(int id, ProvinciaDto provinciaDto)
         {
             if (id != provinciaDto.Id)
+            {
                 return BadRequest();
+            }
 
             var provincia = await _provinciaService.GetFirstOrDefault(x => x.Id == id);
             if (provincia == null)
+            {
                 return NotFound();
+            }
 
             _logger.LogInformation($"Se actualiza la provincia {provincia.Nombre} : {provinciaDto.Nombre}");
             _mapper.Map(provinciaDto, provincia);
@@ -137,7 +141,9 @@ namespace EAPN.HDVS.Web.Controllers
         {
             var provincia = await _provinciaService.GetFirstOrDefault(x => x.Id == id);
             if (provincia == null)
+            {
                 return NotFound();
+            }
 
             _logger.LogWarning($"Se elimina la provincia {provincia.Nombre}");
             _provinciaService.Remove(provincia);

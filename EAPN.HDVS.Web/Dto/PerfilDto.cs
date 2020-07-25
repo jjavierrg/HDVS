@@ -7,6 +7,6 @@ namespace EAPN.HDVS.Web.Dto
         public int Id { get; set; }
         public string Descripcion { get; set; }
         public int NumeroUsuarios { get; set; }
-        public IList<MasterDataDto> Permisos{ get; set; }
+        public IList<MasterDataDto> Permisos { get; set; }
     }
 }

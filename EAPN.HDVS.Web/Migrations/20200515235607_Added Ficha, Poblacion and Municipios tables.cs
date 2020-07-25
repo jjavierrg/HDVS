@@ -1,6 +1,6 @@
-﻿using System;
-using EAPN.HDVS.Shared.Permissions;
+﻿using EAPN.HDVS.Shared.Permissions;
 using Microsoft.EntityFrameworkCore.Migrations;
+using System;
 
 namespace EAPN.HDVS.Web.Migrations
 {

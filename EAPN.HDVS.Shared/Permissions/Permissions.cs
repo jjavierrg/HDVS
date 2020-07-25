@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EAPN.HDVS.Shared.Permissions
+﻿namespace EAPN.HDVS.Shared.Permissions
 {
     public static class Permissions
     {

@@ -1,7 +1,5 @@
-﻿using EAPN.HDVS.Infrastructure.Context;
-using EAPN.HDVS.Infrastructure.Core.Queries;
+﻿using EAPN.HDVS.Infrastructure.Core.Queries;
 using EAPN.HDVS.Infrastructure.Core.Repository;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace EAPN.HDVS.Infrastructure.Registry

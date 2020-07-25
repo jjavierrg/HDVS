@@ -9,9 +9,11 @@
             </summary>
             <param name="hostingEnvironment"></param>
             <param name="adjuntoService"></param>
+            <param name="adjuntoTipoService"></param>
             <param name="logger"></param>
             <param name="mapper"></param>
             <param name="configuration"></param>
+            <param name="filterPaginator"></param>
         </member>
         <member name="M:EAPN.HDVS.Web.Controllers.AdjuntosController.GetAdjunto(System.Int32)">
             <summary>
@@ -170,6 +172,10 @@
             </summary>
             <param name="id">Item identifier</param>
             <returns></returns>
+        </member>
+        <member name="T:EAPN.HDVS.Web.Controllers.FichasController">
+            <summary>
+            </summary>
         </member>
         <member name="M:EAPN.HDVS.Web.Controllers.FichasController.#ctor(EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Ficha},EAPN.HDVS.Application.Core.Services.ICrudServiceBase{EAPN.HDVS.Entities.Adjunto},Microsoft.Extensions.Logging.ILogger{EAPN.HDVS.Web.Controllers.FichasController},AutoMapper.IMapper,EAPN.HDVS.Infrastructure.Core.Queries.IFilterPaginable{EAPN.HDVS.Entities.Ficha})">
             <summary>
@@ -559,6 +565,7 @@
             <param name="rangoService"></param>
             <param name="logger"></param>
             <param name="mapper"></param>
+            <param name="filterPaginator"></param>
         </member>
         <member name="M:EAPN.HDVS.Web.Controllers.RangosController.GetRangos">
             <summary>
@@ -825,6 +832,10 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:EAPN.HDVS.Web.Security.SymmetricTokenService">
+            <summary>
+            </summary>
+        </member>
         <member name="M:EAPN.HDVS.Web.Security.SymmetricTokenService.#ctor(EAPN.HDVS.Application.Models.ITokenConfiguration)">
             <summary>
             </summary>
@@ -836,6 +847,10 @@
             </summary>
             <param name="user"></param>
             <returns></returns>
+        </member>
+        <member name="T:EAPN.HDVS.Web.Swagger.AddAuthHeaderOperationFilter">
+            <summary>
+            </summary>
         </member>
     </members>
 </doc>

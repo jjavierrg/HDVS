@@ -59,7 +59,9 @@ namespace EAPN.HDVS.Web.Controllers
             var seguimientosIds = seguimientos.Select(x => x.Id);
 
             if (seguimientosIds.Any())
+            {
                 _logger.LogInformation($"[Seguimientos] Se obtiene un listado con las siguientes seguimientos: [{string.Join(", ", seguimientosIds)}]");
+            }
 
             return Ok(_mapper.MapList<SeguimientoDto>(seguimientos));
         }
@@ -79,9 +81,13 @@ namespace EAPN.HDVS.Web.Controllers
             var seguimiento = await query.FirstOrDefaultAsync(x => x.Id == id);
 
             if (seguimiento != null)
+            {
                 _logger.LogInformation($"[Seguimientos] Se accede al seguimiento [{seguimiento.Id}]");
+            }
             else
+            {
                 _logger.LogWarning($"[Seguimientos] Se ha intentado acceder a un seguimiento no válido [id: {id}]");
+            }
 
             return _mapper.Map<SeguimientoDto>(seguimiento);
         }
@@ -94,7 +100,7 @@ namespace EAPN.HDVS.Web.Controllers
         [HttpPost("filtered", Name = "GetSeguimientosFiltered")]
         [AuthorizePermission(Permissions.PERSONALCARD_READ)]
         [ProducesResponseType(typeof(QueryResult<SeguimientoDto>), StatusCodes.Status200OK)]
-        public async Task<ActionResult<QueryResult<SeguimientoDto>>> GetSeguimientosFiltered([FromBody]QueryData query)
+        public async Task<ActionResult<QueryResult<SeguimientoDto>>> GetSeguimientosFiltered([FromBody] QueryData query)
         {
             _logger.LogInformation($"Realiza una búsqueda de seguimientos con los siguientes filtros: ${query.FilterParameters}");
 
@@ -102,7 +108,9 @@ namespace EAPN.HDVS.Web.Controllers
             var seguimientosIds = result.Data?.Select(x => x.Id);
 
             if (seguimientosIds.Any())
+            {
                 _logger.LogInformation($"[Seguimientos] Se obtiene un listado mediante búsqueda filtrada con las siguientes seguimientos: [{string.Join(", ", seguimientosIds)}]");
+            }
 
             return _mapper.MapQueryResult<Seguimiento, SeguimientoDto>(result);
         }
@@ -137,7 +145,9 @@ namespace EAPN.HDVS.Web.Controllers
             await _seguimientoService.SaveChangesAsync();
 
             if (seguimiento != null)
+            {
                 _logger.LogInformation($"[Seguimientos] Se ha creado el seguimiento [id: {seguimiento.Id}] para la ficha {ficha.Id}");
+            }
 
             return CreatedAtAction(nameof(GetSeguimiento), new { id = result.Id }, _mapper.Map<SeguimientoDto>(result));
         }
@@ -156,7 +166,9 @@ namespace EAPN.HDVS.Web.Controllers
         public async Task<IActionResult> PutSeguimiento(int id, SeguimientoDto seguimientoDto)
         {
             if (id != seguimientoDto.Id)
+            {
                 return BadRequest();
+            }
 
             var organizacionId = User.GetUserOrganizacionId();
             var seguimiento = await _seguimientoService.GetSingleOrDefault(x => x.Id == id && x.Ficha.OrganizacionId == organizacionId, q => q.Include(x => x.Indicadores).Include(x => x.Ficha));

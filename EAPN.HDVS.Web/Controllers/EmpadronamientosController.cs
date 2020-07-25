@@ -109,11 +109,15 @@ namespace EAPN.HDVS.Web.Controllers
         public async Task<IActionResult> PutEmpadronamiento(int id, EmpadronamientoDto empadronamientoDto)
         {
             if (id != empadronamientoDto.Id)
+            {
                 return BadRequest();
+            }
 
             var empadronamiento = await _empadronamientoService.GetFirstOrDefault(x => x.Id == id);
             if (empadronamiento == null)
+            {
                 return NotFound();
+            }
 
             _logger.LogInformation($"Se actualiza el empadronamiento {empadronamiento.Descripcion} : {empadronamientoDto.Descripcion}");
             _mapper.Map(empadronamientoDto, empadronamiento);
@@ -137,7 +141,9 @@ namespace EAPN.HDVS.Web.Controllers
         {
             var empadronamiento = await _empadronamientoService.GetFirstOrDefault(x => x.Id == id);
             if (empadronamiento == null)
+            {
                 return NotFound();
+            }
 
             _logger.LogWarning($"Se elimina el empadronamiento {empadronamiento.Descripcion}");
             _empadronamientoService.Remove(empadronamiento);

@@ -6,6 +6,8 @@ using System.Linq;
 
 namespace EAPN.HDVS.Web.Swagger
 {
+    /// <summary>
+    /// </summary>
     public class AddAuthHeaderOperationFilter : IOperationFilter
     {
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
@@ -14,7 +16,10 @@ namespace EAPN.HDVS.Web.Swagger
                                 || context.MethodInfo.GetCustomAttributes(true).OfType<AuthorizeAttribute>().Any())
                                 && !context.MethodInfo.GetCustomAttributes(true).OfType<AllowAnonymousAttribute>().Any(); // this excludes methods with AllowAnonymous attribute
 
-            if (!isAuthorized) return;
+            if (!isAuthorized)
+            {
+                return;
+            }
 
             operation.Responses.TryAdd("401", new OpenApiResponse { Description = "Unauthorized" });
             operation.Responses.TryAdd("403", new OpenApiResponse { Description = "Forbidden" });

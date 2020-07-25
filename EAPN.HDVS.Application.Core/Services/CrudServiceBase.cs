@@ -20,15 +20,26 @@ namespace EAPN.HDVS.Application.Core.Services
 
         public virtual T Add(T item)
         {
-            if (item == null) throw new ArgumentNullException(nameof(item));
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
             _repository.Add(item);
             return item;
         }
 
         public virtual IEnumerable<T> AddRange(IEnumerable<T> items)
         {
-            if (items == null) throw new ArgumentNullException(nameof(items));
-            if (!items.Any()) return items;
+            if (items == null)
+            {
+                throw new ArgumentNullException(nameof(items));
+            }
+
+            if (!items.Any())
+            {
+                return items;
+            }
 
             _repository.AddRange(items);
             return items;
@@ -36,34 +47,60 @@ namespace EAPN.HDVS.Application.Core.Services
 
         public virtual void Remove(T item)
         {
-            if (item == null) throw new ArgumentNullException(nameof(item));
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
             _repository.Remove(item);
         }
 
         public virtual void RemoveRange(IEnumerable<T> items)
         {
-            if (items == null) throw new ArgumentNullException(nameof(items));
-            if (!items.Any()) return;
+            if (items == null)
+            {
+                throw new ArgumentNullException(nameof(items));
+            }
+
+            if (!items.Any())
+            {
+                return;
+            }
 
             _repository.RemoveRange(items);
         }
 
         public virtual void RemoveRange(Expression<Func<T, bool>> filter)
         {
-            if (filter == null) throw new ArgumentNullException(nameof(filter));
+            if (filter == null)
+            {
+                throw new ArgumentNullException(nameof(filter));
+            }
+
             _repository.RemoveRange(filter);
         }
 
         public virtual void Update(T item)
         {
-            if (item == null) throw new ArgumentNullException(nameof(item));
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
             _repository.Update(item);
         }
 
         public virtual void UpdateRange(IEnumerable<T> items)
         {
-            if (items == null) throw new ArgumentNullException(nameof(items));
-            if (!items.Any()) return;
+            if (items == null)
+            {
+                throw new ArgumentNullException(nameof(items));
+            }
+
+            if (!items.Any())
+            {
+                return;
+            }
 
             _repository.UpdateRange(items);
         }

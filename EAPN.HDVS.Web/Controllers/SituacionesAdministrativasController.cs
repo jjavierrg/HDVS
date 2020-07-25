@@ -109,11 +109,15 @@ namespace EAPN.HDVS.Web.Controllers
         public async Task<IActionResult> PutSituacionAdministrativa(int id, SituacionAdministrativaDto situacionAdministrativaDto)
         {
             if (id != situacionAdministrativaDto.Id)
+            {
                 return BadRequest();
+            }
 
             var situacionAdministrativa = await _situacionesAdministrativaservice.GetFirstOrDefault(x => x.Id == id);
             if (situacionAdministrativa == null)
+            {
                 return NotFound();
+            }
 
             _logger.LogInformation($"Se actualiza el situacionAdministrativa {situacionAdministrativa.Descripcion} : {situacionAdministrativaDto.Descripcion}");
             _mapper.Map(situacionAdministrativaDto, situacionAdministrativa);
@@ -137,7 +141,9 @@ namespace EAPN.HDVS.Web.Controllers
         {
             var situacionAdministrativa = await _situacionesAdministrativaservice.GetFirstOrDefault(x => x.Id == id);
             if (situacionAdministrativa == null)
+            {
                 return NotFound();
+            }
 
             _logger.LogWarning($"Se elimina el situacionAdministrativa {situacionAdministrativa.Descripcion}");
             _situacionesAdministrativaservice.Remove(situacionAdministrativa);

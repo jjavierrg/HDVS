@@ -1,10 +1,7 @@
 ﻿using EAPN.HDVS.Web.Dto;
-using EAPN.HDVS.Web.Dto.Auth;
 using EAPN.HDVS.Web.Testing.Utils;
 using FluentAssertions;
-using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -28,7 +25,6 @@ namespace EAPN.HDVS.Web.Testing.Controllers.DimensionesController
         {
             // Arrange
             var client = _factory.GetAuthenticatedClient("usuario4@test.com");
-            var dimension = new DimensionDto { Orden = 1};
 
             // Act
             var getResponse = await client.GetAsync(ENDPOINT);

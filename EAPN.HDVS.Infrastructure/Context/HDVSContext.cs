@@ -3,7 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EAPN.HDVS.Infrastructure.Context
 {
+#pragma warning disable S101 // Types should be named in PascalCase
     public class HDVSContext : DbContext
+#pragma warning restore S101 // Types should be named in PascalCase
     {
         public virtual DbSet<LogEntry> Logs { get; set; }
         public virtual DbSet<Configuracion> Configuraciones { get; set; }
@@ -23,7 +25,7 @@ namespace EAPN.HDVS.Infrastructure.Context
         public virtual DbSet<Perfil> Perfiles { get; set; }
         public virtual DbSet<PerfilPermiso> PerfilesPermisos { get; set; }
         public virtual DbSet<Permiso> Permisos { get; set; }
-        
+
         public virtual DbSet<Organizacion> Organizaciones { get; set; }
         public virtual DbSet<Ficha> Fichas { get; set; }
         public virtual DbSet<SituacionAdministrativa> SituacionesAdministrativas { get; set; }

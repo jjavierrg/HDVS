@@ -28,7 +28,9 @@ namespace EAPN.HDVS.Infrastructure.Core.Repository
         public virtual void Add(T item)
         {
             if (item == null)
+            {
                 throw new ArgumentNullException(nameof(item));
+            }
 
             Context.Add(item);
         }
@@ -37,7 +39,9 @@ namespace EAPN.HDVS.Infrastructure.Core.Repository
         public virtual void AddRange(IEnumerable<T> items)
         {
             if (items == null)
+            {
                 throw new ArgumentNullException(nameof(items));
+            }
 
             Context.AddRange(items);
         }
@@ -46,7 +50,9 @@ namespace EAPN.HDVS.Infrastructure.Core.Repository
         public virtual void Update(T item)
         {
             if (item == null)
+            {
                 throw new ArgumentNullException(nameof(item));
+            }
 
             Context.Update(item);
         }
@@ -55,7 +61,9 @@ namespace EAPN.HDVS.Infrastructure.Core.Repository
         public virtual void UpdateRange(IEnumerable<T> items)
         {
             if (items == null)
+            {
                 throw new ArgumentNullException(nameof(items));
+            }
 
             Context.UpdateRange(items);
         }
@@ -64,7 +72,9 @@ namespace EAPN.HDVS.Infrastructure.Core.Repository
         public virtual void Remove(T item)
         {
             if (item == null)
+            {
                 throw new ArgumentNullException(nameof(item));
+            }
 
             Context.Remove(item);
         }
@@ -74,11 +84,13 @@ namespace EAPN.HDVS.Infrastructure.Core.Repository
             var query = GetQuery(filter, null, null);
             Context.RemoveRange(query);
         }
-        
+
         public virtual void RemoveRange(IEnumerable<T> items)
         {
             if (items == null)
+            {
                 throw new ArgumentNullException(nameof(items));
+            }
 
             Context.RemoveRange(items);
         }

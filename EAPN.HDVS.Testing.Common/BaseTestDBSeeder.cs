@@ -19,7 +19,9 @@ namespace EAPN.HDVS.Testing.Common
         {
             var permisosAdicionales = new List<UsuarioPermiso>();
             if (superadmin)
+            {
                 permisosAdicionales.Add(new UsuarioPermiso { PermisoId = 6, UsuarioId = id });
+            }
 
             return new Usuario
             {
@@ -66,12 +68,16 @@ namespace EAPN.HDVS.Testing.Common
             for (int i = 2; i <= 18; i++)
             {
                 if (i != 6)
+                {
                     context.PerfilesPermisos.Add(new PerfilPermiso { PerfilId = 2, PermisoId = i });
+                }
             }
 
 
             for (int i = 2; i <= 5; i++)
+            {
                 context.PerfilesPermisos.Add(new PerfilPermiso { PerfilId = 3, PermisoId = i });
+            }
 
             context.Organizaciones.Add(new Organizacion { Activa = true, Id = 1, Nombre = $"Organización activa 1", Observaciones = $"Observaciones Organización activa 1" });
             context.Organizaciones.Add(new Organizacion { Activa = true, Id = 2, Nombre = $"Organización activa 2", Observaciones = $"Observaciones Organización activa 2" });
@@ -139,14 +145,18 @@ namespace EAPN.HDVS.Testing.Common
             context.SituacionesAdministrativas.Add(new SituacionAdministrativa { Id = 7, Descripcion = "DNI" });
 
             for (int i = 1; i < 11; i++)
+            {
                 context.Paises.Add(new Pais { Id = i, Descripcion = $"Pais {i}" });
+            }
 
             for (int i = 1; i < 11; i++)
             {
                 context.Provincias.Add(new Provincia { Id = i, Nombre = $"Provincia {i}" });
 
                 for (int j = 1; j < 11; j++)
+                {
                     context.Municipios.Add(new Municipio { Id = ((i - 1) * 10) + j, Nombre = $"Municipio {j}", ProvinciaId = i });
+                }
             }
 
 

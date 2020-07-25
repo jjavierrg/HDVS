@@ -15,9 +15,9 @@ namespace EAPN.HDVS.Application.Services.User
 {
     public class UsuarioService : CrudServiceBase<Usuario>, IUsuarioService
     {
-        private ITokenService _tokenService;
-        private IPasswordService _passwordService;
-        private ILoginConfiguration _loginConfiguration;
+        private readonly ITokenService _tokenService;
+        private readonly IPasswordService _passwordService;
+        private readonly ILoginConfiguration _loginConfiguration;
 
         public UsuarioService(IRepository<Usuario> repository, ILogger<UsuarioService> logger, ILoginConfiguration loginConfiguration, ITokenService tokenService, IPasswordService passwordService) : base(repository, logger)
         {
@@ -29,8 +29,15 @@ namespace EAPN.HDVS.Application.Services.User
         /// <inheritdoc />
         public async Task<UserToken> LoginAsync(string username, string password)
         {
-            if (string.IsNullOrWhiteSpace(username)) throw new ArgumentNullException(nameof(username));
-            if (string.IsNullOrWhiteSpace(password)) throw new ArgumentNullException(nameof(password));
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                throw new ArgumentNullException(nameof(username));
+            }
+
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                throw new ArgumentNullException(nameof(password));
+            }
 
             var query = GetFullUsuarioQuery();
             var usuario = await query.FirstOrDefaultAsync(x => x.Email.ToLower() == username.ToLower());
@@ -71,7 +78,9 @@ namespace EAPN.HDVS.Application.Services.User
 
                 usuario.IntentosLogin++;
                 if (usuario.IntentosLogin > _loginConfiguration.MaxLoginAttemp)
+                {
                     usuario.FinBloqueo = DateTime.UtcNow.Add(_loginConfiguration.BlockTime);
+                }
             }
             else
             {
@@ -93,11 +102,21 @@ namespace EAPN.HDVS.Application.Services.User
         {
             var query = GetFullUsuarioQuery();
             var usuario = await query.Include(x => x.Organizacion).FirstOrDefaultAsync(x => x.Id == userId);
-            if (usuario == null) return null;
+            if (usuario == null)
+            {
+                return null;
+            }
 
             // Validate that user/partner still active
-            if (!usuario.Activo) return null;
-            if (!usuario.Organizacion.Activa) return null;
+            if (!usuario.Activo)
+            {
+                return null;
+            }
+
+            if (!usuario.Organizacion.Activa)
+            {
+                return null;
+            }
 
             // Generate new token
             var token = _tokenService.GenerateTokenForUser(usuario);
@@ -107,13 +126,22 @@ namespace EAPN.HDVS.Application.Services.User
         /// <inheritdoc />
         public async Task LogoutAsync(ClaimsPrincipal user)
         {
-            if (user == null) return;
+            if (user == null)
+            {
+                return;
+            }
 
             var id = user.Claims?.FirstOrDefault(c => c.Type == "sub")?.Value;
-            if (!int.TryParse(id, out int intId)) return;
+            if (!int.TryParse(id, out int intId))
+            {
+                return;
+            }
 
             var usuario = await Repository.GetFirstOrDefault(x => x.Id == intId);
-            if (usuario == null) return;
+            if (usuario == null)
+            {
+                return;
+            }
 
             Update(usuario);
             await SaveChangesAsync();
@@ -122,10 +150,15 @@ namespace EAPN.HDVS.Application.Services.User
         /// <inheritdoc />
         public async Task<bool> UpdateUserData(Usuario usuario, string currentPassword, string newPassword)
         {
-            if (usuario == null) throw new ArgumentNullException(nameof(usuario));
+            if (usuario == null)
+            {
+                throw new ArgumentNullException(nameof(usuario));
+            }
 
             if (!string.IsNullOrWhiteSpace(newPassword) && !_passwordService.ValidatePassword(currentPassword, usuario.Hash))
+            {
                 return false;
+            }
 
             usuario.Hash = newPassword;
             UpdateWithtPass(usuario);
@@ -137,7 +170,10 @@ namespace EAPN.HDVS.Application.Services.User
         /// <inheritdoc />
         public async Task<Usuario> CreateAsync(Usuario usuario, string password)
         {
-            if (string.IsNullOrEmpty(usuario?.Email)) throw new ArgumentNullException(nameof(usuario));
+            if (string.IsNullOrEmpty(usuario?.Email))
+            {
+                throw new ArgumentNullException(nameof(usuario));
+            }
 
             usuario.IntentosLogin = 0;
             usuario.Hash = _passwordService.HashPassword(password);
@@ -162,7 +198,9 @@ namespace EAPN.HDVS.Application.Services.User
         public void UpdateWithtPass(Usuario usuario)
         {
             if (!string.IsNullOrWhiteSpace(usuario.Hash))
+            {
                 usuario.Hash = _passwordService.HashPassword(usuario.Hash);
+            }
 
             base.Update(usuario);
         }
@@ -178,7 +216,9 @@ namespace EAPN.HDVS.Application.Services.User
             foreach (var usuario in usuarios)
             {
                 if (!string.IsNullOrWhiteSpace(usuario.Hash))
+                {
                     usuario.Hash = _passwordService.HashPassword(usuario.Hash);
+                }
             }
 
             base.UpdateRange(usuarios);
@@ -187,7 +227,9 @@ namespace EAPN.HDVS.Application.Services.User
         public override void UpdateRange(IEnumerable<Usuario> items)
         {
             foreach (var item in items)
+            {
                 item.Hash = string.Empty;
+            }
 
             base.UpdateRange(items);
         }

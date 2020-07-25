@@ -1,7 +1,5 @@
-﻿using EAPN.HDVS.Infrastructure.Context;
-using EAPN.HDVS.Web.Dto.Auth;
+﻿using EAPN.HDVS.Web.Dto.Auth;
 using EAPN.HDVS.Web.Testing.Utils;
-using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 using Xunit;
 

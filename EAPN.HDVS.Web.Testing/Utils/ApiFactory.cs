@@ -1,7 +1,6 @@
 ﻿using EAPN.HDVS.Application.Security;
 using EAPN.HDVS.Infrastructure.Context;
 using EAPN.HDVS.Testing.Common;
-using EAPN.HDVS.Web.Dto.Auth;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.Sqlite;
@@ -12,7 +11,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Threading.Tasks;
 
 namespace EAPN.HDVS.Web.Testing.Utils
 {
@@ -47,7 +45,9 @@ namespace EAPN.HDVS.Web.Testing.Utils
                     var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<HDVSContext>));
 
                     if (descriptor != null)
+                    {
                         services.Remove(descriptor);
+                    }
 
                     // Add a database context using an in-memory database for testing.
                     services.AddDbContext<HDVSContext>(options =>
@@ -63,7 +63,7 @@ namespace EAPN.HDVS.Web.Testing.Utils
                     using var scope = sp.CreateScope();
                     var scopedServices = scope.ServiceProvider;
 
-                    Logger = (MockupLogger<T>) scopedServices.GetRequiredService<ILogger<T>>();
+                    Logger = (MockupLogger<T>)scopedServices.GetRequiredService<ILogger<T>>();
 
                     var context = scopedServices.GetRequiredService<HDVSContext>();
                     context.Database.EnsureCreated();
@@ -73,7 +73,9 @@ namespace EAPN.HDVS.Web.Testing.Utils
 
                     await baseSeeder.Seed(context);
                     foreach (var seeder in _seeders)
+                    {
                         await seeder.Seed(context);
+                    }
 
                     // Generate tokens
                     _tokens.Clear();

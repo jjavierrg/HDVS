@@ -15,7 +15,7 @@ namespace EAPN.HDVS.Entities
         public DateTime FechaUltimaModificacion { get; set; }
 
         public Ficha Ficha { get; set; }
-        public Usuario Tecnico{ get; set; }
+        public Usuario Tecnico { get; set; }
         public IList<IndicadorSeguimiento> Indicadores { get; set; }
     }
 }

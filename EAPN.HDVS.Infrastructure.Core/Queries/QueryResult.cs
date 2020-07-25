@@ -17,7 +17,8 @@ namespace EAPN.HDVS.Infrastructure.Core.Queries
             Data = new List<T>();
         }
 
-        public void InitializeCommonInfo<U>(QueryResult<U> data) {
+        public void InitializeCommonInfo<U>(QueryResult<U> data)
+        {
             Total = data.Total;
             OrderBy = data.OrderBy;
             Ascending = data.Ascending;

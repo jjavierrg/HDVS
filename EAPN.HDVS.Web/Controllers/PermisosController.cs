@@ -78,7 +78,9 @@ namespace EAPN.HDVS.Web.Controllers
             var query = _permisoService.Repository.EntitySet.Where(x => x.Id == id);
             var filter = GetSuperadminExclusionFilter();
             if (filter != null)
+            {
                 query = query.Where(filter);
+            }
 
             var permiso = await query.FirstOrDefaultAsync();
             return _mapper.Map<PermisoDto>(permiso);
@@ -92,7 +94,9 @@ namespace EAPN.HDVS.Web.Controllers
         {
             Expression<Func<Permiso, bool>> filter = null;
             if (!User.HasSuperAdminPermission())
+            {
                 filter = x => x.Clave != Permissions.APP_SUPERADMIN;
+            }
 
             return filter;
         }

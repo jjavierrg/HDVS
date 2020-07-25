@@ -1,10 +1,4 @@
-﻿using EAPN.HDVS.Entities;
-using EAPN.HDVS.Infrastructure.Context;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
+﻿using Newtonsoft.Json;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;

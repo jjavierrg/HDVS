@@ -21,7 +21,9 @@ namespace EAPN.HDVS.Application.Repositories
         public override void AddRange(IEnumerable<Usuario> items)
         {
             foreach (var item in items)
+            {
                 item.FechaAlta = DateTime.Now;
+            }
 
             base.AddRange(items);
         }
@@ -36,7 +38,9 @@ namespace EAPN.HDVS.Application.Repositories
         {
             base.UpdateRange(items);
             foreach (var item in items)
+            {
                 Context.Entry(item).Property(x => x.Hash).IsModified = !string.IsNullOrWhiteSpace(item.Hash);
+            }
         }
     }
 }

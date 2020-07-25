@@ -15,7 +15,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace EAPN.HDVS.Web.Controllers
@@ -85,13 +84,17 @@ namespace EAPN.HDVS.Web.Controllers
             var query = _usuarioService.Repository.EntitySet.Where(x => x.Id == id);
             var filter = GetSuperadminExclusionFilter();
             if (filter != null)
+            {
                 query = query.Where(filter);
+            }
 
             query = query.Include(x => x.Perfiles).ThenInclude(x => x.Perfil).Include(x => x.PermisosAdicionales).ThenInclude(x => x.Permiso);
             var usuario = await query.FirstOrDefaultAsync();
-            
+
             if (usuario != null)
+            {
                 _logger.LogInformation($"Accede a la información del usuario: {usuario.Email}[Id: {usuario.Id}]");
+            }
 
             return _mapper.Map<UsuarioDto>(usuario);
         }
@@ -104,7 +107,7 @@ namespace EAPN.HDVS.Web.Controllers
         [HttpPost("filtered", Name = "GetUsuariosFiltered")]
         [AuthorizePermission(Permissions.USERMANAGEMENT_READ)]
         [ProducesResponseType(typeof(QueryResult<UsuarioDto>), StatusCodes.Status200OK)]
-        public async Task<ActionResult<QueryResult<UsuarioDto>>> GetUsuariosFiltered([FromBody]QueryData query)
+        public async Task<ActionResult<QueryResult<UsuarioDto>>> GetUsuariosFiltered([FromBody] QueryData query)
         {
             var result = await _filterPaginator.Execute(_usuarioService.Repository.EntitySet, query);
             _logger.LogInformation($"Realiza una búsqueda de usuarios con los siguientes filtros: ${query.FilterParameters}");
@@ -153,7 +156,9 @@ namespace EAPN.HDVS.Web.Controllers
         public async Task<IActionResult> PutUsuario(int id, UsuarioDto usuarioDto)
         {
             if (id != usuarioDto.Id)
+            {
                 return BadRequest();
+            }
 
             var usuario = await _usuarioService.GetSingleOrDefault(x => x.Id == id, q => q.Include(x => x.Perfiles).Include(x => x.PermisosAdicionales));
             var organizacionId = usuario.OrganizacionId;
@@ -193,7 +198,7 @@ namespace EAPN.HDVS.Web.Controllers
         {
             var query = _usuarioService.Repository.EntitySet.Where(x => x.Id == id);
             var securityCheck = await query.FirstOrDefaultAsync();
-            
+
             // If user is not superadmin, cannot create delete of other partners
             if (securityCheck.OrganizacionId != User.GetUserOrganizacionId() && !User.HasSuperAdminPermission())
             {
@@ -203,11 +208,15 @@ namespace EAPN.HDVS.Web.Controllers
 
             var filter = GetSuperadminExclusionFilter();
             if (filter != null)
+            {
                 query = query.Where(filter);
+            }
 
             var usuario = await query.FirstOrDefaultAsync();
             if (usuario == null)
+            {
                 return NotFound();
+            }
 
             _logger.LogInformation($"Elimina {usuario.Email}[Id: {usuario.Id}]");
             _usuarioService.Remove(usuario);
@@ -224,7 +233,9 @@ namespace EAPN.HDVS.Web.Controllers
         {
             Expression<Func<Usuario, bool>> filter = null;
             if (!User.HasSuperAdminPermission())
+            {
                 filter = x => x.OrganizacionId == User.GetUserOrganizacionId() && !(x.PermisosAdicionales.Any(r => r.Permiso.Clave == Permissions.APP_SUPERADMIN) || x.Perfiles.Any(p => p.Perfil.Permisos.Any(r => r.Permiso.Clave == Permissions.APP_SUPERADMIN)));
+            }
 
             return filter;
         }

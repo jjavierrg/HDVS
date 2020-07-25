@@ -32,6 +32,7 @@ namespace EAPN.HDVS.Web.Controllers
         /// <param name="rangoService"></param>
         /// <param name="logger"></param>
         /// <param name="mapper"></param>
+        /// <param name="filterPaginator"></param>
         public RangosController(ICrudServiceBase<Rango> rangoService, ILogger<RangosController> logger, IMapper mapper, IFilterPaginable<Rango> filterPaginator)
         {
             _rangoService = rangoService ?? throw new ArgumentNullException(nameof(rangoService));
@@ -59,7 +60,7 @@ namespace EAPN.HDVS.Web.Controllers
         /// <returns></returns>
         [HttpPost("filtered", Name = "GetRangosFiltered")]
         [ProducesResponseType(typeof(QueryResult<RangoDto>), StatusCodes.Status200OK)]
-        public async Task<ActionResult<QueryResult<RangoDto>>> GetRangosFiltered([FromBody]QueryData query)
+        public async Task<ActionResult<QueryResult<RangoDto>>> GetRangosFiltered([FromBody] QueryData query)
         {
             var result = await _filterPaginator.Execute(_rangoService.Repository.EntitySet, query);
             return _mapper.MapQueryResult<Rango, RangoDto>(result);
@@ -112,11 +113,15 @@ namespace EAPN.HDVS.Web.Controllers
         public async Task<IActionResult> PutRango(int id, RangoDto rangoDto)
         {
             if (id != rangoDto.Id)
+            {
                 return BadRequest();
+            }
 
             var rango = await _rangoService.GetFirstOrDefault(x => x.Id == id);
             if (rango == null)
+            {
                 return NotFound();
+            }
 
             _logger.LogInformation($"Se actualiza el Rango {rango.Descripcion} : {rangoDto.Descripcion}");
             _mapper.Map(rangoDto, rango);
@@ -140,7 +145,7 @@ namespace EAPN.HDVS.Web.Controllers
         public async Task<IActionResult> PostRangos(IEnumerable<RangoDto> rangosDto)
         {
             _logger.LogInformation($"Se actualizan todos los rangos");
-            
+
             var rangos = _mapper.MapList<Rango>(rangosDto);
             _rangoService.RemoveRange(x => x.Id > 0);
             _rangoService.AddRange(rangos);
@@ -163,7 +168,9 @@ namespace EAPN.HDVS.Web.Controllers
         {
             var rango = await _rangoService.GetFirstOrDefault(x => x.Id == id);
             if (rango == null)
+            {
                 return NotFound();
+            }
 
             _logger.LogWarning($"Se elimina el Rango {rango.Descripcion}");
             _rangoService.Remove(rango);

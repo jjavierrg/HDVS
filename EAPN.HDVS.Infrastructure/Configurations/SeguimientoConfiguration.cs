@@ -21,7 +21,7 @@ namespace EAPN.HDVS.Infrastructure.Configurations
             builder.Property(x => x.FechaUltimaModificacion).HasColumnName(nameof(Seguimiento.FechaUltimaModificacion)).IsRequired();
 
             builder.HasOne(x => x.Tecnico).WithMany().HasForeignKey(x => x.UsuarioId).OnDelete(DeleteBehavior.ClientSetNull);
-            builder.HasOne(x => x.Ficha).WithMany(x => x.Seguimientos).HasForeignKey(x => x.FichaId).OnDelete(DeleteBehavior.Cascade); ;
+            builder.HasOne(x => x.Ficha).WithMany(x => x.Seguimientos).HasForeignKey(x => x.FichaId).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

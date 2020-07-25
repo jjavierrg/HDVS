@@ -2,7 +2,6 @@
 using EAPN.HDVS.Application.Core.Services;
 using EAPN.HDVS.Entities;
 using EAPN.HDVS.Infrastructure.Core.Queries;
-using EAPN.HDVS.Infrastructure.Core.Repository;
 using EAPN.HDVS.Shared.Permissions;
 using EAPN.HDVS.Web.Dto;
 using EAPN.HDVS.Web.Extensions;
@@ -27,12 +26,11 @@ namespace EAPN.HDVS.Web.Controllers
     [ApiController]
     public class AdjuntosController : ControllerBase
     {
-        private IWebHostEnvironment _hostingEnvironment;
+        private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly ICrudServiceBase<Adjunto> _adjuntoService;
         private readonly ICrudServiceBase<TipoAdjunto> _adjuntoTipoService;
         private readonly ILogger<AdjuntosController> _logger;
         private readonly IMapper _mapper;
-        private readonly IConfiguration _configuration;
         private readonly string _attachmentsFolder;
         private readonly IFilterPaginable<Adjunto> _filterPaginator;
 
@@ -40,9 +38,11 @@ namespace EAPN.HDVS.Web.Controllers
         /// </summary>
         /// <param name="hostingEnvironment"></param>
         /// <param name="adjuntoService"></param>
+        /// <param name="adjuntoTipoService"></param>
         /// <param name="logger"></param>
         /// <param name="mapper"></param>
         /// <param name="configuration"></param>
+        /// <param name="filterPaginator"></param>
         public AdjuntosController(IWebHostEnvironment hostingEnvironment,
                                   ICrudServiceBase<Adjunto> adjuntoService,
                                   ICrudServiceBase<TipoAdjunto> adjuntoTipoService,
@@ -56,10 +56,9 @@ namespace EAPN.HDVS.Web.Controllers
             _adjuntoTipoService = adjuntoTipoService ?? throw new ArgumentNullException(nameof(adjuntoTipoService));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _filterPaginator = filterPaginator ?? throw new ArgumentNullException(nameof(filterPaginator));
 
-            _attachmentsFolder = _configuration.GetValue<string>("AttachmentsFolder");
+            _attachmentsFolder = configuration.GetValue<string>("AttachmentsFolder");
         }
 
         /// <summary>
@@ -76,7 +75,9 @@ namespace EAPN.HDVS.Web.Controllers
 
             // Verificamos restricciones
             if (adjunto.OrganizacionId.HasValue && adjunto.OrganizacionId.Value != User.GetUserOrganizacionId())
+            {
                 return NotFound();
+            }
 
             return _mapper.Map<AdjuntoDto>(adjunto);
         }
@@ -89,7 +90,7 @@ namespace EAPN.HDVS.Web.Controllers
         [HttpPost("filtered", Name = "GetAdjuntosFiltered")]
         [AuthorizePermission(Permissions.PERSONALATTACHMENTS_READ)]
         [ProducesResponseType(typeof(QueryResult<AdjuntoDto>), StatusCodes.Status200OK)]
-        public async Task<ActionResult<QueryResult<AdjuntoDto>>> GetAdjuntosFiltered([FromBody]QueryData query)
+        public async Task<ActionResult<QueryResult<AdjuntoDto>>> GetAdjuntosFiltered([FromBody] QueryData query)
         {
             var queryCollection = _adjuntoService.Repository.EntitySet.Where(x => !x.OrganizacionId.HasValue || x.OrganizacionId.Value == User.GetUserOrganizacionId());
             var result = await _filterPaginator.Execute(queryCollection, query);
@@ -111,11 +112,15 @@ namespace EAPN.HDVS.Web.Controllers
             var adjunto = await _adjuntoService.GetFirstOrDefault(x => x.Id == id, q => q.Include(x => x.Tipo));
 
             if (adjunto == null)
+            {
                 return null;
+            }
 
             // Verificamos restricciones
             if (adjunto.OrganizacionId.HasValue && adjunto.OrganizacionId.Value != User.GetUserOrganizacionId())
+            {
                 return null;
+            }
 
             var filePath = Path.Combine(_hostingEnvironment.ContentRootPath, _attachmentsFolder, adjunto.Tipo?.Carpeta, adjunto.Alias);
             var fileStream = System.IO.File.OpenRead(filePath);
@@ -139,11 +144,15 @@ namespace EAPN.HDVS.Web.Controllers
             var adjunto = await _adjuntoService.GetFirstOrDefault(x => x.Id == id, q => q.Include(x => x.Tipo).Include(x => x.FotoUsuario).Include(x => x.FotoFicha));
 
             if (adjunto == null)
+            {
                 return null;
+            }
 
             // Verificamos restricciones
             if (adjunto.OrganizacionId.HasValue && adjunto.OrganizacionId.Value != User.GetUserOrganizacionId() && !User.HasSuperAdminPermission())
+            {
                 return null;
+            }
 
             var filePath = Path.Combine(_hostingEnvironment.ContentRootPath, _attachmentsFolder, adjunto.Tipo?.Carpeta, adjunto.Alias);
             var fileStream = System.IO.File.OpenRead(filePath);
@@ -151,7 +160,7 @@ namespace EAPN.HDVS.Web.Controllers
             var pvd = new FileExtensionContentTypeProvider();
             bool isKnownType = pvd.TryGetContentType(adjunto.Alias, out string mimeType);
 
-            return File(fileStream, isKnownType ? mimeType : "application/octet-stream"); 
+            return File(fileStream, isKnownType ? mimeType : "application/octet-stream");
         }
 
         /// <summary>
@@ -164,17 +173,23 @@ namespace EAPN.HDVS.Web.Controllers
         public async Task<ActionResult<AdjuntoDto>> PostAdjunto([FromForm] SubidaAdjuntoDto subidaAdjuntoDto)
         {
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+            }
 
             if (subidaAdjuntoDto.File.Length == 0)
+            {
                 return NoContent();
+            }
 
             // user with no specific permission, only can update their user image
             if (!User.HasPermission(Permissions.PERSONALATTACHMENTS_WRITE) &&
-                (subidaAdjuntoDto.FichaId.HasValue 
-                || !subidaAdjuntoDto.OrganizacionId.HasValue 
+                (subidaAdjuntoDto.FichaId.HasValue
+                || !subidaAdjuntoDto.OrganizacionId.HasValue
                 || subidaAdjuntoDto.OrganizacionId != User.GetUserOrganizacionId()))
+            {
                 return BadRequest();
+            }
 
             var tipo = await _adjuntoTipoService.GetFirstOrDefault(x => x.Id == subidaAdjuntoDto.TipoId);
             var extension = Path.GetExtension(subidaAdjuntoDto.File.FileName);
@@ -193,7 +208,6 @@ namespace EAPN.HDVS.Web.Controllers
             try
             {
                 var filePath = Path.Combine(_hostingEnvironment.ContentRootPath, _attachmentsFolder, tipo?.Carpeta);
-                var di = Directory.CreateDirectory(filePath);
                 filePath = Path.Combine(filePath, adjunto.Alias);
 
                 using var fileStream = new FileStream(filePath, FileMode.Create);
@@ -202,7 +216,7 @@ namespace EAPN.HDVS.Web.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error uploading files");
-                throw ex;
+                throw;
             }
 
             _adjuntoService.Add(adjunto);
@@ -224,7 +238,9 @@ namespace EAPN.HDVS.Web.Controllers
         {
             var adjunto = await _adjuntoService.GetFirstOrDefault(x => x.Id == id, q => q.Include(x => x.Tipo));
             if (adjunto == null)
+            {
                 return NotFound();
+            }
 
             _logger.LogWarning($"Se elimina el adjunto {adjunto.NombreOriginal}");
 
@@ -233,7 +249,9 @@ namespace EAPN.HDVS.Web.Controllers
 
             var filePath = Path.Combine(_attachmentsFolder, adjunto.Tipo?.Carpeta, adjunto.Alias);
             if (System.IO.File.Exists(filePath))
+            {
                 System.IO.File.Delete(filePath);
+            }
 
             return NoContent();
         }

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace EAPN.HDVS.Web.Dto
+﻿namespace EAPN.HDVS.Web.Dto
 {
     public class IndicadorSeguimientoDto
     {

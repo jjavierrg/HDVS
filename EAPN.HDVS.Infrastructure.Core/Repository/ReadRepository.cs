@@ -70,13 +70,19 @@ namespace EAPN.HDVS.Infrastructure.Core.Repository
             IQueryable<T> query = EntitySet;
 
             if (includes != null)
+            {
                 query = includes(query);
+            }
 
             if (orderBy != null)
+            {
                 query = orderBy(query);
+            }
 
             if (filter != null)
+            {
                 query = query.Where(filter);
+            }
 
             return query;
         }

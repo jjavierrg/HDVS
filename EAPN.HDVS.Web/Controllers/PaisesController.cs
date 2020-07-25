@@ -109,11 +109,15 @@ namespace EAPN.HDVS.Web.Controllers
         public async Task<IActionResult> PutPais(int id, PaisDto paisDto)
         {
             if (id != paisDto.Id)
+            {
                 return BadRequest();
+            }
 
             var pais = await _paisService.GetFirstOrDefault(x => x.Id == id);
             if (pais == null)
+            {
                 return NotFound();
+            }
 
             _logger.LogInformation($"Se actualiza el pais {pais.Descripcion} : {paisDto.Descripcion}");
             _mapper.Map(paisDto, pais);
@@ -137,7 +141,9 @@ namespace EAPN.HDVS.Web.Controllers
         {
             var pais = await _paisService.GetFirstOrDefault(x => x.Id == id);
             if (pais == null)
+            {
                 return NotFound();
+            }
 
             _logger.LogWarning($"Se elimina el pais {pais.Descripcion}");
             _paisService.Remove(pais);

@@ -47,15 +47,7 @@ namespace EAPN.HDVS.Infrastructure.Core.Queries
         private static readonly MethodInfo startsWithMethod = typeof(string).GetMethod("StartsWith", new[] { typeof(string) });
         private static readonly MethodInfo endsWithMethod = typeof(string).GetMethod("EndsWith", new[] { typeof(string) });
         private static MethodInfo inIdMethod = inIdMethod = typeof(List<object>).GetMethod("Contains", new[] { typeof(object) });
-        private static MethodInfo likeMethod = typeof(DbFunctionsExtensions).GetMethod("Like", new[] { typeof(DbFunctions), typeof(string), typeof(string) });
-
-
-        public static Expression GetExpression<T>(ParameterExpression param, ExpressionFilter filter)
-        {
-            MemberExpression member = GetExpression(param, filter.PropertyName);
-            Expression property = GetPropertyValue<T>(filter, member);
-            return ApplyComparisonFunction(filter, member, property);
-        }
+        private static readonly MethodInfo likeMethod = typeof(DbFunctionsExtensions).GetMethod("Like", new[] { typeof(DbFunctions), typeof(string), typeof(string) });
 
         private static Expression ApplyComparisonFunction(ExpressionFilter filter, MemberExpression member, Expression property)
         {
@@ -93,28 +85,36 @@ namespace EAPN.HDVS.Infrastructure.Core.Queries
             }
         }
 
-        private static Expression GetPropertyValue<T>(ExpressionFilter filter, MemberExpression member)
+        private static Expression GetPropertyValue(ExpressionFilter filter, MemberExpression member)
         {
             if (filter.Comparison == Comparison.In)
-                return Expression.Property(GetConstantValue<T>(filter, member), "Value");
+            {
+                return Expression.Property(GetConstantValue(filter, member), "Value");
+            }
 
             if (filter.Comparison == Comparison.IsNull || filter.Comparison == Comparison.IsNotNull)
+            {
                 return Expression.Constant(null, member.Type);
+            }
 
-            return Expression.Convert(Expression.Property(GetConstantValue<T>(filter, member), "Value"), member.Type);
+            return Expression.Convert(Expression.Property(GetConstantValue(filter, member), "Value"), member.Type);
         }
 
-        private static ConstantExpression GetConstantValue<T>(ExpressionFilter filter, MemberExpression member)
+        private static ConstantExpression GetConstantValue(ExpressionFilter filter, MemberExpression member)
         {
             ConstantExpression constant;
             if (filter.Comparison != Comparison.In)
             {
                 var propertyType = ((PropertyInfo)member.Member).PropertyType;
                 var propertyValue = filter.Value;
-                if (!propertyType.IsAssignableFrom(propertyValue.GetType()))
+                if (!propertyType.IsInstanceOfType(propertyValue))
                 {
                     var converter = TypeDescriptor.GetConverter(propertyType);
-                    if (!converter.CanConvertFrom(typeof(string))) throw new NotSupportedException();
+                    if (!converter.CanConvertFrom(typeof(string)))
+                    {
+                        throw new NotSupportedException();
+                    }
+
                     propertyValue = converter.ConvertFromInvariantString(filter.Value.ToString());
                 }
 
@@ -140,6 +140,12 @@ namespace EAPN.HDVS.Infrastructure.Core.Queries
                 expression = Expression.Property(expression, properties[i]);
             }
             return expression;
+        }
+        public static Expression GetExpression(ParameterExpression param, ExpressionFilter filter)
+        {
+            MemberExpression member = GetExpression(param, filter.PropertyName);
+            Expression property = GetPropertyValue(filter, member);
+            return ApplyComparisonFunction(filter, member, property);
         }
 
         private static object ParseValueMember(Type memberType, Type constantType, object filterValue)
@@ -168,27 +174,29 @@ namespace EAPN.HDVS.Infrastructure.Core.Queries
         public static Expression<Func<T, bool>> ConstructAndExpressionTree<T>(List<ExpressionFilter> filters)
         {
             if (filters.Count == 0)
+            {
                 return null;
+            }
 
             ParameterExpression param = Expression.Parameter(typeof(T), "t");
-            Expression exp = null;
+            Expression exp;
 
             if (filters.Count == 1)
             {
-                exp = GetExpression<T>(param, filters[0]);
+                exp = GetExpression(param, filters[0]);
             }
             else
             {
-                exp = GetExpression<T>(param, filters[0]);
+                exp = GetExpression(param, filters[0]);
                 for (int i = 1; i < filters.Count; i++)
                 {
                     if (filters[i].Union?.ToLowerInvariant() == "or")
                     {
-                        exp = Expression.Or(exp, GetExpression<T>(param, filters[i]));
+                        exp = Expression.Or(exp, GetExpression(param, filters[i]));
                     }
                     else
                     {
-                        exp = Expression.And(exp, GetExpression<T>(param, filters[i]));
+                        exp = Expression.And(exp, GetExpression(param, filters[i]));
                     }
                 }
             }

@@ -1,6 +1,4 @@
-﻿using EAPN.HDVS.Entities;
-
-namespace EAPN.HDVS.Application.Security
+﻿namespace EAPN.HDVS.Application.Security
 {
     public interface IPasswordService
     {

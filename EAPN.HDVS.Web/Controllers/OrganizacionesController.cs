@@ -13,7 +13,6 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace EAPN.HDVS.Web.Controllers
@@ -109,11 +108,15 @@ namespace EAPN.HDVS.Web.Controllers
         public async Task<IActionResult> PutOrganizacion(int id, OrganizacionDto organizacionDto)
         {
             if (id != organizacionDto.Id)
+            {
                 return BadRequest();
+            }
 
             var organizacion = await _organizacionService.GetFirstOrDefault(x => x.Id == id);
             if (organizacion == null)
+            {
                 return NotFound();
+            }
 
             _mapper.Map(organizacionDto, organizacion);
 
@@ -136,7 +139,9 @@ namespace EAPN.HDVS.Web.Controllers
         {
             var organizacion = await _organizacionService.GetFirstOrDefault(x => x.Id == id);
             if (organizacion == null)
+            {
                 return NotFound();
+            }
 
             _organizacionService.Remove(organizacion);
             await _organizacionService.SaveChangesAsync();

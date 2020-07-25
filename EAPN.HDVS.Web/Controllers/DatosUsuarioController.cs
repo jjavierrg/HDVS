@@ -46,7 +46,9 @@ namespace EAPN.HDVS.Web.Controllers
             var usuario = await _usuarioService.GetFirstOrDefault(x => x.Id == userId, q => q.Include(x => x.Organizacion));
 
             if (usuario == null)
+            {
                 return NotFound();
+            }
 
             return _mapper.Map<DatosUsuarioDto>(usuario);
         }
@@ -81,9 +83,13 @@ namespace EAPN.HDVS.Web.Controllers
             }
 
             if (!string.IsNullOrWhiteSpace(datosUsuarioDto.NuevaClave))
+            {
                 _logger.LogInformation($"El usuario ha actualizado su clave");
+            }
             else
+            {
                 _logger.LogInformation($"El usuario ha actualizado sus datos personales");
+            }
 
             return result;
         }

@@ -9,7 +9,7 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    class DimensionService : CrudServiceBase<Dimension>, IDimensionService
+    internal class DimensionService : CrudServiceBase<Dimension>, IDimensionService
     {
         public DimensionService(IRepository<Dimension> repository, ILogger<DimensionService> logger) : base(repository, logger)
         {
@@ -21,10 +21,12 @@
             var dimensiones = await GetListAsync(x => x.Activo, q => q.Include(x => x.Categorias).ThenInclude(x => x.Indicadores), q => q.OrderBy(x => x.Orden));
 
             foreach (var dimension in dimensiones)
-            { 
+            {
                 dimension.Categorias = dimension.Categorias.Where(x => x.Activo).OrderBy(x => x.Orden).ToList();
                 foreach (var categoria in dimension.Categorias)
+                {
                     categoria.Indicadores = categoria.Indicadores.Where(x => x.Activo).OrderBy(x => x.Orden).ToList();
+                }
             }
 
             return dimensiones;
