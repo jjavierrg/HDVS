@@ -15,7 +15,7 @@
               [(ngModel)]="partner.nombre" name="Nombre" #nombreCtrl="ngModel" />
           </div>
           <div class="form-group col-md-2 d-md-flex justify-content-end">
-            <app-checkbox [label]="'comun.activo' | translate" [(ngModel)]="partner.activa" name=" activo"
+            <app-checkbox *ngIf="!restricted" [label]="'comun.activo' | translate" [(ngModel)]="partner.activa" name=" activo"
               #activoCtrl="ngModel"></app-checkbox>
           </div>
         </div>

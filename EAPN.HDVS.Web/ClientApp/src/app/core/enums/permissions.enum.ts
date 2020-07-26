@@ -7,6 +7,7 @@ export const Permissions = {
   },
   user: {
     superadmin: 'user:superadmin',
+    partnerManagement: 'user:partmang',
   },
   personalcard: {
     access: 'card:access',

@@ -4,20 +4,23 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { OrganizacionDto, AdjuntoDto } from 'src/app/core/api/api.client';
 import { PartnerService } from 'src/app/core/services/partner.service';
+import { AuthenticationService } from 'src/app/core/services/authentication.service';
 
 @Component({
   selector: 'app-partner-form',
   templateUrl: './partner-form.component.html',
-  styleUrls: ['./partner-form.component.scss']
+  styleUrls: ['./partner-form.component.scss'],
 })
 export class PartnerFormComponent implements OnInit {
   public title: string;
   public editing: boolean = false;
   public partner: OrganizacionDto;
   public permisos: OrganizacionDto[];
+  public restricted: boolean;
 
   constructor(
     private service: PartnerService,
+    private authService: AuthenticationService,
     private alertService: AlertService,
     private router: Router,
     private route: ActivatedRoute,
@@ -26,7 +29,12 @@ export class PartnerFormComponent implements OnInit {
 
   async ngOnInit() {
     const snapshot = this.route.snapshot;
-    const partnerId = snapshot.params['id'];
+    let partnerId = snapshot.params['id'];
+    this.restricted = snapshot.data['restricted'];
+
+    if (this.restricted) {
+      partnerId = await this.authService.getUserPartnerId().toPromise();
+    }
 
     if (!!partnerId) {
       this.partner = await this.service.getOrganizacion(+partnerId).toPromise();
@@ -34,9 +42,8 @@ export class PartnerFormComponent implements OnInit {
       this.title = this.partner ? this.partner.nombre : '';
 
       if (!this.partner) {
-        this.router
-          .navigate(['../'], { relativeTo: this.route })
-          .then(() => this.alertService.error(this.translate.instant('core.registro-no-encontrado')));
+        await this.router.navigate([this.restricted ? '/' : '../'], { relativeTo: this.route });
+        this.alertService.error(this.translate.instant('core.registro-no-encontrado'));
       }
     } else {
       this.partner = new OrganizacionDto({ activa: true });
@@ -49,13 +56,13 @@ export class PartnerFormComponent implements OnInit {
     const success = await this.savepartner(this.partner);
     if (success) {
       this.router
-        .navigate(['../'], { relativeTo: this.route })
+        .navigate([this.restricted ? '/' : '../'], { relativeTo: this.route })
         .then(() => this.alertService.success(this.translate.instant('core.datos-guardados')));
     }
   }
 
   public async onCancel(): Promise<void> {
-    await this.router.navigate(['../'], { relativeTo: this.route });
+    await this.router.navigate([this.restricted ? '/' : '../'], { relativeTo: this.route });
   }
 
   public async onProfilePictureChanged(foto: AdjuntoDto): Promise<void> {

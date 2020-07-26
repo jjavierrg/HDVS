@@ -38,6 +38,8 @@
         </div>
         <a ngbDropdownItem routerLink="/perfil"
           [title]="'header.menu.mi-perfil-titulo' | translate">{{'header.menu.mi-perfil' | translate}}</a>
+          <a ngbDropdownItem routerLink="/organizaciones/mi-organizacion" *appAllowedPermissions="{permissions: [permissions.user.superadmin, permissions.user.partnerManagement]}"
+          [title]="'header.menu.mi-organizacion-titulo' | translate">{{'header.menu.mi-organizacion' | translate}}</a>
         <div class="dropdown-divider"></div>
         <a ngbDropdownItem [title]="'header.menu.cerrar-sesion-titulo' | translate"
           (click)="onLogout()">{{'header.menu.cerrar-sesion' | translate}}</a>

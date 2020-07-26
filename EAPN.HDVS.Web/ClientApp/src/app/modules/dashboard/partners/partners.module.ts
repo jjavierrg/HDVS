@@ -16,6 +16,16 @@ const routes: Routes = [
   {
     path: '',
     component: PartnerListComponent,
+    canLoad: [AuthenticatedGuard],
+    canActivate: [AuthenticatedGuard],
+    data: { allowedPermissions: [Permissions.user.superadmin] },
+  },
+  {
+    path: 'mi-organizacion',
+    component: PartnerFormComponent,
+    canLoad: [AuthenticatedGuard],
+    canActivate: [AuthenticatedGuard],
+    data: { restricted: true, allowedPermissions: [Permissions.user.superadmin, Permissions.user.partnerManagement] },
   },
   {
     path: 'nuevo',

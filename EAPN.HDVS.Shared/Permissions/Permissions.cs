@@ -4,6 +4,7 @@
     {
         //App
         public const string APP_SUPERADMIN = "user:superadmin";
+        public const string APP_PARTNER_MANAGEMENT = "user:partmang";
 
         // User management
         public const string USERMANAGEMENT_ACCESS = "usermng:access";
@@ -23,13 +24,13 @@
         public const string PERSONALINDICATORS_WRITE = "indicators:write";
         public const string PERSONALINDICATORS_DELETE = "indicators:delete";
 
-        // Indicators
+        // Attachments
         public const string PERSONALATTACHMENTS_ACCESS = "attachments:access";
         public const string PERSONALATTACHMENTS_READ = "attachments:read";
         public const string PERSONALATTACHMENTS_WRITE = "attachments:write";
         public const string PERSONALATTACHMENTS_DELETE = "attachments:delete";
 
-        // Indicators
+        // stats
         public const string STATS_ACCESS = "stats:access";
         public const string STATS_GLOBAL = "stats:global";
     }

@@ -49,7 +49,7 @@ const routes: Routes = [
         loadChildren: () => import('./partners/partners.module').then((m) => m.PartnersModule),
         canLoad: [AuthenticatedGuard],
         canActivate: [AuthenticatedGuard],
-        data: { allowedPermissions: [Permissions.user.superadmin] },
+        data: { allowedPermissions: [Permissions.user.superadmin, Permissions.user.partnerManagement] },
       },
       {
         path: 'fichas',

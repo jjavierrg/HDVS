@@ -100,7 +100,7 @@ namespace EAPN.HDVS.Web.Controllers
         /// <param name="id">Item identifier</param>
         /// <param name="organizacionDto">Item data</param>
         /// <returns></returns>
-        [AuthorizePermission(Permissions.APP_SUPERADMIN)]
+        [AuthorizePermission(Permissions.APP_SUPERADMIN, Permissions.APP_PARTNER_MANAGEMENT)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -108,9 +108,10 @@ namespace EAPN.HDVS.Web.Controllers
         public async Task<IActionResult> PutOrganizacion(int id, OrganizacionDto organizacionDto)
         {
             if (id != organizacionDto.Id)
-            {
                 return BadRequest();
-            }
+
+            if (id != User.GetUserOrganizacionId() && !User.HasPermission(Permissions.APP_SUPERADMIN))
+                return BadRequest();
 
             var organizacion = await _organizacionService.GetFirstOrDefault(x => x.Id == id);
             if (organizacion == null)
