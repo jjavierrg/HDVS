@@ -56,7 +56,7 @@ namespace EAPN.HDVS.Infrastructure.Configurations
             builder.HasOne(x => x.Nacionalidad).WithMany().HasForeignKey(x => x.NacionalidadId).OnDelete(DeleteBehavior.NoAction);
             builder.HasOne(x => x.Origen).WithMany().HasForeignKey(x => x.OrigenId).OnDelete(DeleteBehavior.NoAction);
             builder.HasOne(x => x.SituacionAdministrativa).WithMany().HasForeignKey(x => x.SituacionAdministrativaId).OnDelete(DeleteBehavior.NoAction);
-            builder.HasMany(x => x.Seguimientos).WithOne(x => x.Ficha).HasForeignKey(x => x.FichaId).OnDelete(DeleteBehavior.NoAction);
+            builder.HasMany(x => x.Seguimientos).WithOne(x => x.Ficha).HasForeignKey(x => x.FichaId).OnDelete(DeleteBehavior.Cascade);
             builder.HasMany(x => x.Adjuntos).WithOne(x => x.Ficha).HasForeignKey(x => x.FichaId).OnDelete(DeleteBehavior.Cascade);
         }
     }

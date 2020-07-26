@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { AdjuntoDto, IFichaDto, SeguimientoDto, SeguimientoViewDto } from 'src/app/core/api/api.client';
 import { Permissions } from 'src/app/core/enums/permissions.enum';
@@ -38,7 +39,8 @@ export class CardFormComponent implements OnInit {
     private service: CardService,
     private authService: AuthenticationService,
     private alertService: AlertService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private modalService: NgbModal
   ) {}
 
   async ngOnInit() {
@@ -127,6 +129,22 @@ export class CardFormComponent implements OnInit {
 
   public async onCancel(): Promise<void> {
     await this.router.navigate(['/']);
+  }
+
+  public async onDeleteClick(modal: any): Promise<void> {
+    try {
+      await this.modalService.open(modal, { centered: true, backdrop: 'static' }).result;
+    } catch (error) {
+      return;
+    }
+
+    try {
+      await this.service.deleteCard(this.card.id).toPromise();
+      await this.router.navigate(['/']);
+      this.alertService.success(this.translate.instant('core.elementos-eliminados'));
+    } catch (error) {
+      this.alertService.error(error);
+    }
   }
 
   public async onProfilePictureChanged(foto: AdjuntoDto): Promise<void> {

@@ -52,6 +52,14 @@ export class CardService {
     return this.apiClient.getResumen();
   }
 
+  public deleteCard(cardId: number): Observable<void> {
+    if (!cardId) {
+      return;
+    }
+
+    return this.apiClient.deleteFicha(cardId);
+  }
+
   private getQuery(query: ISearchQuery): QueryData {
     const filters: IBaseFilter[] = [];
 
