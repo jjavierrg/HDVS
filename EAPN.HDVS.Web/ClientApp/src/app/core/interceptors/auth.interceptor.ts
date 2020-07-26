@@ -23,7 +23,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
     return this.authService.getValidToken().pipe(
       mergeMap((token) => {
-        if (token != null) {
+        if (token) {
           authReq = req.clone({ headers: req.headers.set(TOKEN_HEADER_KEY, 'Bearer ' + token) });
         }
 

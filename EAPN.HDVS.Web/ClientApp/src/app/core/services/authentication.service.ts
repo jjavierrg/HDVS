@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, ReplaySubject, throwError, of, from } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { map, catchError, retry } from 'rxjs/operators';
-import { ApiClient, LoginAttempDto, UserTokenDto, DatosUsuarioDto } from '../api/api.client';
+import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { sha3_512 } from 'js-sha3';
-import { HttpClient } from '@angular/common/http';
-import { Session } from 'protractor';
-import { JsonPipe } from '@angular/common';
+import { BehaviorSubject, from, Observable, of, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
+import { ApiClient, DatosUsuarioDto, LoginAttempDto, UserTokenDto } from '../api/api.client';
 
 const helper = new JwtHelperService();
 const validMinutesOffset = 10;
@@ -18,7 +16,7 @@ const validMinutesOffset = 10;
 export class AuthenticationService {
   private currentTokenSubject: BehaviorSubject<UserTokenDto>;
 
-  constructor(private apiClient: ApiClient) {
+  constructor(private apiClient: ApiClient, private router: Router) {
     let token = localStorage.getItem(environment.tokenLocalStorageKey);
     if (!token) {
       token = sessionStorage.getItem(environment.tokenLocalStorageKey);
@@ -178,12 +176,18 @@ export class AuthenticationService {
         localStorage.removeItem(environment.tokenLocalStorageKey);
         sessionStorage.removeItem(environment.tokenLocalStorageKey);
         this.currentTokenSubject.next(null);
+        this.router.navigate(['login']);
         return throwError(err);
       }),
       map((token: UserTokenDto) => {
         localStorage.setItem(environment.tokenLocalStorageKey, JSON.stringify(token));
         sessionStorage.setItem(environment.tokenLocalStorageKey, JSON.stringify(token));
         this.currentTokenSubject.next(token);
+
+        if (!token) {
+          this.router.navigate(['login']);
+        }
+
         return token;
       })
     );

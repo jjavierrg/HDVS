@@ -77,10 +77,8 @@ namespace EAPN.HDVS.Web
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
 
-                using (var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
-                {
-                    scope.ServiceProvider.GetService<DbContext>().Database.Migrate();
-                }
+                using var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
+                scope.ServiceProvider.GetService<DbContext>().Database.Migrate();
             }
 
             app.UseHttpsRedirection();
@@ -180,7 +178,8 @@ namespace EAPN.HDVS.Web
 
                     ValidIssuer = authConfig.Issuer,
                     ValidAudience = authConfig.Audience,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authConfig.SymmetricSecret))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authConfig.SymmetricSecret)),
+                    ClockSkew = TimeSpan.Zero
                 };
             });
 

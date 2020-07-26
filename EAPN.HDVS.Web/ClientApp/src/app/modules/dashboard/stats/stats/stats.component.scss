@@ -5,7 +5,7 @@
   top: 0;
   left: -250px;
   z-index: 9998;
-  height: 100vh;
+  height: 100%;
   background-color: var(--body-bg);
   transition: all 0.3s;
   display: flex;
@@ -32,8 +32,8 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background: rgba(0, 0, 0, 0.7);
   z-index: 9997;
   opacity: 0;
