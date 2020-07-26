@@ -10,6 +10,7 @@
   position: absolute;
   top: 50%;
   left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .bar {
@@ -18,8 +19,8 @@
   margin-left: 0.3rem;
   background-color: var(--light);
   display: inline-block;
-  transform: translate(-50%, -50%) scaleY(0);
   transform-origin: bottom center;
+  transform: scaleY(0);
   animation: loading 2s infinite;
 }
 
