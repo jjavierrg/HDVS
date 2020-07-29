@@ -5,23 +5,17 @@
       style="width: 100%; height: 400px; display: block;"></highcharts-chart>
   </div>
 
-  <div class="row">
-    <div class="col-12">
-      <a class="d-inline-block nav-link pl-0" [routerLink]="'/fichas/' + review.fichaId">&lt;
-        {{ 'seguimientos.volver-ficha' | translate }}</a>
-    </div>
-    <div class="col-12" *ngIf="!!review.completo">
-      <div class="alert alert-success text-center font-weight-bold" role="alert">
-        <i class="fas fa-info-circle"></i>
-        {{ 'seguimientos.ficha-completa' | translate }}
-      </div>
-    </div>
-    <div class="col-12" *ngIf="!review.completo">
-      <div class="alert alert-warning text-center font-weight-bold" role="alert">
-        <i class="fas fa-exclamation-circle"></i>
-        {{ 'seguimientos.ficha-incompleta' | translate }}
-      </div>
-    </div>
+  <a class="d-inline-block nav-link pl-0" [routerLink]="'/fichas/' + review.fichaId">&lt;
+    {{ 'seguimientos.volver-ficha' | translate }}</a>
+
+  <div class="alert alert-success text-center font-weight-bold" role="alert" *ngIf="!!review.completo">
+    <i class="fas fa-info-circle"></i>
+    {{ 'seguimientos.ficha-completa' | translate }}
+  </div>
+
+  <div class="alert alert-warning text-center font-weight-bold" role="alert" *ngIf="!review.completo">
+    <i class="fas fa-exclamation-circle"></i>
+    {{ 'seguimientos.ficha-incompleta' | translate }}
   </div>
   <app-card-info [cardId]="review.fichaId" *appAllowedPermissions="{permissions: [permissions.personalcard.access]}"
     (editCardRequired)="onEditCardRequired()">
@@ -56,7 +50,7 @@
         <span class="flex-grow-1 dimension-description">
           <h5>{{ dimension.descripcion }}</h5>
         </span>
-        <img src="assets/icons/{{dimension.orden}}.svg" width="60px" class="d-none d-lg-block">
+        <img src="assets/icons/{{dimension.orden}}.svg" width="60px" class="d-none d-lg-block dimension-icon">
       </div>
       <div class="col-6 d-flex">
         <div class="flex-grow-1 line"></div>
@@ -70,11 +64,11 @@
         </div>
       </div>
       <div class="row" *ngFor="let ind of getIndicators(category.id)">
-        <div class="col-11 col-lg-6 order-1">
+        <div class="col-11 order-1" [ngClass]="{'col-lg-6': ind.verificado}">
           <p class="ml-lg-5 text-primary">{{ ind.indicador.descripcion }}</p>
         </div>
-        <div class="col-12 col-lg-5 order-3 order-lg-2">
-          <p class="text-muted font-weight-light" *ngIf="ind.verificado"><i
+        <div class="col-12 col-lg-5 order-3 order-lg-2" *ngIf="ind.verificado">
+          <p class="text-muted font-weight-light"><i
               class="fas fa-check-circle text-success"></i> {{ ind.indicador.verificacion }}</p>
         </div>
         <div
