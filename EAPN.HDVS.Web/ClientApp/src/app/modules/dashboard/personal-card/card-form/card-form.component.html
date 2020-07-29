@@ -4,7 +4,7 @@
       <app-secure-profile-image [photoId]="card.fotoId" class="profile-picture align-self-center" [fichaId]="card.id"
         [organizacionId]="card.organizacionId" (imageChange)="onProfilePictureChanged($event)">
       </app-secure-profile-image>
-      <h5 class="ml-3 flex-grow-1 text-light align-self-center">{{fullName}}</h5>
+      <h5 class="ml-3 flex-grow-1 text-light align-self-center mt-3">{{fullName}}</h5>
       <nav ngbNav #nav="ngbNav" [(activeId)]="activeTab" class="nav-tabs clear-padding-bottom">
         <ng-container ngbNavItem="datos">
           <a ngbNavLink>{{ 'ficha.datos' | translate }}</a>
