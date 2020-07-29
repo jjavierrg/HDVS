@@ -14,7 +14,7 @@
           (click)="onDeleteItem()">{{ deleteButtonText ? deleteButtonText: ('core.eliminar' | translate) }}</button></div>
     </div>
   </div>
-  <ag-grid-angular class="grid ag-theme-alpine flex-grow-1" [columnDefs]="columns" [rowData]="data"
+  <ag-grid-angular class="grid ag-theme-alpine flex-grow-1 w-100 h-100 position-relative" [columnDefs]="columns" [rowData]="data"
     [paginationPageSize]="25" [defaultColDef]="defaultColDef" (selectionChanged)="onSelectionChanged($event)"
     [pagination]="pagination" [rowSelection]="multiselect ? 'multiple' : 'single'" suppressCellSelection [localeTextFunc]="getLocaleTextFunc()">
   </ag-grid-angular>

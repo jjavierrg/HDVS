@@ -7,9 +7,11 @@
     <button class="btn btn-primary mr-1 mr-lg-3" *appAllowedPermissions="{permissions: [permissions.attachments.write]}"
       (click)="onAddNewClick(uploadModal)">{{'core.anadir' | translate}}</button>
   </div>
-  <app-grid class="flex-grow-1" [data]="card.adjuntos" [columns]="columns" [showToolbar]="false"
-    [title]="'comun.adjuntos' | translate" (selectionChange)="selected = $event">
-  </app-grid>
+  <div class="d-flex flex-grow-1">
+    <app-grid [data]="card.adjuntos" [columns]="columns" [showToolbar]="false"
+      [title]="'comun.adjuntos' | translate" (selectionChange)="selected = $event">
+    </app-grid>
+  </div>
 </div>
 
 <!-- Upload Modal -->

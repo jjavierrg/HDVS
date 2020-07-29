@@ -1,9 +1,11 @@
 <div class="position-absolute h-100 w-100 d-flex flex-column">
   <app-header></app-header>
   <app-navbar></app-navbar>
-  <div class="container-fluid flex-grow-1 mt-3">
+  <div class="container-fluid flex-grow-1 mt-3 position-relative d-flex">
     <app-alert-container></app-alert-container>
-    <router-outlet></router-outlet>
+    <div class="flex-grow-1">
+      <router-outlet></router-outlet>
+    </div>
   </div>
   <app-footer></app-footer>
 </div>

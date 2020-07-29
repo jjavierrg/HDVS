@@ -21,9 +21,11 @@
       *appAllowedPermissions="{permissions: [permissions.personalindicators.delete]}"
       (click)="onAddReviewClick()">{{'core.anadir' | translate}}</button>
   </div>
-  <app-grid class="flex-grow-1" [data]="card.seguimientos" [columns]="columns" [showToolbar]="false"
-    [title]="'comun.adjuntos' | translate" (selectionChange)="selection = $event">
-  </app-grid>
+  <div class="flex-grow-1 d-flex">
+    <app-grid [data]="card.seguimientos" [columns]="columns" [showToolbar]="false"
+      [title]="'comun.adjuntos' | translate" (selectionChange)="selection = $event">
+    </app-grid>
+  </div>
 </div>
 
 <!-- Delete confirmation -->
