@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 
-namespace EAPN.HDVS.Application.Repositories
+namespace EAPN.HDVS.Infraestructure.Repositories
 {
     public class OrganizacionRepository : Repository<Organizacion>
     {

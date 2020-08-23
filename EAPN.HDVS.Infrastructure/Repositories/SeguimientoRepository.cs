@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace EAPN.HDVS.Application.Repositories
+namespace EAPN.HDVS.Infraestructure.Repositories
 {
     public class SeguimientoRepository : Repository<Seguimiento>
     {
