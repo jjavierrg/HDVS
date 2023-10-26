@@ -116,7 +116,7 @@ namespace EAPN.HDVS.Web
         private void configureLogger()
         {
             GlobalDiagnosticsContext.Set("myDataBase", Configuration.GetConnectionString("HDVSDatabase"));
-            IConfigurationRoot config = new ConfigurationBuilder().AddJsonFile(path: "AppSettings.json").Build();
+            IConfigurationRoot config = new ConfigurationBuilder().AddJsonFile(path: "appsettings.json").Build();
             NLog.Extensions.Logging.ConfigSettingLayoutRenderer.DefaultConfiguration = config;
         }
 
@@ -193,7 +193,7 @@ namespace EAPN.HDVS.Web
         private void ConfigureDataAccess(IServiceCollection services)
         {
             services.AddTransient<DbContext, HDVSContext>();
-            services.AddDbContext<HDVSContext>(options => options.UseSqlServer(Configuration.GetConnectionString("HDVSDatabase"), x => x.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name)));
+            services.AddDbContext<HDVSContext>(options => options.UseSqlite("datasource=:memory:"));
         }
 
         private void ConfigureCors(IServiceCollection services)
