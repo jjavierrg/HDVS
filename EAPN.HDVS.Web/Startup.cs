@@ -193,7 +193,7 @@ namespace EAPN.HDVS.Web
         private void ConfigureDataAccess(IServiceCollection services)
         {
             services.AddTransient<DbContext, HDVSContext>();
-            services.AddDbContext<HDVSContext>(options => options.UseSqlite("datasource=:memory:"));
+            services.AddDbContext<HDVSContext>(options => options.UseSqlServer(Configuration.GetConnectionString("HDVSDatabase"), x => x.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name)));
         }
 
         private void ConfigureCors(IServiceCollection services)
