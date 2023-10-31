@@ -7,4 +7,10 @@ EXPOSE 443
 
 WORKDIR /app
 COPY . /app
+
+RUN mkdir -p /app/attachments/images
+RUN mkdir -p /app/attachments/attachments
+RUN mkdir -p /app/attachments/docs
+RUN mkdir -p /app/attachments/personal
+
 ENTRYPOINT ["dotnet", "EAPN.HDVS.Web.dll"]
