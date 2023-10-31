@@ -38,4 +38,5 @@ jobs:
             "stage": "${{ vars.ENV_TAG }}",
             "connectionstring": "${{ secrets.DATABASE_CONNECTIONSTRING }}",
             "projectdomain":  "${{ vars.PROJECT_DOMAIN }}"
+            "symmetricsecret": "${{ secrets.SYMMETRIC_SECRET }}
             }'

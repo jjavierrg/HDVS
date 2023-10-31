@@ -8,10 +8,12 @@ services:
       - AllowedCorsOrigins={{projectdomain}}
       - Authentication:Issuer={{projectdomain}}
       - Authentication:Audience={{projectdomain}}
+      - Authentication:SymmetricSecret={{symmetricsecret}}
     restart: unless-stopped
     networks:
       - hdvs
 
 networks:
   hdvs:
-    external: true
+    internal: true
+    name: hdvs-{{stage}}-network
