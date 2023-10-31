@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  apiEndpoint: 'https://localhost:44371',
+  apiEndpoint: location.origin,
   tokenExcludeEndpoints: ['api/auth'],
   tokenLocalStorageKey: 'HDVSApiToken',
 };

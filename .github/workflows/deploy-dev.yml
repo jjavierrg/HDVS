@@ -1,0 +1,27 @@
+name: Deploy to dev environment
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build:
+    uses: ./.github/workflows/build-artefact.yml
+    with:
+      ACTION_ENVIRONMENT: 'dev'
+    secrets: inherit
+
+  upload-docker:
+    needs: build
+    uses: ./.github/workflows/dockerhub.yml
+    with:
+      ACTION_ENVIRONMENT: 'dev'
+    secrets: inherit
+
+  deploy-portainer:
+    needs: upload-docker
+    uses: ./.github/workflows/portainer.yml
+    with:
+      ACTION_ENVIRONMENT: 'dev'
+    secrets: inherit

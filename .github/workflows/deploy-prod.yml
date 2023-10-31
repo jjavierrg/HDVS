@@ -1,0 +1,27 @@
+name: Deploy to prod environment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    uses: ./.github/workflows/build-artefact.yml
+    with:
+      ACTION_ENVIRONMENT: 'prod'
+    secrets: inherit
+
+  upload-docker:
+    needs: build
+    uses: ./.github/workflows/dockerhub.yml
+    with:
+      ACTION_ENVIRONMENT: 'prod'
+    secrets: inherit
+
+  deploy-portainer:
+    needs: upload-docker
+    uses: ./.github/workflows/portainer.yml
+    with:
+      ACTION_ENVIRONMENT: 'prod'
+    secrets: inherit
