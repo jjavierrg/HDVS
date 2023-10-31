@@ -1,12 +1,12 @@
 name: Deploy to prod environment
 
-env:
-  ACTION_ENVIRONMENT: prod
-
 on:
   push:
     branches:
       - main
+
+env:
+  ACTION_ENVIRONMENT: prod
 
 jobs:
   build:

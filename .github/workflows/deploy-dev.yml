@@ -1,12 +1,12 @@
 name: Deploy to dev environment
 
-env:
-  ACTION_ENVIRONMENT: dev
-
 on:
   push:
     branches:
       - develop
+
+env:
+  ACTION_ENVIRONMENT: dev
 
 jobs:
   build:
