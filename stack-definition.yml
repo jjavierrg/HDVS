@@ -8,7 +8,6 @@ services:
       - AllowedCorsOrigins={{projectdomain}}
       - Authentication:Issuer={{projectdomain}}
       - Authentication:Audience={{projectdomain}}
-      - API_ENDPOINT={{projectdomain}}
     restart: unless-stopped
     networks:
       - hdvs
