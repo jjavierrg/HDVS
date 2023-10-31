@@ -1,0 +1,18 @@
+version: '3.7'
+services:
+  hdvs-eapn:
+    image: {{image}}
+    container_name: hdvs-eapn-{{stage}}
+    environment:
+      - ConnectionStrings:HDVSDatabase={{{connectionstring}}}
+      - AllowedCorsOrigins={{projectdomain}}
+      - Authentication:Issuer={{projectdomain}}
+      - Authentication:Audience={{projectdomain}}
+      - API_ENDPOINT={{projectdomain}}
+    restart: unless-stopped
+    networks:
+      - hdvs
+
+networks:
+  hdvs:
+    external: true

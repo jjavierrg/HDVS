@@ -1,0 +1,51 @@
+name: Build and upload artifact
+
+on:
+  workflow_call:
+    inputs:
+      ACTION_ENVIRONMENT:
+        required: true
+        type: string
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    environment: ${{ inputs.ACTION_ENVIRONMENT }}
+    env:
+      PROJECT_PATH: 'EAPN.HDVS.Web/EAPN.HDVS.Web.csproj'
+      TEST_PROJECT_PATH: 'EAPN.HDVS.Web.Testing/EAPN.HDVS.Web.Testing.csproj'
+      NODE_VERSION: 14.x
+      DOTNET_VERSION: 3.1.x
+
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v3
+
+      - name: ✨ Setup .NET ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: ✨ Setup Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: 🚚 Restore
+        run: dotnet restore ${{ env.PROJECT_PATH }}
+
+      - name: 🛠️ Build
+        run: dotnet build ${{ env.PROJECT_PATH }} --configuration Release --no-restore
+
+      - name: 🧪 Test
+        run: dotnet test ${{ env.TEST_PROJECT_PATH }} --configuration Release --no-restore --verbosity minimal
+
+      - name: 📦 Publish
+        run: dotnet publish ${{ env.PROJECT_PATH }} --configuration Release --no-restore --no-build --output /app/publish /p:UseAppHost=false
+
+      - name: 🚀 Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ vars.ENV_TAG }}-${{ github.sha }}
+          path: /app/publish
+          retention-days: 5
