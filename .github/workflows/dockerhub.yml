@@ -3,18 +3,14 @@ name: Upload to DockerHub
 on:
   workflow_call:
     inputs:
-      ENV_TAG:
+      ACTION_ENVIRONMENT:
         required: true
         type: string
-    secrets:
-      DOCKERHUB_USERNAME:
-        required: true
-      DOCKERHUB_TOKEN:
-        required: true
 
 jobs:
   build:
     runs-on: ubuntu-20.04
+    environment: ${{ inputs.ACTION_ENVIRONMENT }}
     steps:
       - name: 📝 Set env vars
         run: |
@@ -36,7 +32,7 @@ jobs:
       - name: 📥 Download artifact
         uses: actions/download-artifact@v3
         with:
-          name: ${{ inputs.ENV_TAG }}-${{ github.sha }}
+          name: ${{ vars.ENV_TAG }}-${{ github.sha }}
           path: /app
 
       - name: 🐳 Login to DockerHub
@@ -54,4 +50,4 @@ jobs:
           tags: |
             ${{ env.IMAGE_NAME }}:${{ env.GIT_SHA }}
             ${{ env.IMAGE_NAME }}:${{ env.BUILD_VER }}
-            ${{ env.IMAGE_NAME }}:${{ inputs.ENV_TAG }}
+            ${{ env.IMAGE_NAME }}:${{ vars.DOCKER_TAG }}

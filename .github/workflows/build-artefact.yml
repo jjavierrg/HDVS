@@ -3,13 +3,14 @@ name: Build and upload artifact
 on:
   workflow_call:
     inputs:
-      ENV_TAG:
+      ACTION_ENVIRONMENT:
         required: true
         type: string
 
 jobs:
   build:
     runs-on: ubuntu-20.04
+    environment: ${{ inputs.ACTION_ENVIRONMENT }}
     env:
       PROJECT_PATH: 'EAPN.HDVS.Web/EAPN.HDVS.Web.csproj'
       TEST_PROJECT_PATH: 'EAPN.HDVS.Web.Testing/EAPN.HDVS.Web.Testing.csproj'
@@ -45,6 +46,6 @@ jobs:
       - name: 🚀 Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ inputs.ENV_TAG }}-${{ github.sha }}
+          name: ${{ vars.ENV_TAG }}-${{ github.sha }}
           path: /app/publish
           retention-days: 5
