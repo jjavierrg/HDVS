@@ -1,0 +1,30 @@
+name: Deploy to dev environment
+
+env:
+  ENVIROMENT: dev
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  # build:
+  #   uses: ./.github/workflows/build-artefact.yml
+  #   with:
+  #     ENV_TAG: ${{ env.ENVIROMENT }}
+
+  # upload-docker:
+  #   needs: build
+  #   uses: ./.github/workflows/dockerhub.yml
+  #   with:
+  #     ENV_TAG: ${{ env.ENVIROMENT }}
+  #   secrets: inherit
+
+  deploy-portainer:
+    # needs: upload-docker
+    uses: ./.github/workflows/portainer.yml
+    with:
+      ENV_TAG: ${{ env.ENVIROMENT }}
+      PROJECT_DOMAIN: 'test'
+    secrets: inherit

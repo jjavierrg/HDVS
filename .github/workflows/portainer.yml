@@ -1,0 +1,50 @@
+name: Deploy to portainer
+
+on:
+  workflow_call:
+    inputs:
+      ENV_TAG:
+        required: true
+        type: string
+      PROJECT_DOMAIN:
+        required: true
+        type: string
+    secrets:
+      DOCKERHUB_USERNAME:
+        required: true
+      DOCKERHUB_TOKEN:
+        required: true
+      DATABASE_CONNECTIONSTRING:
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: 📝 Set env vars
+        run: |
+          echo "GIT_SHA=$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_ENV
+          echo "IMAGE_NAME=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
+      - name: 📥 Checkout stack-definition
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            stack-definition.yml
+
+      - name: 🚀 Deploy to portainer
+        uses: carlrygart/portainer-stack-deploy@v1
+        with:
+          portainer-host: ${{ secrets.PORTAINER_HOST }}
+          username: ${{ secrets.PORTAINER_USERNAME }}
+          password: ${{ secrets.PORTAINER_PASSWORD }}
+          stack-name: hdvs-eapn-${{ inputs.ENV_TAG }}
+          stack-definition: stack-definition.yml
+          endpoint-id: 2
+          template-variables: '{
+            "image": "${{ env.IMAGE_NAME }}:${{ env.GIT_SHA }}",
+            "stage": "${{ inputs.ENV_TAG }}",
+            "connectionstring": "${{ secrets.DATABASE_CONNECTIONSTRING }}",
+            "projectdomain":  "${{ inputs.PROJECT_DOMAIN }}"
+            }'

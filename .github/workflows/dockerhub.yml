@@ -1,0 +1,57 @@
+name: Upload to DockerHub
+
+on:
+  workflow_call:
+    inputs:
+      ENV_TAG:
+        required: true
+        type: string
+    secrets:
+      DOCKERHUB_USERNAME:
+        required: true
+      DOCKERHUB_TOKEN:
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: 📝 Set env vars
+        run: |
+          echo "GIT_SHA=$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_ENV
+          echo "BUILD_VER=1.0.$GITHUB_RUN_NUMBER" >> $GITHUB_ENV
+          echo "IMAGE_NAME=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
+      - name: 📥 Checkout dockerfile-CI
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            Dockerfile-CI
+
+      - name: 📁 Create app directory and move Dockerfile-CI
+        run: |
+          mkdir -p /app
+          mv Dockerfile-CI /app/Dockerfile
+
+      - name: 📥 Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ inputs.ENV_TAG }}-${{ github.sha }}
+          path: /app
+
+      - name: 🐳 Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME  }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: 🐳 Build and push Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: /app
+          file: /app/Dockerfile
+          push: true
+          tags: |
+            ${{ env.IMAGE_NAME }}:${{ env.GIT_SHA }}
+            ${{ env.IMAGE_NAME }}:${{ env.BUILD_VER }}
+            ${{ env.IMAGE_NAME }}:${{ inputs.ENV_TAG }}
