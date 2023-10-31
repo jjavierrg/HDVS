@@ -26,14 +26,14 @@ jobs:
 
       - name: 📁 Create app directory and move Dockerfile-CI
         run: |
-          mkdir -p /app
-          mv Dockerfile-CI /app/Dockerfile
+          mkdir -p ./app
+          mv Dockerfile-CI ./app/Dockerfile
 
       - name: 📥 Download artifact
         uses: actions/download-artifact@v3
         with:
           name: ${{ vars.ENV_TAG }}-${{ github.sha }}
-          path: /app
+          path: ./app
 
       - name: 🐳 Login to DockerHub
         uses: docker/login-action@v3
@@ -44,8 +44,8 @@ jobs:
       - name: 🐳 Build and push Docker Image
         uses: docker/build-push-action@v5
         with:
-          context: /app
-          file: /app/Dockerfile
+          context: ./app
+          file: ./app/Dockerfile
           push: true
           tags: |
             ${{ env.IMAGE_NAME }}:${{ env.GIT_SHA }}
