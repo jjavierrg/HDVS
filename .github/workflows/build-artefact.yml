@@ -41,11 +41,11 @@ jobs:
         run: dotnet test ${{ env.TEST_PROJECT_PATH }} --configuration Release --no-restore --verbosity minimal
 
       - name: 📦 Publish
-        run: dotnet publish ${{ env.PROJECT_PATH }} --configuration Release --no-restore --no-build --output /app/publish /p:UseAppHost=false
+        run: dotnet publish ${{ env.PROJECT_PATH }} --configuration Release --no-restore --no-build --output ./publish /p:UseAppHost=false
 
       - name: 🚀 Upload artifact
         uses: actions/upload-artifact@v3
         with:
           name: ${{ vars.ENV_TAG }}-${{ github.sha }}
-          path: /app/publish
+          path: ./publish
           retention-days: 5
