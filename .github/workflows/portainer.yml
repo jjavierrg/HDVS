@@ -10,6 +10,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-20.04
+    environment: ${{ inputs.ACTION_ENVIRONMENT }}
 
     steps:
       - name: 📝 Set env vars
