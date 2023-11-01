@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -103,5 +103,9 @@
       </ResolvedFileToPublish>
     </ItemGroup>
   </Target>
+
+    <Target Name="CreateAttachmentsFolder" AfterTargets="AfterPublish">
+	    <MakeDir Directories="$(PublishDir)attachments" Condition="!Exists('$(PublishDir)attachments')" />
+    </Target>
 
 </Project>
