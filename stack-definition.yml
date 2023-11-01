@@ -10,6 +10,10 @@ services:
       - Authentication:Audience={{projectdomain}}
       - Authentication:SymmetricSecret={{symmetricsecret}}
     restart: unless-stopped
+    volumes:
+      - type: bind
+        source: /container-data/eapn/{{stage}}
+        target: /app/attachments
     networks:
       - hdvs
 

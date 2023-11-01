@@ -208,6 +208,11 @@ namespace EAPN.HDVS.Web.Controllers
             try
             {
                 var filePath = Path.Combine(_hostingEnvironment.ContentRootPath, _attachmentsFolder, tipo?.Carpeta);
+                if (!Directory.Exists(filePath))
+                {
+                    Directory.CreateDirectory(filePath);
+                }
+
                 filePath = Path.Combine(filePath, adjunto.Alias);
 
                 using var fileStream = new FileStream(filePath, FileMode.Create);
