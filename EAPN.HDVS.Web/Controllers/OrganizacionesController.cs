@@ -69,10 +69,13 @@ namespace EAPN.HDVS.Web.Controllers
         /// <param name="id">Item identifier</param>
         /// <returns></returns>
         [HttpGet("{id}", Name = "GetOrganizacion")]
-        [AuthorizePermission(Permissions.APP_SUPERADMIN)]
+        [AuthorizePermission(Permissions.APP_SUPERADMIN, Permissions.APP_PARTNER_MANAGEMENT)]
         [ProducesResponseType(typeof(OrganizacionDto), StatusCodes.Status200OK)]
         public async Task<ActionResult<OrganizacionDto>> GetOrganizacion(int id)
         {
+            if (id != User.GetUserOrganizacionId() && !User.HasPermission(Permissions.APP_SUPERADMIN))
+                return Forbid();
+
             var organizacion = await _organizacionService.GetFirstOrDefault(x => x.Id == id);
             return _mapper.Map<OrganizacionDto>(organizacion);
         }
