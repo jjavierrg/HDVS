@@ -10,19 +10,16 @@ on:
 jobs:
   generate-docker-image:
     runs-on: ubuntu-20.04
+    permissions:
+      contents: read
+      packages: write
+
     environment: ${{ inputs.ACTION_ENVIRONMENT }}
     steps:
-      - name: Generate release tag
-        id: generate_release_tag
-        uses: amitsingh-007/next-release-tag@v4.0.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          tag_prefix: ''
-          tag_template: 'yy.mm.dd.i'
-
       - name: 📝 Set env vars
         run: |
           echo "GIT_SHA=$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_ENV
+          echo "GIT_VERSION=$(Get-Date -Format "yyyyMMdd.HHmm")" >> $GITHUB_ENV
           echo "IMAGE_NAME=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
       - name: 📥 Checkout dockerfile-CI
@@ -42,7 +39,6 @@ jobs:
           name: ${{ vars.ENV_TAG }}-${{ github.sha }}
           path: ./app
 
-      # Push to Github Container Registry
       - name: 🐳 Login to Github Container Registry
         uses: docker/login-action@v3
         with:
@@ -58,5 +54,5 @@ jobs:
           push: true
           tags: |
             ${{ env.IMAGE_NAME }}:${{ env.GIT_SHA }}
-            ${{ env.IMAGE_NAME }}:${{ steps.generate_release_tag.outputs.next_release_tag }}
+            ${{ env.IMAGE_NAME }}:${{ env.GIT_VERSION }}
             ${{ env.IMAGE_NAME }}:${{ vars.DOCKER_TAG }}
