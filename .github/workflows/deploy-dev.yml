@@ -16,6 +16,9 @@ jobs:
   upload-docker:
     needs: build
     uses: ./.github/workflows/dockerhub.yml
+    permissions:
+      contents: read
+      packages: write
     with:
       ACTION_ENVIRONMENT: 'dev'
     secrets: inherit
