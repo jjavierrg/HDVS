@@ -18,10 +18,9 @@ jobs:
     steps:
       - name: 📝 Set env vars
         run: |
-          $version = (Get-Date -Format "yyyyMMdd.HHmm")
+          echo "TAG_VERSION=$(date +'%Y%m%d.%H%M')" >> $GITHUB_ENV
           echo "GIT_SHA=$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_ENV
           echo "IMAGE_NAME=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
-          echo "TAG_VERSION=$version" >> $GITHUB_ENV
 
       - name: 📥 Checkout dockerfile-CI
         uses: actions/checkout@v4
