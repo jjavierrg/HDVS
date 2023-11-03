@@ -8,7 +8,7 @@ on:
         type: string
 
 jobs:
-  build:
+  publish-to-portainer:
     runs-on: ubuntu-20.04
     environment: ${{ inputs.ACTION_ENVIRONMENT }}
 
