@@ -1,10 +1,17 @@
 name: Publish release from artifact
 
-on: workflow_call
+on:
+  workflow_call:
+    inputs:
+      ACTION_ENVIRONMENT:
+        required: true
+        type: string
 
 jobs:
-  publish:
+  publish-release:
     runs-on: ubuntu-20.04
+    environment: ${{ inputs.ACTION_ENVIRONMENT }}
+
     steps:
       - name: ⬇️ Download artifact
         uses: actions/download-artifact@v3

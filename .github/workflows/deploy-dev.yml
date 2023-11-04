@@ -16,6 +16,8 @@ jobs:
   create-release:
     needs: build
     uses: ./.github/workflows/publish-release.yml
+    with:
+      ACTION_ENVIRONMENT: 'dev'
     secrets: inherit
 
   upload-docker:
