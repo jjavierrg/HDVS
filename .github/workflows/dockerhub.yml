@@ -50,6 +50,6 @@ jobs:
           file: ./app/Dockerfile
           push: true
           tags: |
-            ${{ env.IMAGE_NAME }}:${{ env.GIT_SHA }}
-            ${{ env.IMAGE_NAME }}:${{ env.TAG_VERSION }}
-            ${{ env.IMAGE_NAME }}:${{ vars.DOCKER_TAG }}
+            ghcr.io/${{ env.IMAGE_NAME }}:${{ env.GIT_SHA }}
+            ghcr.io/${{ env.IMAGE_NAME }}:${{ env.TAG_VERSION }}
+            ghcr.io/${{ env.IMAGE_NAME }}:${{ vars.DOCKER_TAG }}
