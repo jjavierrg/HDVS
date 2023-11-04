@@ -30,7 +30,7 @@ jobs:
           mkdir -p ./app
           mv Dockerfile-CI ./app/Dockerfile
 
-      - name: 📥 Download artifact
+      - name: ⬇️ Download artifact
         uses: actions/download-artifact@v3
         with:
           name: ${{ vars.ENV_TAG }}-${{ github.sha }}

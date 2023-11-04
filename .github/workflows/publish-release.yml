@@ -1,0 +1,27 @@
+name: Publish release from artifact
+
+on: workflow_call
+
+jobs:
+  publish:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: ⬇️ Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ vars.ENV_TAG }}-${{ github.sha }}
+          path: ./app
+
+      - name: 📝 Build changelog
+        id: github_release
+        uses: mikepenz/release-changelog-builder-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🚀 Publish release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ./app/*
+          tag_name: ${{ vars.ENV_TAG }}
+          draft: false
+          prerelease: false

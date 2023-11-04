@@ -13,6 +13,11 @@ jobs:
       ACTION_ENVIRONMENT: 'dev'
     secrets: inherit
 
+  create-release:
+    needs: build
+    uses: ./.github/workflows/publish-release.yml
+    secrets: inherit
+
   upload-docker:
     needs: build
     uses: ./.github/workflows/dockerhub.yml
