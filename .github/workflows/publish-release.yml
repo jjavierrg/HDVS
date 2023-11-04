@@ -16,6 +16,10 @@ jobs:
       - name: 🛒 Checkout
         uses: actions/checkout@v3
 
+      - name: 📝 Set env vars
+        run: |
+          echo "TAG_VERSION=$(date +'%Y%m%d.%H%M')" >> $GITHUB_ENV
+
       - name: ⬇️ Download artifact
         uses: actions/download-artifact@v3
         with:
@@ -32,7 +36,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: ./app/*
-          tag_name: ${{ vars.ENV_TAG }}
+          tag_name: ${{ vars.TAG_VERSION }}
           draft: false
           prerelease: false
           body: ${{ steps.changelog.outputs.changelog }}
