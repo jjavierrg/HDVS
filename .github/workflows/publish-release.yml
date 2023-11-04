@@ -9,6 +9,8 @@ on:
 
 jobs:
   publish-release:
+    permissions:
+      contents: write
     runs-on: ubuntu-20.04
     environment: ${{ inputs.ACTION_ENVIRONMENT }}
 
