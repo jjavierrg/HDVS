@@ -34,7 +34,7 @@ jobs:
           stack-definition: stack-definition.yml
           endpoint-id: 2
           template-variables: '{
-            "image": "${{ env.IMAGE_NAME }}:${{ env.GIT_SHA }}",
+            "image": "ghcr.io/${{ env.IMAGE_NAME }}:${{ env.GIT_SHA }}",
             "stage": "${{ vars.ENV_TAG }}",
             "connectionstring": "${{ secrets.DATABASE_CONNECTIONSTRING }}",
             "projectdomain":  "${{ vars.PROJECT_DOMAIN }}",

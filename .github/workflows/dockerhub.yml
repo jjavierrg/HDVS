@@ -49,6 +49,15 @@ jobs:
           context: ./app
           file: ./app/Dockerfile
           push: true
+          labels: |
+            org.opencontainers.image.title= Herramienta de vulnerabilidad social - HDVS
+            org.opencontainers.image.description=Herramienta de vulnerabilidad social for EAPN Madrid made as collaboration between EAPN Madrid and the UNIR University
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.created=$(date +'%Y-%m-%dT%H:%M:%SZ')
+            org.opencontainers.image.revision=${{ env.GIT_SHA }}
+            org.opencontainers.image.version=${{ env.TAG_VERSION }}
+            org.opencontainers.image.authors=Jose Javier Rodriguez Gallego <jjavierrg@gmail.com>
+
           tags: |
             ghcr.io/${{ env.IMAGE_NAME }}:${{ env.GIT_SHA }}
             ghcr.io/${{ env.IMAGE_NAME }}:${{ env.TAG_VERSION }}
