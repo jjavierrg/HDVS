@@ -8,14 +8,15 @@ on:
         type: string
 
 jobs:
-  build:
+  generate-docker-image:
     runs-on: ubuntu-20.04
+
     environment: ${{ inputs.ACTION_ENVIRONMENT }}
     steps:
       - name: 📝 Set env vars
         run: |
+          echo "TAG_VERSION=$(date +'%Y%m%d.%H%M')" >> $GITHUB_ENV
           echo "GIT_SHA=$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_ENV
-          echo "BUILD_VER=1.0.$GITHUB_RUN_NUMBER" >> $GITHUB_ENV
           echo "IMAGE_NAME=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
       - name: 📥 Checkout dockerfile-CI
@@ -29,17 +30,18 @@ jobs:
           mkdir -p ./app
           mv Dockerfile-CI ./app/Dockerfile
 
-      - name: 📥 Download artifact
+      - name: ⬇️ Download artifact
         uses: actions/download-artifact@v3
         with:
           name: ${{ vars.ENV_TAG }}-${{ github.sha }}
           path: ./app
 
-      - name: 🐳 Login to DockerHub
+      - name: 🐳 Login to Github Container Registry
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME  }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.CONTAINER_REGISTRY_PAT }}
 
       - name: 🐳 Build and push Docker Image
         uses: docker/build-push-action@v5
@@ -47,7 +49,16 @@ jobs:
           context: ./app
           file: ./app/Dockerfile
           push: true
+          labels: |
+            org.opencontainers.image.title= Herramienta de vulnerabilidad social - HDVS
+            org.opencontainers.image.description=Herramienta de vulnerabilidad social for EAPN Madrid made as collaboration between EAPN Madrid and the UNIR University
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.created=$(date +'%Y-%m-%dT%H:%M:%SZ')
+            org.opencontainers.image.revision=${{ env.GIT_SHA }}
+            org.opencontainers.image.version=${{ env.TAG_VERSION }}
+            org.opencontainers.image.authors=Jose Javier Rodriguez Gallego <jjavierrg@gmail.com>
+
           tags: |
-            ${{ env.IMAGE_NAME }}:${{ env.GIT_SHA }}
-            ${{ env.IMAGE_NAME }}:${{ env.BUILD_VER }}
-            ${{ env.IMAGE_NAME }}:${{ vars.DOCKER_TAG }}
+            ghcr.io/${{ env.IMAGE_NAME }}:${{ env.GIT_SHA }}
+            ghcr.io/${{ env.IMAGE_NAME }}:${{ env.TAG_VERSION }}
+            ghcr.io/${{ env.IMAGE_NAME }}:${{ vars.DOCKER_TAG }}

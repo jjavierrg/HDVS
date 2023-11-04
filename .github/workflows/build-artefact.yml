@@ -8,7 +8,7 @@ on:
         type: string
 
 jobs:
-  build:
+  build-artifact:
     runs-on: ubuntu-20.04
     environment: ${{ inputs.ACTION_ENVIRONMENT }}
     env:

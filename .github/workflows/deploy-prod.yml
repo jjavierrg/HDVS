@@ -12,6 +12,13 @@ jobs:
       ACTION_ENVIRONMENT: 'prod'
     secrets: inherit
 
+  create-release:
+    needs: build
+    uses: ./.github/workflows/publish-release.yml
+    with:
+      ACTION_ENVIRONMENT: 'prod'
+    secrets: inherit
+
   upload-docker:
     needs: build
     uses: ./.github/workflows/dockerhub.yml
