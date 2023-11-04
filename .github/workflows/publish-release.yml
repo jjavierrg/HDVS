@@ -34,10 +34,14 @@ jobs:
         with:
           mytoken: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: 📦 Zip files
+        run: |
+          zip -r hdvs.zip ./app
+
       - name: 🚀 Publish release
         uses: softprops/action-gh-release@v1
         with:
-          files: ./app/*
+          files: ./hdvs.zip
           tag_name: ${{ env.TAG_VERSION }}
           draft: false
           prerelease: false
