@@ -36,7 +36,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: ./app/*
-          tag_name: ${{ vars.TAG_VERSION }}
+          tag_name: ${{ env.TAG_VERSION }}
           draft: false
           prerelease: false
           body: ${{ steps.changelog.outputs.changelog }}
