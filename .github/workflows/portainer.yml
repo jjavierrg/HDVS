@@ -25,7 +25,7 @@ jobs:
             stack-definition.yml
 
       - name: 🚀 Deploy to portainer
-        uses: carlrygart/portainer-stack-deploy@v1
+        uses: carlrygart/portainer-stack-deploy@v1.3.0
         with:
           portainer-host: ${{ secrets.PORTAINER_HOST }}
           username: ${{ secrets.PORTAINER_USERNAME }}
