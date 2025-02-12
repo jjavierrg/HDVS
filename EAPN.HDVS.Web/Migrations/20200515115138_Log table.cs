@@ -31,7 +31,7 @@ namespace EAPN.HDVS.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Sqlite:Autoincrement", true),
                     Date = table.Column<DateTime>(nullable: false),
                     Logger = table.Column<string>(nullable: true),
                     Level = table.Column<string>(nullable: true),

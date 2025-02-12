@@ -12,7 +12,7 @@ namespace EAPN.HDVS.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Sqlite:Autoincrement", true),
                     MostrarEnlaces = table.Column<bool>(nullable: false),
                     Enlaces = table.Column<string>(maxLength: 1000, nullable: true)
                 },

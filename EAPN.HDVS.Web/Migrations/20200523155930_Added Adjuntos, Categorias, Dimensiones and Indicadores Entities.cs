@@ -13,7 +13,7 @@ namespace EAPN.HDVS.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Sqlite:Autoincrement", true),
                     Descripcion = table.Column<string>(maxLength: 50, nullable: false),
                     Carpeta = table.Column<string>(maxLength: 255, nullable: false)
                 },
@@ -28,7 +28,7 @@ namespace EAPN.HDVS.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Sqlite:Autoincrement", true),
                     TipoId = table.Column<int>(nullable: false),
                     UsuarioId = table.Column<int>(nullable: true),
                     FichaId = table.Column<int>(nullable: true),
@@ -63,7 +63,7 @@ namespace EAPN.HDVS.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Sqlite:Autoincrement", true),
                     Orden = table.Column<int>(nullable: false),
                     IconoId = table.Column<int>(nullable: true),
                     Descripcion = table.Column<string>(maxLength: 150, nullable: false),
@@ -87,7 +87,7 @@ namespace EAPN.HDVS.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Sqlite:Autoincrement", true),
                     Orden = table.Column<int>(nullable: false),
                     DimensionId = table.Column<int>(nullable: false),
                     Descripcion = table.Column<string>(maxLength: 150, nullable: false),
@@ -111,7 +111,7 @@ namespace EAPN.HDVS.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Sqlite:Autoincrement", true),
                     Orden = table.Column<int>(nullable: false),
                     CategoriaId = table.Column<int>(nullable: false),
                     Descripcion = table.Column<string>(nullable: false),

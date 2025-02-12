@@ -17,9 +17,9 @@ namespace EAPN.HDVS.Web.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.3")
+                
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                ;
 
             modelBuilder.Entity("EAPN.HDVS.Entities.Adjunto", b =>
                 {
@@ -27,7 +27,7 @@ namespace EAPN.HDVS.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        ;
 
                     b.Property<string>("Alias")
                         .IsRequired()
@@ -80,7 +80,7 @@ namespace EAPN.HDVS.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        ;
 
                     b.Property<bool>("Activo")
                         .HasColumnName("Activo")
@@ -112,7 +112,7 @@ namespace EAPN.HDVS.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        ;
 
                     b.Property<string>("Enlaces")
                         .HasColumnName("Enlaces")
@@ -134,7 +134,7 @@ namespace EAPN.HDVS.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        ;
 
                     b.Property<bool>("Activo")
                         .HasColumnName("Activo")
@@ -167,7 +167,7 @@ namespace EAPN.HDVS.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        ;
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
@@ -186,7 +186,7 @@ namespace EAPN.HDVS.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        ;
 
                     b.Property<string>("Apellido1")
                         .HasColumnName("Apellido1")
@@ -346,7 +346,7 @@ namespace EAPN.HDVS.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        ;
 
                     b.Property<bool>("Activo")
                         .HasColumnName("Activo")
@@ -411,7 +411,7 @@ namespace EAPN.HDVS.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
                         .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        ;
 
                     b.Property<string>("CallSite")
                         .HasColumnName("CallSite")
@@ -460,7 +460,7 @@ namespace EAPN.HDVS.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        ;
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -485,7 +485,7 @@ namespace EAPN.HDVS.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        ;
 
                     b.Property<bool>("Activa")
                         .HasColumnName("Activa")
@@ -539,7 +539,7 @@ namespace EAPN.HDVS.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        ;
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
@@ -558,7 +558,7 @@ namespace EAPN.HDVS.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        ;
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
@@ -594,7 +594,7 @@ namespace EAPN.HDVS.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        ;
 
                     b.Property<string>("Clave")
                         .IsRequired()
@@ -619,7 +619,7 @@ namespace EAPN.HDVS.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        ;
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -638,7 +638,7 @@ namespace EAPN.HDVS.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        ;
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
@@ -665,7 +665,7 @@ namespace EAPN.HDVS.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        ;
 
                     b.Property<DateTime>("FinValidez")
                         .HasColumnName("FinValidez")
@@ -694,7 +694,7 @@ namespace EAPN.HDVS.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        ;
 
                     b.Property<bool>("Completo")
                         .HasColumnName("Completo")
@@ -732,7 +732,7 @@ namespace EAPN.HDVS.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        ;
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
@@ -751,7 +751,7 @@ namespace EAPN.HDVS.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        ;
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
@@ -770,7 +770,7 @@ namespace EAPN.HDVS.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        ;
 
                     b.Property<string>("Carpeta")
                         .IsRequired()
@@ -795,7 +795,7 @@ namespace EAPN.HDVS.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        ;
 
                     b.Property<bool>("Activo")
                         .HasColumnName("Activo")
