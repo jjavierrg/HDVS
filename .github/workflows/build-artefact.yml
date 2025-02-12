@@ -44,7 +44,7 @@ jobs:
         run: dotnet publish ${{ env.PROJECT_PATH }} --configuration Release --no-restore --no-build --output ./publish /p:UseAppHost=false
 
       - name: 🚀 Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ vars.ENV_TAG }}-${{ github.sha }}
           path: ./publish
