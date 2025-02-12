@@ -30,7 +30,7 @@ namespace EAPN.HDVS.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Sqlite:Autoincrement", true),
                     Descripcion = table.Column<string>(maxLength: 50, nullable: false)
                 },
                 constraints: table =>

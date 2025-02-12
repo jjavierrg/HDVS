@@ -20,7 +20,7 @@ namespace EAPN.HDVS.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Sqlite:Autoincrement", true),
                     FinValidez = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Token = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     UsuarioId = table.Column<int>(type: "int", nullable: false)

@@ -17,9 +17,8 @@ namespace EAPN.HDVS.Web.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.3")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             modelBuilder.Entity("EAPN.HDVS.Entities.Direccion", b =>
                 {
@@ -27,7 +26,7 @@ namespace EAPN.HDVS.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        ;
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
@@ -58,7 +57,7 @@ namespace EAPN.HDVS.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        ;
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
@@ -1049,7 +1048,7 @@ namespace EAPN.HDVS.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        ;
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
@@ -1129,7 +1128,7 @@ namespace EAPN.HDVS.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        ;
 
                     b.Property<string>("Apellido1")
                         .HasColumnName("Apellido1")
@@ -1189,7 +1188,7 @@ namespace EAPN.HDVS.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        ;
 
                     b.Property<DateTime>("FinValidez")
                         .HasColumnName("FinValidez")
@@ -1218,7 +1217,7 @@ namespace EAPN.HDVS.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        ;
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
@@ -1281,7 +1280,7 @@ namespace EAPN.HDVS.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        ;
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
@@ -1317,7 +1316,7 @@ namespace EAPN.HDVS.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        ;
 
                     b.Property<bool>("Activo")
                         .HasColumnName("Activo")
