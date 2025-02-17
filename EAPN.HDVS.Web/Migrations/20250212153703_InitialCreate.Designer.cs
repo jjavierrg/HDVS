@@ -3,67 +3,63 @@ using System;
 using EAPN.HDVS.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EAPN.HDVS.Web.Migrations
 {
     [DbContext(typeof(HDVSContext))]
-    [Migration("20200602093946_New permissions")]
-    partial class Newpermissions
+    [Migration("20250212153703_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.3")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "3.1.4");
 
             modelBuilder.Entity("EAPN.HDVS.Entities.Adjunto", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Alias")
                         .IsRequired()
                         .HasColumnName("Alias")
-                        .HasColumnType("nvarchar(255)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(255);
 
                     b.Property<DateTime>("FechaAlta")
                         .HasColumnName("FechaAlta")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("FichaId")
                         .HasColumnName("FichaId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("NombreOriginal")
                         .IsRequired()
                         .HasColumnName("NombreOriginal")
-                        .HasColumnType("nvarchar(255)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(255);
 
                     b.Property<int?>("OrganizacionId")
                         .HasColumnName("OrganizacionId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<long>("Tamano")
                         .HasColumnName("Tamano")
-                        .HasColumnType("bigint");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("TipoId")
                         .HasColumnName("TipoId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int?>("UsuarioId")
                         .HasColumnName("UsuarioId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -79,25 +75,32 @@ namespace EAPN.HDVS.Web.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("Activo")
                         .HasColumnName("Activo")
-                        .HasColumnType("bit");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasColumnName("Descripcion")
-                        .HasColumnType("nvarchar(150)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(150);
 
                     b.Property<int>("DimensionId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Obligatorio")
+                        .HasColumnName("Obligatorio")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Orden")
                         .HasColumnName("Orden")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("RespuestaMultiple")
+                        .HasColumnName("RespuestaMultiple")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -106,31 +109,51 @@ namespace EAPN.HDVS.Web.Migrations
                     b.ToTable("Categorias","dbo");
                 });
 
+            modelBuilder.Entity("EAPN.HDVS.Entities.Configuracion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("Id")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Enlaces")
+                        .HasColumnName("Enlaces")
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(1000);
+
+                    b.Property<bool>("MostrarEnlaces")
+                        .HasColumnName("MostrarEnlaces")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Configuraciones","dbo");
+                });
+
             modelBuilder.Entity("EAPN.HDVS.Entities.Dimension", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("Activo")
                         .HasColumnName("Activo")
-                        .HasColumnType("bit");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasColumnName("Descripcion")
-                        .HasColumnType("nvarchar(150)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(150);
 
                     b.Property<int?>("IconoId")
                         .HasColumnName("IconoId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Orden")
                         .HasColumnName("Orden")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -139,140 +162,166 @@ namespace EAPN.HDVS.Web.Migrations
                     b.ToTable("Dimensiones","dbo");
                 });
 
+            modelBuilder.Entity("EAPN.HDVS.Entities.Empadronamiento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("Id")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnName("Descripcion")
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Empadronamientos","dbo");
+                });
+
             modelBuilder.Entity("EAPN.HDVS.Entities.Ficha", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Apellido1")
                         .HasColumnName("Apellido1")
-                        .HasColumnType("nvarchar(250)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(250);
 
                     b.Property<string>("Apellido2")
                         .HasColumnName("Apellido2")
-                        .HasColumnType("nvarchar(250)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(250);
 
                     b.Property<string>("CP")
                         .HasColumnName("CP")
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(10);
 
                     b.Property<string>("Codigo")
                         .IsRequired()
                         .HasColumnName("Codigo")
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(50);
 
                     b.Property<bool>("Completa")
                         .HasColumnName("Completa")
-                        .HasColumnType("bit");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("DNI")
                         .HasColumnName("DNI")
-                        .HasColumnType("nvarchar(12)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(12);
+
+                    b.Property<bool>("DatosCompletos")
+                        .HasColumnName("DatosCompletos")
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("DocumentacionEmpadronamiento")
                         .HasColumnName("DocumentacionEmpadronamiento")
-                        .HasColumnType("bit");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Domicilio")
                         .HasColumnName("Domicilio")
-                        .HasColumnType("nvarchar(250)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(250);
 
                     b.Property<string>("Email")
                         .HasColumnName("Email")
-                        .HasColumnType("nvarchar(255)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(255);
 
                     b.Property<DateTime>("FechaAlta")
                         .HasColumnName("FechaAlta")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("FechaNacimiento")
                         .HasColumnName("FechaNacimiento")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("FechaUltimaModificacion")
+                        .HasColumnName("FechaUltimaModificacion")
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("FotoId")
                         .HasColumnName("FotoId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("FotocopiaDNI")
                         .HasColumnName("FotocopiaDNI")
-                        .HasColumnType("bit");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int?>("GeneroId")
                         .HasColumnName("GeneroId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("MotivoAlta")
                         .HasColumnName("MotivoAlta")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("MunicipioId")
                         .HasColumnName("MunicipioId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int?>("NacionalidadId")
                         .HasColumnName("NacionalidadId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnName("Nombre")
-                        .HasColumnType("nvarchar(150)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(150);
 
                     b.Property<string>("Observaciones")
                         .HasColumnName("Observaciones")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("OrganizacionId")
                         .HasColumnName("OrganizacionId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int?>("OrigenId")
                         .HasColumnName("OrigenId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int?>("PadronId")
                         .HasColumnName("PadronId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("PoliticaFirmada")
                         .HasColumnName("PoliticaFirmada")
-                        .HasColumnType("bit");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int?>("ProvinciaId")
                         .HasColumnName("ProvinciaId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int?>("SexoId")
                         .HasColumnName("SexoId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int?>("SituacionAdministrativaId")
                         .HasColumnName("SituacionAdministrativaId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Telefono")
                         .HasColumnName("Telefono")
-                        .HasColumnType("nvarchar(20)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(20);
 
                     b.Property<int>("UsuarioId")
                         .HasColumnName("UsuarioId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FotoId");
+                    b.HasIndex("FotoId")
+                        .IsUnique();
 
                     b.HasIndex("GeneroId");
 
@@ -302,33 +351,32 @@ namespace EAPN.HDVS.Web.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("Activo")
                         .HasColumnName("Activo")
-                        .HasColumnType("bit");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("CategoriaId")
                         .HasColumnName("CategoriaId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasColumnName("Descripcion")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("Orden")
                         .HasColumnName("Orden")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Puntuacion")
                         .HasColumnName("Puntuacion")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("Sugerencias")
-                        .HasColumnName("Sugerencias")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("Verificacion")
+                        .HasColumnName("Verificacion")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -341,15 +389,19 @@ namespace EAPN.HDVS.Web.Migrations
                 {
                     b.Property<int>("SeguimientoId")
                         .HasColumnName("SeguimientoId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("IndicadorId")
                         .HasColumnName("IndicadorId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Observaciones")
                         .HasColumnName("Observaciones")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool?>("Verificado")
+                        .HasColumnName("Verificado")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("SeguimientoId", "IndicadorId");
 
@@ -358,51 +410,52 @@ namespace EAPN.HDVS.Web.Migrations
                     b.ToTable("IndicadoresSeguimientos","dbo");
                 });
 
-            modelBuilder.Entity("EAPN.HDVS.Entities.Log", b =>
+            modelBuilder.Entity("EAPN.HDVS.Entities.LogEntry", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("CallSite")
                         .HasColumnName("CallSite")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("Date")
                         .HasColumnName("Date")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Exception")
                         .HasColumnName("Exception")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Ip")
                         .HasColumnName("Ip")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Level")
                         .HasColumnName("Level")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("LevelOrder")
                         .HasColumnName("LevelOrder")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Logger")
                         .HasColumnName("Logger")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Message")
                         .HasColumnName("Message")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("UserId")
                         .HasColumnName("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Logs","dbo");
                 });
@@ -412,18 +465,17 @@ namespace EAPN.HDVS.Web.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnName("Nombre")
-                        .HasColumnType("nvarchar(100)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(100);
 
                     b.Property<int>("ProvinciaId")
                         .HasColumnName("ProvinciaId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -437,43 +489,49 @@ namespace EAPN.HDVS.Web.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("Activa")
                         .HasColumnName("Activa")
-                        .HasColumnType("bit");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Email")
                         .HasColumnName("Email")
-                        .HasColumnType("nvarchar(250)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(250);
 
                     b.Property<DateTime>("FechaAlta")
                         .HasColumnName("FechaAlta")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("FotoId")
+                        .HasColumnName("FotoId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnName("Nombre")
-                        .HasColumnType("nvarchar(150)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(150);
 
                     b.Property<string>("Observaciones")
                         .HasColumnName("Observaciones")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Telefono")
                         .HasColumnName("Telefono")
-                        .HasColumnType("nvarchar(20)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(20);
 
                     b.Property<string>("Web")
                         .HasColumnName("Web")
-                        .HasColumnType("nvarchar(250)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(250);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FotoId")
+                        .IsUnique();
 
                     b.ToTable("Organizaciones","dbo");
                 });
@@ -483,13 +541,12 @@ namespace EAPN.HDVS.Web.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasColumnName("Descripcion")
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(50);
 
                     b.HasKey("Id");
@@ -502,13 +559,12 @@ namespace EAPN.HDVS.Web.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasColumnName("Descripcion")
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(50);
 
                     b.HasKey("Id");
@@ -520,11 +576,11 @@ namespace EAPN.HDVS.Web.Migrations
                 {
                     b.Property<int>("PerfilId")
                         .HasColumnName("PerfilId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("PermisoId")
                         .HasColumnName("PermisoId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("PerfilId", "PermisoId");
 
@@ -538,19 +594,18 @@ namespace EAPN.HDVS.Web.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Clave")
                         .IsRequired()
                         .HasColumnName("Clave")
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(50);
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasColumnName("Descripcion")
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(50);
 
                     b.HasKey("Id");
@@ -563,13 +618,12 @@ namespace EAPN.HDVS.Web.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnName("Nombre")
-                        .HasColumnType("nvarchar(40)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(40);
 
                     b.HasKey("Id");
@@ -577,33 +631,30 @@ namespace EAPN.HDVS.Web.Migrations
                     b.ToTable("Provincias","dbo");
                 });
 
-            modelBuilder.Entity("EAPN.HDVS.Entities.RefreshToken", b =>
+            modelBuilder.Entity("EAPN.HDVS.Entities.Rango", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("FinValidez")
-                        .HasColumnName("FinValidez")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Token")
+                    b.Property<string>("Descripcion")
                         .IsRequired()
-                        .HasColumnName("Token")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasColumnName("Descripcion")
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(50);
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnName("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<int?>("Maximo")
+                        .HasColumnName("Maximo")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Minimo")
+                        .HasColumnName("Minimo")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UsuarioId");
-
-                    b.ToTable("RefreshTokens","dbo");
+                    b.ToTable("Rangos","dbo");
                 });
 
             modelBuilder.Entity("EAPN.HDVS.Entities.Seguimiento", b =>
@@ -611,25 +662,36 @@ namespace EAPN.HDVS.Web.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Completo")
+                        .HasColumnName("Completo")
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("Fecha")
                         .HasColumnName("Fecha")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("FechaAlta")
+                        .HasColumnName("FechaAlta")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("FechaUltimaModificacion")
+                        .HasColumnName("FechaUltimaModificacion")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("FichaId")
                         .HasColumnName("FichaId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Observaciones")
                         .HasColumnName("Observaciones")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("UsuarioId")
                         .IsRequired()
                         .HasColumnName("UsuarioId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -645,13 +707,12 @@ namespace EAPN.HDVS.Web.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasColumnName("Descripcion")
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(50);
 
                     b.HasKey("Id");
@@ -664,13 +725,12 @@ namespace EAPN.HDVS.Web.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasColumnName("Descripcion")
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(50);
 
                     b.HasKey("Id");
@@ -683,19 +743,18 @@ namespace EAPN.HDVS.Web.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Carpeta")
                         .IsRequired()
                         .HasColumnName("Carpeta")
-                        .HasColumnType("nvarchar(255)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(255);
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasColumnName("Descripcion")
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(50);
 
                     b.HasKey("Id");
@@ -708,65 +767,71 @@ namespace EAPN.HDVS.Web.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("Activo")
                         .HasColumnName("Activo")
-                        .HasColumnType("bit");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Apellidos")
                         .HasColumnName("Apellidos")
-                        .HasColumnType("nvarchar(150)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(150);
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnName("Email")
-                        .HasColumnType("nvarchar(250)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(250);
 
                     b.Property<DateTime>("FechaAlta")
                         .HasColumnName("FechaAlta")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("FinBloqueo")
                         .HasColumnName("FinBloqueo")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("FotoId")
+                        .HasColumnName("FotoId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Hash")
                         .IsRequired()
                         .HasColumnName("Hash")
-                        .HasColumnType("nvarchar(128)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(128);
 
                     b.Property<int>("IntentosLogin")
                         .HasColumnName("IntentosLogin")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Nombre")
                         .HasColumnName("Nombre")
-                        .HasColumnType("nvarchar(150)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(150);
 
                     b.Property<string>("Observaciones")
                         .HasColumnName("Observaciones")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("OrganizacionId")
                         .HasColumnName("OrganizacionId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Telefono")
                         .HasColumnName("Telefono")
-                        .HasColumnType("nvarchar(20)")
+                        .HasColumnType("TEXT")
                         .HasMaxLength(20);
 
                     b.Property<DateTime?>("UltimoAcceso")
                         .HasColumnName("UltimoAcceso")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FotoId")
+                        .IsUnique();
 
                     b.HasIndex("OrganizacionId");
 
@@ -777,11 +842,11 @@ namespace EAPN.HDVS.Web.Migrations
                 {
                     b.Property<int>("UsuarioId")
                         .HasColumnName("UsuarioId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("PerfilId")
                         .HasColumnName("PerfilId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("UsuarioId", "PerfilId");
 
@@ -794,11 +859,11 @@ namespace EAPN.HDVS.Web.Migrations
                 {
                     b.Property<int>("UsuarioId")
                         .HasColumnName("UsuarioId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("PermisoId")
                         .HasColumnName("PermisoId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("UsuarioId", "PermisoId");
 
@@ -840,9 +905,9 @@ namespace EAPN.HDVS.Web.Migrations
             modelBuilder.Entity("EAPN.HDVS.Entities.Ficha", b =>
                 {
                     b.HasOne("EAPN.HDVS.Entities.Adjunto", "Foto")
-                        .WithMany()
-                        .HasForeignKey("FotoId")
-                        .OnDelete(DeleteBehavior.ClientCascade);
+                        .WithOne("FotoFicha")
+                        .HasForeignKey("EAPN.HDVS.Entities.Ficha", "FotoId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("EAPN.HDVS.Entities.Sexo", "Genero")
                         .WithMany()
@@ -870,7 +935,7 @@ namespace EAPN.HDVS.Web.Migrations
                         .HasForeignKey("OrigenId")
                         .OnDelete(DeleteBehavior.NoAction);
 
-                    b.HasOne("EAPN.HDVS.Entities.Municipio", "Padron")
+                    b.HasOne("EAPN.HDVS.Entities.Empadronamiento", "Padron")
                         .WithMany()
                         .HasForeignKey("PadronId")
                         .OnDelete(DeleteBehavior.NoAction);
@@ -921,6 +986,13 @@ namespace EAPN.HDVS.Web.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("EAPN.HDVS.Entities.LogEntry", b =>
+                {
+                    b.HasOne("EAPN.HDVS.Entities.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("EAPN.HDVS.Entities.Municipio", b =>
                 {
                     b.HasOne("EAPN.HDVS.Entities.Provincia", "Provincia")
@@ -928,6 +1000,14 @@ namespace EAPN.HDVS.Web.Migrations
                         .HasForeignKey("ProvinciaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("EAPN.HDVS.Entities.Organizacion", b =>
+                {
+                    b.HasOne("EAPN.HDVS.Entities.Adjunto", "Foto")
+                        .WithOne("FotoOrganizacion")
+                        .HasForeignKey("EAPN.HDVS.Entities.Organizacion", "FotoId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("EAPN.HDVS.Entities.PerfilPermiso", b =>
@@ -945,21 +1025,12 @@ namespace EAPN.HDVS.Web.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("EAPN.HDVS.Entities.RefreshToken", b =>
-                {
-                    b.HasOne("EAPN.HDVS.Entities.Usuario", "Usuario")
-                        .WithMany("Tokens")
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("EAPN.HDVS.Entities.Seguimiento", b =>
                 {
                     b.HasOne("EAPN.HDVS.Entities.Ficha", "Ficha")
                         .WithMany("Seguimientos")
                         .HasForeignKey("FichaId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("EAPN.HDVS.Entities.Usuario", "Tecnico")
@@ -970,6 +1041,11 @@ namespace EAPN.HDVS.Web.Migrations
 
             modelBuilder.Entity("EAPN.HDVS.Entities.Usuario", b =>
                 {
+                    b.HasOne("EAPN.HDVS.Entities.Adjunto", "Foto")
+                        .WithOne("FotoUsuario")
+                        .HasForeignKey("EAPN.HDVS.Entities.Usuario", "FotoId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("EAPN.HDVS.Entities.Organizacion", "Organizacion")
                         .WithMany("Usuarios")
                         .HasForeignKey("OrganizacionId")

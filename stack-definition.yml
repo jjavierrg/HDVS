@@ -12,8 +12,11 @@ services:
     restart: unless-stopped
     volumes:
       - type: bind
-        source: /container-data/eapn/{{stage}}
+        source: /container-data/eapn/{{stage}}/attachments
         target: /app/attachments
+      - type: bind
+        source: /container-data/eapn/{{stage}}/database
+        target: /app/database
     networks:
       - hdvs
 

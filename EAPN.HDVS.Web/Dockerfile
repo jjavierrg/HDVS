@@ -6,9 +6,7 @@ EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:3.1 AS build
-RUN bash -E $(curl -fsSL https://deb.nodesource.com/setup_16.x | bash - ); apt install -y nodejs
-RUN apt-get install -y nodejs
-
+RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - && apt-get install -y nodejs
 WORKDIR /src
 COPY ["EAPN.HDVS.Web/EAPN.HDVS.Web.csproj", "EAPN.HDVS.Web/"]
 COPY ["EAPN.HDVS.Application/EAPN.HDVS.Application.csproj", "EAPN.HDVS.Application/"]

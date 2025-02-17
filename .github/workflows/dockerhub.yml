@@ -31,7 +31,7 @@ jobs:
           mv Dockerfile-CI ./app/Dockerfile
 
       - name: ⬇️ Download artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: ${{ vars.ENV_TAG }}-${{ github.sha }}
           path: ./app
