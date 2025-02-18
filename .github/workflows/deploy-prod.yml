@@ -28,9 +28,9 @@ jobs:
       ACTION_ENVIRONMENT: 'prod'
     secrets: inherit
 
-  # deploy-portainer:
-  #   needs: upload-docker
-  #   uses: ./.github/workflows/portainer.yml
-  #   with:
-  #     ACTION_ENVIRONMENT: 'prod'
-  #   secrets: inherit
+  deploy-portainer:
+    needs: upload-docker
+    uses: ./.github/workflows/portainer.yml
+    with:
+      ACTION_ENVIRONMENT: 'prod'
+    secrets: inherit
