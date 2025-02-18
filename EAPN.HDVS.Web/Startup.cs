@@ -16,7 +16,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using NLog;
 using System;
 using System.IO;
 using System.Reflection;
@@ -26,7 +25,10 @@ namespace EAPN.HDVS.Web
 {
 	public class Startup
 	{
-		public Startup(IConfiguration configuration) => Configuration = configuration;
+		public Startup(IConfiguration configuration)
+		{
+			Configuration = configuration;
+		}
 
 		public IConfiguration Configuration { get; }
 
@@ -110,12 +112,7 @@ namespace EAPN.HDVS.Web
 			});
 		}
 
-		private void configureLogger()
-		{
-			GlobalDiagnosticsContext.Set("myDataBase", Configuration.GetConnectionString("HDVSDatabase"));
-			var config = new ConfigurationBuilder().AddJsonFile(path: "appsettings.json").Build();
-			NLog.Extensions.Logging.ConfigSettingLayoutRenderer.DefaultConfiguration = config;
-		}
+		private void configureLogger() => NLog.Extensions.Logging.ConfigSettingLayoutRenderer.DefaultConfiguration = Configuration;
 
 		private void ConfigureSwagger(IServiceCollection services)
 		{
