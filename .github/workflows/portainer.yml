@@ -14,6 +14,6 @@ jobs:
 
     steps:
       - name: 🚀 Call Webhook
-        uses: jasongitmail/fast-webhook@v1
+        uses: jasongitmail/fast-webhook@2cf3dde706948425f9b82cc9762d8d37a0fc22d7
         with:
           url: ${{ secrets.PORTAINER_WEBHOOK }}
